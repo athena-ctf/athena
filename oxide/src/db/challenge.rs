@@ -20,6 +20,7 @@ multiple_relation!(Challenge, Hint);
 multiple_relation!(Challenge, Instance);
 multiple_relation!(Challenge, Achievement);
 multiple_relation!(Challenge, Submission);
+multiple_relation!(Challenge, ChallengeTag);
 
 pub async fn calculate_solves(id: Uuid, db: &DbConn) -> Result<u64> {
     let solves = Submission::find()

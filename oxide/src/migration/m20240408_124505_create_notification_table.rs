@@ -17,13 +17,13 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Notification::Title).string().not_null())
-                    .col(ColumnDef::new(Notification::Content).string().not_null())
                     .col(
                         ColumnDef::new(Notification::DateCreated)
                             .date_time()
                             .not_null(),
                     )
+                    .col(ColumnDef::new(Notification::Title).string().not_null())
+                    .col(ColumnDef::new(Notification::Content).string().not_null())
                     .col(ColumnDef::new(Notification::PlayerId).uuid().not_null())
                     .foreign_key(
                         ForeignKey::create()

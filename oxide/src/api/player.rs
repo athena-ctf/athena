@@ -27,13 +27,19 @@ pub fn router() -> Router<Arc<AppState>> {
             patch(player::update_profile_by_id),
         )
         .route(
-            "/player/:id/achievement",
+            "/player/:id/achievements",
             get(player::list_achievements_by_id),
         )
         .route(
-            "/player/:id/notification",
+            "/player/:id/notifications",
             get(player::list_notifications_by_id),
         )
+        .route(
+            "/player/:id/submissions",
+            get(player::list_submissions_by_id),
+        )
+        .route("/player/:id/unlocks", get(player::list_unlocks_by_id))
+        .route("/player/:id/ban", get(player::retrieve_ban_by_id))
         .route(
             "/player/join/:team_name",
             get(player::join_team_by_team_name),

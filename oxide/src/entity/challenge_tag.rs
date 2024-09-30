@@ -13,6 +13,7 @@ pub struct Model {
     pub challenge_id: Uuid,
     #[sea_orm(primary_key, auto_increment = false)]
     pub tag_id: Uuid,
+    pub date_created: DateTime,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

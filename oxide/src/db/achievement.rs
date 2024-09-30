@@ -10,7 +10,7 @@ use super::CachedValue;
 use crate::entity;
 use crate::entity::prelude::*;
 use crate::errors::{AthenaError, Result};
-use crate::macros::db::{crud_interface, optional_relation, single_relation};
+use crate::macros::db::{crud_interface, single_relation};
 
 crud_interface!(Achievement);
 

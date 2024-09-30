@@ -25,6 +25,8 @@ optional_relation!(Player, Ban);
 multiple_relation_with_id!(Player, Flag);
 multiple_relation_with_id!(Player, Notification);
 multiple_relation_with_id!(Player, Achievement);
+multiple_relation_with_id!(Player, Submission);
+multiple_relation_with_id!(Player, Unlock);
 
 pub async fn retrieve_by_email(
     email: String,

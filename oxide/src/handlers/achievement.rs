@@ -9,7 +9,7 @@ use crate::db;
 use crate::errors::AthenaError;
 use crate::macros::api::{list, retrieve, single_relation, update};
 use crate::schemas::{
-    AchievementDetails, AchievementModel, ChallengeModel, PlayerModel, TeamModel, TokenClaims,
+    AchievementDetails, AchievementModel, ChallengeModel, PlayerModel, TokenClaims,
 };
 use crate::service::{ApiError, ApiResult, AppState};
 
@@ -88,7 +88,7 @@ pub async fn delete(
     .await?
     {
         let Some(player) = db::player::retrieve(
-            id,
+            claims.id,
             &state.db_conn,
             &mut state.redis_client.get().await.unwrap(),
         )
@@ -101,7 +101,6 @@ pub async fn delete(
         let mut active_model = player.into_active_model();
 
         todo!();
-        Ok(())
     } else {
         Err(ApiError::NotFound("Achievement does not exist".to_owned()))
     }

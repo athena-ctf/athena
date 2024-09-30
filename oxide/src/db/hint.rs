@@ -3,7 +3,7 @@ use bb8_redis::redis::AsyncCommands;
 use bb8_redis::RedisConnectionManager;
 use chrono::Utc;
 use sea_orm::prelude::*;
-use sea_orm::{ActiveValue, IntoActiveModel, QuerySelect};
+use sea_orm::{ActiveValue, IntoActiveModel};
 
 use super::details::hint::HintSummary;
 use super::details::prelude::*;

@@ -3,15 +3,14 @@ use std::sync::Arc;
 use axum::extract::{Json, Path, State};
 use axum_typed_multipart::TypedMultipart;
 use bytes::Buf;
-use sea_orm::{EntityTrait, IntoActiveModel};
 use uuid::Uuid;
 
 use crate::db;
 use crate::errors::AthenaError;
-use crate::macros::api::{create, delete, list, multiple_relation_with_model, retrieve, update};
+use crate::macros::api::{delete, list, multiple_relation_with_model, retrieve, update};
 use crate::schemas::{
     AchievementModel, ChallengeDetails, ChallengeHint, ChallengeModel, ChallengeRelations,
-    ChallengeSolves, ChallengeTag, ChallengeTagModel, ContainerMeta, CreateChallengeSchema,
+    ChallengeSolves, ChallengeTagDetails, ChallengeTagModel, ContainerMeta, CreateChallengeSchema,
     FileModel, HintModel, InstanceModel, SubmissionModel, TagDetails, TagModel,
 };
 use crate::service::{ApiError, ApiResult, AppState};
@@ -27,6 +26,7 @@ multiple_relation_with_model!(Challenge, Hint);
 multiple_relation_with_model!(Challenge, Instance);
 multiple_relation_with_model!(Challenge, Tag);
 multiple_relation_with_model!(Challenge, Submission);
+multiple_relation_with_model!(Challenge, ChallengeTag);
 
 #[utoipa::path(
     post,
@@ -83,14 +83,13 @@ pub async fn create(
                 .id
         };
 
-        ChallengeTag::insert(
-            ChallengeTagModel {
+        db::challenge_tag::create(
+            ChallengeTagDetails {
                 challenge_id: chall.id,
                 tag_id,
-            }
-            .into_active_model(),
+            },
+            &state.db_conn,
         )
-        .exec(&state.db_conn)
         .await
         .map_err(AthenaError::from)?;
     }

@@ -3,17 +3,15 @@ use std::time::Duration;
 use bollard::Docker;
 use chrono::Utc;
 use sea_orm::{
-    ActiveModelTrait, ActiveValue, ColumnTrait, DbConn, EntityTrait, IntoActiveModel, Order,
-    QueryFilter, QueryOrder, QuerySelect,
+    ActiveModelTrait, ColumnTrait, DbConn, EntityTrait, IntoActiveModel, Order, QueryFilter,
+    QueryOrder, QuerySelect,
 };
 use tokio::task::AbortHandle;
 
 use crate::db::leaderboard;
 use crate::entity;
 use crate::errors::{AthenaError, Result};
-use crate::schemas::{
-    CategoryEnum, Instance, Leaderboard, LeaderboardDetails, LeaderboardModel, Player, Team,
-};
+use crate::schemas::{CategoryEnum, Instance, LeaderboardDetails, Player, Team};
 
 pub async fn update_leaderboard(db_conn: &DbConn) -> Result<()> {
     let players = Player::find()
@@ -90,6 +88,7 @@ pub async fn remove_instances(docker_conn: &Docker, db_conn: &DbConn) -> Result<
 pub fn run(docker_conn: &Docker, db_conn: &DbConn) -> Vec<AbortHandle> {
     let db_conn_cloned = db_conn.clone();
 
+    #[allow(unreachable_code)]
     let update_leaderboard_handle = tokio::spawn(async move {
         loop {
             update_leaderboard(&db_conn_cloned).await?;
@@ -103,11 +102,14 @@ pub fn run(docker_conn: &Docker, db_conn: &DbConn) -> Vec<AbortHandle> {
     let db_conn_cloned = db_conn.clone();
     let docker_conn_cloned = docker_conn.clone();
 
+    #[allow(unreachable_code)]
     let remove_instances_handle = tokio::spawn(async move {
         loop {
-            remove_instances(&docker_conn_cloned, &db_conn_cloned).await;
+            remove_instances(&docker_conn_cloned, &db_conn_cloned).await?;
             tokio::time::sleep(Duration::from_secs(10)).await;
         }
+
+        Ok::<(), AthenaError>(())
     })
     .abort_handle();
 

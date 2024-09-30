@@ -1,7 +1,7 @@
 macro_rules! list {
     ($entity:ident) => {
         paste::paste! {
-            list!([<$entity:lower>], [<$entity>], [<$entity Model>], [<$entity Details>]);
+            list!([<$entity:snake>], $entity, [<$entity Model>], [<$entity Details>]);
         }
     };
 
@@ -15,7 +15,7 @@ macro_rules! list {
 macro_rules! retrieve {
     ($entity:ident) => {
         paste::paste! {
-            retrieve!([<$entity:lower>], [<$entity>], [<$entity Model>], [<$entity Details>]);
+            retrieve!([<$entity:snake>], [<$entity>], [<$entity Model>], [<$entity Details>]);
         }
     };
 
@@ -52,7 +52,7 @@ macro_rules! retrieve {
 macro_rules! update {
     ($entity:ident) => {
         paste::paste! {
-            update!([<$entity:lower>], [<$entity>], [<$entity Model>], [<$entity Details>]);
+            update!([<$entity:snake>], [<$entity>], [<$entity Model>], [<$entity Details>]);
         }
     };
 
@@ -82,7 +82,7 @@ macro_rules! update {
 macro_rules! delete {
     ($entity:ident) => {
         paste::paste! {
-            delete!([<$entity:lower>], [<$entity>], [<$entity Model>], [<$entity Details>]);
+            delete!([<$entity:snake>], [<$entity>], [<$entity Model>], [<$entity Details>]);
         }
     };
 
@@ -105,7 +105,7 @@ macro_rules! delete {
 macro_rules! create {
     ($entity:ident) => {
         paste::paste! {
-            create!([<$entity:lower>], [<$entity>], [<$entity Model>], [<$entity Details>]);
+            create!([<$entity:snake>], [<$entity>], [<$entity Model>], [<$entity Details>]);
         }
     };
 
@@ -134,13 +134,87 @@ macro_rules! crud_interface {
 
 // TODO: create macros for binding table crud interface
 macro_rules! bind_crud_interface {
-    ($entity:ident) => {};
+    ($entity:ident, $related_from:ident, $related_to:ident) => {
+        paste::paste! {
+            pub async fn list(db: &DbConn) -> Result<Vec<[<$entity Model>]>> {
+                Ok($entity::find().all(db).await?)
+            }
+
+            pub async fn retrieve(
+                ([<$related_from:snake _id>], [<$related_to:snake _id>]): (Uuid, Uuid),
+                db: &DbConn,
+                client: &mut PooledConnection<'_, RedisConnectionManager>,
+            ) -> Result<Option<[<$entity Model>]>> {
+                let value: CachedValue<[<$entity Model>]> = client
+                    .get(format!("{}:{}:{}", stringify!([<$entity:snake>]), [<$related_from:snake _id>], [<$related_to:snake _id>]))
+                    .await?;
+
+                if let CachedValue::Hit(value) = value {
+                    Ok(Some(value))
+                } else {
+                    let Some(model) = $entity::find_by_id(([<$related_from:snake _id>], [<$related_to:snake _id>])).one(db).await? else {
+                        return Ok(None);
+                    };
+
+                    client
+                        .set::<_, _, ()>(
+                            format!("{}:{}:{}", stringify!([<$entity:snake>]), [<$related_from:snake _id>], [<$related_to:snake _id>]),
+                            &serde_json::to_vec(&model)?,
+                        )
+                        .await?;
+
+                    Ok(Some(model))
+                }
+            }
+
+            pub async fn update(
+                ([<$related_from:snake _id>], [<$related_to:snake _id>]): (Uuid, Uuid),
+                details: [<$entity Details>],
+                db: &DbConn,
+                client: &mut PooledConnection<'_, RedisConnectionManager>,
+            ) -> Result<[<$entity Model>]> {
+                let model = details.into_active_model();
+
+                let model = $entity::update(model)
+                    .filter(entity::[<$entity:snake>]::Column::[<$related_from Id>].eq([<$related_from:snake _id>]))
+                    .filter(entity::[<$entity:snake>]::Column::[<$related_to Id>].eq([<$related_from:snake _id>]))
+                    .exec(db)
+                    .await?;
+
+                client
+                    .del::<_, ()>(format!("{}:{}:{}", stringify!([<$entity:snake>]), [<$related_from:snake _id>], [<$related_to:snake _id>]))
+                    .await?;
+
+                Ok(model)
+            }
+
+            pub async fn delete(
+                ([<$related_from:snake _id>], [<$related_to:snake _id>]): (Uuid, Uuid),
+                db: &DbConn,
+                client: &mut PooledConnection<'_, RedisConnectionManager>,
+            ) -> Result<bool> {
+                let delete_result = $entity::delete_by_id(([<$related_from:snake _id>], [<$related_to:snake _id>])).exec(db).await?;
+
+                client
+                    .del::<_, ()>(format!("{}:{}:{}", stringify!([<$entity:snake>]), [<$related_from:snake _id>], [<$related_to:snake _id>]))
+                    .await?;
+                Ok(delete_result.rows_affected == 1)
+            }
+
+            pub async fn create(details: [<$entity Details>], db: &DbConn) -> Result<[<$entity Model>]> {
+                let mut model = details.into_active_model();
+                model.date_created = ActiveValue::Set(Utc::now().naive_utc());
+
+                Ok(model.insert(db).await?)
+            }
+        }
+    };
 }
 
 macro_rules! single_relation {
     ($base:ident, $related:ident) => {
         paste::paste! {
-            pub async fn [<related_ $related:lower>](
+            pub async fn [<related_ $related:snake>](
                 id: Uuid,
                 db: &DbConn,
             ) -> Result<Option<([<$base Model>], [<$related Model>])>> {
@@ -164,7 +238,7 @@ macro_rules! single_relation {
 macro_rules! optional_relation {
     ($base:ident, $related:ident) => {
         paste::paste! {
-            pub async fn [<related_ $related:lower>](
+            pub async fn [<related_ $related:snake>](
                 id: Uuid,
                 db: &DbConn,
             ) -> Result<Option<([<$base Model>], Option<[<$related Model>]>)>> {
@@ -180,7 +254,7 @@ macro_rules! optional_relation {
 macro_rules! multiple_relation {
     ($base:ident, $related:ident) => {
         paste::paste! {
-            pub async fn [<related_ $related:lower s>](
+            pub async fn [<related_ $related:snake s>](
                 model: &[<$base Model>],
                 db: &DbConn,
             ) -> Result<Vec<[<$related Model>]>> {
@@ -193,7 +267,7 @@ macro_rules! multiple_relation {
 macro_rules! multiple_relation_with_id {
     ($base:ident, $related:ident) => {
         paste::paste! {
-            pub async fn [<related_ $related:lower s>](
+            pub async fn [<related_ $related:snake s>](
                 id: Uuid,
                 db: &DbConn,
             ) -> Result<Option<Vec<[<$related Model>]>>> {
@@ -208,6 +282,6 @@ macro_rules! multiple_relation_with_id {
 }
 
 pub(crate) use {
-    create, crud_interface, delete, list, multiple_relation, multiple_relation_with_id,
-    optional_relation, retrieve, single_relation, update,
+    bind_crud_interface, create, crud_interface, delete, list, multiple_relation,
+    multiple_relation_with_id, optional_relation, retrieve, single_relation, update,
 };

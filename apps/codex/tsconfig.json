@@ -17,10 +17,7 @@
     "next.config.mjs",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "../../packages/ui/src/components/stat-card.tsx",
-    "../admin/input-tags.tsx",
-    "../admin/components/input-tags.tsx"
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

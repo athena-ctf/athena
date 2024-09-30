@@ -10,8 +10,6 @@ use super::CachedValue;
 use crate::entity;
 use crate::entity::prelude::*;
 use crate::errors::Result;
-use crate::macros::db::{crud_interface, optional_relation};
+use crate::macros::db::bind_crud_interface;
 
-crud_interface!(Ticket);
-
-optional_relation!(Ticket, Manager);
+bind_crud_interface!(ChallengeTag, Challenge, Tag);

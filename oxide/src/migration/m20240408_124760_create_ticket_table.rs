@@ -30,10 +30,10 @@ impl MigrationTrait for Migration {
                             .enumeration(TicketStatusEnum, TicketStatusVariants::iter())
                             .not_null(),
                     )
-                    .col(ColumnDef::new(Ticket::AssignedTo).uuid().not_null())
+                    .col(ColumnDef::new(Ticket::AssignedTo).uuid())
                     .foreign_key(
                         ForeignKey::create()
-                            .name("fk-ticket-manager_id")
+                            .name("fk-ticket-assigned_to")
                             .from(Ticket::Table, Ticket::AssignedTo)
                             .to(Manager::Table, Manager::Id)
                             .on_delete(ForeignKeyAction::Cascade)

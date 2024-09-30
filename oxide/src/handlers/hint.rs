@@ -15,6 +15,7 @@ crud_interface!(Hint);
 single_relation!(Hint, Challenge);
 multiple_relation!(Hint, Unlock);
 
+// TODO: move to challenge
 #[utoipa::path(
     get,
     path = "/hint/summary",
@@ -32,7 +33,7 @@ pub async fn list_summaries(state: State<Arc<AppState>>) -> ApiResult<Json<Vec<H
 
 #[utoipa::path(
     get,
-    path = "/hint/{id}/unlock",
+    path = "/hint/unlock/{id}",
     params(("id" = Uuid, Path, description = "Id of entity")),
     responses(
         (status = 200, description = "Unlocked hint by id successfully", body = HintModel),

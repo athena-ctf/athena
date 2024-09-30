@@ -28,6 +28,7 @@ mod achievement;
 mod auth;
 mod ban;
 mod challenge;
+mod challenge_tag;
 mod doc;
 mod file;
 mod flag;
@@ -36,12 +37,16 @@ mod image;
 mod instance;
 mod invite;
 mod leaderboard;
+mod manager;
 mod notification;
 mod player;
 mod settings;
+mod submission;
 mod tag;
 mod tasks;
 mod team;
+mod ticket;
+mod unlock;
 
 pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection) -> Result<()> {
     let listener = tokio::net::TcpListener::bind(SocketAddrV4::new(
@@ -134,6 +139,7 @@ pub fn app(state: Arc<AppState>) -> Router {
         .merge(auth::router())
         .merge(ban::router())
         .merge(challenge::router())
+        .merge(challenge_tag::router())
         .merge(file::router())
         .merge(flag::router())
         .merge(hint::router())
@@ -141,11 +147,15 @@ pub fn app(state: Arc<AppState>) -> Router {
         .merge(instance::router())
         .merge(invite::router())
         .merge(leaderboard::router())
+        .merge(manager::router())
         .merge(notification::router())
         .merge(player::router())
         .merge(settings::router())
+        .merge(submission::router())
         .merge(tag::router())
         .merge(team::router())
+        .merge(ticket::router())
+        .merge(unlock::router())
         .route("/stats", get(crate::handlers::stats::get))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),

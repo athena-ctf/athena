@@ -1,6 +1,7 @@
 pub mod achievement;
 pub mod ban;
 pub mod challenge;
+pub mod challenge_tag;
 pub mod details;
 pub mod enums;
 pub mod file;
@@ -12,10 +13,12 @@ pub mod leaderboard;
 pub mod manager;
 pub mod notification;
 pub mod player;
+pub mod submission;
 pub mod tag;
 pub mod team;
 pub mod ticket;
 pub mod token;
+pub mod unlock;
 
 use bb8_redis::redis::FromRedisValue;
 use sea_orm::prelude::*;
@@ -25,35 +28,6 @@ use crate::entity;
 use crate::entity::prelude::*;
 use crate::errors::Result;
 use crate::schemas::StatSchema;
-
-pub async fn get_points(player: &PlayerModel, db: &DbConn) -> Result<i32> {
-    let points = player
-        .find_related(Challenge)
-        .filter(entity::submission::Column::IsCorrect.eq(true))
-        .all(db)
-        .await?
-        .iter()
-        .map(|challenge| challenge.points)
-        .sum::<i32>();
-
-    let achievements = player
-        .find_related(Achievement)
-        .all(db)
-        .await?
-        .iter()
-        .map(|achievement_model| achievement_model.prize)
-        .sum::<i32>();
-
-    let unlocks = player
-        .find_related(Hint)
-        .all(db)
-        .await?
-        .iter()
-        .map(|hint_model| hint_model.cost)
-        .sum::<i32>();
-
-    Ok(points + achievements - unlocks)
-}
 
 pub async fn stats(db: &DbConn) -> Result<StatSchema> {
     Ok(StatSchema {

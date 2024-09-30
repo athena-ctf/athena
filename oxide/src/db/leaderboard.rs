@@ -9,7 +9,7 @@ use super::details::prelude::*;
 use super::CachedValue;
 use crate::entity;
 use crate::entity::prelude::*;
-use crate::errors::{AthenaError, Result};
-use crate::macros::db::{crud_interface, single_relation};
+use crate::errors::Result;
+use crate::macros::db::crud_interface;
 
 crud_interface!(Leaderboard);

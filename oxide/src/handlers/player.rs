@@ -9,8 +9,9 @@ use crate::db;
 use crate::errors::AthenaError;
 use crate::macros::api::{crud_interface, multiple_relation, optional_relation};
 use crate::schemas::{
-    AchievementModel, FlagModel, InstanceModel, JsonResponse, NotificationModel, PlayerDetails,
-    PlayerModel, PlayerProfile, SubmissionModel, TeamModel, TokenClaims, UpdateProfileSchema,
+    AchievementModel, BanModel, FlagModel, InstanceModel, JsonResponse, NotificationModel,
+    PlayerDetails, PlayerModel, PlayerProfile, SubmissionModel, TeamModel, TokenClaims,
+    UnlockModel, UpdateProfileSchema,
 };
 use crate::service::{ApiError, ApiResult, AppState};
 
@@ -18,10 +19,13 @@ crud_interface!(Player);
 
 optional_relation!(Player, Team);
 optional_relation!(Player, Instance);
+optional_relation!(Player, Ban);
 
 multiple_relation!(Player, Flag);
 multiple_relation!(Player, Achievement);
 multiple_relation!(Player, Notification);
+multiple_relation!(Player, Submission);
+multiple_relation!(Player, Unlock);
 
 #[utoipa::path(
     get,

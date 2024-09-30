@@ -4,7 +4,6 @@ use axum::extract::State;
 use axum::Json;
 
 use crate::db;
-use crate::entity::prelude::*;
 use crate::schemas::StatSchema;
 use crate::service::{ApiResult, AppState};
 

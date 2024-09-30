@@ -67,7 +67,6 @@ enum Achievement {
     Prize,
     ChallengeId,
     PlayerId,
-    TeamId,
 }
 
 #[derive(DeriveIden)]

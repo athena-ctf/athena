@@ -17,6 +17,11 @@ impl MigrationTrait for Migration {
                             .col(ChallengeTag::ChallengeId)
                             .col(ChallengeTag::TagId),
                     )
+                    .col(
+                        ColumnDef::new(ChallengeTag::DateCreated)
+                            .date_time()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(ChallengeTag::ChallengeId).uuid().not_null())
                     .col(ColumnDef::new(ChallengeTag::TagId).uuid().not_null())
                     .foreign_key(
@@ -52,6 +57,7 @@ enum ChallengeTag {
     Table,
     ChallengeId,
     TagId,
+    DateCreated,
 }
 
 #[derive(DeriveIden)]

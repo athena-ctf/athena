@@ -31,7 +31,15 @@ pub fn router() -> Router<Arc<AppState>> {
             get(challenge::retrieve_relations_by_id),
         )
         .route(
-            "/challenge/:id/achievement",
+            "/challenge/:id/achievements",
             get(challenge::list_achievements_by_id),
+        )
+        .route(
+            "/challenge/:id/challenge_tags",
+            get(challenge::list_challenge_tags_by_id),
+        )
+        .route(
+            "/challenge/:id/submissions",
+            get(challenge::list_submissions_by_id),
         )
 }

@@ -1,7 +1,5 @@
 use sea_orm::prelude::*;
 use sea_orm::ActiveValue::Set;
-use sea_orm::IntoActiveModel;
-use strum::Display;
 
 use crate::entity::prelude::*;
 use crate::entity::token;

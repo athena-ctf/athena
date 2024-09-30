@@ -16,4 +16,6 @@ pub fn router() -> Router<Arc<AppState>> {
                 .patch(hint::update_by_id),
         )
         .route("/hint/:id/challenge", get(hint::retrieve_challenge_by_id))
+        .route("/hint/:id/unlocks", get(hint::list_unlocks_by_id))
+        .route("/hint/unlock/:id", get(hint::unlock_by_id))
 }

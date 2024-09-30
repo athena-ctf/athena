@@ -11,7 +11,7 @@ use crate::errors::AthenaError;
 use crate::macros::api::{crud_interface, optional_relation, single_relation};
 use crate::schemas::{
     ChallengeModel, FlagDetails, FlagModel, FlagVerificationResult, PlayerModel, Submission,
-    SubmissionDetails, SubmissionModel, TokenClaims, VerifyFlagSchema,
+    SubmissionModel, TokenClaims, VerifyFlagSchema,
 };
 use crate::service::{ApiError, ApiResult, AppState};
 
