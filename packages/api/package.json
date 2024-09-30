@@ -1,0 +1,22 @@
+{
+  "name": "@repo/api",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "generate": "pnpm dlx openapi-typescript -o ./src/openapi.d.ts",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "openapi-typescript": "^6.7.5",
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "@repo/config": "workspace:*",
+    "smol-toml": "^1.2.1",
+    "openapi-fetch": "^0.9.5"
+  }
+}

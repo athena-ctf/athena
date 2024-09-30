@@ -1,0 +1,17 @@
+$domain {
+    reverse_proxy codex:3000
+    encode gzip zstd
+
+    header {
+        X-Role "player"
+    }
+}
+
+admin.$domain {
+    reverse_proxy admin:3000
+    encode gzip zstd
+
+    header {
+        X-Role "admin"
+    }
+}

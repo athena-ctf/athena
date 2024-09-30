@@ -1,0 +1,72 @@
+volumes:
+    postgres:
+services:
+    postgres:
+        restart: always
+        container_name: "postgres"
+        image: postgres
+        environment:
+            POSTGRES_USER: "postgres" # DO NOT EDIT
+            POSTGRES_PASSWORD: "postgres" # DO NOT EDIT
+            POSTGRES_DB: "athena_ctf_db" # DO NOT EDIT
+            PGDATA: /data/postgres
+        ports:
+            - "6543:5432"
+        volumes:
+            - postgres:/data/postgres
+
+    forge:
+        container_name: "forge" # DO NOT EDIT
+        build: ./forge
+        image: athena-ctf/forge
+        restart: always
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./data/config.toml:/data/config.toml:ro
+
+    oxide:
+        container_name: "oxide" # DO NOT EDIT
+        build:
+            context: ./oxide
+            additional_contexts:
+                - parent=.
+        image: athena-ctf/oxide
+        restart: always
+        depends_on:
+            - postgres
+            - forge
+        volumes:
+            - ./emails:/oxide/emails
+            - ./data/config.toml:/data/config.toml:ro
+
+    codex:
+        container_name: codex
+        build:
+            context: ./frontend
+            additional_contexts:
+                - parent=.
+            args:
+                - PROJECT=codex
+        image: athena-ctf/codex
+        restart: always
+        depends_on:
+            - oxide
+        ports:
+            - "3000:3000"
+        entrypoint: ["node", "apps/codex/server.js"]
+
+    admin:
+        container_name: admin
+        build:
+            context: ./frontend
+            additional_contexts:
+                - parent=.
+            args:
+                - PROJECT=admin
+        image: athena-ctf/admin
+        restart: always
+        depends_on:
+            - oxide
+        ports:
+            - "3001:3000"
+        entrypoint: ["node", "apps/admin/server.js"]

@@ -1,0 +1,21 @@
+{
+  "name": "frontend",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "ui:add": "pnpm --filter @repo/ui ui:add",
+    "generate:openapi": "pnpm --filter @repo/api generate",
+    "generate:emails": "pnpm --filter @repo/emails export",
+    "biome": "biome check .",
+    "biome:fix": "biome check . --write"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.2",
+    "@repo/typescript-config": "workspace:*",
+    "turbo": "^2.1.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

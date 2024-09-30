@@ -1,0 +1,5 @@
+Hi,
+
+Click below to verify your email.
+
+Verify {{ token }}

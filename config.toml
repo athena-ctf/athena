@@ -1,0 +1,45 @@
+[ctf]
+name = "Athena CTF"
+duration = "2days"
+start_time = "2024-08-18T15:02:06.123250700Z"
+freeze_duration = "1day"
+domain_name = "athena.io"
+description = "Athena is a hosted platform for CTFs"
+
+[database]
+host = "postgres"
+port = 5432
+username = "postgres"
+password = "XRXEBROZGpOP"
+
+[redis]
+host = "redis"
+port = 6379
+username = "redis"
+password = "tf90blSAad3I"
+
+[services]
+api_server_port = 50050
+api_server_host = "oxide"
+
+[file_storage.static_server]
+compress = "gzip"
+path = "/var/athena/static"
+
+[jwt]
+secret = "39vAUPa1rlYcDQIhrh5hfb2YJ4tnZB0VhujDi1jJM+c="
+access_token_timeout = 600
+refresh_token_timeout = 86400
+
+[smtp]
+from = "noreply@athena.io"
+reply_to = "Admin <admin@athena.io>"
+username = "athena_smtp"
+password = "zOvGBoAcm5Uc"
+server_url = "smtp.athena.io"
+
+[docker]
+single_instance_duration = 15
+registry_url = "registry.athena.io"
+registry_username = "athena"
+registry_password = "I5DSnxhA71bI"

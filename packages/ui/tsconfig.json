@@ -1,0 +1,29 @@
+{
+  "extends": "@repo/typescript-config/react-library.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@ui/*": ["./src/*"]
+    },
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noUncheckedIndexedAccess": true
+  },
+  "include": [
+    "src",
+    "../../apps/codex/components/challenge-card.tsx",
+    "../../apps/codex/components/spinner.tsx",
+    "../../apps/codex/components/team-modal.tsx",
+    "../../apps/codex/components/team-score.tsx",
+    "../../apps/codex/components/team-search.tsx",
+    "../../apps/codex/components/user-update-dialog.tsx",
+    "../../apps/codex/components/user-solved-challenge.tsx",
+    "../../apps/codex/components/user-score-chart.tsx",
+    "../../apps/codex/components/user-profile-card.tsx",
+    "../../apps/codex/components/user-challenge-diff.tsx",
+    "../../apps/codex/components/challenge/vertical-tabs.tsx"
+  ],
+  "exclude": ["node_modules", "dist"]
+}
