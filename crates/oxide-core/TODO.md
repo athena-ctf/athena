@@ -1,0 +1,6 @@
+-   Add manager account validation
+-   Add role based permissions
+-   Fix some auth issues
+-   Delete `db/details`
+-   Generate new entities,
+-   Remove `*Model` exports

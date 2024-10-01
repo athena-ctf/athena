@@ -1,3 +1,0 @@
-- Add manager account validation
-- Add role based permisssions
-- Fix some auth issues

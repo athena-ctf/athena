@@ -1,0 +1,13 @@
+[package]
+name = "oxide"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+argh = "0.1.12"
+oxide-core = { path = "../oxide-core" }
+sea-orm = "1.0.1"
+sea-orm-migration = "1.0.1"
+tokio = "1.40.0"
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"

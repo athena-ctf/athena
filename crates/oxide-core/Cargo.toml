@@ -1,0 +1,87 @@
+[package]
+name = "oxide-core"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+
+[dependencies]
+argon2 = { version = "0.5.3", features = ["std"] }
+askama = "0.12.1"
+async-compression = { version = "0.4.12", features = [
+    "tokio",
+    "gzip",
+    "zstd",
+    "brotli",
+] }
+aws-config = { version = "1.5.6", features = ["behavior-version-latest"] }
+aws-credential-types = { version = "1.2.1", features = [
+    "hardcoded-credentials",
+] }
+aws-sdk-s3 = { version = "1.51.0" }
+axum = { version = "0.7.6", features = ["macros", "multipart"] }
+axum_typed_multipart = "0.12.2"
+base64 = "0.22.1"
+bb8 = "0.8.5"
+bb8-redis = "0.17.0"
+bollard = { version = "0.17.1", features = ["chrono"] }
+bytes = "1.7.2"
+chrono = { version = "0.4.38", features = ["serde"] }
+config = "0.14.0"
+deunicode = "1.6.0"
+docker-compose-types = "0.14.0"
+fastrand = "2.1.1"
+futures = "0.3.30"
+humantime = "2.1.0"
+imap = "2.4.1"
+jsonwebtoken = "9.3.0"
+lettre = { version = "0.11.9", default-features = false, features = [
+    "rustls-tls",
+    "smtp-transport",
+    "pool",
+    "hostname",
+    "builder",
+    "serde",
+] }
+mime_guess = "2.0.5"
+oxide-macros = { path = "../oxide-macros" }
+paste = "1.0.15"
+redis = { version = "*", default-features = false, features = [
+    "json",
+    "tokio-comp",
+] }
+regex = "1.10.6"
+sea-orm = { version = "1.0.1", features = [
+    "runtime-tokio-rustls",
+    "sqlx-postgres",
+] }
+sea-orm-migration = "1.0.1"
+serde = { version = "1.0.210", features = ["derive"] }
+serde_json = "1.0.128"
+sha1 = "0.10.6"
+strum = { version = "0.26.3", features = ["derive"] }
+thiserror = "1.0.64"
+tokio = { version = "1.40.0", features = [
+    "macros",
+    "rt-multi-thread",
+    "signal",
+] }
+tokio-util = { version = "0.7.12", features = ["full"] }
+tower-http = { version = "0.6.1", features = ["full"] }
+tracing = "0.1.40"
+utoipa = { version = "4.2.3", features = [
+    "axum_extras",
+    "uuid",
+    "chrono",
+    "url",
+] }
+uuid = { version = "1.10.0", features = ["serde", "v7", "fast-rng"] }
+
+[build-dependencies]
+codegen = "0.2.0"
+heck = "0.5.0"
+toml = "0.8.19"
+
+
+[features]
+file-transport = ["lettre/file-transport"]
