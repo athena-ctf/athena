@@ -1,89 +1,89 @@
-name: "$ctf_name"
+name: "{{ ctf.name }}"
 volumes:
-    postgres_data:
-    redis_data:
-    caddy_data:
-        external: true
-    caddy_config:
+  postgres_data:
+  redis_data:
+  caddy_data:
+    external: true
+  caddy_config:
 services:
-    postgres:
-        restart: unless-stopped
-        container_name: "postgres"
-        image: postgres
-        environment:
-            POSTGRES_USER: "$database_username"
-            POSTGRES_PASSWORD: "$database_password"
-            POSTGRES_DB: "${ctf_name}_db"
-            PGDATA: /data/postgres
-        volumes:
-            - postgres_data:/data/postgres
+  postgres:
+    restart: unless-stopped
+    container_name: "postgres"
+    image: postgres
+    environment:
+      POSTGRES_USER: "{{ database.username }}"
+      POSTGRES_PASSWORD: "{{ database.password }}"
+      POSTGRES_DB: "{{ ctf.name }}_db"
+      PGDATA: /data/postgres
+    volumes:
+      - postgres_data:/data/postgres
 
-    redis:
-        restart: unless-stopped
-        container_name: "redis"
-        image: redis
-        command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-        volumes:
-            - redis_data:/data/redis
-            - redis.conf:/usr/local/etc/redis/redis.conf
+  redis:
+    restart: unless-stopped
+    container_name: "redis"
+    image: redis
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    volumes:
+      - redis_data:/data/redis
+      - redis.conf:/usr/local/etc/redis/redis.conf
 
-    caddy:
-        image: caddy
-        restart: unless-stopped
-        cap_add:
-            - NET_ADMIN
-        ports:
-            - "80:80"
-            - "443:443"
-            - "443:443/udp"
-        volumes:
-            - Caddyfile:/etc/caddy/Caddyfile
-            - site:/srv
-            - caddy_data:/data
-            - caddy_config:/config
+  caddy:
+    image: caddy
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - Caddyfile:/etc/caddy/Caddyfile
+      - site:/srv
+      - caddy_data:/data
+      - caddy_config:/config
 
-    oxide:
-        container_name: "$api_server_host"
-        build:
-            context: oxide
-            additional_contexts:
-                - parent=.
-            tags: ["athena-ctf/oxide"]
-        restart: unless-stopped
-        depends_on:
-            - postgres
-        volumes:
-            - emails:/oxide/emails
-            - data/config.toml:/data/config.toml:ro
+  oxide:
+    container_name: "{{ services.api_server_host }}"
+    build:
+      context: oxide
+      additional_contexts:
+        - parent=.
+      tags: ["athena-ctf/oxide"]
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    volumes:
+      - emails:/oxide/emails
+      - data/config.toml:/data/config.toml:ro
 
-    codex:
-        container_name: codex
-        build:
-            context: frontend
-            additional_contexts:
-                - parent=.
-            args:
-                - PROJECT=codex
-            tags: ["athena-ctf/codex"]
-        restart: unless-stopped
-        depends_on:
-            - oxide
-        ports:
-            - "3000:3000"
-        entrypoint: ["node", "apps/codex/server.js"]
+  codex:
+    container_name: codex
+    build:
+      context: frontend
+      additional_contexts:
+        - parent=.
+      args:
+        - PROJECT=codex
+      tags: ["athena-ctf/codex"]
+    restart: unless-stopped
+    depends_on:
+      - oxide
+    ports:
+      - "3000:3000"
+    entrypoint: ["node", "apps/codex/server.js"]
 
-    admin:
-        container_name: admin
-        build:
-            context: frontend
-            additional_contexts:
-                - parent=.
-            args:
-                - PROJECT=admin
-            tags: ["athena-ctf/admin"]
-        restart: unless-stopped
-        depends_on:
-            - oxide
-        ports:
-            - "3001:3000"
-        entrypoint: ["node", "apps/admin/server.js"]
+  admin:
+    container_name: admin
+    build:
+      context: frontend
+      additional_contexts:
+        - parent=.
+      args:
+        - PROJECT=admin
+      tags: ["athena-ctf/admin"]
+    restart: unless-stopped
+    depends_on:
+      - oxide
+    ports:
+      - "3001:3000"
+    entrypoint: ["node", "apps/admin/server.js"]

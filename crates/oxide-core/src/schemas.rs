@@ -1,15 +1,73 @@
 use axum::body::Bytes;
 use axum_typed_multipart::{FieldData, TryFromMultipart};
+use chrono::Utc;
+use sea_orm::{
+    ActiveValue, DerivePartialModel, FromJsonQueryResult, FromQueryResult, IntoActiveModel,
+    IntoActiveValue,
+};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumString};
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-pub use crate::db::details::challenge::ContainerMeta;
-use crate::db::details::hint::HintSummary;
-pub use crate::db::details::player::UpdateProfileSchema;
-pub use crate::db::details::prelude::*;
+use crate::docker::StrippedCompose;
+use crate::entity;
 pub use crate::entity::prelude::*;
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, FromJsonQueryResult, ToSchema)]
+pub struct ContainerMeta {
+    pub compose: StrippedCompose,
+    pub single_instance: bool,
+}
+
+impl IntoActiveValue<Self> for ContainerMeta {
+    fn into_active_value(self) -> ActiveValue<Self> {
+        ActiveValue::Set(self)
+    }
+}
+
+#[derive(
+    Clone,
+    Debug,
+    PartialEq,
+    DerivePartialModel,
+    FromQueryResult,
+    Eq,
+    Serialize,
+    Deserialize,
+    ToSchema,
+)]
+#[sea_orm(entity = "Hint")]
+pub struct HintSummary {
+    pub id: Uuid,
+    pub cost: i32,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
+pub struct UpdateProfileSchema {
+    pub display_name: String,
+    pub team_id: Uuid,
+    pub discord_id: Option<String>,
+}
+
+impl IntoActiveModel<entity::player::ActiveModel> for UpdateProfileSchema {
+    fn into_active_model(self) -> entity::player::ActiveModel {
+        entity::player::ActiveModel {
+            id: ActiveValue::NotSet,
+            created_at: ActiveValue::NotSet,
+            updated_at: ActiveValue::Set(Utc::now().naive_utc()),
+            username: ActiveValue::NotSet,
+            email: ActiveValue::NotSet,
+            password: ActiveValue::NotSet,
+            display_name: ActiveValue::Set(self.display_name),
+            verified: ActiveValue::NotSet,
+            team_id: ActiveValue::Set(Some(self.team_id)),
+            ban_id: ActiveValue::NotSet,
+            discord_id: ActiveValue::Set(self.discord_id),
+            score: ActiveValue::NotSet,
+        }
+    }
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct LoginModel {

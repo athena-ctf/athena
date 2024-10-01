@@ -12,7 +12,8 @@ impl MigrationTrait for Migration {
                     .table(Instance::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Instance::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Instance::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(Instance::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Instance::UpdatedAt).date_time().not_null())
                     .col(
                         ColumnDef::new(Instance::ContainerId)
                             .string()
@@ -64,7 +65,8 @@ impl MigrationTrait for Migration {
 enum Instance {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     ChallengeId,
     PlayerId,
     ContainerId,

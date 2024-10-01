@@ -29,7 +29,12 @@ impl MigrationTrait for Migration {
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(Leaderboard::DateCreated)
+                        ColumnDef::new(Leaderboard::CreatedAt)
+                            .date_time()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Leaderboard::UpdatedAt)
                             .date_time()
                             .not_null(),
                     )
@@ -72,7 +77,8 @@ impl MigrationTrait for Migration {
 enum Leaderboard {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Category,
     Rank0,
     Rank1,

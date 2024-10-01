@@ -2,7 +2,6 @@ pub mod achievement;
 pub mod ban;
 pub mod challenge;
 pub mod challenge_tag;
-pub mod details;
 pub mod file;
 pub mod flag;
 pub mod hint;

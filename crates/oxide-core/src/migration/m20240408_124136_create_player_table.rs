@@ -12,7 +12,8 @@ impl MigrationTrait for Migration {
                     .table(Player::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Player::Id).uuid().primary_key().not_null())
-                    .col(ColumnDef::new(Player::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(Player::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Player::UpdatedAt).date_time().not_null())
                     .col(
                         ColumnDef::new(Player::Username)
                             .string()
@@ -73,7 +74,8 @@ impl MigrationTrait for Migration {
 enum Player {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Username,
     Email,
     #[sea_orm(iden = "_password")]

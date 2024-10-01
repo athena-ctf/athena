@@ -46,11 +46,8 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .primary_key(),
                     )
-                    .col(
-                        ColumnDef::new(Challenge::DateCreated)
-                            .date_time()
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(Challenge::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Challenge::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(Challenge::Title).string().not_null())
                     .col(ColumnDef::new(Challenge::Description).string().not_null())
                     .col(ColumnDef::new(Challenge::Points).integer().not_null())
@@ -108,7 +105,8 @@ impl MigrationTrait for Migration {
 enum Challenge {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Title,
     Description,
     Points,

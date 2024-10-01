@@ -12,7 +12,8 @@ impl MigrationTrait for Migration {
                     .table(Flag::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Flag::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Flag::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(Flag::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Flag::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(Flag::Value).string().not_null())
                     .col(ColumnDef::new(Flag::ChallengeId).uuid().not_null())
                     .col(ColumnDef::new(Flag::PlayerId).uuid())
@@ -52,7 +53,8 @@ impl MigrationTrait for Migration {
 enum Flag {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Value,
     ChallengeId,
     PlayerId,

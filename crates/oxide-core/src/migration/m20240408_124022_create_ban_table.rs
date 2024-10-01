@@ -12,7 +12,8 @@ impl MigrationTrait for Migration {
                     .table(Ban::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Ban::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Ban::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(Ban::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Ban::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(Ban::Reason).string().not_null())
                     .col(ColumnDef::new(Ban::Duration).integer().not_null())
                     .to_owned(),
@@ -35,7 +36,8 @@ impl MigrationTrait for Migration {
 enum Ban {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Reason,
     Duration,
 }

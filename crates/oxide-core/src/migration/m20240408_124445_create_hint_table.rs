@@ -12,7 +12,8 @@ impl MigrationTrait for Migration {
                     .table(Hint::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Hint::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Hint::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(Hint::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Hint::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(Hint::Description).string().not_null())
                     .col(ColumnDef::new(Hint::Cost).integer().not_null())
                     .col(ColumnDef::new(Hint::ChallengeId).uuid().not_null())
@@ -44,7 +45,8 @@ impl MigrationTrait for Migration {
 enum Hint {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Description,
     Cost,
     ChallengeId,

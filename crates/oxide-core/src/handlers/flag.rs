@@ -2,7 +2,6 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::Extension;
-use chrono::Utc;
 use oxide_macros::{crud_interface_api, optional_relation_api, single_relation_api};
 use sea_orm::{ActiveModelTrait, ActiveValue, EntityTrait, IntoActiveModel};
 use uuid::Uuid;
@@ -11,7 +10,7 @@ use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
     ChallengeModel, FlagDetails, FlagModel, FlagVerificationResult, PlayerModel, Submission,
-    SubmissionModel, TokenClaims, VerifyFlagSchema,
+    SubmissionDetails, TokenClaims, VerifyFlagSchema,
 };
 use crate::service::AppState;
 
@@ -95,17 +94,15 @@ pub async fn verify(
             .update(&state.db_conn)
             .await?;
     } else {
-        Submission::insert(
-            SubmissionModel {
+        db::submission::create(
+            SubmissionDetails {
                 player_id: player_model.id,
                 challenge_id: body.challenge_id,
                 is_correct,
-                date_created: Utc::now().naive_utc(),
                 flags: vec![body.flag],
-            }
-            .into_active_model(),
+            },
+            &state.db_conn,
         )
-        .exec(&state.db_conn)
         .await?;
     }
 

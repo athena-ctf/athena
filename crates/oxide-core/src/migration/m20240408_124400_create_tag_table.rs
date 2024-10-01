@@ -12,7 +12,8 @@ impl MigrationTrait for Migration {
                     .table(Tag::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Tag::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Tag::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(Tag::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Tag::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(Tag::Value).string().not_null())
                     .to_owned(),
             )
@@ -34,6 +35,7 @@ impl MigrationTrait for Migration {
 enum Tag {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Value,
 }

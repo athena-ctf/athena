@@ -6,10 +6,10 @@ use serde::{Deserialize, Serialize};
 use super::sea_orm_active_enums::TokenContextEnum;
 
 #[derive(
-    Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize, utoipa :: ToSchema,
+    Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize, utoipa::ToSchema,
 )]
 #[sea_orm(table_name = "token")]
-# [schema (as = TokenModel)]
+#[schema(as = TokenModel)]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub context: TokenContextEnum,

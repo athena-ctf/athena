@@ -1,17 +1,15 @@
 use bb8::PooledConnection;
 use bb8_redis::redis::AsyncCommands;
 use bb8_redis::RedisConnectionManager;
-use chrono::Utc;
 use oxide_macros::{crud_interface_db, multiple_relation_with_model_db};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel, QuerySelect};
 
-use super::details::hint::HintSummary;
-use super::details::prelude::*;
 use super::CachedValue;
 use crate::entity;
 use crate::entity::prelude::*;
 use crate::errors::Result;
+use crate::schemas::HintSummary;
 
 crud_interface_db!(Challenge);
 

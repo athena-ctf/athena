@@ -37,7 +37,7 @@ pub fn derive_details(input: TokenStream) -> TokenStream {
     let detail_fields = binding.fields.iter().filter(|f| {
         f.ident
             .as_ref()
-            .is_some_and(|ident| ident != "id" && ident != "date_created")
+            .is_some_and(|ident| ident != "id" && ident != "created_at" && ident != "updated_at")
     });
 
     let field_names = detail_fields.clone().map(|f| &f.ident);
@@ -48,7 +48,8 @@ pub fn derive_details(input: TokenStream) -> TokenStream {
         quote! {
             fn into_active_model(self) -> ActiveModel {
                 ActiveModel {
-                    date_created: sea_orm::ActiveValue::Set(chrono::Utc::now().naive_utc()),
+                    created_at: sea_orm::ActiveValue::NotSet,
+                    updated_at: sea_orm::ActiveValue::Set(chrono::Utc::now().naive_utc()),
                     #(#field_names: sea_orm::ActiveValue::Set(self.#field_names),)*
                 }
             }
@@ -57,8 +58,9 @@ pub fn derive_details(input: TokenStream) -> TokenStream {
         quote! {
             fn into_active_model(self) -> ActiveModel {
                 ActiveModel {
-                    id: sea_orm::ActiveValue::Set(uuid::Uuid::now_v7()),
-                    date_created: sea_orm::ActiveValue::Set(chrono::Utc::now().naive_utc()),
+                    id: sea_orm::ActiveValue::NotSet,
+                    created_at: sea_orm::ActiveValue::NotSet,
+                    updated_at: sea_orm::ActiveValue::Set(chrono::Utc::now().naive_utc()),
                     #(#field_names: sea_orm::ActiveValue::Set(self.#field_names),)*
                 }
             }

@@ -18,7 +18,12 @@ impl MigrationTrait for Migration {
                             .primary_key(),
                     )
                     .col(
-                        ColumnDef::new(Achievement::DateCreated)
+                        ColumnDef::new(Achievement::CreatedAt)
+                            .date_time()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Achievement::UpdatedAt)
                             .date_time()
                             .not_null(),
                     )
@@ -62,7 +67,8 @@ impl MigrationTrait for Migration {
 enum Achievement {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Value,
     Prize,
     ChallengeId,

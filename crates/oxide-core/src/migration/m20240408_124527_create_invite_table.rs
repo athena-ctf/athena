@@ -12,7 +12,8 @@ impl MigrationTrait for Migration {
                     .table(Invite::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Invite::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Invite::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(Invite::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Invite::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(Invite::Usages).integer().not_null())
                     .col(ColumnDef::new(Invite::Remaining).integer().not_null())
                     .col(ColumnDef::new(Invite::TeamId).uuid().not_null())
@@ -44,7 +45,8 @@ impl MigrationTrait for Migration {
 enum Invite {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Usages,
     Remaining,
     TeamId,

@@ -7,11 +7,10 @@ use oxide_macros::{crud_interface_db, single_relation_db};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 
-use super::details::prelude::*;
 use super::CachedValue;
+use crate::docker;
 use crate::entity::prelude::*;
 use crate::errors::{Error, Result};
-use crate::{docker, entity};
 
 crud_interface_db!(Instance);
 
@@ -61,7 +60,7 @@ pub async fn new(
 
     let mut instance = details.into_active_model();
     instance.id = ActiveValue::Set(Uuid::now_v7());
-    instance.date_created = ActiveValue::Set(Utc::now().naive_utc());
+    instance.created_at = instance.updated_at.clone();
 
     let Some(expiry) = Utc::now().checked_add_signed(TimeDelta::minutes(15)) else {
         return Err(Error::BadRequest(

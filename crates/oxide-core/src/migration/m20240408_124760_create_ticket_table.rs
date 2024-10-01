@@ -23,7 +23,8 @@ impl MigrationTrait for Migration {
                     .table(Ticket::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Ticket::Id).uuid().primary_key().not_null())
-                    .col(ColumnDef::new(Ticket::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(Ticket::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Ticket::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(Ticket::Title).string().not_null())
                     .col(
                         ColumnDef::new(Ticket::Status)
@@ -63,7 +64,8 @@ impl MigrationTrait for Migration {
 enum Ticket {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Title,
     Status,
     AssignedTo,

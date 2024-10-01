@@ -23,7 +23,8 @@ impl MigrationTrait for Migration {
                     .table(Manager::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Manager::Id).uuid().primary_key().not_null())
-                    .col(ColumnDef::new(Manager::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(Manager::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Manager::UpdatedAt).date_time().not_null())
                     .col(
                         ColumnDef::new(Manager::Username)
                             .string()
@@ -66,7 +67,8 @@ impl MigrationTrait for Migration {
 enum Manager {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Username,
     Email,
     #[sea_orm(iden = "_password")]

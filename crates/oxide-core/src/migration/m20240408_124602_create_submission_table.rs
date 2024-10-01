@@ -17,11 +17,8 @@ impl MigrationTrait for Migration {
                             .col(Submission::ChallengeId)
                             .col(Submission::PlayerId),
                     )
-                    .col(
-                        ColumnDef::new(Submission::DateCreated)
-                            .date_time()
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(Submission::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Submission::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(Submission::IsCorrect).boolean().not_null())
                     .col(ColumnDef::new(Submission::PlayerId).uuid().not_null())
                     .col(ColumnDef::new(Submission::ChallengeId).uuid().not_null())
@@ -67,7 +64,8 @@ impl MigrationTrait for Migration {
 enum Submission {
     Table,
     IsCorrect,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     PlayerId,
     ChallengeId,
     Flags,

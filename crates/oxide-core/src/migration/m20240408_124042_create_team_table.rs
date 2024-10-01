@@ -12,7 +12,8 @@ impl MigrationTrait for Migration {
                     .table(Team::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Team::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Team::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(Team::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Team::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(Team::Email).string().not_null())
                     .col(ColumnDef::new(Team::Name).string().not_null())
                     .col(ColumnDef::new(Team::BanId).uuid())
@@ -45,7 +46,8 @@ impl MigrationTrait for Migration {
 enum Team {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Email,
     Name,
     BanId,

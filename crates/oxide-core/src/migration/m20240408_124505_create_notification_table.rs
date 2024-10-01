@@ -18,7 +18,12 @@ impl MigrationTrait for Migration {
                             .primary_key(),
                     )
                     .col(
-                        ColumnDef::new(Notification::DateCreated)
+                        ColumnDef::new(Notification::CreatedAt)
+                            .date_time()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Notification::UpdatedAt)
                             .date_time()
                             .not_null(),
                     )
@@ -55,7 +60,8 @@ enum Notification {
     Id,
     Title,
     Content,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     PlayerId,
 }
 

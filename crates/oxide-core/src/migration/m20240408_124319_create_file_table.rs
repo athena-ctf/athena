@@ -23,7 +23,8 @@ impl MigrationTrait for Migration {
                     .table(File::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(File::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(File::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(File::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(File::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(File::Name).string().not_null())
                     .col(
                         ColumnDef::new(File::Backend)
@@ -74,7 +75,8 @@ enum BackendVariants {
 enum File {
     Table,
     Id,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
     Name,
     Backend,
     Mime,

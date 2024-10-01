@@ -53,6 +53,7 @@ pub async fn action(
             team_id: None,
             ban_id: None,
             discord_id: None,
+            score: 0,
         },
         &state.db_conn,
     )

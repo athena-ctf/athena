@@ -53,10 +53,10 @@ macro_rules! update_db {
                 db: &DbConn,
                 client: &mut PooledConnection<'_, RedisConnectionManager>,
             ) -> Result<[<$entity Model>]> {
-                let model = details.into_active_model();
+                let mut model = details.into_active_model();
+                model.id = ActiveValue::Set(id);
 
                 let model = $entity::update(model)
-                    .filter(entity::[<$entity:snake>]::Column::Id.eq(id))
                     .exec(db)
                     .await?;
 
@@ -97,7 +97,7 @@ macro_rules! create_db {
             pub async fn create(details: [<$entity Details>], db: &DbConn) -> Result<[<$entity Model>]> {
                 let mut model = details.into_active_model();
                 model.id = ActiveValue::Set(Uuid::now_v7());
-                model.date_created = ActiveValue::Set(Utc::now().naive_utc());
+                model.created_at = model.updated_at.clone();
 
                 Ok(model.insert(db).await?)
             }
@@ -159,11 +159,11 @@ macro_rules! bind_crud_interface_db {
                 db: &DbConn,
                 client: &mut PooledConnection<'_, RedisConnectionManager>,
             ) -> Result<[<$entity Model>]> {
-                let model = details.into_active_model();
+                let mut model = details.into_active_model();
+                model.[<$related_from:snake _id>] = ActiveValue::Set([<$related_from:snake _id>]);
+                model.[<$related_to:snake _id>] = ActiveValue::Set([<$related_to:snake _id>]);
 
                 let model = $entity::update(model)
-                    .filter(entity::[<$entity:snake>]::Column::[<$related_from Id>].eq([<$related_from:snake _id>]))
-                    .filter(entity::[<$entity:snake>]::Column::[<$related_to Id>].eq([<$related_from:snake _id>]))
                     .exec(db)
                     .await?;
 
@@ -189,7 +189,8 @@ macro_rules! bind_crud_interface_db {
 
             pub async fn create(details: [<$entity Details>], db: &DbConn) -> Result<[<$entity Model>]> {
                 let mut model = details.into_active_model();
-                model.date_created = ActiveValue::Set(Utc::now().naive_utc());
+                model.created_at = ActiveValue::Set(Utc::now().naive_utc());
+                model.updated_at = ActiveValue::Set(Utc::now().naive_utc());
 
                 Ok(model.insert(db).await?)
             }

@@ -17,7 +17,8 @@ impl MigrationTrait for Migration {
                             .col(Unlock::PlayerId)
                             .col(Unlock::HintId),
                     )
-                    .col(ColumnDef::new(Unlock::DateCreated).date_time().not_null())
+                    .col(ColumnDef::new(Unlock::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Unlock::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(Unlock::PlayerId).uuid().not_null())
                     .col(ColumnDef::new(Unlock::HintId).uuid().not_null())
                     .foreign_key(
@@ -53,7 +54,8 @@ enum Unlock {
     Table,
     HintId,
     PlayerId,
-    DateCreated,
+    CreatedAt,
+    UpdatedAt,
 }
 
 #[derive(DeriveIden)]
