@@ -13,7 +13,7 @@ use axum_typed_multipart::TypedMultipart;
 use base64::engine::general_purpose::STANDARD;
 use base64::Engine;
 use oxide_macros::{crud_interface_api, single_relation_api};
-use sha1::{Digest, Sha1};
+use ring::digest::{digest, SHA1_FOR_LEGACY_USE_ONLY};
 use tokio::io::{AsyncWrite, AsyncWriteExt};
 use tokio_util::io::ReaderStream;
 use uuid::Uuid;
@@ -133,7 +133,7 @@ pub async fn upload(
         }
 
         (
-            STANDARD.encode(Sha1::digest(&contents)),
+            STANDARD.encode(digest(&SHA1_FOR_LEGACY_USE_ONLY, &contents)),
             BackendEnum::StaticServer,
         )
     } else {
@@ -174,7 +174,7 @@ pub async fn download_by_id(
     let Some(file_model) = db::file::retrieve(
         id,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     else {

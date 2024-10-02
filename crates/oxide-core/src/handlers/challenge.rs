@@ -141,7 +141,7 @@ pub async fn retrieve_relations_by_id(
     let Some(challenge) = db::challenge::retrieve(
         id,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     else {

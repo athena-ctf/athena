@@ -49,17 +49,11 @@ mod ticket;
 mod unlock;
 
 pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection) -> Result<()> {
-    let listener = tokio::net::TcpListener::bind(SocketAddrV4::new(
-        Ipv4Addr::UNSPECIFIED,
-        settings.services.api_server_port,
-    ))
-    .await
-    .map_err(Error::Bind)?;
+    let listener = tokio::net::TcpListener::bind(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 7000))
+        .await
+        .map_err(Error::Bind)?;
 
-    tracing::info!(
-        "starting axum on port {}",
-        settings.services.api_server_port
-    );
+    tracing::info!("starting axum on port 7000");
 
     let s3_client = if let Some(aws) = &settings.file_storage.aws_s3 {
         let aws_cfg = aws_config::from_env()
@@ -92,16 +86,28 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
     #[cfg(feature = "file-transport")]
     let mail_transport = lettre::FileTransport::new("./emails");
 
-    let manager = RedisConnectionManager::new(ConnectionInfo {
-        addr: ConnectionAddr::Tcp(settings.redis.host.clone(), settings.redis.port),
+    let cache_manager = RedisConnectionManager::new(ConnectionInfo {
+        addr: ConnectionAddr::Tcp(settings.redis.cache.host.clone(), settings.redis.cache.port),
         redis: RedisConnectionInfo {
             db: 2,
-            username: Some(settings.redis.username.clone()),
-            password: Some(settings.redis.password.clone()),
+            username: Some(settings.redis.cache.username.clone()),
+            password: Some(settings.redis.cache.password.clone()),
             protocol: ProtocolVersion::RESP3,
         },
     })?;
-    let redis_client = bb8::Pool::builder().build(manager).await?;
+    let cache_client = bb8::Pool::builder().build(cache_manager).await?;
+
+    let token_manager = RedisConnectionManager::new(ConnectionInfo {
+        addr: ConnectionAddr::Tcp(settings.redis.token.host.clone(), settings.redis.token.port),
+        redis: RedisConnectionInfo {
+            db: 2,
+            username: Some(settings.redis.token.username.clone()),
+            password: Some(settings.redis.token.password.clone()),
+            protocol: ProtocolVersion::RESP3,
+        },
+    })?;
+    let token_client = bb8::Pool::builder().build(token_manager).await?;
+
     let docker_client = docker::connect()?;
 
     let handles = tasks::run(&docker_client, &db_conn);
@@ -113,7 +119,8 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
             settings: RwLock::new(settings),
 
             s3_client,
-            redis_client,
+            cache_client,
+            token_client,
             docker_client,
             mail_transport,
         })),

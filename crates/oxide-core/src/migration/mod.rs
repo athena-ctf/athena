@@ -16,7 +16,6 @@ mod m20240408_124505_create_notification_table;
 mod m20240408_124527_create_invite_table;
 mod m20240408_124602_create_submission_table;
 mod m20240408_124634_create_challenge_tag_table;
-mod m20240408_124723_create_token_table;
 mod m20240408_124750_create_leaderboard_table;
 mod m20240408_124760_create_ticket_table;
 
@@ -42,7 +41,6 @@ impl MigratorTrait for Migrator {
             Box::new(m20240408_124527_create_invite_table::Migration),
             Box::new(m20240408_124602_create_submission_table::Migration),
             Box::new(m20240408_124634_create_challenge_tag_table::Migration),
-            Box::new(m20240408_124723_create_token_table::Migration),
             Box::new(m20240408_124750_create_leaderboard_table::Migration),
             Box::new(m20240408_124760_create_ticket_table::Migration),
         ]

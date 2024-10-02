@@ -170,24 +170,3 @@ pub enum TicketStatusEnum {
     #[sea_orm(string_value = "resolved")]
     Resolved,
 }
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    Eq,
-    EnumIter,
-    DeriveActiveEnum,
-    Copy,
-    Serialize,
-    Deserialize,
-    utoipa::ToSchema,
-    axum_typed_multipart::TryFromField,
-)]
-#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "token_context_enum")]
-#[serde(rename_all = "lowercase")]
-pub enum TokenContextEnum {
-    #[sea_orm(string_value = "register")]
-    Register,
-    #[sea_orm(string_value = "reset")]
-    Reset,
-}

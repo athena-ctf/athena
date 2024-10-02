@@ -12,3 +12,4 @@ pub mod schemas;
 pub mod service;
 pub mod settings;
 pub mod templates;
+pub mod token;

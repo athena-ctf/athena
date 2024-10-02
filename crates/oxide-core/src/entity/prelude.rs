@@ -26,5 +26,4 @@ pub use super::submission::{Entity as Submission, Model as SubmissionModel, Subm
 pub use super::tag::{Entity as Tag, Model as TagModel, TagDetails};
 pub use super::team::{Entity as Team, Model as TeamModel, TeamDetails};
 pub use super::ticket::{Entity as Ticket, Model as TicketModel, TicketDetails};
-pub use super::token::{Entity as Token, Model as TokenModel};
 pub use super::unlock::{Entity as Unlock, Model as UnlockModel, UnlockDetails};

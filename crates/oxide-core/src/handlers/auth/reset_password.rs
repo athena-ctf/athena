@@ -7,11 +7,12 @@ use lettre::message::header::ContentType;
 use lettre::message::{MultiPart, SinglePart};
 use lettre::{Message, Transport};
 
-use crate::db;
+use crate::db::player;
 use crate::errors::{Error, Result};
-use crate::schemas::{JsonResponse, ResetPasswordSchema, SendTokenSchema, TokenContextEnum};
+use crate::schemas::{JsonResponse, ResetPasswordSchema, SendTokenSchema};
 use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain};
+use crate::token;
 
 #[utoipa::path(
     post,
@@ -29,28 +30,28 @@ pub async fn action(
     state: State<Arc<AppState>>,
     Json(body): Json<ResetPasswordSchema>,
 ) -> Result<Json<JsonResponse>> {
-    if db::token::verify(
-        body.token.clone(),
-        body.email.clone(),
-        TokenContextEnum::Register,
-        &state.db_conn,
+    if token::check(
+        &body.email,
+        &body.token,
+        token::HashKey::Register,
+        &mut state.token_client.get().await.unwrap(),
     )
     .await?
     {
         return Err(Error::BadRequest("Incorrect token".to_owned()));
     }
 
-    let Some(user_model) = db::player::retrieve_by_email(
+    let Some(user_model) = player::retrieve_by_email(
         body.email,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     else {
         return Err(Error::NotFound("User does not exist".to_owned()));
     };
 
-    db::player::reset(user_model, body.new_password, &state.db_conn).await?;
+    player::reset(user_model, body.new_password, &state.db_conn).await?;
 
     Ok(Json(JsonResponse {
         message: "Successfully reset password".to_owned(),
@@ -74,10 +75,13 @@ pub async fn send_token(
     state: State<Arc<AppState>>,
     Json(body): Json<SendTokenSchema>,
 ) -> Result<Json<JsonResponse>> {
-    let token = db::token::create(
-        body.email.clone(),
-        TokenContextEnum::Register,
-        &state.db_conn,
+    let token = token::create();
+
+    token::store(
+        &body.email,
+        &token,
+        token::HashKey::Register,
+        &mut state.token_client.get().await.unwrap(),
     )
     .await?;
 

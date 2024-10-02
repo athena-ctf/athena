@@ -28,12 +28,13 @@ bollard = { version = "0.17.1", features = ["chrono"] }
 bytes = "1.7.2"
 chrono = { version = "0.4.38", features = ["serde"] }
 config = "0.14.0"
-deunicode = "1.6.0"
 docker-compose-types = "0.14.0"
+faster-hex = "0.10.0"
 fastrand = "2.1.1"
 futures = "0.3.30"
 humantime = "2.1.0"
-imap = "2.4.1"
+imap = "3.0.0-alpha.14"
+imap-proto = "0.16.5"
 jsonwebtoken = "9.3.0"
 lettre = { version = "0.11.9", default-features = false, features = [
     "rustls-tls",
@@ -45,12 +46,12 @@ lettre = { version = "0.11.9", default-features = false, features = [
 ] }
 mime_guess = "2.0.5"
 oxide-macros = { path = "../oxide-macros" }
-paste = "1.0.15"
 redis = { version = "*", default-features = false, features = [
     "json",
     "tokio-comp",
 ] }
 regex = "1.10.6"
+ring = "0.17.8"
 sea-orm = { version = "1.0.1", features = [
     "runtime-tokio-rustls",
     "sqlx-postgres",
@@ -58,7 +59,6 @@ sea-orm = { version = "1.0.1", features = [
 sea-orm-migration = "1.0.1"
 serde = { version = "1.0.210", features = ["derive"] }
 serde_json = "1.0.128"
-sha1 = "0.10.6"
 strum = { version = "0.26.3", features = ["derive"] }
 thiserror = "1.0.64"
 tokio = { version = "1.40.0", features = [
@@ -81,7 +81,6 @@ uuid = { version = "1.10.0", features = ["serde", "v7", "fast-rng"] }
 codegen = "0.2.0"
 heck = "0.5.0"
 toml = "0.8.19"
-
 
 [features]
 file-transport = ["lettre/file-transport"]

@@ -15,7 +15,8 @@ pub struct AppState {
     pub settings: RwLock<Settings>,
 
     pub s3_client: Option<Client>,
-    pub redis_client: bb8::Pool<bb8_redis::RedisConnectionManager>,
+    pub cache_client: bb8::Pool<bb8_redis::RedisConnectionManager>,
+    pub token_client: bb8::Pool<bb8_redis::RedisConnectionManager>,
     pub docker_client: Docker,
 
     #[cfg(feature = "file-transport")]

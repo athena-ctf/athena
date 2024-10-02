@@ -20,5 +20,4 @@ pub mod submission;
 pub mod tag;
 pub mod team;
 pub mod ticket;
-pub mod token;
 pub mod unlock;

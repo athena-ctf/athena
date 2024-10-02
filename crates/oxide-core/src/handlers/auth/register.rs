@@ -7,13 +7,11 @@ use lettre::message::header::ContentType;
 use lettre::message::{MultiPart, SinglePart};
 use lettre::{Message, Transport};
 
-use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{
-    JsonResponse, PlayerDetails, RegisterPlayer, SendTokenSchema, TokenContextEnum,
-};
+use crate::schemas::{JsonResponse, PlayerDetails, RegisterPlayer, SendTokenSchema};
 use crate::service::AppState;
 use crate::templates::{VerifyEmailHtml, VerifyEmailPlain};
+use crate::{db, token};
 
 #[utoipa::path(
     post,
@@ -32,11 +30,11 @@ pub async fn action(
     state: State<Arc<AppState>>,
     Json(body): Json<RegisterPlayer>,
 ) -> Result<Json<JsonResponse>> {
-    if db::token::verify(
-        body.token.clone(),
-        body.email.clone(),
-        TokenContextEnum::Register,
-        &state.db_conn,
+    if token::check(
+        &body.email,
+        &body.token,
+        token::HashKey::Register,
+        &mut state.token_client.get().await.unwrap(),
     )
     .await?
     {
@@ -81,10 +79,13 @@ pub async fn send_token(
     state: State<Arc<AppState>>,
     Json(body): Json<SendTokenSchema>,
 ) -> Result<Json<JsonResponse>> {
-    let token = db::token::create(
-        body.email.clone(),
-        TokenContextEnum::Register,
-        &state.db_conn,
+    let token = token::create();
+
+    token::store(
+        &body.email,
+        &token,
+        token::HashKey::Register,
+        &mut state.token_client.get().await.unwrap(),
     )
     .await?;
 

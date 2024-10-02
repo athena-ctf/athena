@@ -42,7 +42,7 @@ pub async fn create(
     let Some(player_model) = db::player::retrieve(
         claims.id,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     else {
@@ -81,14 +81,14 @@ pub async fn delete(
     if let Some(achievement_model) = db::achievement::retrieve(
         id,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     {
         let Some(player_model) = db::player::retrieve(
             claims.id,
             &state.db_conn,
-            &mut state.redis_client.get().await.unwrap(),
+            &mut state.cache_client.get().await.unwrap(),
         )
         .await?
         else {

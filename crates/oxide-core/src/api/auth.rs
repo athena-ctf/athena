@@ -13,8 +13,8 @@ pub fn router() -> Router<Arc<AppState>> {
             "/auth/reset-password/send-token",
             post(auth::reset_password::send_token),
         )
-        .route("/auth/token", post(auth::token::create))
-        .route("/auth/token/refresh", post(auth::token::refresh))
+        .route("/auth/token", post(auth::jwt_token::create))
+        .route("/auth/token/refresh", post(auth::jwt_token::refresh))
         .route("/auth/register", post(auth::register::action))
         .route(
             "/auth/register/send-token",

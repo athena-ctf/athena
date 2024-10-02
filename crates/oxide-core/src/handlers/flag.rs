@@ -40,7 +40,7 @@ pub async fn verify(
     let Some(player_model) = db::player::retrieve(
         claims.id,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     else {
@@ -58,6 +58,7 @@ pub async fn verify(
             .settings
             .read()
             .await
+            .ctf
             .challenge
             .as_ref()
             .is_some_and(|limit| submission_model.flags.len() == limit.max_attempts)

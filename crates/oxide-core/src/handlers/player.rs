@@ -48,7 +48,7 @@ pub async fn retrieve_profile_by_username(
     let Some(player_profile) = db::player::retrieve_profile_by_username(
         username,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     else {
@@ -120,7 +120,7 @@ pub async fn join_team_by_team_name(
     let Some(player_model) = db::player::retrieve(
         claims.id,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     else {

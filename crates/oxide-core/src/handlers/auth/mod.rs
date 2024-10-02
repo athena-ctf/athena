@@ -1,6 +1,6 @@
+pub mod jwt_token;
 pub mod register;
 pub mod reset_password;
-pub mod token;
 
 use std::sync::Arc;
 
@@ -31,7 +31,7 @@ pub async fn get_me(
         TokenClaimKind::Player => db::player::retrieve(
             claims.id,
             &state.db_conn,
-            &mut state.redis_client.get().await.unwrap(),
+            &mut state.cache_client.get().await.unwrap(),
         )
         .await?
         .map(Account::Player),
@@ -39,7 +39,7 @@ pub async fn get_me(
         TokenClaimKind::Manager(_) => db::manager::retrieve(
             claims.id,
             &state.db_conn,
-            &mut state.redis_client.get().await.unwrap(),
+            &mut state.cache_client.get().await.unwrap(),
         )
         .await?
         .map(Account::Manager),

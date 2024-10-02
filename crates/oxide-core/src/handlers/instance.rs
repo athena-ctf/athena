@@ -37,7 +37,7 @@ pub async fn create_new(
             body,
             &state.docker_client,
             &state.db_conn,
-            &mut state.redis_client.get().await.unwrap(),
+            &mut state.cache_client.get().await.unwrap(),
         )
         .await?,
     ))
@@ -62,7 +62,7 @@ pub async fn destroy(state: State<Arc<AppState>>, Path(id): Path<Uuid>) -> Resul
         id,
         &state.docker_client,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     {

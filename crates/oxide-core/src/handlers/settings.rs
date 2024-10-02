@@ -31,6 +31,7 @@ fn set_setting_value(settings: &mut Settings, path: &str, value: Value) -> Resul
     }
 
     *settings = serde_json::from_value(current).map_err(|e| e.to_string())?;
+
     Ok(())
 }
 
@@ -58,6 +59,7 @@ pub async fn get_setting(
 #[utoipa::path(
     put,
     path = "/settings/{component}",
+    request_body = Value,
     responses(
         (status = 200, description = "Updated settings successfully"),
         (status = 401, description = "Action is permissible after login", body = ErrorModel),

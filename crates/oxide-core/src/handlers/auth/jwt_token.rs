@@ -100,7 +100,7 @@ pub async fn refresh(
     let Some(player_model) = db::player::retrieve(
         claims.id,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     else {

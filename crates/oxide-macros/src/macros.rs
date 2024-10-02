@@ -1,7 +1,7 @@
 #[macro_export]
 macro_rules! list_db {
     ($entity:ident) => {
-        paste::paste! {
+        $crate::paste! {
             pub async fn list(db: &DbConn) -> Result<Vec<[<$entity Model>]>> {
                 Ok($entity::find().all(db).await?)
             }
@@ -12,7 +12,7 @@ macro_rules! list_db {
 #[macro_export]
 macro_rules! retrieve_db {
     ($entity:ident) => {
-        paste::paste! {
+        $crate::paste! {
             pub async fn retrieve(
                 id: Uuid,
                 db: &DbConn,
@@ -46,7 +46,7 @@ macro_rules! retrieve_db {
 #[macro_export]
 macro_rules! update_db {
     ($entity:ident) => {
-        paste::paste! {
+        $crate::paste! {
             pub async fn update(
                 id: Uuid,
                 details: [<$entity Details>],
@@ -73,7 +73,7 @@ macro_rules! update_db {
 #[macro_export]
 macro_rules! delete_db {
     ($entity:ident) => {
-        paste::paste! {
+        $crate::paste! {
             pub async fn delete(
                 id: Uuid,
                 db: &DbConn,
@@ -93,7 +93,7 @@ macro_rules! delete_db {
 #[macro_export]
 macro_rules! create_db {
     ($entity:ident) => {
-        paste::paste! {
+        $crate::paste! {
             pub async fn create(details: [<$entity Details>], db: &DbConn) -> Result<[<$entity Model>]> {
                 let mut model = details.into_active_model();
                 model.id = ActiveValue::Set(Uuid::now_v7());
@@ -121,7 +121,7 @@ macro_rules! crud_interface_db {
 #[macro_export]
 macro_rules! bind_crud_interface_db {
     ($entity:ident, $related_from:ident, $related_to:ident) => {
-        paste::paste! {
+        $crate::paste! {
             pub async fn list(db: &DbConn) -> Result<Vec<[<$entity Model>]>> {
                 Ok($entity::find().all(db).await?)
             }
@@ -201,7 +201,7 @@ macro_rules! bind_crud_interface_db {
 #[macro_export]
 macro_rules! single_relation_db {
     ($base:ident, $related:ident) => {
-        paste::paste! {
+        $crate::paste! {
             pub async fn [<related_ $related:snake>](
                 id: Uuid,
                 db: &DbConn,
@@ -226,7 +226,7 @@ macro_rules! single_relation_db {
 #[macro_export]
 macro_rules! optional_relation_db {
     ($base:ident, $related:ident) => {
-        paste::paste! {
+        $crate::paste! {
             pub async fn [<related_ $related:snake>](
                 id: Uuid,
                 db: &DbConn,
@@ -243,7 +243,7 @@ macro_rules! optional_relation_db {
 #[macro_export]
 macro_rules! multiple_relation_with_model_db {
     ($base:ident, $related:ident) => {
-        paste::paste! {
+        $crate::paste! {
             pub async fn [<related_ $related:snake s>](
                 model: &[<$base Model>],
                 db: &DbConn,
@@ -257,7 +257,7 @@ macro_rules! multiple_relation_with_model_db {
 #[macro_export]
 macro_rules! multiple_relation_db {
     ($base:ident, $related:ident) => {
-        paste::paste! {
+        $crate::paste! {
             pub async fn [<related_ $related:snake s>](
                 id: Uuid,
                 db: &DbConn,
@@ -275,7 +275,7 @@ macro_rules! multiple_relation_db {
 #[macro_export]
 macro_rules! list_api {
     ($entity:ident) => {
-        paste::paste! {
+        $crate::paste! {
             #[doc = "List " $entity:snake "s"]
             #[utoipa::path(
                 get,
@@ -298,7 +298,7 @@ macro_rules! list_api {
 #[macro_export]
 macro_rules! create_api {
     ($entity:ident) => {
-        paste::paste! {
+        $crate::paste! {
             #[doc = "Create " $entity]
             #[utoipa::path(
                 post,
@@ -327,7 +327,7 @@ macro_rules! create_api {
 #[macro_export]
 macro_rules! delete_api {
     ($entity:ident) => {
-        paste::paste! {
+        $crate::paste! {
             #[doc = "Delete " $entity:snake " by id"]
             #[utoipa::path(
                 delete,
@@ -347,7 +347,7 @@ macro_rules! delete_api {
                 if db::[<$entity:snake>]::delete(
                     id,
                     &state.db_conn,
-                    &mut state.redis_client.get().await.unwrap(),
+                    &mut state.cache_client.get().await.unwrap(),
                 )
                 .await?
                 {
@@ -363,7 +363,7 @@ macro_rules! delete_api {
 #[macro_export]
 macro_rules! retrieve_api {
     ($entity:ident) => {
-        paste::paste!{
+        $crate::paste!{
             #[doc = "Retrieve " $entity:snake " by id"]
             #[utoipa::path(
                 get,
@@ -386,7 +386,7 @@ macro_rules! retrieve_api {
                 db::[<$entity:snake>]::retrieve(
                     id,
                     &state.db_conn,
-                    &mut state.redis_client.get().await.unwrap(),
+                    &mut state.cache_client.get().await.unwrap(),
                 )
                 .await?
                 .map_or_else(
@@ -401,7 +401,7 @@ macro_rules! retrieve_api {
 #[macro_export]
 macro_rules! update_api {
     ($entity:ident) => {
-        paste::paste! {
+        $crate::paste! {
             #[doc = "Update " $entity:snake " by id"]
             #[utoipa::path(
                 patch,
@@ -428,7 +428,7 @@ macro_rules! update_api {
                         id,
                         body,
                         &state.db_conn,
-                        &mut state.redis_client.get().await.unwrap(),
+                        &mut state.cache_client.get().await.unwrap(),
                     )
                     .await?,
                 ))
@@ -440,7 +440,7 @@ macro_rules! update_api {
 #[macro_export]
 macro_rules! optional_relation_api {
     ($entity:ident, $related:ident) => {
-        paste::paste!{
+        $crate::paste!{
             #[doc = "Retrieve " $entity:snake " " $related:snake " by id"]
             #[utoipa::path(
                 get,
@@ -478,7 +478,7 @@ macro_rules! optional_relation_api {
 #[macro_export]
 macro_rules! single_relation_api {
     ($entity:ident, $related:ident) => {
-        paste::paste! {
+        $crate::paste! {
             #[doc = "List " $entity:snake " " $related:snake " by id"]
             #[utoipa::path(
                 get,
@@ -513,7 +513,7 @@ macro_rules! single_relation_api {
 #[macro_export]
 macro_rules! multiple_relation_with_model_api {
     ($entity:ident, $related:ident) => {
-        paste::paste! {
+        $crate::paste! {
             #[doc = "List " $entity:snake " " $related:snake " by id"]
             #[utoipa::path(
                 get,
@@ -536,7 +536,7 @@ macro_rules! multiple_relation_with_model_api {
                 let Some(model) = db::[<$entity:snake>]::retrieve(
                     id,
                     &state.db_conn,
-                    &mut state.redis_client.get().await.unwrap(),
+                    &mut state.cache_client.get().await.unwrap(),
                 )
                 .await?
                 else {
@@ -554,7 +554,7 @@ macro_rules! multiple_relation_with_model_api {
 #[macro_export]
 macro_rules! multiple_relation_api {
     ($entity:ident, $related:ident) => {
-        paste::paste! {
+        $crate::paste! {
             #[doc = "List " $entity:snake " " $related:snake " by id"]
             #[utoipa::path(
                 get,
@@ -601,7 +601,7 @@ macro_rules! crud_interface_api {
 #[macro_export]
 macro_rules! bind_crud_interface_api {
     ($entity:ident, $related_from_id:literal, $related_to_id:literal) => {
-        paste::paste! {
+        $crate::paste! {
             #[doc = "List " $entity:snake "s"]
             #[utoipa::path(
                 get,
@@ -662,7 +662,7 @@ macro_rules! bind_crud_interface_api {
                 if db::[<$entity:snake>]::delete(
                     id,
                     &state.db_conn,
-                    &mut state.redis_client.get().await.unwrap(),
+                    &mut state.cache_client.get().await.unwrap(),
                 )
                 .await?
                 {
@@ -697,7 +697,7 @@ macro_rules! bind_crud_interface_api {
                 db::[<$entity:snake>]::retrieve(
                     id,
                     &state.db_conn,
-                    &mut state.redis_client.get().await.unwrap(),
+                    &mut state.cache_client.get().await.unwrap(),
                 )
                 .await?
                 .map_or_else(
@@ -735,7 +735,7 @@ macro_rules! bind_crud_interface_api {
                         id,
                         body,
                         &state.db_conn,
-                        &mut state.redis_client.get().await.unwrap(),
+                        &mut state.cache_client.get().await.unwrap(),
                     )
                     .await?,
                 ))

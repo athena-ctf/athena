@@ -37,7 +37,7 @@ pub async fn join_team(
     let Some(mut invite_model) = db::invite::retrieve(
         id,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     else {
@@ -59,7 +59,7 @@ pub async fn join_team(
     let Some(mut player) = db::player::retrieve(
         claims.id,
         &state.db_conn,
-        &mut state.redis_client.get().await.unwrap(),
+        &mut state.cache_client.get().await.unwrap(),
     )
     .await?
     else {

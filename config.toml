@@ -12,15 +12,17 @@ port = 5432
 username = "postgres"
 password = "XRXEBROZGpOP"
 
-[redis]
-host = "redis"
+[redis.cache]
+host = "redis_cache"
 port = 6379
-username = "redis"
+username = "redis_cache"
 password = "tf90blSAad3I"
 
-[services]
-api_server_port = 50050
-api_server_host = "oxide"
+[redis.token]
+host = "redis_token"
+port = 6380
+username = "redis_token"
+password = "Wf9YblSjLd3I"
 
 [file_storage.static_server]
 compress = "gzip"
@@ -43,3 +45,11 @@ single_instance_duration = 15
 registry_url = "registry.athena.io"
 registry_username = "athena"
 registry_password = "I5DSnxhA71bI"
+
+[discord]
+welcome_channel_id = ""
+editor_role_id = ""
+viewer_role_id = ""
+reaction_role_message_id = ""
+logs_channel_id = ""
+genral_channel_id = ""
