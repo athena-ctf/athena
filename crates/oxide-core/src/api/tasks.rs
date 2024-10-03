@@ -9,7 +9,6 @@ use sea_orm::{
 use tokio::task::AbortHandle;
 
 use crate::db::leaderboard;
-use crate::entity;
 use crate::errors::{Error, Result};
 use crate::schemas::{CategoryEnum, Instance, LeaderboardDetails, Player, Team};
 

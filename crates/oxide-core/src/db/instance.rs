@@ -3,14 +3,15 @@ use bb8_redis::redis::AsyncCommands;
 use bb8_redis::RedisConnectionManager;
 use bollard::Docker;
 use chrono::{TimeDelta, Utc};
+use entity::prelude::*;
 use oxide_macros::{crud_interface_db, single_relation_db};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 
 use super::CachedValue;
 use crate::docker;
-use crate::entity::prelude::*;
 use crate::errors::{Error, Result};
+use crate::schemas::ContainerMeta;
 
 crud_interface_db!(Instance);
 
@@ -46,7 +47,10 @@ pub async fn new(
         return Err(Error::NotFound("Challenge".to_owned()));
     };
 
-    let Some(container_details) = challenge_model.container_meta else {
+    let Ok(container_details) =
+        serde_json::from_value::<ContainerMeta>(challenge_model.container_meta.unwrap())
+    // TODO: what to do?
+    else {
         return Err(Error::BadRequest(
             "Challenge instance details not configured.".to_owned(),
         ));

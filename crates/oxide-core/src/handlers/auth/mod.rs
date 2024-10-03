@@ -36,7 +36,7 @@ pub async fn get_me(
         .await?
         .map(Account::Player),
 
-        TokenClaimKind::Manager(_) => db::manager::retrieve(
+        TokenClaimKind::Manager(_) => db::admin::retrieve(
             claims.id,
             &state.db_conn,
             &mut state.cache_client.get().await.unwrap(),

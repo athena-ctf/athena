@@ -248,9 +248,9 @@ dependencies = [
 
 [[package]]
 name = "async-compression"
-version = "0.4.12"
+version = "0.4.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fec134f64e2bc57411226dfc4e52dec859ddfc7e711fc5e07b612584f000e4aa"
+checksum = "7e614738943d3f68c628ae3dbce7c3daffb196665f82f8c8ea6b65de73c79429"
 dependencies = [
  "brotli",
  "flate2",
@@ -380,9 +380,9 @@ dependencies = [
 
 [[package]]
 name = "aws-sdk-s3"
-version = "1.52.0"
+version = "1.53.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f571deb0a80c20d21d9f3e8418c1712af9ff4bf399d057e5549a934eca4844e2"
+checksum = "43fad71130014e11f42fadbdcce5df12ee61866f8ab9bad773b138d4b3c11087"
 dependencies = [
  "ahash 0.8.11",
  "aws-credential-types",
@@ -761,7 +761,26 @@ checksum = "05679dcdfeccf4cc6a8f45b80318fff8a9908337da1cfeb6acca00562a345b4d"
 dependencies = [
  "anyhow",
  "axum",
- "axum_typed_multipart_macros",
+ "axum_typed_multipart_macros 0.12.2",
+ "bytes",
+ "chrono",
+ "futures-core",
+ "futures-util",
+ "tempfile",
+ "thiserror",
+ "tokio",
+ "uuid",
+]
+
+[[package]]
+name = "axum_typed_multipart"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "85033dab9856290a09812911e524820fcf3bbe24787cfc1d6f655323c70df1dc"
+dependencies = [
+ "anyhow",
+ "axum",
+ "axum_typed_multipart_macros 0.13.0",
  "bytes",
  "chrono",
  "futures-core",
@@ -781,6 +800,20 @@ dependencies = [
  "darling",
  "heck 0.5.0",
  "proc-macro-error",
+ "quote",
+ "syn 2.0.79",
+ "ubyte",
+]
+
+[[package]]
+name = "axum_typed_multipart_macros"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0d6e3db73f63b201d03b971a1dc6a3cdae26c9d58781aff3f83a6af868703dd7"
+dependencies = [
+ "darling",
+ "heck 0.5.0",
+ "proc-macro-error2",
  "quote",
  "syn 2.0.79",
  "ubyte",
@@ -988,10 +1021,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "bot"
+version = "0.1.0"
+
+[[package]]
 name = "brotli"
-version = "6.0.0"
+version = "7.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "74f7971dbd9326d58187408ab83117d8ac1bb9c17b085fdacd1cf2f598719b6b"
+checksum = "cc97b8f16f944bba54f0433f07e30be199b6dc2bd25937444bbad560bcea29bd"
 dependencies = [
  "alloc-no-stdlib",
  "alloc-stdlib",
@@ -1570,6 +1607,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b45de904aa0b010bce2ab45264d0631681847fa7b6f2eaa7dab7619943bc4f59"
 dependencies = [
  "cfg-if",
+]
+
+[[package]]
+name = "entity"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "axum_typed_multipart 0.13.0",
+ "chrono",
+ "oxide-macros",
+ "sea-orm",
+ "serde",
+ "utoipa",
 ]
 
 [[package]]
@@ -2635,6 +2685,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
 
 [[package]]
+name = "migration"
+version = "0.1.0"
+dependencies = [
+ "sea-orm",
+ "sea-orm-migration",
+ "tokio",
+]
+
+[[package]]
 name = "mime"
 version = "0.3.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2960,7 +3019,7 @@ dependencies = [
  "aws-credential-types",
  "aws-sdk-s3",
  "axum",
- "axum_typed_multipart",
+ "axum_typed_multipart 0.12.2",
  "base64 0.22.1",
  "bb8",
  "bb8-redis",
@@ -2970,6 +3029,7 @@ dependencies = [
  "codegen",
  "config",
  "docker-compose-types",
+ "entity",
  "faster-hex",
  "fastrand",
  "futures",
@@ -2985,7 +3045,6 @@ dependencies = [
  "regex",
  "ring",
  "sea-orm",
- "sea-orm-migration",
  "serde",
  "serde_json",
  "strum",
@@ -4897,9 +4956,9 @@ dependencies = [
 
 [[package]]
 name = "unicode-bidi"
-version = "0.3.15"
+version = "0.3.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08f95100a766bf4f8f28f90d77e0a5461bbdb219042e7679bebe79004fed8d75"
+checksum = "5ab17db44d7388991a428b2ee655ce0c212e862eff1768a455c58f9aad6e7893"
 
 [[package]]
 name = "unicode-ident"

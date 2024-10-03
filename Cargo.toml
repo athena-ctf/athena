@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/*"]
+members = ["crates/bot", "crates/entity", "crates/migration", "crates/oxide"]
 
 [profile.release]
 codegen-units = 1

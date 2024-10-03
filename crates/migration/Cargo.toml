@@ -1,0 +1,15 @@
+[package]
+name = "migration"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sea-orm = "1.0.1"
+sea-orm-migration = { version = "1.0.1", features = [
+    "runtime-tokio",
+    "sqlx-postgres",
+    "with-chrono",
+    "with-json",
+    "with-uuid",
+] }
+tokio = { version = "1.40.0", features = ["macros", "rt-multi-thread"] }

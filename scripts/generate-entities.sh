@@ -1,4 +1,5 @@
 sea generate entity \
+    --lib \
     --with-copy-enums \
     --with-serde both \
     --serde-skip-hidden-column \
@@ -8,4 +9,4 @@ sea generate entity \
     --enum-extra-derives "utoipa::ToSchema","axum_typed_multipart::TryFromField" \
     --enum-extra-attributes 'serde(rename_all = "lowercase")' \
     -u postgres://postgres:postgres@localhost/athena_db \
-    -o crates/oxide-core/src/entity
+    -o crates/entity/src

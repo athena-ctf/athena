@@ -1,6 +1,7 @@
 use axum::body::Bytes;
 use axum_typed_multipart::{FieldData, TryFromMultipart};
 use chrono::Utc;
+pub use entity::prelude::*;
 use sea_orm::{
     ActiveValue, DerivePartialModel, FromJsonQueryResult, FromQueryResult, IntoActiveModel,
     IntoActiveValue,
@@ -11,8 +12,6 @@ use utoipa::ToSchema;
 use uuid::Uuid;
 
 use crate::docker::StrippedCompose;
-use crate::entity;
-pub use crate::entity::prelude::*;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, FromJsonQueryResult, ToSchema)]
 pub struct ContainerMeta {
@@ -56,10 +55,6 @@ impl IntoActiveModel<entity::player::ActiveModel> for UpdateProfileSchema {
             id: ActiveValue::NotSet,
             created_at: ActiveValue::NotSet,
             updated_at: ActiveValue::Set(Utc::now().naive_utc()),
-            username: ActiveValue::NotSet,
-            email: ActiveValue::NotSet,
-            password: ActiveValue::NotSet,
-            display_name: ActiveValue::Set(self.display_name),
             verified: ActiveValue::NotSet,
             team_id: ActiveValue::Set(Some(self.team_id)),
             ban_id: ActiveValue::NotSet,

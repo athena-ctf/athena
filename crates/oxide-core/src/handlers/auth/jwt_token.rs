@@ -59,7 +59,7 @@ pub async fn create(
 
         Source::Admin => {
             let Some(manager_model) =
-                db::manager::verify(body.username, body.password, &state.db_conn).await?
+                db::admin::verify(body.username, body.password, &state.db_conn).await?
             else {
                 return Err(Error::BadRequest(
                     "Username or Password incorrect".to_owned(),

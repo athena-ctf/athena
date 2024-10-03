@@ -1,0 +1,13 @@
+[package]
+name = "entity"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = { version = "0.4.38", features = ["serde"] }
+sea-orm = "1.0.1"
+serde = { version = "1.0.210", features = ["derive"] }
+utoipa = "4.2.3"
+oxide-macros = { path = "../oxide-macros" }
+axum_typed_multipart = "0.13.0"
+axum = "0.7.7"

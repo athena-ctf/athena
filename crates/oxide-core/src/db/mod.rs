@@ -1,4 +1,5 @@
 pub mod achievement;
+pub mod admin;
 pub mod ban;
 pub mod challenge;
 pub mod challenge_tag;
@@ -8,7 +9,6 @@ pub mod hint;
 pub mod instance;
 pub mod invite;
 pub mod leaderboard;
-pub mod manager;
 pub mod notification;
 pub mod player;
 pub mod submission;
@@ -18,12 +18,11 @@ pub mod ticket;
 pub mod unlock;
 
 use bb8_redis::redis::FromRedisValue;
+use entity::sea_orm_active_enums::*;
 use sea_orm::prelude::*;
 use sea_orm::IntoActiveValue;
 use serde::de::DeserializeOwned;
 
-use crate::entity;
-use crate::entity::sea_orm_active_enums::*;
 use crate::errors::Result;
 use crate::schemas::StatSchema;
 
@@ -63,47 +62,5 @@ impl<T: DeserializeOwned> FromRedisValue for CachedValue<T> {
             }
             _ => unreachable!(),
         })
-    }
-}
-
-impl IntoActiveValue<Self> for BackendEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
-    }
-}
-
-impl IntoActiveValue<Self> for CategoryEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
-    }
-}
-
-impl IntoActiveValue<Self> for ChallengeStatusEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
-    }
-}
-
-impl IntoActiveValue<Self> for DifficultyEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
-    }
-}
-
-impl IntoActiveValue<Self> for FlagTypeEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
-    }
-}
-
-impl IntoActiveValue<Self> for RoleEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
-    }
-}
-
-impl IntoActiveValue<Self> for TicketStatusEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
     }
 }

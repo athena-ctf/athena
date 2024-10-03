@@ -2,10 +2,10 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use aws_sdk_s3::Client;
 use bollard::Docker;
+use entity::prelude::*;
 use jsonwebtoken::{EncodingKey, Header};
 use tokio::sync::RwLock;
 
-use crate::entity::prelude::*;
 use crate::errors::Result;
 use crate::schemas::{TokenClaimKind, TokenClaims, TokenPair, TokenType};
 pub use crate::settings::Settings;
@@ -66,7 +66,7 @@ pub fn generate_player_token_pair(
 }
 
 pub fn generate_manager_token_pair(
-    model: &ManagerModel,
+    model: &AdminModel,
     settings: &crate::settings::Jwt,
 ) -> Result<TokenPair> {
     let iat = SystemTime::now()
@@ -79,7 +79,7 @@ pub fn generate_manager_token_pair(
         &TokenClaims {
             id: model.id,
             token_type: TokenType::Access,
-            kind: TokenClaimKind::Manager(model.role),
+            kind: TokenClaimKind::Manager(model.group),
             exp: iat + settings.access_token_timeout,
             iat,
         },
@@ -91,7 +91,7 @@ pub fn generate_manager_token_pair(
         &TokenClaims {
             id: model.id,
             token_type: TokenType::Refresh,
-            kind: TokenClaimKind::Manager(model.role),
+            kind: TokenClaimKind::Manager(model.group),
             exp: iat + settings.refresh_token_timeout,
             iat,
         },

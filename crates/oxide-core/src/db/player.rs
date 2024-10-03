@@ -11,8 +11,8 @@ use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 
 use super::CachedValue;
-use crate::entity;
-use crate::entity::prelude::*;
+
+use entity::prelude::*;
 use crate::errors::Result;
 use crate::schemas::{PlayerProfile, TagSolves, UpdateProfileSchema};
 
