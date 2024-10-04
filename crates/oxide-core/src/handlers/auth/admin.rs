@@ -6,7 +6,6 @@ use entity::prelude::*;
 use jsonwebtoken::{DecodingKey, Validation};
 
 use crate::db;
-use crate::db::admin;
 use crate::errors::{Error, Result};
 use crate::schemas::{LoginModel, TokenClaims, TokenPair};
 use crate::service::AppState;
@@ -28,13 +27,13 @@ pub async fn login(
     state: State<Arc<AppState>>,
     Json(body): Json<LoginModel>,
 ) -> Result<Json<TokenPair>> {
-    let settings = state.settings.read().await;
     let Some(admin_model) = db::admin::verify(body.username, body.password, &state.db_conn).await?
     else {
         return Err(Error::BadRequest("Username invalid".to_owned()));
     };
 
-    let token_pair = crate::service::generate_admin_token_pair(&admin_model, &settings.jwt)?;
+    let token_pair =
+        crate::service::generate_admin_token_pair(&admin_model, &state.settings.read().await.jwt)?;
     Ok(Json(token_pair))
 }
 

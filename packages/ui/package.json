@@ -75,7 +75,7 @@
     "./admin": "./src/components/admin/index.ts"
   },
   "scripts": {
-    "ui:add": "pnpm dlx shadcn-ui@latest add"
+    "ui:add": "pnpm dlx shadcn@latest add"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",

@@ -252,7 +252,6 @@ pub async fn login(
     state: State<Arc<AppState>>,
     Json(body): Json<LoginModel>,
 ) -> Result<Json<TokenPair>> {
-    let settings = state.settings.read().await;
     let Some(player_model) =
         db::player::verify(body.username, body.password, &state.db_conn).await?
     else {
@@ -276,7 +275,10 @@ pub async fn login(
         return Err(Error::BadRequest("Player team is banned".to_owned()));
     }
 
-    let token_pair = crate::service::generate_player_token_pair(&player_model, &settings.jwt)?;
+    let token_pair = crate::service::generate_player_token_pair(
+        &player_model,
+        &state.settings.read().await.jwt,
+    )?;
     Ok(Json(token_pair))
 }
 

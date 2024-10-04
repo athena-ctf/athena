@@ -40,6 +40,7 @@ mod invite;
 mod leaderboard;
 mod notification;
 mod player;
+mod router_wrapper;
 mod settings;
 mod submission;
 mod tag;
