@@ -2968,8 +2968,6 @@ version = "0.1.0"
 dependencies = [
  "argh",
  "oxide-core",
- "sea-orm",
- "sea-orm-migration",
  "tokio",
  "tracing",
  "tracing-subscriber",

@@ -32,13 +32,13 @@ pub async fn retrieve_by_email(
     email: String,
     db: &DbConn,
     client: &mut PooledConnection<'_, RedisConnectionManager>,
-) -> Result<Option<PlayerModel>> {
-    let value: CachedValue<PlayerModel> = client.get(format!("player:email:{email}")).await?;
+) -> Result<Option<UserModel>> {
+    let value: CachedValue<UserModel> = client.get(format!("user:email:{email}")).await?;
 
     if let CachedValue::Hit(value) = value {
         Ok(Some(value))
     } else {
-        let Some((_, Some(player_model))) = User::find()
+        let Some((user_model, Some(_))) = User::find()
             .find_also_related(Player)
             .filter(entity::user::Column::Email.eq(&email))
             .one(db)
@@ -49,12 +49,12 @@ pub async fn retrieve_by_email(
 
         client
             .set::<_, _, ()>(
-                format!("player:email:{email}"),
-                &serde_json::to_vec(&player_model)?,
+                format!("user:email:{email}"),
+                &serde_json::to_vec(&user_model)?,
             )
             .await?;
 
-        Ok(Some(player_model))
+        Ok(Some(user_model))
     }
 }
 

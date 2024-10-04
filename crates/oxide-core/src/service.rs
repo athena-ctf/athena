@@ -26,10 +26,10 @@ pub struct AppState {
     pub mail_transport: lettre::SmtpTransport,
 }
 
-pub fn generate_player_token_pair(
-    model: &PlayerModel,
-    settings: &crate::settings::Jwt,
-) -> Result<TokenPair> {
+fn generate_token_pair<F>(token_claims_fn: F, settings: &crate::settings::Jwt) -> Result<TokenPair>
+where
+    F: Fn(TokenType, u64, u64) -> TokenClaims,
+{
     let iat = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .unwrap()
@@ -37,25 +37,17 @@ pub fn generate_player_token_pair(
 
     let access_token = jsonwebtoken::encode(
         &Header::default(),
-        &TokenClaims {
-            id: model.id,
-            token_type: TokenType::Access,
-            kind: TokenClaimKind::Player,
-            exp: iat + settings.access_token_timeout,
-            iat,
-        },
+        &token_claims_fn(TokenType::Access, iat, iat + settings.access_token_timeout),
         &EncodingKey::from_base64_secret(&settings.secret)?,
     )?;
 
     let refresh_token = jsonwebtoken::encode(
         &Header::default(),
-        &TokenClaims {
-            id: model.id,
-            token_type: TokenType::Refresh,
-            kind: TokenClaimKind::Player,
-            exp: iat + settings.refresh_token_timeout,
+        &token_claims_fn(
+            TokenType::Refresh,
             iat,
-        },
+            iat + settings.refresh_token_timeout,
+        ),
         &EncodingKey::from_base64_secret(&settings.secret)?,
     )?;
 
@@ -65,41 +57,34 @@ pub fn generate_player_token_pair(
     })
 }
 
-pub fn generate_manager_token_pair(
+pub fn generate_player_token_pair(
+    model: &PlayerModel,
+    settings: &crate::settings::Jwt,
+) -> Result<TokenPair> {
+    generate_token_pair(
+        |token_type, iat, exp| TokenClaims {
+            id: model.id,
+            token_type,
+            kind: TokenClaimKind::Player,
+            exp,
+            iat,
+        },
+        settings,
+    )
+}
+
+pub fn generate_admin_token_pair(
     model: &AdminModel,
     settings: &crate::settings::Jwt,
 ) -> Result<TokenPair> {
-    let iat = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .unwrap()
-        .as_secs();
-
-    let access_token = jsonwebtoken::encode(
-        &Header::default(),
-        &TokenClaims {
+    generate_token_pair(
+        |token_type, iat, exp| TokenClaims {
             id: model.id,
-            token_type: TokenType::Access,
+            token_type,
             kind: TokenClaimKind::Admin(model.role),
-            exp: iat + settings.access_token_timeout,
+            exp,
             iat,
         },
-        &EncodingKey::from_base64_secret(&settings.secret)?,
-    )?;
-
-    let refresh_token = jsonwebtoken::encode(
-        &Header::default(),
-        &TokenClaims {
-            id: model.id,
-            token_type: TokenType::Refresh,
-            kind: TokenClaimKind::Admin(model.role),
-            exp: iat + settings.refresh_token_timeout,
-            iat,
-        },
-        &EncodingKey::from_base64_secret(&settings.secret)?,
-    )?;
-
-    Ok(TokenPair {
-        access_token,
-        refresh_token,
-    })
+        settings,
+    )
 }
