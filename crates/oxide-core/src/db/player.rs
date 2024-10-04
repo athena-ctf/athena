@@ -6,15 +6,15 @@ use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use bb8::PooledConnection;
 use bb8_redis::redis::AsyncCommands;
 use bb8_redis::RedisConnectionManager;
+use entity::extensions::UpdateProfileSchema;
+use entity::prelude::*;
 use oxide_macros::{crud_interface_db, multiple_relation_db, optional_relation_db};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 
 use super::CachedValue;
-
-use entity::prelude::*;
 use crate::errors::Result;
-use crate::schemas::{PlayerProfile, TagSolves, UpdateProfileSchema};
+use crate::schemas::{PlayerProfile, TagSolves};
 
 crud_interface_db!(Player);
 
@@ -38,8 +38,9 @@ pub async fn retrieve_by_email(
     if let CachedValue::Hit(value) = value {
         Ok(Some(value))
     } else {
-        let Some(model) = Player::find()
-            .filter(entity::player::Column::Email.eq(&email))
+        let Some((_, Some(player_model))) = User::find()
+            .find_also_related(Player)
+            .filter(entity::user::Column::Email.eq(&email))
             .one(db)
             .await?
         else {
@@ -49,11 +50,11 @@ pub async fn retrieve_by_email(
         client
             .set::<_, _, ()>(
                 format!("player:email:{email}"),
-                &serde_json::to_vec(&model)?,
+                &serde_json::to_vec(&player_model)?,
             )
             .await?;
 
-        Ok(Some(model))
+        Ok(Some(player_model))
     }
 }
 
@@ -67,8 +68,9 @@ pub async fn retrieve_profile_by_username(
     let player_model = if let CachedValue::Hit(value) = value {
         value
     } else {
-        let Some(player_model) = Player::find()
-            .filter(entity::player::Column::Username.eq(&username))
+        let Some((_, Some(player_model))) = User::find()
+            .find_also_related(Player)
+            .filter(entity::user::Column::Username.eq(&username))
             .one(db)
             .await?
         else {
@@ -151,25 +153,24 @@ pub async fn verify(
     password: String,
     db: &DbConn,
 ) -> Result<Option<PlayerModel>> {
-    let Some(player) = Player::find()
-        .filter(entity::player::Column::Username.eq(username))
+    let Some((player, Some(user_model))) = Player::find()
+        .find_also_related(User)
+        .filter(entity::user::Column::Username.eq(username))
         .one(db)
         .await?
     else {
         return Ok(None);
     };
 
-    Argon2::default()
-        .verify_password(password.as_bytes(), &PasswordHash::new(&player.password)?)?;
+    Argon2::default().verify_password(
+        password.as_bytes(),
+        &PasswordHash::new(&user_model.password)?,
+    )?;
 
     Ok(Some(player))
 }
 
-pub async fn reset(
-    player_model: PlayerModel,
-    password: String,
-    db: &DbConn,
-) -> Result<PlayerModel> {
+pub async fn reset(player_model: UserModel, password: String, db: &DbConn) -> Result<UserModel> {
     let mut active_user = player_model.into_active_model();
     let salt = SaltString::generate(&mut OsRng);
 

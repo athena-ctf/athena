@@ -50,10 +50,13 @@ pub async fn create(
     let container_meta = if let (Some(file), Some(single_instance)) =
         (&body.container_details, body.single_instance)
     {
-        Some(ContainerMeta {
-            compose: serde_json::from_reader(file.contents.clone().reader())?,
-            single_instance,
-        })
+        Some(
+            serde_json::to_value(ContainerMeta {
+                compose: serde_json::from_reader(file.contents.clone().reader())?,
+                single_instance,
+            })
+            .expect("TODO: fix this"),
+        )
     } else {
         None
     };

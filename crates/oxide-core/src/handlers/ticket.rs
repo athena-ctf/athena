@@ -6,9 +6,9 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{ManagerModel, TicketDetails, TicketModel};
+use crate::schemas::{AdminModel, TicketDetails, TicketModel};
 use crate::service::AppState;
 
 crud_interface_api!(Ticket);
 
-optional_relation_api!(Ticket, Manager);
+optional_relation_api!(Ticket, Admin);

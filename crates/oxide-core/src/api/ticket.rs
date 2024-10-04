@@ -15,5 +15,5 @@ pub fn router() -> Router<Arc<AppState>> {
                 .delete(ticket::delete_by_id)
                 .patch(ticket::update_by_id),
         )
-        .route("/ticket/:id/manager", get(ticket::retrieve_manager_by_id))
+        .route("/ticket/:id/admin", get(ticket::retrieve_admin_by_id))
 }

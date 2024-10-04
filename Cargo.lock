@@ -755,32 +755,13 @@ dependencies = [
 
 [[package]]
 name = "axum_typed_multipart"
-version = "0.12.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "05679dcdfeccf4cc6a8f45b80318fff8a9908337da1cfeb6acca00562a345b4d"
-dependencies = [
- "anyhow",
- "axum",
- "axum_typed_multipart_macros 0.12.2",
- "bytes",
- "chrono",
- "futures-core",
- "futures-util",
- "tempfile",
- "thiserror",
- "tokio",
- "uuid",
-]
-
-[[package]]
-name = "axum_typed_multipart"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "85033dab9856290a09812911e524820fcf3bbe24787cfc1d6f655323c70df1dc"
 dependencies = [
  "anyhow",
  "axum",
- "axum_typed_multipart_macros 0.13.0",
+ "axum_typed_multipart_macros",
  "bytes",
  "chrono",
  "futures-core",
@@ -789,20 +770,6 @@ dependencies = [
  "thiserror",
  "tokio",
  "uuid",
-]
-
-[[package]]
-name = "axum_typed_multipart_macros"
-version = "0.12.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "11eeb275b20a4c750c9fe7bf5a750e97e7944563003efd1c82e70c229a612ca1"
-dependencies = [
- "darling",
- "heck 0.5.0",
- "proc-macro-error",
- "quote",
- "syn 2.0.79",
- "ubyte",
 ]
 
 [[package]]
@@ -1614,7 +1581,7 @@ name = "entity"
 version = "0.1.0"
 dependencies = [
  "axum",
- "axum_typed_multipart 0.13.0",
+ "axum_typed_multipart",
  "chrono",
  "oxide-macros",
  "sea-orm",
@@ -3019,7 +2986,7 @@ dependencies = [
  "aws-credential-types",
  "aws-sdk-s3",
  "axum",
- "axum_typed_multipart 0.12.2",
+ "axum_typed_multipart",
  "base64 0.22.1",
  "bb8",
  "bb8-redis",

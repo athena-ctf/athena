@@ -25,7 +25,7 @@ pub struct Model {
     pub id: Uuid,
     pub created_at: DateTime,
     pub updated_at: DateTime,
-    pub group: RoleEnum,
+    pub role: RoleEnum,
     #[sea_orm(unique)]
     pub user_id: Uuid,
 }

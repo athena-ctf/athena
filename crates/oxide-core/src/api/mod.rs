@@ -25,6 +25,7 @@ use crate::service::{AppState, Settings};
 use crate::{docker, middleware};
 
 mod achievement;
+mod admin;
 mod auth;
 mod ban;
 mod challenge;
@@ -37,7 +38,6 @@ mod image;
 mod instance;
 mod invite;
 mod leaderboard;
-mod manager;
 mod notification;
 mod player;
 mod settings;
@@ -154,7 +154,7 @@ pub fn app(state: Arc<AppState>) -> Router {
         .merge(instance::router())
         .merge(invite::router())
         .merge(leaderboard::router())
-        .merge(manager::router())
+        .merge(admin::router())
         .merge(notification::router())
         .merge(player::router())
         .merge(settings::router())

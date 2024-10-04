@@ -26,6 +26,7 @@ pub struct Model {
     pub verified: bool,
     #[sea_orm(unique)]
     pub user_id: Uuid,
+    pub display_name: String,
     pub team_id: Option<Uuid>,
     pub ban_id: Option<Uuid>,
     #[sea_orm(unique)]

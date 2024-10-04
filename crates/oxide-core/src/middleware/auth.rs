@@ -8,7 +8,7 @@ use axum::response::IntoResponse;
 use axum::Json;
 use jsonwebtoken::{DecodingKey, Validation};
 
-use crate::schemas::{ErrorModel, Source, TokenClaims};
+use crate::schemas::{ErrorModel, TokenClaims};
 use crate::service::AppState;
 
 pub async fn middleware(
@@ -48,14 +48,6 @@ pub async fn middleware(
     .claims;
 
     req.extensions_mut().insert(claims);
-
-    let source = match req.headers().get(header::HOST).unwrap().as_bytes() {
-        b"admin" => Source::Admin,
-        b"codex" => Source::Codex,
-        _ => unreachable!(),
-    };
-
-    req.extensions_mut().insert(source);
 
     Ok(next.run(req).await)
 }

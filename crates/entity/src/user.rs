@@ -32,8 +32,7 @@ pub struct Model {
     #[sea_orm(column_name = "_password")]
     #[serde(skip)]
     pub password: String,
-    pub display_name: String,
-    pub role: Option<GroupEnum>,
+    pub group: GroupEnum,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

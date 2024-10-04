@@ -79,7 +79,7 @@ pub fn generate_manager_token_pair(
         &TokenClaims {
             id: model.id,
             token_type: TokenType::Access,
-            kind: TokenClaimKind::Manager(model.group),
+            kind: TokenClaimKind::Admin(model.role),
             exp: iat + settings.access_token_timeout,
             iat,
         },
@@ -91,7 +91,7 @@ pub fn generate_manager_token_pair(
         &TokenClaims {
             id: model.id,
             token_type: TokenType::Refresh,
-            kind: TokenClaimKind::Manager(model.group),
+            kind: TokenClaimKind::Admin(model.role),
             exp: iat + settings.refresh_token_timeout,
             iat,
         },

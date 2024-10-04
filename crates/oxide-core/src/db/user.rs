@@ -9,6 +9,7 @@ use sea_orm::{ActiveValue, IntoActiveModel};
 use super::CachedValue;
 use crate::errors::Result;
 
-crud_interface_db!(Ticket);
+crud_interface_db!(User);
 
-optional_relation_db!(Ticket, Admin);
+optional_relation_db!(User, Admin);
+optional_relation_db!(User, Player);

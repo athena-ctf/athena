@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::Extension;
+use entity::extensions::UpdateProfileSchema;
 use oxide_macros::{crud_interface_api, multiple_relation_api, optional_relation_api};
 use sea_orm::{ActiveModelTrait, ActiveValue, IntoActiveModel};
 use uuid::Uuid;
@@ -11,7 +12,7 @@ use crate::errors::{Error, Result};
 use crate::schemas::{
     AchievementModel, BanModel, FlagModel, InstanceModel, JsonResponse, NotificationModel,
     PlayerDetails, PlayerModel, PlayerProfile, SubmissionModel, TeamModel, TokenClaims,
-    UnlockModel, UpdateProfileSchema,
+    UnlockModel,
 };
 use crate::service::AppState;
 

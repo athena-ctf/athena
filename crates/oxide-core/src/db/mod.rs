@@ -16,11 +16,10 @@ pub mod tag;
 pub mod team;
 pub mod ticket;
 pub mod unlock;
+pub mod user;
 
 use bb8_redis::redis::FromRedisValue;
-use entity::sea_orm_active_enums::*;
 use sea_orm::prelude::*;
-use sea_orm::IntoActiveValue;
 use serde::de::DeserializeOwned;
 
 use crate::errors::Result;

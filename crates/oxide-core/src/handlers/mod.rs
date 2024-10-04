@@ -1,4 +1,5 @@
 pub mod achievement;
+pub mod admin;
 pub mod auth;
 pub mod ban;
 pub mod challenge;
@@ -11,7 +12,6 @@ pub mod image;
 pub mod instance;
 pub mod invite;
 pub mod leaderboard;
-pub mod manager;
 pub mod notification;
 pub mod player;
 pub mod settings;

@@ -2,16 +2,18 @@ use std::sync::Arc;
 
 use axum::extract::State;
 use axum::{Extension, Json};
+use entity::prelude::*;
 use jsonwebtoken::{DecodingKey, Validation};
 
 use crate::db;
+use crate::db::admin;
 use crate::errors::{Error, Result};
-use crate::schemas::{LoginModel, Source, TokenClaims, TokenPair};
+use crate::schemas::{LoginModel, TokenClaims, TokenPair};
 use crate::service::AppState;
 
 #[utoipa::path(
     post,
-    path = "/auth/token",
+    path = "/auth/admin/login",
     request_body = LoginModel,
     responses(
         (status = 200, description = "user logged in successfully", body = TokenPair),
@@ -22,60 +24,23 @@ use crate::service::AppState;
     security(())
 )]
 /// Create auth token
-pub async fn create(
-    Extension(source): Extension<Source>,
+pub async fn login(
     state: State<Arc<AppState>>,
     Json(body): Json<LoginModel>,
 ) -> Result<Json<TokenPair>> {
     let settings = state.settings.read().await;
-
-    let token_pair = match source {
-        Source::Codex => {
-            let Some(player_model) =
-                db::player::verify(body.username, body.password, &state.db_conn).await?
-            else {
-                return Err(Error::BadRequest("Username invalid".to_owned()));
-            };
-
-            if !player_model.verified {
-                return Err(Error::BadRequest("Player is not verified.".to_owned()));
-            }
-
-            if player_model.ban_id.is_some() {
-                return Err(Error::BadRequest("Player is banned".to_owned()));
-            }
-
-            if db::player::related_team(player_model.id, &state.db_conn)
-                .await?
-                .is_some_and(|(_, team_model)| {
-                    team_model.is_some_and(|team_model| team_model.ban_id.is_some())
-                })
-            {
-                return Err(Error::BadRequest("Player team is banned".to_owned()));
-            }
-
-            crate::service::generate_player_token_pair(&player_model, &settings.jwt)?
-        }
-
-        Source::Admin => {
-            let Some(manager_model) =
-                db::admin::verify(body.username, body.password, &state.db_conn).await?
-            else {
-                return Err(Error::BadRequest(
-                    "Username or Password incorrect".to_owned(),
-                ));
-            };
-
-            crate::service::generate_manager_token_pair(&manager_model, &settings.jwt)?
-        }
+    let Some(admin_model) = db::admin::verify(body.username, body.password, &state.db_conn).await?
+    else {
+        return Err(Error::BadRequest("Username invalid".to_owned()));
     };
 
+    let token_pair = crate::service::generate_admin_token_pair(&admin_model, &settings.jwt)?;
     Ok(Json(token_pair))
 }
 
 #[utoipa::path(
     post,
-    path = "/auth/token/refresh",
+    path = "/auth/admin/token/refresh",
     request_body = TokenPair,
     responses(
         (status = 200, description = "user logged in successfully", body = TokenPair),
@@ -86,7 +51,7 @@ pub async fn create(
     )
 )]
 /// Refresh auth token
-pub async fn refresh(
+pub async fn refresh_token(
     state: State<Arc<AppState>>,
     Json(body): Json<TokenPair>,
 ) -> Result<Json<TokenPair>> {
@@ -97,7 +62,7 @@ pub async fn refresh(
     )?
     .claims;
 
-    let Some(player_model) = db::player::retrieve(
+    let Some(admin_model) = db::admin::retrieve(
         claims.id,
         &state.db_conn,
         &mut state.cache_client.get().await.unwrap(),
@@ -107,10 +72,35 @@ pub async fn refresh(
         return Err(Error::NotFound("User does not exist".to_owned()));
     };
 
-    let token_pair = crate::service::generate_player_token_pair(
-        &player_model,
-        &state.settings.read().await.jwt,
-    )?;
+    let token_pair =
+        crate::service::generate_admin_token_pair(&admin_model, &state.settings.read().await.jwt)?;
 
     Ok(Json(token_pair))
+}
+
+#[utoipa::path(
+    get,
+    path = "/auth/admin/profile",
+    responses(
+        (status = 200, description = "Password reset email sent successful", body = Account),
+        (status = 400, description = "Invalid request body format", body = ErrorModel),
+        (status = 404, description = "User not found", body = ErrorModel),
+        (status = 500, description = "Unexpected error", body = ErrorModel)
+    ),
+)]
+/// Return currently authenticated user
+pub async fn get_profile(
+    Extension(claims): Extension<TokenClaims>,
+    state: State<Arc<AppState>>,
+) -> Result<Json<AdminModel>> {
+    db::admin::retrieve(
+        claims.id,
+        &state.db_conn,
+        &mut state.cache_client.get().await.unwrap(),
+    )
+    .await?
+    .map_or_else(
+        || Err(Error::NotFound("User does not exist".to_owned())),
+        |user_model| Ok(Json(user_model)),
+    )
 }
