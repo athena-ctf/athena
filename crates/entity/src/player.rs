@@ -23,14 +23,13 @@ pub struct Model {
     pub id: Uuid,
     pub created_at: DateTime,
     pub updated_at: DateTime,
-    pub verified: bool,
-    #[sea_orm(unique)]
-    pub user_id: Uuid,
     pub display_name: String,
     pub team_id: Option<Uuid>,
     pub ban_id: Option<Uuid>,
     #[sea_orm(unique)]
     pub discord_id: Option<String>,
+    #[sea_orm(unique)]
+    pub user_id: Uuid,
     pub score: i32,
 }
 

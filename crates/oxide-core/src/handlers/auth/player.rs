@@ -62,7 +62,6 @@ pub async fn register(
         PlayerDetails {
             user_id: user.id,
             display_name: body.display_name,
-            verified: false,
             team_id: None,
             ban_id: None,
             discord_id: None,
@@ -257,10 +256,6 @@ pub async fn login(
     else {
         return Err(Error::BadRequest("Username invalid".to_owned()));
     };
-
-    if !player_model.verified {
-        return Err(Error::BadRequest("Player is not verified.".to_owned()));
-    }
 
     if player_model.ban_id.is_some() {
         return Err(Error::BadRequest("Player is banned".to_owned()));

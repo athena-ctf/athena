@@ -136,8 +136,8 @@ pub enum FlagTypeEnum {
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "group_enum")]
 #[serde(rename_all = "lowercase")]
 pub enum GroupEnum {
-    #[sea_orm(string_value = "manager")]
-    Manager,
+    #[sea_orm(string_value = "admin")]
+    Admin,
     #[sea_orm(string_value = "player")]
     Player,
 }
