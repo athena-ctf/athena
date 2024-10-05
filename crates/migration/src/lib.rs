@@ -1,6 +1,7 @@
 pub use sea_orm_migration::prelude::*;
 
-mod m20240408_123964_create_manager_table;
+mod m20240408_123948_create_user_table;
+mod m20240408_123964_create_admin_table;
 mod m20240408_124022_create_ban_table;
 mod m20240408_124042_create_team_table;
 mod m20240408_124136_create_player_table;
@@ -25,7 +26,8 @@ pub struct Migrator;
 impl MigratorTrait for Migrator {
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
         vec![
-            Box::new(m20240408_123964_create_manager_table::Migration),
+            Box::new(m20240408_123948_create_user_table::Migration),
+            Box::new(m20240408_123964_create_admin_table::Migration),
             Box::new(m20240408_124022_create_ban_table::Migration),
             Box::new(m20240408_124042_create_team_table::Migration),
             Box::new(m20240408_124136_create_player_table::Migration),

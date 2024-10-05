@@ -17,7 +17,7 @@ use super::sea_orm_active_enums::BackendEnum;
     oxide_macros :: derive :: Details,
 )]
 #[sea_orm(table_name = "file")]
-# [schema (as = FileModel)]
+#[schema(as = FileModel)]
 #[oxide(table(name = "File"))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]

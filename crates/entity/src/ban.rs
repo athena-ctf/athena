@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
     oxide_macros :: derive :: Details,
 )]
 #[sea_orm(table_name = "ban")]
-# [schema (as = BanModel)]
+#[schema(as = BanModel)]
 #[oxide(table(name = "Ban"))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]

@@ -14,24 +14,16 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Player::Id).uuid().primary_key().not_null())
                     .col(ColumnDef::new(Player::CreatedAt).date_time().not_null())
                     .col(ColumnDef::new(Player::UpdatedAt).date_time().not_null())
-                    .col(
-                        ColumnDef::new(Player::Username)
-                            .string()
-                            .unique_key()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(Player::Email)
-                            .string()
-                            .unique_key()
-                            .not_null(),
-                    )
-                    .col(ColumnDef::new(Player::Password).string().not_null())
                     .col(ColumnDef::new(Player::DisplayName).string().not_null())
-                    .col(ColumnDef::new(Player::Verified).boolean().not_null())
                     .col(ColumnDef::new(Player::TeamId).uuid())
                     .col(ColumnDef::new(Player::BanId).uuid())
                     .col(ColumnDef::new(Player::DiscordId).string().unique_key())
+                    .col(
+                        ColumnDef::new(Player::UserId)
+                            .uuid()
+                            .not_null()
+                            .unique_key(),
+                    )
                     .col(
                         ColumnDef::new(Player::Score)
                             .integer()
@@ -51,6 +43,14 @@ impl MigrationTrait for Migration {
                             .name("fk-player-ban_id")
                             .from(Player::Table, Player::BanId)
                             .to(Ban::Table, Ban::Id)
+                            .on_delete(ForeignKeyAction::Cascade)
+                            .on_update(ForeignKeyAction::Cascade),
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                            .name("fk-player-user_id")
+                            .from(Player::Table, Player::UserId)
+                            .to(User::Table, User::Id)
                             .on_delete(ForeignKeyAction::Cascade)
                             .on_update(ForeignKeyAction::Cascade),
                     )
@@ -76,14 +76,10 @@ enum Player {
     Id,
     CreatedAt,
     UpdatedAt,
-    Username,
-    Email,
-    #[sea_orm(iden = "_password")]
-    Password,
+    UserId,
     DisplayName,
     BanId,
     TeamId,
-    Verified,
     DiscordId,
     Score,
 }
@@ -96,6 +92,12 @@ enum Team {
 
 #[derive(DeriveIden)]
 enum Ban {
+    Table,
+    Id,
+}
+
+#[derive(DeriveIden)]
+enum User {
     Table,
     Id,
 }

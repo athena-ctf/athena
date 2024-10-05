@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use axum::routing::{get, post};
-use axum::Router;
 
+use super::super::router_wrapper::Router;
 use crate::handlers::auth;
 use crate::service::AppState;
 

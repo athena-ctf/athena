@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use axum::routing::{get, patch};
-use axum::Router;
+use super::router_wrapper::Router;
 
 use crate::handlers::player::{self};
 use crate::service::AppState;

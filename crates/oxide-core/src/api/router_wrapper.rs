@@ -1,11 +1,14 @@
+#[cfg(feature = "wrapped_router")]
 use axum::routing::MethodRouter;
 
-pub struct AthenaRouter<S> {
-    inner: axum::Router<S>,
-    paths: Vec<String>,
+#[cfg(feature = "wrapped_router")]
+pub struct Router<S> {
+    pub inner: axum::Router<S>,
+    pub paths: Vec<String>,
 }
 
-impl<S: Clone + Send + Sync + 'static> AthenaRouter<S> {
+#[cfg(feature = "wrapped_router")]
+impl<S: Clone + Send + Sync + 'static> Router<S> {
     pub fn new() -> Self {
         Self {
             inner: axum::Router::new(),
@@ -27,3 +30,6 @@ impl<S: Clone + Send + Sync + 'static> AthenaRouter<S> {
         self
     }
 }
+
+#[cfg(not(feature = "wrapped_router"))]
+pub use axum::Router;

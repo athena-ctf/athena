@@ -17,7 +17,7 @@ use super::sea_orm_active_enums::{ChallengeStatusEnum, DifficultyEnum, FlagTypeE
     oxide_macros :: derive :: Details,
 )]
 #[sea_orm(table_name = "challenge")]
-# [schema (as = ChallengeModel)]
+#[schema(as = ChallengeModel)]
 #[oxide(table(name = "Challenge"))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]

@@ -36,7 +36,7 @@ impl MigrationTrait for Migration {
                         ForeignKey::create()
                             .name("fk-ticket-assigned_to")
                             .from(Ticket::Table, Ticket::AssignedTo)
-                            .to(Manager::Table, Manager::Id)
+                            .to(Admin::Table, Admin::Id)
                             .on_delete(ForeignKeyAction::Cascade)
                             .on_update(ForeignKeyAction::Cascade),
                     )
@@ -82,7 +82,7 @@ enum TicketStatusVariants {
 }
 
 #[derive(DeriveIden)]
-enum Manager {
+enum Admin {
     Table,
     Id,
 }

@@ -25,8 +25,7 @@ impl MigrationTrait for Migration {
                     .col(
                         ColumnDef::new(Submission::Flags)
                             .array(ColumnType::String(StringLen::None))
-                            .not_null()
-                            .default::<Vec<String>>(vec![]),
+                            .not_null(),
                     )
                     .foreign_key(
                         ForeignKey::create()

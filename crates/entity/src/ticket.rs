@@ -17,7 +17,7 @@ use super::sea_orm_active_enums::TicketStatusEnum;
     oxide_macros :: derive :: Details,
 )]
 #[sea_orm(table_name = "ticket")]
-# [schema (as = TicketModel)]
+#[schema(as = TicketModel)]
 #[oxide(table(name = "Ticket"))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]

@@ -17,7 +17,7 @@ use super::sea_orm_active_enums::GroupEnum;
     oxide_macros :: derive :: Details,
 )]
 #[sea_orm(table_name = "user")]
-# [schema (as = UserModel)]
+#[schema(as = UserModel)]
 #[oxide(table(name = "User"))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]

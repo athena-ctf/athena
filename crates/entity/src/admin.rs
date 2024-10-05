@@ -17,7 +17,7 @@ use super::sea_orm_active_enums::RoleEnum;
     oxide_macros :: derive :: Details,
 )]
 #[sea_orm(table_name = "admin")]
-# [schema (as = AdminModel)]
+#[schema(as = AdminModel)]
 #[oxide(table(name = "Admin"))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]

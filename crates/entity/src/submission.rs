@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
     oxide_macros :: derive :: Details,
 )]
 #[sea_orm(table_name = "submission")]
-# [schema (as = SubmissionModel)]
+#[schema(as = SubmissionModel)]
 #[oxide(table(name = "Submission", join))]
 pub struct Model {
     pub created_at: DateTime,

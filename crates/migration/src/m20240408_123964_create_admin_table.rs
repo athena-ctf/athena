@@ -20,28 +20,24 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(Manager::Table)
+                    .table(Admin::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(Manager::Id).uuid().primary_key().not_null())
-                    .col(ColumnDef::new(Manager::CreatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Manager::UpdatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Admin::Id).uuid().primary_key().not_null())
+                    .col(ColumnDef::new(Admin::CreatedAt).date_time().not_null())
+                    .col(ColumnDef::new(Admin::UpdatedAt).date_time().not_null())
                     .col(
-                        ColumnDef::new(Manager::Username)
-                            .string()
-                            .unique_key()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(Manager::Email)
-                            .string()
-                            .unique_key()
-                            .not_null(),
-                    )
-                    .col(ColumnDef::new(Manager::Password).string().not_null())
-                    .col(
-                        ColumnDef::new(Manager::Role)
+                        ColumnDef::new(Admin::Role)
                             .enumeration(RoleEnum, RoleVariants::iter())
                             .not_null(),
+                    )
+                    .col(ColumnDef::new(Admin::UserId).uuid().not_null().unique_key())
+                    .foreign_key(
+                        ForeignKey::create()
+                            .name("fk-admin-user_id")
+                            .from(Admin::Table, Admin::UserId)
+                            .to(User::Table, User::Id)
+                            .on_delete(ForeignKeyAction::Cascade)
+                            .on_update(ForeignKeyAction::Cascade),
                     )
                     .to_owned(),
             )
@@ -52,7 +48,7 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(Manager::Table).to_owned())
+            .drop_table(Table::drop().table(Admin::Table).to_owned())
             .await?;
 
         manager
@@ -64,26 +60,29 @@ impl MigrationTrait for Migration {
 }
 
 #[derive(DeriveIden)]
-enum Manager {
+enum Admin {
     Table,
     Id,
     CreatedAt,
     UpdatedAt,
-    Username,
-    Email,
-    #[sea_orm(iden = "_password")]
-    Password,
     Role,
+    UserId,
 }
 
 #[derive(DeriveIden)]
-struct RoleEnum;
+pub enum User {
+    Table,
+    Id,
+}
+
+#[derive(DeriveIden)]
+pub struct RoleEnum;
 
 #[derive(DeriveIden, EnumIter)]
-enum RoleVariants {
-    Admin,
-    Moderator,
-    Judge,
-    Editor,
+pub enum RoleVariants {
     Analyst,
+    Editor,
+    Judge,
+    Manager,
+    Moderator,
 }

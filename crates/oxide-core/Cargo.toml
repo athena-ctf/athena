@@ -84,3 +84,4 @@ toml = "0.8.19"
 
 [features]
 file-transport = ["lettre/file-transport"]
+wrapped_router = []
