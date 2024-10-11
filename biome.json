@@ -26,6 +26,6 @@
     "indentStyle": "space"
   },
   "files": {
-    "ignore": ["**/.next/**/*"]
+    "ignore": ["**/.next/**/*", "**/*.json"]
   }
 }

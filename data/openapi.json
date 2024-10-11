@@ -16,9 +16,7 @@
   "paths": {
     "/achievement": {
       "get": {
-        "tags": [
-          "achievement"
-        ],
+        "tags": ["achievement"],
         "summary": "List achievements",
         "operationId": "list",
         "responses": {
@@ -68,9 +66,7 @@
         }
       },
       "post": {
-        "tags": [
-          "achievement"
-        ],
+        "tags": ["achievement"],
         "summary": "Create achievement",
         "operationId": "create",
         "requestBody": {
@@ -139,9 +135,7 @@
     },
     "/achievement/{id}": {
       "delete": {
-        "tags": [
-          "achievement"
-        ],
+        "tags": ["achievement"],
         "summary": "Delete achievement by id",
         "operationId": "delete",
         "parameters": [
@@ -213,9 +207,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "achievement"
-        ],
+        "tags": ["achievement"],
         "summary": "Update achievement by id",
         "operationId": "update",
         "parameters": [
@@ -306,9 +298,7 @@
     },
     "/achievement/{id}/challenge": {
       "get": {
-        "tags": [
-          "achievement"
-        ],
+        "tags": ["achievement"],
         "summary": "List achievement challenge by id",
         "operationId": "retrieve_challenge",
         "parameters": [
@@ -392,9 +382,7 @@
     },
     "/achievement/{id}/player": {
       "get": {
-        "tags": [
-          "achievement"
-        ],
+        "tags": ["achievement"],
         "summary": "List achievement player by id",
         "operationId": "retrieve_player",
         "parameters": [
@@ -478,9 +466,7 @@
     },
     "/achievement/{id}/team": {
       "get": {
-        "tags": [
-          "achievement"
-        ],
+        "tags": ["achievement"],
         "summary": "List achievement team by id",
         "operationId": "retrieve_team",
         "parameters": [
@@ -564,9 +550,7 @@
     },
     "/achivement/{id}": {
       "get": {
-        "tags": [
-          "achievement"
-        ],
+        "tags": ["achievement"],
         "summary": "Retrieve achievement by id",
         "operationId": "retrieve",
         "parameters": [
@@ -647,9 +631,7 @@
     },
     "/auth/me": {
       "get": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Return currently authenticated user",
         "operationId": "get_me",
         "responses": {
@@ -698,9 +680,7 @@
     },
     "/auth/register": {
       "post": {
-        "tags": [
-          "auth::register"
-        ],
+        "tags": ["auth::register"],
         "summary": "Register user",
         "operationId": "action",
         "requestBody": {
@@ -755,16 +735,12 @@
             }
           }
         },
-        "security": [
-          {}
-        ]
+        "security": [{}]
       }
     },
     "/auth/register/send-token": {
       "post": {
-        "tags": [
-          "auth::register"
-        ],
+        "tags": ["auth::register"],
         "summary": "Send verification token to email",
         "operationId": "send_token",
         "requestBody": {
@@ -819,16 +795,12 @@
             }
           }
         },
-        "security": [
-          {}
-        ]
+        "security": [{}]
       }
     },
     "/auth/reset-password": {
       "post": {
-        "tags": [
-          "auth::reset_password"
-        ],
+        "tags": ["auth::reset_password"],
         "summary": "Auth reset password",
         "operationId": "action",
         "requestBody": {
@@ -873,16 +845,12 @@
             }
           }
         },
-        "security": [
-          {}
-        ]
+        "security": [{}]
       }
     },
     "/auth/reset-password/send-token": {
       "post": {
-        "tags": [
-          "auth::reset_password"
-        ],
+        "tags": ["auth::reset_password"],
         "summary": "Send reset token to email",
         "operationId": "send_token",
         "requestBody": {
@@ -937,16 +905,12 @@
             }
           }
         },
-        "security": [
-          {}
-        ]
+        "security": [{}]
       }
     },
     "/auth/token": {
       "post": {
-        "tags": [
-          "auth::token"
-        ],
+        "tags": ["auth::token"],
         "summary": "Create auth token",
         "operationId": "create",
         "requestBody": {
@@ -1001,16 +965,12 @@
             }
           }
         },
-        "security": [
-          {}
-        ]
+        "security": [{}]
       }
     },
     "/auth/token/refresh": {
       "post": {
-        "tags": [
-          "auth::token"
-        ],
+        "tags": ["auth::token"],
         "summary": "Refresh auth token",
         "operationId": "refresh",
         "requestBody": {
@@ -1079,9 +1039,7 @@
     },
     "/ban": {
       "get": {
-        "tags": [
-          "ban"
-        ],
+        "tags": ["ban"],
         "summary": "List bans",
         "operationId": "list",
         "responses": {
@@ -1131,9 +1089,7 @@
         }
       },
       "post": {
-        "tags": [
-          "ban"
-        ],
+        "tags": ["ban"],
         "summary": "Create ban",
         "operationId": "create",
         "requestBody": {
@@ -1212,9 +1168,7 @@
     },
     "/ban/player/{id}": {
       "post": {
-        "tags": [
-          "ban"
-        ],
+        "tags": ["ban"],
         "summary": "Ban player by id",
         "operationId": "add_player_by_id",
         "parameters": [
@@ -1305,9 +1259,7 @@
     },
     "/ban/team/{id}": {
       "post": {
-        "tags": [
-          "ban"
-        ],
+        "tags": ["ban"],
         "summary": "Ban team by id",
         "operationId": "add_team_by_id",
         "parameters": [
@@ -1398,9 +1350,7 @@
     },
     "/ban/{id}": {
       "get": {
-        "tags": [
-          "ban"
-        ],
+        "tags": ["ban"],
         "summary": "Retrieve ban by id",
         "operationId": "retrieve_by_id",
         "parameters": [
@@ -1479,9 +1429,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "ban"
-        ],
+        "tags": ["ban"],
         "summary": "Delete ban by id",
         "operationId": "delete_by_id",
         "parameters": [
@@ -1553,9 +1501,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "ban"
-        ],
+        "tags": ["ban"],
         "summary": "Update ban by id",
         "operationId": "update_by_id",
         "parameters": [
@@ -1646,9 +1592,7 @@
     },
     "/ban/{id}/player": {
       "get": {
-        "tags": [
-          "ban"
-        ],
+        "tags": ["ban"],
         "summary": "Retrieve ban player by id",
         "operationId": "retrieve_player_by_id",
         "parameters": [
@@ -1734,9 +1678,7 @@
     },
     "/ban/{id}/team": {
       "get": {
-        "tags": [
-          "ban"
-        ],
+        "tags": ["ban"],
         "summary": "Retrieve ban team by id",
         "operationId": "retrieve_team_by_id",
         "parameters": [
@@ -1822,9 +1764,7 @@
     },
     "/challenge": {
       "get": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "List challenges",
         "operationId": "list",
         "responses": {
@@ -1874,9 +1814,7 @@
         }
       },
       "post": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "Create challenge",
         "operationId": "create",
         "requestBody": {
@@ -1945,9 +1883,7 @@
     },
     "/challenge/{id}": {
       "get": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "Retrieve challenge by id",
         "operationId": "retrieve_by_id",
         "parameters": [
@@ -2026,9 +1962,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "Delete challenge by id",
         "operationId": "delete_by_id",
         "parameters": [
@@ -2100,9 +2034,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "Update challenge by id",
         "operationId": "update_by_id",
         "parameters": [
@@ -2193,9 +2125,7 @@
     },
     "/challenge/{id}/achievements": {
       "get": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "List challenge achievements by id",
         "operationId": "list_achievements_by_id",
         "parameters": [
@@ -2279,9 +2209,7 @@
     },
     "/challenge/{id}/files": {
       "get": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "List challenge files by id",
         "operationId": "list_files_by_id",
         "parameters": [
@@ -2365,9 +2293,7 @@
     },
     "/challenge/{id}/hints": {
       "get": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "List challenge hints by id",
         "operationId": "list_hints_by_id",
         "parameters": [
@@ -2451,9 +2377,7 @@
     },
     "/challenge/{id}/instances": {
       "get": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "List challenge instances by id",
         "operationId": "list_instances_by_id",
         "parameters": [
@@ -2537,9 +2461,7 @@
     },
     "/challenge/{id}/relations": {
       "get": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "Retrieve challenge relations by id",
         "operationId": "retrieve_relations_by_id",
         "parameters": [
@@ -2620,9 +2542,7 @@
     },
     "/challenge/{id}/solves": {
       "get": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "Calculate challenge solves by id",
         "operationId": "calculate_solves_by_id",
         "parameters": [
@@ -2703,9 +2623,7 @@
     },
     "/challenge/{id}/tags": {
       "get": {
-        "tags": [
-          "challenge"
-        ],
+        "tags": ["challenge"],
         "summary": "List challenge tags by id",
         "operationId": "list_tags_by_id",
         "parameters": [
@@ -2789,9 +2707,7 @@
     },
     "/file": {
       "get": {
-        "tags": [
-          "file"
-        ],
+        "tags": ["file"],
         "summary": "List files",
         "operationId": "list",
         "responses": {
@@ -2841,9 +2757,7 @@
         }
       },
       "post": {
-        "tags": [
-          "file"
-        ],
+        "tags": ["file"],
         "summary": "Create file",
         "operationId": "create",
         "requestBody": {
@@ -2912,9 +2826,7 @@
     },
     "/file/upload": {
       "post": {
-        "tags": [
-          "file"
-        ],
+        "tags": ["file"],
         "summary": "Upload files",
         "operationId": "upload",
         "requestBody": {
@@ -2983,9 +2895,7 @@
     },
     "/file/{id}": {
       "get": {
-        "tags": [
-          "file"
-        ],
+        "tags": ["file"],
         "summary": "Retrieve file by id",
         "operationId": "retrieve_by_id",
         "parameters": [
@@ -3064,9 +2974,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "file"
-        ],
+        "tags": ["file"],
         "summary": "Delete file by id",
         "operationId": "delete_by_id",
         "parameters": [
@@ -3138,9 +3046,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "file"
-        ],
+        "tags": ["file"],
         "summary": "Update file by id",
         "operationId": "update_by_id",
         "parameters": [
@@ -3231,9 +3137,7 @@
     },
     "/file/{id}/challenge": {
       "get": {
-        "tags": [
-          "file"
-        ],
+        "tags": ["file"],
         "summary": "Retrieve file challenge by id",
         "operationId": "retrieve_challenge_by_id",
         "parameters": [
@@ -3324,9 +3228,7 @@
     },
     "/flag": {
       "get": {
-        "tags": [
-          "flag"
-        ],
+        "tags": ["flag"],
         "summary": "List flags",
         "operationId": "list",
         "responses": {
@@ -3376,9 +3278,7 @@
         }
       },
       "post": {
-        "tags": [
-          "flag"
-        ],
+        "tags": ["flag"],
         "summary": "Create flag",
         "operationId": "create",
         "requestBody": {
@@ -3447,9 +3347,7 @@
     },
     "/flag/verify": {
       "post": {
-        "tags": [
-          "flag"
-        ],
+        "tags": ["flag"],
         "summary": "Verify flag",
         "operationId": "verify",
         "requestBody": {
@@ -3518,9 +3416,7 @@
     },
     "/flag/{id}": {
       "get": {
-        "tags": [
-          "flag"
-        ],
+        "tags": ["flag"],
         "summary": "Retrieve flag by id",
         "operationId": "retrieve_by_id",
         "parameters": [
@@ -3599,9 +3495,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "flag"
-        ],
+        "tags": ["flag"],
         "summary": "Delete flag by id",
         "operationId": "delete_by_id",
         "parameters": [
@@ -3673,9 +3567,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "flag"
-        ],
+        "tags": ["flag"],
         "summary": "Update flag by id",
         "operationId": "update_by_id",
         "parameters": [
@@ -3766,9 +3658,7 @@
     },
     "/flag/{id}/challenge": {
       "get": {
-        "tags": [
-          "flag"
-        ],
+        "tags": ["flag"],
         "summary": "Retrieve flag challenge by id",
         "operationId": "retrieve_challenge_by_id",
         "parameters": [
@@ -3849,9 +3739,7 @@
     },
     "/flag/{id}/player": {
       "get": {
-        "tags": [
-          "flag"
-        ],
+        "tags": ["flag"],
         "summary": "Retrieve flag player by id",
         "operationId": "retrieve_player_by_id",
         "parameters": [
@@ -3937,9 +3825,7 @@
     },
     "/hint": {
       "get": {
-        "tags": [
-          "hint"
-        ],
+        "tags": ["hint"],
         "summary": "List hints",
         "operationId": "list",
         "responses": {
@@ -3989,9 +3875,7 @@
         }
       },
       "post": {
-        "tags": [
-          "hint"
-        ],
+        "tags": ["hint"],
         "summary": "Create hint",
         "operationId": "create",
         "requestBody": {
@@ -4070,9 +3954,7 @@
     },
     "/hint/{id}": {
       "get": {
-        "tags": [
-          "hint"
-        ],
+        "tags": ["hint"],
         "summary": "Retrieve hint by id",
         "operationId": "retrieve_by_id",
         "parameters": [
@@ -4151,9 +4033,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "hint"
-        ],
+        "tags": ["hint"],
         "summary": "Delete hint by id",
         "operationId": "delete_by_id",
         "parameters": [
@@ -4225,9 +4105,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "hint"
-        ],
+        "tags": ["hint"],
         "summary": "Update hint by id",
         "operationId": "update_by_id",
         "parameters": [
@@ -4318,9 +4196,7 @@
     },
     "/hint/{id}/challenge": {
       "get": {
-        "tags": [
-          "hint"
-        ],
+        "tags": ["hint"],
         "summary": "Retrieve hint challenge by id",
         "operationId": "retrieve_challenge_by_id",
         "parameters": [
@@ -4401,9 +4277,7 @@
     },
     "/instance": {
       "get": {
-        "tags": [
-          "instance"
-        ],
+        "tags": ["instance"],
         "summary": "List instances",
         "operationId": "list",
         "responses": {
@@ -4453,9 +4327,7 @@
         }
       },
       "post": {
-        "tags": [
-          "instance"
-        ],
+        "tags": ["instance"],
         "summary": "Create instance",
         "operationId": "create",
         "requestBody": {
@@ -4534,9 +4406,7 @@
     },
     "/instance/{id}": {
       "get": {
-        "tags": [
-          "instance"
-        ],
+        "tags": ["instance"],
         "summary": "Retrieve instance by id",
         "operationId": "retrieve",
         "parameters": [
@@ -4615,9 +4485,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "instance"
-        ],
+        "tags": ["instance"],
         "summary": "Delete instance by id",
         "operationId": "delete",
         "parameters": [
@@ -4689,9 +4557,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "instance"
-        ],
+        "tags": ["instance"],
         "summary": "Update instance by id",
         "operationId": "update",
         "parameters": [
@@ -4782,9 +4648,7 @@
     },
     "/instance/{id}/challenge": {
       "get": {
-        "tags": [
-          "instance"
-        ],
+        "tags": ["instance"],
         "summary": "Retrieve instance challenge by id",
         "operationId": "retrieve_challenge",
         "parameters": [
@@ -4865,9 +4729,7 @@
     },
     "/instance/{id}/player": {
       "get": {
-        "tags": [
-          "instance"
-        ],
+        "tags": ["instance"],
         "summary": "Retrieve instance player by id",
         "operationId": "retrieve_player",
         "parameters": [
@@ -4948,9 +4810,7 @@
     },
     "/invite": {
       "get": {
-        "tags": [
-          "invite"
-        ],
+        "tags": ["invite"],
         "summary": "List invites",
         "operationId": "list",
         "responses": {
@@ -5000,9 +4860,7 @@
         }
       },
       "post": {
-        "tags": [
-          "invite"
-        ],
+        "tags": ["invite"],
         "summary": "Create invite",
         "operationId": "create",
         "requestBody": {
@@ -5071,9 +4929,7 @@
     },
     "/invite/{id}": {
       "get": {
-        "tags": [
-          "invite"
-        ],
+        "tags": ["invite"],
         "summary": "Retrieve invite by id",
         "operationId": "retrieve",
         "parameters": [
@@ -5152,9 +5008,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "invite"
-        ],
+        "tags": ["invite"],
         "summary": "Delete invite by id",
         "operationId": "delete",
         "parameters": [
@@ -5226,9 +5080,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "invite"
-        ],
+        "tags": ["invite"],
         "summary": "Update invite by id",
         "operationId": "update",
         "parameters": [
@@ -5319,9 +5171,7 @@
     },
     "/invite/{id}/join": {
       "get": {
-        "tags": [
-          "invite"
-        ],
+        "tags": ["invite"],
         "summary": "Join invite team by id",
         "operationId": "join_team",
         "parameters": [
@@ -5374,9 +5224,7 @@
     },
     "/invite/{id}/team": {
       "get": {
-        "tags": [
-          "invite"
-        ],
+        "tags": ["invite"],
         "summary": "Retrieve invite team by id",
         "operationId": "retrieve_team",
         "parameters": [
@@ -5457,9 +5305,7 @@
     },
     "/notification": {
       "get": {
-        "tags": [
-          "notification"
-        ],
+        "tags": ["notification"],
         "summary": "List notifications",
         "operationId": "list",
         "responses": {
@@ -5509,9 +5355,7 @@
         }
       },
       "post": {
-        "tags": [
-          "notification"
-        ],
+        "tags": ["notification"],
         "summary": "Create notification",
         "operationId": "create",
         "requestBody": {
@@ -5590,9 +5434,7 @@
     },
     "/notification/{id}": {
       "get": {
-        "tags": [
-          "notification"
-        ],
+        "tags": ["notification"],
         "summary": "Retrieve notification by id",
         "operationId": "retrieve_by_id",
         "parameters": [
@@ -5671,9 +5513,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "notification"
-        ],
+        "tags": ["notification"],
         "summary": "Delete notification by id",
         "operationId": "delete_by_id",
         "parameters": [
@@ -5745,9 +5585,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "notification"
-        ],
+        "tags": ["notification"],
         "summary": "Update notification by id",
         "operationId": "update_by_id",
         "parameters": [
@@ -5838,9 +5676,7 @@
     },
     "/notification/{id}/player": {
       "get": {
-        "tags": [
-          "notification"
-        ],
+        "tags": ["notification"],
         "summary": "Retrieve notification player by id",
         "operationId": "retrieve_player_by_id",
         "parameters": [
@@ -5921,9 +5757,7 @@
     },
     "/player": {
       "get": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "List players",
         "operationId": "list",
         "responses": {
@@ -5973,9 +5807,7 @@
         }
       },
       "post": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "Create player",
         "operationId": "create",
         "requestBody": {
@@ -6044,9 +5876,7 @@
     },
     "/player/join/{team_name}": {
       "get": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "Join team by team name",
         "operationId": "join_team_by_team_name",
         "parameters": [
@@ -6126,9 +5956,7 @@
     },
     "/player/rankings": {
       "get": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "Calculate player rankings",
         "operationId": "calculate_rankings",
         "responses": {
@@ -6197,9 +6025,7 @@
     },
     "/player/{id}": {
       "get": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "Retrieve player by id",
         "operationId": "retrieve_by_id",
         "parameters": [
@@ -6278,9 +6104,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "Delete player by id",
         "operationId": "delete_by_id",
         "parameters": [
@@ -6352,9 +6176,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "Update player by id",
         "operationId": "update_by_id",
         "parameters": [
@@ -6445,9 +6267,7 @@
     },
     "/player/{id}/achievements": {
       "get": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "List player achievements by id",
         "operationId": "list_achievements_by_id",
         "parameters": [
@@ -6531,9 +6351,7 @@
     },
     "/player/{id}/flags": {
       "get": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "List player flags by id",
         "operationId": "list_flags_by_id",
         "parameters": [
@@ -6617,9 +6435,7 @@
     },
     "/player/{id}/instance": {
       "get": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "Retrieve player instance by id",
         "operationId": "retrieve_instance_by_id",
         "parameters": [
@@ -6705,9 +6521,7 @@
     },
     "/player/{id}/points": {
       "get": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "List player points by id",
         "operationId": "calculate_points_by_id",
         "parameters": [
@@ -6788,9 +6602,7 @@
     },
     "/player/{id}/submissions": {
       "get": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "List player submissions by id",
         "operationId": "list_submissions_by_id",
         "parameters": [
@@ -6874,9 +6686,7 @@
     },
     "/player/{id}/team": {
       "get": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "Retrieve player team by id",
         "operationId": "retrieve_team_by_id",
         "parameters": [
@@ -6962,9 +6772,7 @@
     },
     "/player/{id}/update-profile": {
       "patch": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "Update player profile by id",
         "operationId": "update_profile_by_id",
         "parameters": [
@@ -7055,9 +6863,7 @@
     },
     "/player/{username}/profile": {
       "get": {
-        "tags": [
-          "player"
-        ],
+        "tags": ["player"],
         "summary": "Retrieve player profile by username",
         "operationId": "retrieve_profile_by_username",
         "parameters": [
@@ -7137,9 +6943,7 @@
     },
     "/stats": {
       "get": {
-        "tags": [
-          "stats"
-        ],
+        "tags": ["stats"],
         "summary": "Get stats of all tables",
         "operationId": "get",
         "responses": {
@@ -7188,9 +6992,7 @@
     },
     "/submission": {
       "get": {
-        "tags": [
-          "submission"
-        ],
+        "tags": ["submission"],
         "summary": "List submissions",
         "operationId": "list",
         "responses": {
@@ -7250,9 +7052,7 @@
         }
       },
       "post": {
-        "tags": [
-          "submission"
-        ],
+        "tags": ["submission"],
         "summary": "Create submission",
         "operationId": "create",
         "requestBody": {
@@ -7321,9 +7121,7 @@
     },
     "/submission/{id}": {
       "get": {
-        "tags": [
-          "submission"
-        ],
+        "tags": ["submission"],
         "summary": "Retrieve submission by id",
         "operationId": "retrieve_by_id",
         "parameters": [
@@ -7402,9 +7200,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "submission"
-        ],
+        "tags": ["submission"],
         "summary": "Delete submission by id",
         "operationId": "delete_by_id",
         "parameters": [
@@ -7476,9 +7272,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "submission"
-        ],
+        "tags": ["submission"],
         "summary": "Update submission by id",
         "operationId": "update_by_id",
         "parameters": [
@@ -7569,9 +7363,7 @@
     },
     "/submission/{id}/player": {
       "get": {
-        "tags": [
-          "submission"
-        ],
+        "tags": ["submission"],
         "summary": "Retrieve submission player by id",
         "operationId": "retrieve_player_by_id",
         "parameters": [
@@ -7652,9 +7444,7 @@
     },
     "/tag": {
       "get": {
-        "tags": [
-          "tag"
-        ],
+        "tags": ["tag"],
         "summary": "List tags",
         "operationId": "list",
         "responses": {
@@ -7704,9 +7494,7 @@
         }
       },
       "post": {
-        "tags": [
-          "tag"
-        ],
+        "tags": ["tag"],
         "summary": "Create tag",
         "operationId": "create",
         "requestBody": {
@@ -7775,9 +7563,7 @@
     },
     "/tag/{id}": {
       "get": {
-        "tags": [
-          "tag"
-        ],
+        "tags": ["tag"],
         "summary": "Retrieve tag by id",
         "operationId": "retrieve_by_id",
         "parameters": [
@@ -7856,9 +7642,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "tag"
-        ],
+        "tags": ["tag"],
         "summary": "Delete tag by id",
         "operationId": "delete_by_id",
         "parameters": [
@@ -7930,9 +7714,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "tag"
-        ],
+        "tags": ["tag"],
         "summary": "Update tag by id",
         "operationId": "update_by_id",
         "parameters": [
@@ -8023,9 +7805,7 @@
     },
     "/tag/{id}/challenges": {
       "get": {
-        "tags": [
-          "tag"
-        ],
+        "tags": ["tag"],
         "summary": "List tag challenges by id",
         "operationId": "list_challenges_by_id",
         "parameters": [
@@ -8109,9 +7889,7 @@
     },
     "/team": {
       "get": {
-        "tags": [
-          "team"
-        ],
+        "tags": ["team"],
         "summary": "List teams",
         "operationId": "list",
         "responses": {
@@ -8171,9 +7949,7 @@
         }
       },
       "post": {
-        "tags": [
-          "team"
-        ],
+        "tags": ["team"],
         "summary": "Create team",
         "operationId": "create",
         "requestBody": {
@@ -8242,9 +8018,7 @@
     },
     "/team/points": {
       "get": {
-        "tags": [
-          "team"
-        ],
+        "tags": ["team"],
         "summary": "List team points",
         "operationId": "list_points",
         "responses": {
@@ -8316,9 +8090,7 @@
     },
     "/team/{id}": {
       "get": {
-        "tags": [
-          "team"
-        ],
+        "tags": ["team"],
         "summary": "Retrieve team by id",
         "operationId": "retrieve_by_id",
         "parameters": [
@@ -8397,9 +8169,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "team"
-        ],
+        "tags": ["team"],
         "summary": "Delete team by id",
         "operationId": "delete_by_id",
         "parameters": [
@@ -8471,9 +8241,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "team"
-        ],
+        "tags": ["team"],
         "summary": "Update team by id",
         "operationId": "update_by_id",
         "parameters": [
@@ -8564,9 +8332,7 @@
     },
     "/team/{id}/achievements": {
       "get": {
-        "tags": [
-          "team"
-        ],
+        "tags": ["team"],
         "summary": "List team achievements by id",
         "operationId": "list_achievements_by_id",
         "parameters": [
@@ -8650,9 +8416,7 @@
     },
     "/team/{id}/invites": {
       "get": {
-        "tags": [
-          "team"
-        ],
+        "tags": ["team"],
         "summary": "List team invites by id",
         "operationId": "list_invites_by_id",
         "parameters": [
@@ -8736,9 +8500,7 @@
     },
     "/team/{id}/players": {
       "get": {
-        "tags": [
-          "team"
-        ],
+        "tags": ["team"],
         "summary": "List team players by id",
         "operationId": "list_players_by_id",
         "parameters": [
@@ -8819,9 +8581,7 @@
     },
     "/team/{id}/points": {
       "get": {
-        "tags": [
-          "team"
-        ],
+        "tags": ["team"],
         "summary": "Calculate team points by id",
         "operationId": "calculate_points_by_id",
         "parameters": [
@@ -8905,11 +8665,7 @@
     "schemas": {
       "AchievementDetails": {
         "type": "object",
-        "required": [
-          "value",
-          "challenge_id",
-          "prize"
-        ],
+        "required": ["value", "challenge_id", "prize"],
         "properties": {
           "challenge_id": {
             "type": "string",
@@ -8936,13 +8692,7 @@
       },
       "AchievementModel": {
         "type": "object",
-        "required": [
-          "id",
-          "value",
-          "date_created",
-          "prize",
-          "challenge_id"
-        ],
+        "required": ["id", "value", "date_created", "prize", "challenge_id"],
         "properties": {
           "challenge_id": {
             "type": "string",
@@ -8977,17 +8727,11 @@
       },
       "BackendEnum": {
         "type": "string",
-        "enum": [
-          "awss3",
-          "staticserver"
-        ]
+        "enum": ["awss3", "staticserver"]
       },
       "BanDetails": {
         "type": "object",
-        "required": [
-          "reason",
-          "duration"
-        ],
+        "required": ["reason", "duration"],
         "properties": {
           "duration": {
             "type": "integer",
@@ -9000,12 +8744,7 @@
       },
       "BanModel": {
         "type": "object",
-        "required": [
-          "id",
-          "date_created",
-          "reason",
-          "duration"
-        ],
+        "required": ["id", "date_created", "reason", "duration"],
         "properties": {
           "date_created": {
             "type": "string",
@@ -9075,10 +8814,7 @@
       },
       "ChallengeHint": {
         "type": "object",
-        "required": [
-          "id",
-          "cost"
-        ],
+        "required": ["id", "cost"],
         "properties": {
           "cost": {
             "type": "integer",
@@ -9151,13 +8887,7 @@
       },
       "ChallengeRelations": {
         "type": "object",
-        "required": [
-          "challenge",
-          "files",
-          "hints",
-          "tags",
-          "solves"
-        ],
+        "required": ["challenge", "files", "hints", "tags", "solves"],
         "properties": {
           "challenge": {
             "$ref": "#/components/schemas/ChallengeModel"
@@ -9189,9 +8919,7 @@
       },
       "ChallengeSolves": {
         "type": "object",
-        "required": [
-          "solves"
-        ],
+        "required": ["solves"],
         "properties": {
           "solves": {
             "type": "integer",
@@ -9202,18 +8930,11 @@
       },
       "ChallengeStatusEnum": {
         "type": "string",
-        "enum": [
-          "active",
-          "maintenance",
-          "scheduled"
-        ]
+        "enum": ["active", "maintenance", "scheduled"]
       },
       "ContainerMeta": {
         "type": "object",
-        "required": [
-          "compose",
-          "single_instance"
-        ],
+        "required": ["compose", "single_instance"],
         "properties": {
           "compose": {
             "$ref": "#/components/schemas/StrippedCompose"
@@ -9282,18 +9003,11 @@
       },
       "DifficultyEnum": {
         "type": "string",
-        "enum": [
-          "easy",
-          "extreme",
-          "hard",
-          "medium"
-        ]
+        "enum": ["easy", "extreme", "hard", "medium"]
       },
       "ErrorModel": {
         "type": "object",
-        "required": [
-          "message"
-        ],
+        "required": ["message"],
         "properties": {
           "message": {
             "type": "string"
@@ -9302,13 +9016,7 @@
       },
       "FileDetails": {
         "type": "object",
-        "required": [
-          "backend",
-          "mime",
-          "sha1_hash",
-          "name",
-          "challenge_id"
-        ],
+        "required": ["backend", "mime", "sha1_hash", "name", "challenge_id"],
         "properties": {
           "backend": {
             "$ref": "#/components/schemas/BackendEnum"
@@ -9363,10 +9071,7 @@
       },
       "FlagDetails": {
         "type": "object",
-        "required": [
-          "challenge_id",
-          "value"
-        ],
+        "required": ["challenge_id", "value"],
         "properties": {
           "challenge_id": {
             "type": "string",
@@ -9384,11 +9089,7 @@
       },
       "FlagModel": {
         "type": "object",
-        "required": [
-          "id",
-          "value",
-          "challenge_id"
-        ],
+        "required": ["id", "value", "challenge_id"],
         "properties": {
           "challenge_id": {
             "type": "string",
@@ -9410,17 +9111,11 @@
       },
       "FlagTypeEnum": {
         "type": "string",
-        "enum": [
-          "peruser",
-          "regex",
-          "static"
-        ]
+        "enum": ["peruser", "regex", "static"]
       },
       "FlagVerificationResult": {
         "type": "object",
-        "required": [
-          "result"
-        ],
+        "required": ["result"],
         "properties": {
           "result": {
             "$ref": "#/components/schemas/ResultEnum"
@@ -9429,11 +9124,7 @@
       },
       "HintDetails": {
         "type": "object",
-        "required": [
-          "challenge_id",
-          "cost",
-          "description"
-        ],
+        "required": ["challenge_id", "cost", "description"],
         "properties": {
           "challenge_id": {
             "type": "string",
@@ -9450,12 +9141,7 @@
       },
       "HintModel": {
         "type": "object",
-        "required": [
-          "id",
-          "description",
-          "cost",
-          "challenge_id"
-        ],
+        "required": ["id", "description", "cost", "challenge_id"],
         "properties": {
           "challenge_id": {
             "type": "string",
@@ -9476,10 +9162,7 @@
       },
       "InstanceDetails": {
         "type": "object",
-        "required": [
-          "challenge_id",
-          "player_id"
-        ],
+        "required": ["challenge_id", "player_id"],
         "properties": {
           "challenge_id": {
             "type": "string",
@@ -9534,11 +9217,7 @@
       },
       "InviteDetails": {
         "type": "object",
-        "required": [
-          "remaining",
-          "team_id",
-          "usages"
-        ],
+        "required": ["remaining", "team_id", "usages"],
         "properties": {
           "remaining": {
             "type": "integer",
@@ -9556,12 +9235,7 @@
       },
       "InviteModel": {
         "type": "object",
-        "required": [
-          "id",
-          "usages",
-          "remaining",
-          "team_id"
-        ],
+        "required": ["id", "usages", "remaining", "team_id"],
         "properties": {
           "id": {
             "type": "string",
@@ -9583,9 +9257,7 @@
       },
       "JsonResponse": {
         "type": "object",
-        "required": [
-          "message"
-        ],
+        "required": ["message"],
         "properties": {
           "message": {
             "type": "string"
@@ -9594,10 +9266,7 @@
       },
       "LoginModel": {
         "type": "object",
-        "required": [
-          "username",
-          "password"
-        ],
+        "required": ["username", "password"],
         "properties": {
           "password": {
             "type": "string"
@@ -9609,11 +9278,7 @@
       },
       "NotificationDetails": {
         "type": "object",
-        "required": [
-          "content",
-          "title",
-          "player_id"
-        ],
+        "required": ["content", "title", "player_id"],
         "properties": {
           "content": {
             "type": "string"
@@ -9629,13 +9294,7 @@
       },
       "NotificationModel": {
         "type": "object",
-        "required": [
-          "id",
-          "title",
-          "content",
-          "date",
-          "player_id"
-        ],
+        "required": ["id", "title", "content", "date", "player_id"],
         "properties": {
           "content": {
             "type": "string"
@@ -9747,10 +9406,7 @@
       },
       "PlayerPoints": {
         "type": "object",
-        "required": [
-          "player",
-          "points"
-        ],
+        "required": ["player", "points"],
         "properties": {
           "player": {
             "$ref": "#/components/schemas/PlayerModel"
@@ -9763,11 +9419,7 @@
       },
       "PlayerProfile": {
         "type": "object",
-        "required": [
-          "player",
-          "solved_challenges",
-          "tag_solves"
-        ],
+        "required": ["player", "solved_challenges", "tag_solves"],
         "properties": {
           "player": {
             "$ref": "#/components/schemas/PlayerModel"
@@ -9835,13 +9487,7 @@
       },
       "RegisterPlayer": {
         "type": "object",
-        "required": [
-          "display_name",
-          "email",
-          "username",
-          "password",
-          "token"
-        ],
+        "required": ["display_name", "email", "username", "password", "token"],
         "properties": {
           "display_name": {
             "type": "string"
@@ -9862,11 +9508,7 @@
       },
       "ResetPasswordSchema": {
         "type": "object",
-        "required": [
-          "token",
-          "email",
-          "new_password"
-        ],
+        "required": ["token", "email", "new_password"],
         "properties": {
           "email": {
             "type": "string"
@@ -9881,26 +9523,15 @@
       },
       "ResultEnum": {
         "type": "string",
-        "enum": [
-          "fail",
-          "pass"
-        ]
+        "enum": ["fail", "pass"]
       },
       "RoleEnum": {
         "type": "string",
-        "enum": [
-          "admin",
-          "moderator",
-          "judge",
-          "editor",
-          "analyst"
-        ]
+        "enum": ["admin", "moderator", "judge", "editor", "analyst"]
       },
       "SendTokenSchema": {
         "type": "object",
-        "required": [
-          "email"
-        ],
+        "required": ["email"],
         "properties": {
           "email": {
             "type": "string"
@@ -10000,12 +9631,7 @@
       },
       "SubmissionDetails": {
         "type": "object",
-        "required": [
-          "flag",
-          "player_id",
-          "challenge_id",
-          "result"
-        ],
+        "required": ["flag", "player_id", "challenge_id", "result"],
         "properties": {
           "challenge_id": {
             "type": "string",
@@ -10060,9 +9686,7 @@
       },
       "TagDetails": {
         "type": "object",
-        "required": [
-          "value"
-        ],
+        "required": ["value"],
         "properties": {
           "value": {
             "type": "string"
@@ -10071,10 +9695,7 @@
       },
       "TagModel": {
         "type": "object",
-        "required": [
-          "id",
-          "value"
-        ],
+        "required": ["id", "value"],
         "properties": {
           "id": {
             "type": "string",
@@ -10087,11 +9708,7 @@
       },
       "TagSolves": {
         "type": "object",
-        "required": [
-          "tag_id",
-          "tag_value",
-          "solves"
-        ],
+        "required": ["tag_id", "tag_value", "solves"],
         "properties": {
           "solves": {
             "type": "integer",
@@ -10108,10 +9725,7 @@
       },
       "TeamDetails": {
         "type": "object",
-        "required": [
-          "email",
-          "name"
-        ],
+        "required": ["email", "name"],
         "properties": {
           "email": {
             "type": "string"
@@ -10123,12 +9737,7 @@
       },
       "TeamModel": {
         "type": "object",
-        "required": [
-          "id",
-          "date_created",
-          "email",
-          "name"
-        ],
+        "required": ["id", "date_created", "email", "name"],
         "properties": {
           "ban_id": {
             "type": "string",
@@ -10153,11 +9762,7 @@
       },
       "TeamPoints": {
         "type": "object",
-        "required": [
-          "team",
-          "players",
-          "total"
-        ],
+        "required": ["team", "players", "total"],
         "properties": {
           "players": {
             "type": "array",
@@ -10176,10 +9781,7 @@
       },
       "TokenPair": {
         "type": "object",
-        "required": [
-          "access_token",
-          "refresh_token"
-        ],
+        "required": ["access_token", "refresh_token"],
         "properties": {
           "access_token": {
             "type": "string"
@@ -10191,10 +9793,7 @@
       },
       "UpdateProfileSchema": {
         "type": "object",
-        "required": [
-          "display_name",
-          "team_id"
-        ],
+        "required": ["display_name", "team_id"],
         "properties": {
           "discord_id": {
             "type": "string",
@@ -10211,10 +9810,7 @@
       },
       "UploadedFile": {
         "type": "object",
-        "required": [
-          "file",
-          "challenge_id"
-        ],
+        "required": ["file", "challenge_id"],
         "properties": {
           "challenge_id": {
             "type": "string",
@@ -10228,10 +9824,7 @@
       },
       "VerifyFlagSchema": {
         "type": "object",
-        "required": [
-          "challenge_id",
-          "flag"
-        ],
+        "required": ["challenge_id", "flag"],
         "properties": {
           "challenge_id": {
             "type": "string",
@@ -10244,10 +9837,7 @@
       },
       "VerifySchema": {
         "type": "object",
-        "required": [
-          "token",
-          "player_id"
-        ],
+        "required": ["token", "player_id"],
         "properties": {
           "player_id": {
             "type": "string",

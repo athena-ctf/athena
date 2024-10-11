@@ -1,9 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/scoreboard/team')({
+export const Route = createFileRoute("/scoreboard/team")({
   component: Index,
-})
+});
 
 function Index() {
-  return <></>
+  return <></>;
 }
