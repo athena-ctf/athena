@@ -1584,9 +1584,9 @@ dependencies = [
 
 [[package]]
 name = "docker-compose-types"
-version = "0.14.0"
+version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3681e7a087f02a845f852d1419da9cc73a558cfbce0a077cbc377d69cebc01cc"
+checksum = "4b9656ab75a70aad3d8d154d40826c53b9b2eee054d7587d6e36284e6d9dabb6"
 dependencies = [
  "derive_builder",
  "indexmap 2.6.0",
@@ -1688,6 +1688,7 @@ dependencies = [
  "oxide-macros",
  "sea-orm",
  "serde",
+ "serde_json",
  "utoipa",
 ]
 
@@ -3149,6 +3150,7 @@ dependencies = [
  "humantime",
  "imap",
  "imap-proto",
+ "indexmap 2.6.0",
  "jsonwebtoken",
  "lettre",
  "mime_guess",
