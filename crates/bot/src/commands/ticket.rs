@@ -11,7 +11,7 @@ pub async fn create_ticket(
     let guild_id = ctx.guild_channel().await.unwrap();
     let author = ctx.author();
 
-    let thread_name = format!("ticket-{}-{}", author.name, subject.replace(" ", "-"));
+    let thread_name = format!("ticket-{}-{}", author.name, subject.replace(' ', "-"));
 
     let thread = guild_id
         .create_thread(

@@ -1,8 +1,6 @@
 use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
-use axum_typed_multipart::TypedMultipart;
-use bytes::Buf;
 use oxide_macros::{
     delete_api, list_api, multiple_relation_with_model_api, retrieve_api, update_api,
 };
@@ -12,8 +10,8 @@ use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
     AchievementModel, ChallengeDetails, ChallengeModel, ChallengeRelations, ChallengeSolves,
-    ChallengeTagDetails, ChallengeTagModel, ContainerMeta, CreateChallengeSchema, FileModel,
-    HintModel, InstanceModel, SubmissionModel, TagDetails, TagModel,
+    ChallengeTagDetails, ChallengeTagModel, CreateChallengeSchema, FileModel, HintModel,
+    InstanceModel, SubmissionModel, TagDetails, TagModel,
 };
 use crate::service::AppState;
 
@@ -45,22 +43,8 @@ multiple_relation_with_model_api!(Challenge, ChallengeTag);
 /// Create challenge
 pub async fn create(
     state: State<Arc<AppState>>,
-    body: TypedMultipart<CreateChallengeSchema>,
+    Json(body): Json<CreateChallengeSchema>,
 ) -> Result<Json<ChallengeModel>> {
-    let container_meta = if let (Some(file), Some(single_instance)) =
-        (&body.container_details, body.single_instance)
-    {
-        Some(
-            serde_json::to_value(ContainerMeta {
-                compose: serde_json::from_reader(file.contents.clone().reader())?,
-                single_instance,
-            })
-            .expect("TODO: fix this"),
-        )
-    } else {
-        None
-    };
-
     let chall = db::challenge::create(
         ChallengeDetails {
             author_name: body.author_name.clone(),
@@ -69,7 +53,7 @@ pub async fn create(
             points: body.points,
             status: body.status,
             title: body.title.clone(),
-            container_meta,
+            container_meta: body.container_meta,
             flag_type: body.flag_type,
         },
         &state.db_conn,

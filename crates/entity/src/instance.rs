@@ -25,8 +25,6 @@ pub struct Model {
     pub updated_at: DateTime,
     #[sea_orm(unique)]
     pub container_id: String,
-    #[sea_orm(unique)]
-    pub container_port: i64,
     pub expiry: DateTime,
     pub challenge_id: Uuid,
     pub player_id: Uuid,

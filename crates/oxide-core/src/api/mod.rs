@@ -166,12 +166,17 @@ pub fn app(state: Arc<AppState>) -> axum::Router {
         .merge(unlock::router())
         .route("/stats", get(crate::handlers::stats::get));
 
-    let paths = router.paths;
+    #[cfg(feature = "wrapped_router")]
+    {
+        let paths = router.paths;
 
-    tracing::debug!("paths list: {:?}", paths);
+        tracing::debug!("paths list: {:?}", paths);
+    }
+
+    #[cfg(feature = "wrapped_router")]
+    let router = router.inner;
 
     router
-        .inner
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
             middleware::ctf_timer,

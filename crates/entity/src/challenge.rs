@@ -4,13 +4,13 @@ use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use super::sea_orm_active_enums::{ChallengeStatusEnum, DifficultyEnum, FlagTypeEnum};
+use crate::extensions::ContainerMeta;
 
 #[derive(
     Clone,
     Debug,
     PartialEq,
     DeriveEntityModel,
-    Eq,
     Serialize,
     Deserialize,
     utoipa :: ToSchema,
@@ -31,7 +31,7 @@ pub struct Model {
     pub difficulty: DifficultyEnum,
     pub flag_type: FlagTypeEnum,
     pub status: ChallengeStatusEnum,
-    pub container_meta: Option<Json>,
+    pub container_meta: Option<ContainerMeta>,
     pub author_name: String,
 }
 

@@ -11,7 +11,6 @@ use sea_orm::{ActiveValue, IntoActiveModel};
 use super::CachedValue;
 use crate::docker;
 use crate::errors::{Error, Result};
-use crate::schemas::ContainerMeta;
 
 crud_interface_db!(Instance);
 
@@ -47,10 +46,7 @@ pub async fn new(
         return Err(Error::NotFound("Challenge".to_owned()));
     };
 
-    let Ok(container_details) =
-        serde_json::from_value::<ContainerMeta>(challenge_model.container_meta.unwrap())
-    // TODO: what to do?
-    else {
+    let Some(container_details) = challenge_model.container_meta else {
         return Err(Error::BadRequest(
             "Challenge instance details not configured.".to_owned(),
         ));
@@ -63,7 +59,8 @@ pub async fn new(
     }
 
     let mut instance = details.into_active_model();
-    instance.id = ActiveValue::Set(Uuid::now_v7());
+    let instance_id = Uuid::now_v7();
+    instance.id = ActiveValue::Set(instance_id);
     instance.created_at = instance.updated_at.clone();
 
     let Some(expiry) = Utc::now().checked_add_signed(TimeDelta::minutes(15)) else {
@@ -74,9 +71,26 @@ pub async fn new(
 
     instance.expiry = ActiveValue::Set(expiry.naive_utc());
 
-    let (port, container_id) = docker::create_instance(client, container_details).await?;
+    let flag = if challenge_model.flag_type == FlagTypeEnum::PerUser {
+        Uuid::new_v4().to_string()
+    } else {
+        // TODO: fix unwrap and add proper error invalid table state
+        Flag::find()
+            .filter(entity::flag::Column::ChallengeId.eq(challenge_model.id))
+            .one(db)
+            .await?
+            .unwrap()
+            .value
+    };
 
-    instance.container_port = ActiveValue::Set(port.into());
+    let container_id = docker::create_instance(
+        format!("chall-{instance_id}"),
+        flag,
+        client,
+        container_details,
+    )
+    .await?;
+
     instance.container_id = ActiveValue::Set(container_id);
 
     Ok(instance.insert(db).await?)

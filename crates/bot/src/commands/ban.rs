@@ -20,7 +20,7 @@ pub async fn ban(
     let reason = reason.unwrap_or_else(|| "No reason provided".to_string());
 
     if let Err(why) = member.ban_with_reason(ctx, dmd, &reason).await {
-        ctx.say(format!("Failed to ban member: {}", why)).await?;
+        ctx.say(format!("Failed to ban member: {why}")).await?;
     } else {
         let response = format!(
             "Banned {} successfully. Reason: {}",

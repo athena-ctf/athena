@@ -84,7 +84,6 @@ pub async fn verify(
         let mut active_model = player_model_cloned.into_active_model();
 
         active_model.score = ActiveValue::Set(player_model.score + points);
-
         active_model.update(&state.db_conn).await?;
     }
 

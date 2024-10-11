@@ -1,6 +1,11 @@
+use std::collections::HashMap;
+
 use chrono::Utc;
 use sea_orm::prelude::Uuid;
-use sea_orm::{ActiveValue, DerivePartialModel, FromQueryResult, IntoActiveModel, IntoActiveValue};
+use sea_orm::{
+    ActiveValue, DerivePartialModel, FromJsonQueryResult, FromQueryResult, IntoActiveModel,
+    IntoActiveValue,
+};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -87,4 +92,21 @@ impl IntoActiveModel<super::player::ActiveModel> for UpdateProfileSchema {
 pub struct HintSummary {
     pub id: Uuid,
     pub cost: i32,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, FromJsonQueryResult, ToSchema)]
+pub struct ContainerMeta {
+    pub image: String,
+    pub cmd: String,
+    pub ports: Vec<u16>,
+    pub env: HashMap<String, String>,
+    pub volumes: Vec<String>,
+    pub sidecars: HashMap<String, String>,
+    pub single_instance: bool,
+}
+
+impl IntoActiveValue<Self> for ContainerMeta {
+    fn into_active_value(self) -> ActiveValue<Self> {
+        ActiveValue::Set(self)
+    }
 }

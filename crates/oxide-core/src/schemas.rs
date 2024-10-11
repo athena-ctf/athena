@@ -1,26 +1,11 @@
 use axum::body::Bytes;
 use axum_typed_multipart::{FieldData, TryFromMultipart};
-use entity::extensions::HintSummary;
+use entity::extensions::{ContainerMeta, HintSummary};
 pub use entity::prelude::*;
-use sea_orm::{ActiveValue, FromJsonQueryResult, IntoActiveValue};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumString};
 use utoipa::ToSchema;
 use uuid::Uuid;
-
-use crate::docker::StrippedCompose;
-
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, FromJsonQueryResult, ToSchema)]
-pub struct ContainerMeta {
-    pub compose: StrippedCompose,
-    pub single_instance: bool,
-}
-
-impl IntoActiveValue<Self> for ContainerMeta {
-    fn into_active_value(self) -> ActiveValue<Self> {
-        ActiveValue::Set(self)
-    }
-}
 
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct LoginModel {
@@ -125,11 +110,9 @@ pub struct ChallengeRelations {
     pub solves: u64,
 }
 
-#[derive(TryFromMultipart, Debug, ToSchema)]
+#[derive(Debug, ToSchema, Serialize, Deserialize)]
 pub struct CreateChallengeSchema {
-    #[schema(value_type = String, format = Binary)]
-    pub container_details: Option<FieldData<Bytes>>,
-    pub single_instance: Option<bool>,
+    pub container_meta: Option<ContainerMeta>,
     pub author_name: String,
     pub description: String,
     pub difficulty: DifficultyEnum,

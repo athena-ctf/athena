@@ -5,6 +5,7 @@ use base64::prelude::BASE64_STANDARD;
 use base64::Engine;
 use chrono::{DateTime, Utc};
 use config::{Config, File};
+use indexmap::IndexMap;
 use lettre::message::Mailbox;
 use lettre::Address;
 use serde::{Deserialize, Serialize};
@@ -41,6 +42,14 @@ pub struct Ctf {
     pub time: Time,
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub challenge: Option<Challenge>,
+    pub sponsors: IndexMap<String, Vec<Sponsor>>,
+    pub prizes: IndexMap<String, Vec<String>>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Sponsor {
+    name: String,
+    logo: String,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -184,6 +193,8 @@ impl Default for Settings {
                     start: Utc::now(),
                 },
                 challenge: Some(Challenge { max_attempts: 10 }),
+                sponsors: IndexMap::new(),
+                prizes: IndexMap::new(),
             },
             database: Database {
                 host: "postgres".to_owned(),

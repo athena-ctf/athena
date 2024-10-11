@@ -20,12 +20,6 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .unique_key(),
                     )
-                    .col(
-                        ColumnDef::new(Instance::ContainerPort)
-                            .big_integer()
-                            .not_null()
-                            .unique_key(),
-                    )
                     .col(ColumnDef::new(Instance::Expiry).date_time().not_null())
                     .col(ColumnDef::new(Instance::ChallengeId).uuid().not_null())
                     .col(ColumnDef::new(Instance::PlayerId).uuid().not_null())
@@ -70,7 +64,6 @@ enum Instance {
     ChallengeId,
     PlayerId,
     ContainerId,
-    ContainerPort,
     Expiry,
 }
 
