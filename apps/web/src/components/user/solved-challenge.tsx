@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@ui/components/ui/table";
+} from "@repo/ui/components/table";
 
 interface UserSolvedChallengeProps {
   challenge: components["schemas"]["ChallengeModel"][];

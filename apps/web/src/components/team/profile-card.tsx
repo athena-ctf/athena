@@ -1,11 +1,11 @@
 import type { components } from "@repo/api";
-import { Card, CardContent } from "@ui/components/ui/card";
+import { Card, CardContent } from "@repo/ui/components/card";
 import { sha256 } from "js-sha256";
 import { Mail } from "lucide-react";
 import { default as NextImage } from "next/image";
 import Link from "next/link";
 import TeamUpdateDialog from "./update-dialog";
-import { ScrollArea } from "@ui/components/ui/scroll-area";
+import { ScrollArea } from "@repo/ui/components/scroll-area";
 import {
   Table,
   TableBody,
@@ -13,7 +13,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@ui/components/ui/table";
+} from "@repo/ui/components/table";
 
 export function TeamProfileCard({
   player,

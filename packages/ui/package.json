@@ -5,6 +5,7 @@
   "exports": {
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/ui/*.tsx",
+    "./components/theme-provider-vite": "./src/components/theme-provider-vite.tsx",
     "./hooks/*": "./src/hooks/*.ts",
     "./globals.css": "./src/globals.css",
     "./postcss.config": "./postcss.config.js",

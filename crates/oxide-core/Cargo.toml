@@ -19,14 +19,15 @@ aws-credential-types = { version = "1.2.1", features = [
     "hardcoded-credentials",
 ] }
 aws-sdk-s3 = { version = "1.51.0" }
-axum = { version = "0.7.6", features = ["macros", "multipart"] }
-axum_typed_multipart = "0.13.0"
+axum = { workspace = true }
+axum_typed_multipart = { workspace = true }
 base64 = "0.22.1"
 bb8 = "0.8.5"
 bb8-redis = "0.17.0"
+bitcode = { workspace = true }
 bollard = { version = "0.17.1", features = ["chrono"] }
 bytes = "1.7.2"
-chrono = { version = "0.4.38", features = ["serde"] }
+chrono = { workspace = true }
 config = "0.14.0"
 docker-compose-types = "0.15.0"
 entity = { path = "../entity" }
@@ -54,28 +55,16 @@ redis = { version = "*", default-features = false, features = [
 ] }
 regex = "1.10.6"
 ring = "0.17.8"
-sea-orm = { version = "1.0.1", features = [
-    "runtime-tokio-rustls",
-    "sqlx-postgres",
-] }
-serde = { version = "1.0.210", features = ["derive"] }
-serde_json = "1.0.128"
+sea-orm = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
 strum = { version = "0.26.3", features = ["derive"] }
 thiserror = "1.0.64"
-tokio = { version = "1.40.0", features = [
-    "macros",
-    "rt-multi-thread",
-    "signal",
-] }
+tokio = { workspace = true }
 tokio-util = { version = "0.7.12", features = ["full"] }
 tower-http = { version = "0.6.1", features = ["full"] }
-tracing = "0.1.40"
-utoipa = { version = "4.2.3", features = [
-    "axum_extras",
-    "uuid",
-    "chrono",
-    "url",
-] }
+tracing = { workspace = true }
+utoipa = { workspace = true }
 uuid = { version = "1.10.0", features = ["serde", "v7", "fast-rng"] }
 
 [build-dependencies]

@@ -6,6 +6,6 @@ edition = "2021"
 [dependencies]
 argh = "0.1.12"
 oxide-core = { path = "../oxide-core" }
-tokio = "1.40.0"
-tracing = "0.1.40"
+tokio = { workspace = true }
+tracing = { workspace = true }
 tracing-subscriber = "0.3.18"

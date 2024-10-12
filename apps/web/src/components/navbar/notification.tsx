@@ -1,27 +1,23 @@
 "use client";
 
 import type { components } from "@repo/api";
-import { deleteNotification } from "../../../admin/components/admin/actions";
-import { Alert, AlertDescription, AlertTitle } from "@ui/components/ui/alert";
-import { Button } from "@ui/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/alert";
+import { Button } from "@repo/ui/components/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@ui/components/ui/dropdown-menu";
-import { ScrollArea } from "@ui/components/ui/scroll-area";
+} from "@repo/ui/components/dropdown-menu";
+import { ScrollArea } from "@repo/ui/components/scroll-area";
 import { formatDistance } from "date-fns";
-import { Bell, RefreshCcw, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { Bell, RefreshCcw } from "lucide-react";
 
 export function PlayerNotification({
   notifications,
 }: {
   notifications: components["schemas"]["NotificationModel"][];
 }) {
-  const [notifs, setNotifs] = useState(notifications);
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -39,28 +35,11 @@ export function PlayerNotification({
           </span>
         </DropdownMenuLabel>
         <ScrollArea className="h-[320px]">
-          {notifs.map((notification) => (
+          {notifications.map((notification) => (
             <Alert className="group my-1 p-2" key={notification.id}>
               <AlertTitle className="m-1">{notification.title}</AlertTitle>
               <AlertDescription>
-                <div className="flex flex-row">
-                  <div className="text-ellipsis">{notification.content}</div>
-                  <Button
-                    className="invisible ml-5 p-3 group-hover:visible"
-                    variant="outline"
-                    onClick={() => {
-                      deleteNotification(notification.id).then(() => {
-                        setNotifs(
-                          notifs.filter(
-                            (notif) => notif.id !== notification.id,
-                          ),
-                        );
-                      });
-                    }}
-                  >
-                    <Trash2 size={14} />
-                  </Button>
-                </div>
+                <div className="text-ellipsis">{notification.content}</div>
                 <span className="text-xs text-muted-foreground">
                   {formatDistance(notification.date, new Date(), {
                     addSuffix: true,

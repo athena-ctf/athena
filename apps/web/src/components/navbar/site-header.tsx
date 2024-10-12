@@ -1,11 +1,10 @@
 import type { components } from "@repo/api";
-import type { CtfConfig } from "@repo/config/schema";
 import { MainNav } from "./desktop";
 import { MobileNav } from "./mobile";
 import { ModeToggle } from "./mode-toggle";
 import { PlayerNotification } from "./notification";
 import { ProfileDropdown } from "./profile-dropdown";
-import { Button } from "@repo/ui/button";
+import { Button } from "@repo/ui/components/button";
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { CtfTimer } from "./ctf-timer";
@@ -14,7 +13,6 @@ export function SiteHeader({
   notifications,
   playerProfile,
   logout,
-  config,
 }: {
   notifications?: components["schemas"]["NotificationModel"][];
   playerProfile?: components["schemas"]["UserModel"];

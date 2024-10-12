@@ -1,11 +1,11 @@
 import type { components } from "@repo/api";
-import { Button } from "@ui/components/ui/button";
+import { Button } from "@repo/ui/components/button";
 import {
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@ui/components/ui/dialog";
+} from "@repo/ui/components/dialog";
 import {
   Table,
   TableBody,
@@ -14,7 +14,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@ui/components/ui/table";
+} from "@repo/ui/components/table";
 
 export function TeamModal({
   team,

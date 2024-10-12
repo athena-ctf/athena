@@ -1,7 +1,6 @@
-import { Button } from "@ui/components/ui/button";
-import { Input } from "@ui/components/ui/input";
+import { Button } from "@repo/ui/components/button";
+import { Input } from "@repo/ui/components/input";
 import { Search } from "lucide-react";
-import React from "react";
 
 export function MainChallengesSearch() {
   return (

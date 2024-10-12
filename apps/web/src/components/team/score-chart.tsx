@@ -1,6 +1,6 @@
 // "use client";
 
-// import { Card, CardContent } from "@ui/components/ui/card";
+// import { Card, CardContent } from "@repo/ui/components/card";
 // import {
 //     CartesianGrid,
 //     Tooltip as ChartTooltip,
@@ -63,13 +63,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@ui/components/ui/card";
+} from "@repo/ui/components/card";
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@ui/components/ui/chart";
+} from "@repo/ui/components/chart";
 interface TeamScoreChartProps {
   data: {
     date: string;

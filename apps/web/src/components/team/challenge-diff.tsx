@@ -1,43 +1,3 @@
-// "use client";
-
-// import type { components } from "@repo/api";
-// import { Card, CardContent } from "@ui/components/ui/card";
-// import {
-//   PolarAngleAxis,
-//   PolarGrid,
-//   Radar,
-//   RadarChart,
-//   ResponsiveContainer,
-// } from "recharts";
-
-// type Data = {
-//   data: components["schemas"]["PlayerProfile"]["tag_solves"];
-// };
-
-// export function TeamChallengeDiff({ data }: Data) {
-//   return (
-//     <Card>
-//       <CardContent>
-//         <ResponsiveContainer width={"95%"} height={300}>
-//           <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-//             <PolarGrid />
-//             <PolarAngleAxis dataKey="tag_value" />
-//             <Radar
-//               name="Mike"
-//               dataKey="solves"
-//               stroke="#8884d8"
-//               fill="#8884d8"
-//               fillOpacity={0.6}
-//             />
-//           </RadarChart>
-//         </ResponsiveContainer>
-//       </CardContent>
-//     </Card>
-//   );
-// }
-
-"use client";
-
 import { TrendingUp } from "lucide-react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 
@@ -47,13 +7,13 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-} from "@ui/components/ui/card";
+} from "@repo/ui/components/card";
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@ui/components/ui/chart";
+} from "@repo/ui/components/chart";
 import type { components } from "@repo/api";
 type Data = {
   data: components["schemas"]["PlayerProfile"]["tag_solves"];

@@ -1,6 +1,3 @@
-"use client";
-
-import type { CtfConfig } from "@repo/config/schema";
 import {
   add,
   addDays,
@@ -10,10 +7,9 @@ import {
   isBefore,
   parseISO,
 } from "date-fns";
-import React from "react";
 import { useEffect, useState } from "react";
 
-export function CtfTimer({ config }: { config: CtfConfig }) {
+export function CtfTimer() {
   const now = new Date();
   const endOfToday = endOfDay(now);
 

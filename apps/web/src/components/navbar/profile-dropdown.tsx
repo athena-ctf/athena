@@ -1,5 +1,9 @@
 import type { components } from "@repo/api";
-import { Avatar, AvatarFallback, AvatarImage } from "@ui/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,10 +12,19 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@ui/components/ui/dropdown-menu";
-import { sha256 } from "js-sha256";
-import Link from "next/link";
-import type { ReactNode } from "react";
+} from "@repo/ui/components/dropdown-menu";
+import { Link } from "@tanstack/react-router";
+import { useEffect, useState, type ReactNode } from "react";
+
+async function hash(message: string) {
+  const data = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+  return hashHex;
+}
 
 export function ProfileDropdown({
   user,
@@ -20,12 +33,18 @@ export function ProfileDropdown({
   user: components["schemas"]["UserModel"];
   logout: ReactNode;
 }) {
+  const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    hash(user.email).then(setUrl);
+  });
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
           <AvatarImage
-            src={`https://gravatar.com/avatar/${sha256(user.email)}?d=robohash`}
+            src={`https://gravatar.com/avatar/${url}?d=robohash`}
             alt={user.username}
           />
           <AvatarFallback>{user.username}</AvatarFallback>

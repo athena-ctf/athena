@@ -1,5 +1,3 @@
-use extension::postgres::Type;
-use sea_orm::{EnumIter, Iterable};
 use sea_orm_migration::prelude::*;
 
 #[derive(DeriveMigrationName)]
@@ -9,15 +7,6 @@ pub struct Migration;
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .create_type(
-                Type::create()
-                    .as_enum(BackendEnum)
-                    .values(BackendVariants::iter())
-                    .to_owned(),
-            )
-            .await?;
-
-        manager
             .create_table(
                 Table::create()
                     .table(File::Table)
@@ -26,13 +15,8 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(File::CreatedAt).date_time().not_null())
                     .col(ColumnDef::new(File::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(File::Name).string().not_null())
-                    .col(
-                        ColumnDef::new(File::Backend)
-                            .enumeration(BackendEnum, BackendVariants::iter())
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(File::Url).string().not_null().unique_key())
                     .col(ColumnDef::new(File::Mime).string().not_null())
-                    .col(ColumnDef::new(File::Sha1Hash).string().not_null())
                     .col(ColumnDef::new(File::ChallengeId).uuid().not_null())
                     .foreign_key(
                         ForeignKey::create()
@@ -54,21 +38,8 @@ impl MigrationTrait for Migration {
             .drop_table(Table::drop().table(File::Table).to_owned())
             .await?;
 
-        manager
-            .drop_type(Type::drop().if_exists().name(BackendEnum).to_owned())
-            .await?;
-
         Ok(())
     }
-}
-
-#[derive(DeriveIden)]
-struct BackendEnum;
-
-#[derive(DeriveIden, EnumIter)]
-enum BackendVariants {
-    StaticServer,
-    AwsS3,
 }
 
 #[derive(DeriveIden)]
@@ -78,9 +49,8 @@ enum File {
     CreatedAt,
     UpdatedAt,
     Name,
-    Backend,
+    Url,
     Mime,
-    Sha1Hash,
     ChallengeId,
 }
 

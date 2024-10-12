@@ -4,7 +4,7 @@ sea generate entity \
     --with-serde both \
     --serde-skip-hidden-column \
     --serde-skip-deserializing-primary-key \
-    --model-extra-derives "utoipa::ToSchema","oxide_macros::derive::Details" \
+    --model-extra-derives "utoipa::ToSchema","oxide_macros::derive::Details","bitcode::Encode","bitcode::Decode" \
     --model-extra-attributes "schema(as = Model)",'oxide(table(name = ""))' \
     --enum-extra-derives "utoipa::ToSchema","axum_typed_multipart::TryFromField" \
     --enum-extra-attributes 'serde(rename_all = "lowercase")' \

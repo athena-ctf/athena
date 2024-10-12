@@ -1,13 +1,11 @@
 "use client";
 
 import type { CtfConfig } from "@repo/config/schema";
-import { Button } from "@ui/components/ui/button";
-import { ScrollArea } from "@ui/components/ui/scroll-area";
-import { Sheet, SheetContent, SheetTrigger } from "@ui/components/ui/sheet";
-import { cn } from "@ui/lib/utils";
-import { default as NextImage } from "next/image";
-import Link, { type LinkProps } from "next/link";
-import { useRouter } from "next/navigation";
+import { Button } from "@repo/ui/components/button";
+import { ScrollArea } from "@repo/ui/components/scroll-area";
+import { Sheet, SheetContent, SheetTrigger } from "@repo/ui/components/sheet";
+import { cn } from "@repo/ui/lib/utils";
+import { type LinkProps, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 export function MobileNav({ config }: { config: CtfConfig }) {
@@ -55,25 +53,22 @@ export function MobileNav({ config }: { config: CtfConfig }) {
       </SheetTrigger>
       <SheetContent side="left" className="pr-0">
         <MobileLink
-          href="/"
+          to="/"
           className="flex items-center"
           onOpenChange={setOpenNav}
         >
-          <NextImage src="/logo.jpeg" alt="CTF Logo" width={16} height={16} />
+          <img src="/logo.jpeg" alt="CTF Logo" width={16} height={16} />
           <span className="font-bold">{config.ctf.name}</span>
         </MobileLink>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-3">
-            <MobileLink href="/challenges" onOpenChange={setOpenNav}>
+            <MobileLink to="/challenges" onOpenChange={setOpenNav}>
               Challenges
             </MobileLink>
-            <MobileLink href="/scoreboard" onOpenChange={setOpenNav}>
+            <MobileLink to="/scoreboard/team" onOpenChange={setOpenNav}>
               Scoreboard
             </MobileLink>
-            <MobileLink href="/teams" onOpenChange={setOpenNav}>
-              Teams
-            </MobileLink>
-            <MobileLink href="/rules" onOpenChange={setOpenNav}>
+            <MobileLink to="/rules" onOpenChange={setOpenNav}>
               Rules
             </MobileLink>
           </div>
@@ -90,18 +85,18 @@ interface MobileLinkProps extends LinkProps {
 }
 
 function MobileLink({
-  href,
+  to,
   onOpenChange,
   className,
   children,
   ...props
 }: MobileLinkProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
   return (
     <Link
-      href={href}
+      to={to}
       onClick={() => {
-        router.push(href.toString());
+        navigate({ to });
         onOpenChange?.(false);
       }}
       className={cn(className)}

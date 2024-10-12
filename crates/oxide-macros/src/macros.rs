@@ -119,7 +119,7 @@ macro_rules! crud_interface_db {
 }
 
 #[macro_export]
-macro_rules! bind_crud_interface_db {
+macro_rules! join_crud_interface_db {
     ($entity:ident, $related_from:ident, $related_to:ident) => {
         $crate::paste! {
             pub async fn list(db: &DbConn) -> Result<Vec<[<$entity Model>]>> {
@@ -599,7 +599,7 @@ macro_rules! crud_interface_api {
 }
 
 #[macro_export]
-macro_rules! bind_crud_interface_api {
+macro_rules! join_crud_interface_api {
     ($entity:ident, $related_from_id:literal, $related_to_id:literal) => {
         $crate::paste! {
             #[doc = "List " $entity:snake "s"]

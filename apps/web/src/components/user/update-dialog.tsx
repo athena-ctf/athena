@@ -2,7 +2,7 @@
 
 import type { components } from "@repo/api";
 import { updateProfile } from "@ui/components/actions";
-import { Button } from "@ui/components/ui/button";
+import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +11,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@ui/components/ui/dialog";
-import { Input } from "@ui/components/ui/input";
-import { Label } from "@ui/components/ui/label";
+} from "@repo/ui/components/dialog";
+import { Input } from "@repo/ui/components/input";
+import { Label } from "@repo/ui/components/label";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

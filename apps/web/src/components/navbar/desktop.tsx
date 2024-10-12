@@ -1,15 +1,14 @@
 "use client";
 
 import type { CtfConfig } from "@repo/config/schema";
-import { cn } from "@ui/lib/utils";
-import { default as NextImage } from "next/image";
-import Link from "next/link";
+import { cn } from "@repo/ui/lib/utils";
+import { Link } from "@tanstack/react-router";
 
 export function MainNav({ config }: { config: CtfConfig }) {
   return (
     <div className="mr-4 hidden md:flex">
       <Link href="/" className="mr-6 flex items-center space-x-2">
-        <NextImage src="/logo.jpeg" alt="CTF Logo" width={16} height={16} />
+        <img src="/logo.jpeg" alt="CTF Logo" width={16} height={16} />
         <span className="hidden font-bold sm:inline-block">
           {config.ctf.name}
         </span>

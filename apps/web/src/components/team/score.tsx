@@ -1,4 +1,4 @@
-import { ScrollArea } from "@ui/components/ui/scroll-area";
+import { ScrollArea } from "@repo/ui/components/scroll-area";
 import {
   Table,
   TableBody,
@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@ui/components/ui/table";
+} from "@repo/ui/components/table";
 import { Medal } from "lucide-react";
 
 interface TeamScoreProps {

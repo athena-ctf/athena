@@ -1,5 +1,5 @@
 import type { components } from "@repo/api";
-import { Card, CardContent } from "@ui/components/ui/card";
+import { Card, CardContent } from "@repo/ui/components/card";
 import UserUpdateDialog from "@/components/user/update-dialog";
 import { sha256 } from "js-sha256";
 import { Mail } from "lucide-react";

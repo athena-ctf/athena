@@ -1,7 +1,7 @@
 "use client";
 
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { cn } from "@ui/lib/utils";
+import { cn } from "@repo/ui/lib/utils";
 import { forwardRef } from "react";
 
 const VerticalTabs = forwardRef<
