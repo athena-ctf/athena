@@ -10,6 +10,7 @@ use crate::extensions::ContainerMeta;
     Clone,
     Debug,
     PartialEq,
+    Eq,
     DeriveEntityModel,
     Serialize,
     Deserialize,

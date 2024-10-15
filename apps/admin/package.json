@@ -10,7 +10,6 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@repo/api": "workspace:*",
-    "@repo/config": "workspace:*",
     "@repo/ui": "workspace:*",
     "@tanstack/react-table": "^8.20.5",
     "@tiptap/react": "^2.8.0",

@@ -3,7 +3,7 @@ use std::sync::Arc;
 use axum::routing::{get, patch};
 
 use super::router_wrapper::Router;
-use crate::handlers::player::{self};
+use crate::handlers::player;
 use crate::service::AppState;
 
 pub fn router() -> Router<Arc<AppState>> {
@@ -40,8 +40,4 @@ pub fn router() -> Router<Arc<AppState>> {
         )
         .route("/player/:id/unlocks", get(player::list_unlocks_by_id))
         .route("/player/:id/ban", get(player::retrieve_ban_by_id))
-        .route(
-            "/player/join/:team_name",
-            get(player::join_team_by_team_name),
-        )
 }

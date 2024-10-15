@@ -1,21 +1,19 @@
 "use client";
 
-import type { CtfConfig } from "@repo/config/schema";
 import { cn } from "@repo/ui/lib/utils";
 import { Link } from "@tanstack/react-router";
 
-export function MainNav({ config }: { config: CtfConfig }) {
+export function MainNav() {
   return (
     <div className="mr-4 hidden md:flex">
-      <Link href="/" className="mr-6 flex items-center space-x-2">
+      <Link to="/" className="mr-6 flex items-center space-x-2">
         <img src="/logo.jpeg" alt="CTF Logo" width={16} height={16} />
-        <span className="hidden font-bold sm:inline-block">
-          {config.ctf.name}
-        </span>
+        {/* TODO: read from config <span className="font-bold hidden sm:inline-block">{config.ctf.name}</span> */}
+        <span className="font-bold hidden sm:inline-block">Athena CTF</span>
       </Link>
       <nav className="flex items-center gap-4 text-sm lg:gap-6">
         <Link
-          href="/challenges"
+          to="/challenges"
           className={cn(
             "text-foreground/60 transition-colors hover:text-foreground/80",
           )}
@@ -23,7 +21,7 @@ export function MainNav({ config }: { config: CtfConfig }) {
           Challenges
         </Link>
         <Link
-          href="/scoreboard"
+          to="/scoreboard/team"
           className={cn(
             "text-foreground/60 transition-colors hover:text-foreground/80",
           )}
@@ -31,15 +29,7 @@ export function MainNav({ config }: { config: CtfConfig }) {
           Scoreboard
         </Link>
         <Link
-          href="/teams"
-          className={cn(
-            "text-foreground/60 transition-colors hover:text-foreground/80",
-          )}
-        >
-          Teams
-        </Link>
-        <Link
-          href="/rules"
+          to="/rules"
           className={cn(
             "text-foreground/60 transition-colors hover:text-foreground/80",
           )}

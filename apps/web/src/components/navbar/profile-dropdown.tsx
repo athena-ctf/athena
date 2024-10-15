@@ -61,7 +61,7 @@ export function ProfileDropdown({
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <Link href={`/profile/${user.username}`}>View Profile</Link>
+            <Link to={`/profile/${user.username}`}>View Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>{logout}</DropdownMenuItem>
         </DropdownMenuGroup>

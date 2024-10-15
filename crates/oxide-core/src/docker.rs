@@ -45,7 +45,7 @@ pub async fn create_instance(
                         .env
                         .iter()
                         .map(|(k, v)| format!("{k}={v}"))
-                        .chain(once_with(|| format!("FLAG=\"{flag}\"")).into_iter())
+                        .chain(once_with(|| format!("FLAG=\"{flag}\"")))
                         .collect(),
                 ),
                 exposed_ports: Some(

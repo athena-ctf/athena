@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/components/button";
 import {
+  Form,
   FormField,
   FormItem,
   FormLabel,
@@ -10,7 +11,7 @@ import {
 import { Input } from "@repo/ui/components/input";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { useForm, Form } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRegisterStore } from "../../../stores/register";
 import { Link } from "@tanstack/react-router";
@@ -160,7 +161,7 @@ export function DetailsForm({ next }: { next: () => void }) {
         />
         <div className="mt-4 text-center text-sm">
           Already have an account?{" "}
-          <Link href="/auth/register" className="underline">
+          <Link to="/auth/login" search={{ next: "" }} className="underline">
             Login
           </Link>
         </div>

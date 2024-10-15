@@ -1,8 +1,7 @@
 use std::iter::repeat_with;
 use std::time::Duration;
 
-use base64::prelude::BASE64_STANDARD;
-use base64::Engine;
+use base64ct::{Base64, Encoding};
 use chrono::{DateTime, Utc};
 use config::{Config, File};
 use indexmap::IndexMap;
@@ -112,7 +111,7 @@ pub enum CompressionKind {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct StaticServer {
+pub struct FileStorage {
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub compress: Option<CompressionKind>,
     pub path: String,
@@ -138,15 +137,6 @@ pub struct Docker {
     pub registry_url: String,
     pub registry_username: String,
     pub registry_password: String,
-}
-
-#[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct FileStorage {
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub aws_s3: Option<AwsS3>,
-
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub static_server: Option<StaticServer>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -217,8 +207,8 @@ impl Default for Settings {
                 },
             },
             jwt: Jwt {
-                secret: BASE64_STANDARD.encode(
-                    repeat_with(|| fastrand::u8(0..=255))
+                secret: Base64::encode_string(
+                    &repeat_with(|| fastrand::u8(0..=255))
                         .take(32)
                         .collect::<Vec<_>>(),
                 ),
@@ -226,16 +216,8 @@ impl Default for Settings {
                 refresh_token_timeout: 86400,
             },
             file_storage: FileStorage {
-                aws_s3: Some(AwsS3 {
-                    region: "ap-south-1".to_owned(),
-                    access_key_id: "<aws-access-key-id>".to_owned(),
-                    secret_access_key: "<aws-secret-access-key>".to_owned(),
-                    bucket_name: "athena_bucket".to_owned(),
-                }),
-                static_server: Some(StaticServer {
-                    compress: Some(CompressionKind::Gzip),
-                    path: "/var/athena/static".to_owned(),
-                }),
+                compress: Some(CompressionKind::Gzip),
+                path: "/var/athena/static".to_owned(),
             },
             smtp: Smtp {
                 from: Mailbox::new(None, Address::new("noreply", "athena.io").unwrap()),
@@ -286,5 +268,9 @@ impl Settings {
             self.database.port,
             DB_NAME
         )
+    }
+
+    pub fn default_toml(&self) -> Result<String> {
+        Ok(toml::to_string(self)?)
     }
 }

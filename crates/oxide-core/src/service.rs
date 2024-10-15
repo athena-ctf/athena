@@ -1,6 +1,5 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use aws_sdk_s3::Client;
 use bollard::Docker;
 use entity::prelude::*;
 use jsonwebtoken::{EncodingKey, Header};
@@ -14,7 +13,6 @@ pub struct AppState {
     pub db_conn: sea_orm::DatabaseConnection,
     pub settings: RwLock<Settings>,
 
-    pub s3_client: Option<Client>,
     pub cache_client: bb8::Pool<bb8_redis::RedisConnectionManager>,
     pub token_client: bb8::Pool<bb8_redis::RedisConnectionManager>,
     pub docker_client: Docker,

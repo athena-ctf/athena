@@ -16,5 +16,4 @@ pub fn router() -> Router<Arc<AppState>> {
                 .patch(invite::update_by_id),
         )
         .route("/invite/:id/team", get(invite::retrieve_team_by_id))
-        .route("/invite/:id/join", get(invite::join_team))
 }

@@ -1,3 +1,5 @@
+import "@fontsource-variable/inter/index.css";
+import "@fontsource-variable/jetbrains-mono/index.css";
 import "@repo/ui/globals.css";
 
 import { StrictMode } from "react";

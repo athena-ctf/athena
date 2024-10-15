@@ -15,7 +15,6 @@ pub fn router() -> Router<Arc<AppState>> {
                 .delete(file::delete_by_id)
                 .patch(file::update_by_id),
         )
-        .route("/file/:id/download", get(file::download_by_id))
         .route("/file/:id/challenge", get(file::retrieve_challenge_by_id))
         .route("/file/upload", post(file::upload))
 }

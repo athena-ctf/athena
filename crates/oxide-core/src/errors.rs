@@ -22,6 +22,9 @@ pub enum Error {
     #[error("JSON serialization/deserialization error: {0:?}")]
     Json(#[from] serde_json::Error),
 
+    #[error("TOML serialization/deserialization error: {0:?}")]
+    Toml(#[from] toml::ser::Error),
+
     #[error("Could not load config: {0:#?}")]
     Config(#[from] config::ConfigError),
 

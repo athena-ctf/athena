@@ -3,7 +3,7 @@ use std::sync::Arc;
 use axum::routing::get;
 
 use super::router_wrapper::Router;
-use crate::handlers::achievement::{self};
+use crate::handlers::achievement;
 use crate::service::AppState;
 
 pub fn router() -> Router<Arc<AppState>> {
@@ -16,7 +16,7 @@ pub fn router() -> Router<Arc<AppState>> {
             "/achievement/:id",
             get(achievement::retrieve_by_id)
                 .patch(achievement::update_by_id)
-                .delete(achievement::delete),
+                .delete(achievement::delete_by_id),
         )
         .route(
             "/achievement/:id/player",

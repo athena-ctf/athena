@@ -73,7 +73,7 @@ pub async fn create(
     )
 )]
 /// Delete achievement by id
-pub async fn delete(
+pub async fn delete_by_id(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
     Path(id): Path<Uuid>,

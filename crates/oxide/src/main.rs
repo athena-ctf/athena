@@ -21,9 +21,18 @@ pub async fn main() {
         }
 
         cli::SubCommand::Generate(generate) => {
-            tokio::fs::write(&generate.out, api::get_schema().unwrap())
-                .await
-                .unwrap();
+            tokio::fs::write(
+                &generate.out,
+                if generate.config {
+                    oxide_core::settings::Settings::default()
+                        .default_toml()
+                        .unwrap()
+                } else {
+                    api::get_schema().unwrap()
+                },
+            )
+            .await
+            .unwrap();
         }
     }
 

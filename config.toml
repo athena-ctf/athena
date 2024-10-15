@@ -1,35 +1,40 @@
 [ctf]
 name = "Athena CTF"
-duration = "2days"
-start_time = "2024-08-18T15:02:06.123250700Z"
-freeze_duration = "1day"
-domain_name = "athena.io"
+domain = "athena.io"
 description = "Athena is a hosted platform for CTFs"
+challenge = { max_attempts = 10 }
+sponsors = {}
+prizes = {}
+
+[ctf.time]
+span = "2days"
+start = "2024-10-13T11:31:36.949912752Z"
+freeze = "1day"
 
 [database]
 host = "postgres"
 port = 5432
 username = "postgres"
-password = "XRXEBROZGpOP"
+password = "9U5HmF8SjDW5"
 
 [redis.cache]
-host = "redis_cache"
+host = "redis"
 port = 6379
 username = "redis_cache"
-password = "tf90blSAad3I"
+password = "FUTAUAwUmzKc"
 
 [redis.token]
-host = "redis_token"
-port = 6380
+host = "redis"
+port = 6379
 username = "redis_token"
-password = "Wf9YblSjLd3I"
+password = "GKQjmoAqOYxd"
 
-[file_storage.static_server]
+[file_storage]
 compress = "gzip"
 path = "/var/athena/static"
 
 [jwt]
-secret = "39vAUPa1rlYcDQIhrh5hfb2YJ4tnZB0VhujDi1jJM+c="
+secret = "6uiainM6/yGGmZHXi7tSirazwutIiZkSGqAuokKmt1E="
 access_token_timeout = 600
 refresh_token_timeout = 86400
 
@@ -37,14 +42,14 @@ refresh_token_timeout = 86400
 from = "noreply@athena.io"
 reply_to = "Admin <admin@athena.io>"
 username = "athena_smtp"
-password = "zOvGBoAcm5Uc"
+password = "7fwO53K8oF7v"
 server_url = "smtp.athena.io"
 
 [docker]
 single_instance_duration = 15
 registry_url = "registry.athena.io"
 registry_username = "athena"
-registry_password = "I5DSnxhA71bI"
+registry_password = "O4h9RBYzVKrP"
 
 [discord]
 welcome_channel_id = ""
@@ -53,3 +58,4 @@ viewer_role_id = ""
 reaction_role_message_id = ""
 logs_channel_id = ""
 genral_channel_id = ""
+bot_token = ""

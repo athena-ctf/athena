@@ -16,7 +16,6 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(File::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(File::Name).string().not_null())
                     .col(ColumnDef::new(File::Url).string().not_null().unique_key())
-                    .col(ColumnDef::new(File::Mime).string().not_null())
                     .col(ColumnDef::new(File::ChallengeId).uuid().not_null())
                     .foreign_key(
                         ForeignKey::create()
@@ -50,7 +49,6 @@ enum File {
     UpdatedAt,
     Name,
     Url,
-    Mime,
     ChallengeId,
 }
 

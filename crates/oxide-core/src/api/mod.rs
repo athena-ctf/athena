@@ -2,9 +2,6 @@ use std::net::{Ipv4Addr, SocketAddrV4};
 use std::sync::Arc;
 use std::time::Duration;
 
-use aws_config::Region;
-use aws_credential_types::Credentials;
-use aws_sdk_s3 as s3;
 use axum::extract::{MatchedPath, Request};
 use axum::http::Method;
 use axum::routing::get;
@@ -56,22 +53,6 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
 
     tracing::info!("starting axum on port 7000");
 
-    let s3_client = if let Some(aws) = &settings.file_storage.aws_s3 {
-        let aws_cfg = aws_config::from_env()
-            .credentials_provider(Credentials::from_keys(
-                &aws.access_key_id,
-                &aws.secret_access_key,
-                None,
-            ))
-            .region(Region::new(aws.region.clone()))
-            .load()
-            .await;
-
-        Some(s3::Client::new(&aws_cfg))
-    } else {
-        None
-    };
-
     #[cfg(not(feature = "file-transport"))]
     let mail_transport = {
         let credentials = lettre::transport::smtp::authentication::Credentials::new(
@@ -119,7 +100,6 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
             db_conn,
             settings: RwLock::new(settings),
 
-            s3_client,
             cache_client,
             token_client,
             docker_client,

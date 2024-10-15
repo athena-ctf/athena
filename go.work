@@ -1,0 +1,6 @@
+go 1.23.2
+
+use (
+	./goprojects/file_server
+	./goprojects/discord_bot
+)

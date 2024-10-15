@@ -12,7 +12,6 @@ oxide-macros = { path = "../oxide-macros" }
 axum_typed_multipart = { workspace = true }
 axum = { workspace = true }
 serde_json = { workspace = true }
-bitcode = { workspace = true }
 
 [package.metadata.cargo-machete]
 ignored = ["axum", "oxide-macros", "serde_json", "axum_typed_multipart"]

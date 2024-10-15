@@ -38,7 +38,7 @@ export function UserProfileCard({
           <div className="flex w-full flex-col space-y-3">
             <div className="flex">
               <Mail />
-              <Link href={`mailto:${user.email}`} className="mx-2">
+              <Link to={`mailto:${user.email}`} className="mx-2">
                 {user.email}
               </Link>
             </div>

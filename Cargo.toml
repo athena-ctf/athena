@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/bot", "crates/entity", "crates/migration", "crates/oxide"]
+members = ["crates/*"]
 
 [profile.release]
 codegen-units = 1
@@ -11,7 +11,6 @@ strip = true
 [workspace.dependencies]
 axum = { version = "0.7.7", features = ["macros", "multipart"] }
 axum_typed_multipart = "0.13.0"
-bitcode = "0.6.3"
 chrono = { version = "0.4.38", features = ["serde"] }
 sea-orm = { version = "1.0.1", features = [
     "runtime-tokio-rustls",

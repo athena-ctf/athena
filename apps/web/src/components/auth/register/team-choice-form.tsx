@@ -63,9 +63,9 @@ export function ChooseTeamForm({
   }
 
   return (
-    <Tabs defaultValue="account" className="w-[400px]">
+    <Tabs defaultValue="create">
       <TabsList>
-        <TabsTrigger value="creat">Create Team</TabsTrigger>
+        <TabsTrigger value="create">Create Team</TabsTrigger>
         <TabsTrigger value="join">Join Team</TabsTrigger>
       </TabsList>
       <TabsContent value="create">
@@ -89,7 +89,11 @@ export function ChooseTeamForm({
             />
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
-              <Link href="/auth/register" className="underline">
+              <Link
+                to="/auth/login"
+                search={{ next: "" }}
+                className="underline"
+              >
                 Login
               </Link>
             </div>
@@ -134,7 +138,7 @@ export function ChooseTeamForm({
             />
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
-              <Link href="/auth/register" className="underline">
+              <Link to="/auth/register" className="underline">
                 Login
               </Link>
             </div>

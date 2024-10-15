@@ -41,13 +41,6 @@ pub struct VerifyFlagSchema {
     pub challenge_id: Uuid,
     pub flag: String,
 }
-
-#[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
-pub struct VerifySchema {
-    pub token: String,
-    pub player_id: Uuid,
-}
-
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct FlagVerificationResult {
     pub is_correct: bool,

@@ -17,15 +17,14 @@ export function SiteHeader({
   notifications?: components["schemas"]["NotificationModel"][];
   playerProfile?: components["schemas"]["UserModel"];
   logout?: ReactNode;
-  config: CtfConfig;
 }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex justify-between h-14 max-w-screen-2xl items-center">
-        <MainNav config={config} />
-        <MobileNav config={config} />
+        <MainNav />
+        <MobileNav />
         <nav className="flex items-center justify-end space-x-2">
-          <CtfTimer config={config} />
+          <CtfTimer />
           <ModeToggle />
           {typeof notifications !== "undefined" &&
           typeof playerProfile !== "undefined" ? (
@@ -35,7 +34,7 @@ export function SiteHeader({
             </>
           ) : (
             <Button variant="outline" asChild>
-              <Link href="/auth/login">Login</Link>
+              <Link to="/auth/login">Login</Link>
             </Button>
           )}
         </nav>

@@ -1,6 +1,3 @@
-"use client";
-
-import type { CtfConfig } from "@repo/config/schema";
 import { Button } from "@repo/ui/components/button";
 import { ScrollArea } from "@repo/ui/components/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@repo/ui/components/sheet";
@@ -8,7 +5,7 @@ import { cn } from "@repo/ui/lib/utils";
 import { type LinkProps, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
-export function MobileNav({ config }: { config: CtfConfig }) {
+export function MobileNav() {
   const [openNav, setOpenNav] = useState(false);
 
   return (
@@ -58,7 +55,8 @@ export function MobileNav({ config }: { config: CtfConfig }) {
           onOpenChange={setOpenNav}
         >
           <img src="/logo.jpeg" alt="CTF Logo" width={16} height={16} />
-          <span className="font-bold">{config.ctf.name}</span>
+          {/* TODO: read from config <span className="font-bold">{config.ctf.name}</span> */}
+          <span className="font-bold">Athena CTF</span>
         </MobileLink>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-3">

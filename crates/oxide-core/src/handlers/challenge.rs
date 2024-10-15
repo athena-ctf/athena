@@ -31,6 +31,7 @@ multiple_relation_with_model_api!(Challenge, ChallengeTag);
 #[utoipa::path(
     post,
     path = "/challenge",
+    operation_id = "create_challenge",
     request_body(content_type = "multipart/form-data", content = CreateChallengeSchema),
     responses(
         (status = 201, description = "Created challenge successfully", body = ChallengeModel),

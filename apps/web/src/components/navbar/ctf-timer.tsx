@@ -13,7 +13,7 @@ export function CtfTimer() {
   const now = new Date();
   const endOfToday = endOfDay(now);
 
-  const endDate = addDays(parseISO(config.ctf.start_time), config.ctf.duration);
+  const endDate = addDays(parseISO("2024-10-13T11:31:36.949912752Z"), 2);
   const remainingHours = endOfToday.getHours() - now.getHours();
   const nextDayAndExtraTime = add(now, {
     hours: remainingHours + 4,

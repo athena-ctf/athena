@@ -12,12 +12,6 @@ use utoipa::ToSchema;
 use super::hint::Entity as Hint;
 use super::sea_orm_active_enums::*;
 
-impl IntoActiveValue<Self> for BackendEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
-    }
-}
-
 impl IntoActiveValue<Self> for CategoryEnum {
     fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
         sea_orm::ActiveValue::Set(self)
@@ -94,7 +88,7 @@ pub struct HintSummary {
     pub cost: i32,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, FromJsonQueryResult, ToSchema)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, FromJsonQueryResult, ToSchema)]
 pub struct ContainerMeta {
     pub image: String,
     pub cmd: String,

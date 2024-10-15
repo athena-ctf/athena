@@ -16,27 +16,6 @@ use serde::{Deserialize, Serialize};
     utoipa :: ToSchema,
     axum_typed_multipart :: TryFromField,
 )]
-#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "backend_enum")]
-#[serde(rename_all = "lowercase")]
-pub enum BackendEnum {
-    #[sea_orm(string_value = "aws_s3")]
-    AwsS3,
-    #[sea_orm(string_value = "static_server")]
-    StaticServer,
-}
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    Eq,
-    EnumIter,
-    DeriveActiveEnum,
-    Copy,
-    Serialize,
-    Deserialize,
-    utoipa :: ToSchema,
-    axum_typed_multipart :: TryFromField,
-)]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "category_enum")]
 #[serde(rename_all = "lowercase")]
 pub enum CategoryEnum {

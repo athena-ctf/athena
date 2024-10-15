@@ -166,7 +166,7 @@ export function ChallengeModal({
             <div className="flex flex-col justify-between space-y-2">
               {files.map((file) => (
                 <Button key={file.id} variant="default" asChild>
-                  <Link href="">
+                  <Link href={file.url}>
                     <Download /> {file.name}
                   </Link>
                 </Button>

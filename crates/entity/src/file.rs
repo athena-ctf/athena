@@ -3,8 +3,6 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use super::sea_orm_active_enums::BackendEnum;
-
 #[derive(
     Clone,
     Debug,
@@ -26,9 +24,8 @@ pub struct Model {
     pub created_at: DateTime,
     pub updated_at: DateTime,
     pub name: String,
-    pub backend: BackendEnum,
-    pub mime: String,
-    pub sha1_hash: String,
+    #[sea_orm(unique)]
+    pub url: String,
     pub challenge_id: Uuid,
 }
 

@@ -1,4 +1,4 @@
-{{ ctf.domain_name }} {
+{{ ctf.domain }} {
     reverse_proxy web:3000
     encode gzip zstd
 
@@ -7,7 +7,7 @@
     }
 }
 
-admin.{{ ctf.domain_name }} {
+admin.{{ ctf.domain }} {
     reverse_proxy admin:3000
     encode gzip zstd
 
@@ -16,7 +16,15 @@ admin.{{ ctf.domain_name }} {
     }
 }
 
-api.{{ ctf.domain_name }} {
+api.{{ ctf.domain }} {
     reverse_proxy oxide:3000
     encode gzip zstd
+}
+
+static.{{ ctf.domain }} {
+    file_server /files {
+        root {{ file_storage.path }}
+        precompressed {{ file_storage.compress }}
+        disable_canonical_uris
+    }
 }

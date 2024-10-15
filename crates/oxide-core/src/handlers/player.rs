@@ -1,18 +1,15 @@
 use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
-use axum::Extension;
 use entity::extensions::UpdateProfileSchema;
 use oxide_macros::{crud_interface_api, multiple_relation_api, optional_relation_api};
-use sea_orm::{ActiveModelTrait, ActiveValue, IntoActiveModel};
 use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    AchievementModel, BanModel, FlagModel, InstanceModel, JsonResponse, NotificationModel,
-    PlayerDetails, PlayerModel, PlayerProfile, SubmissionModel, TeamModel, TokenClaims,
-    UnlockModel,
+    AchievementModel, BanModel, FlagModel, InstanceModel, NotificationModel, PlayerDetails,
+    PlayerModel, PlayerProfile, SubmissionModel, TeamModel, UnlockModel,
 };
 use crate::service::AppState;
 
@@ -82,58 +79,4 @@ pub async fn update_profile_by_id(
     Ok(Json(
         db::player::update_profile(id, body, &state.db_conn).await?,
     ))
-}
-
-#[utoipa::path(
-    get,
-    path = "/player/join/{team_name}",
-    params(("team_name" = String, Path, description = "Name of team to join")),
-    responses(
-        (status = 200, description = "Joined team by team name", body = JsonResponse),
-        (status = 400, description = "Invalid parameters format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 404, description = "No user found with specified id", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
-    )
-)]
-/// Join team by team name
-pub async fn join_team_by_team_name(
-    Extension(claims): Extension<TokenClaims>,
-    state: State<Arc<AppState>>,
-    Path(team_name): Path<String>,
-) -> Result<Json<JsonResponse>> {
-    let Some(team_model) = db::team::retrieve_by_name(&team_name, &state.db_conn).await? else {
-        return Err(Error::NotFound(
-            Error::NotFound(format!("Team with name '{team_name}'.")).to_string(),
-        ));
-    };
-
-    if team_model.ban_id.is_some() {
-        return Err(Error::BadRequest(
-            Error::BadRequest(format!(
-                "Team with name '{team_name}' is banned and cannot be joined."
-            ))
-            .to_string(),
-        ));
-    }
-
-    let Some(player_model) = db::player::retrieve(
-        claims.id,
-        &state.db_conn,
-        &mut state.cache_client.get().await.unwrap(),
-    )
-    .await?
-    else {
-        return Err(Error::NotFound("Player does not exist".to_owned()));
-    };
-
-    let mut player_model = player_model.into_active_model();
-    player_model.team_id = ActiveValue::Set(Some(team_model.id));
-
-    player_model.update(&state.db_conn).await?;
-
-    Ok(Json(JsonResponse {
-        message: "successfully joined team".to_owned(),
-    }))
 }

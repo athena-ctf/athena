@@ -47,7 +47,7 @@ export function TeamProfileCard({
           <div className="flex w-full flex-col space-y-3">
             <div className="flex">
               <Mail />
-              <Link href={`mailto:${team.email}`} className="mx-2">
+              <Link to={`mailto:${team.email}`} className="mx-2">
                 {team.email}
               </Link>
             </div>

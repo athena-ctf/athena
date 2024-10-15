@@ -30,4 +30,8 @@ pub struct GenerateSubCommand {
     #[argh(positional)]
     /// output file path
     pub out: String,
+
+    #[argh(switch)]
+    /// whether to output sample config file
+    pub config: bool,
 }
