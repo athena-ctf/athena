@@ -9,9 +9,8 @@ sea-orm = { workspace = true }
 serde = { workspace = true }
 utoipa = { workspace = true }
 oxide-macros = { path = "../oxide-macros" }
-axum_typed_multipart = { workspace = true }
 axum = { workspace = true }
 serde_json = { workspace = true }
 
 [package.metadata.cargo-machete]
-ignored = ["axum", "oxide-macros", "serde_json", "axum_typed_multipart"]
+ignored = ["axum", "oxide-macros", "serde_json"]

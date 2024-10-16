@@ -6,7 +6,7 @@ sea generate entity \
     --serde-skip-deserializing-primary-key \
     --model-extra-derives "utoipa::ToSchema","oxide_macros::derive::Details" \
     --model-extra-attributes "schema(as = Model)",'oxide(table(name = ""))' \
-    --enum-extra-derives "utoipa::ToSchema","axum_typed_multipart::TryFromField" \
+    --enum-extra-derives "utoipa::ToSchema" \
     --enum-extra-attributes 'serde(rename_all = "lowercase")' \
     -u postgres://postgres:postgres@localhost/athena_db \
     -o crates/entity/src

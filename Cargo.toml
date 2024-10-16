@@ -10,7 +10,6 @@ strip = true
 
 [workspace.dependencies]
 axum = { version = "0.7.7", features = ["macros", "multipart"] }
-axum_typed_multipart = "0.13.0"
 chrono = { version = "0.4.38", features = ["serde"] }
 sea-orm = { version = "1.0.1", features = [
     "runtime-tokio-rustls",

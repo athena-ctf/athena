@@ -1,5 +1,3 @@
-use axum::body::Bytes;
-use axum_typed_multipart::{FieldData, TryFromMultipart};
 use entity::extensions::{ContainerMeta, HintSummary};
 pub use entity::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -44,13 +42,6 @@ pub struct VerifyFlagSchema {
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct FlagVerificationResult {
     pub is_correct: bool,
-}
-
-#[derive(TryFromMultipart, Debug, ToSchema)]
-pub struct UploadedFile {
-    #[schema(value_type = String, format = Binary)]
-    pub file: FieldData<Bytes>,
-    pub challenge_id: Uuid,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
@@ -115,29 +106,6 @@ pub struct CreateChallengeSchema {
     pub tags: Vec<String>,
     pub flag_type: FlagTypeEnum,
 }
-
-#[derive(TryFromMultipart, Debug, ToSchema)]
-pub struct CreateImageSchema {
-    #[schema(value_type = String, format = Binary)]
-    pub file: FieldData<Bytes>,
-    pub container_name: String,
-    pub challenge_title: String,
-}
-
-#[derive(Serialize, Debug, Deserialize, Clone, Copy, ToSchema)]
-pub enum ImageStatus {
-    Build,
-    Push,
-    Done,
-    Failed,
-}
-
-#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct ContainerImage {
-    pub name: String,
-    pub status: ImageStatus,
-}
-
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct StatSchema {
     pub achievement: u64,

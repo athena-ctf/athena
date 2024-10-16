@@ -31,7 +31,6 @@ mod doc;
 mod file;
 mod flag;
 mod hint;
-mod image;
 mod instance;
 mod invite;
 mod leaderboard;
@@ -131,7 +130,6 @@ pub fn app(state: Arc<AppState>) -> axum::Router {
         .merge(file::router())
         .merge(flag::router())
         .merge(hint::router())
-        .merge(image::router())
         .merge(instance::router())
         .merge(invite::router())
         .merge(leaderboard::router())

@@ -2,21 +2,31 @@ package fileserver
 
 import (
 	"fmt"
-	"time"
 
+	"athena.io/fileserver/ent"
+	"athena.io/fileserver/handler"
+	"athena.io/fileserver/storage"
+	jwt "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
-)
-
-var (
-	bucketName = "athena_storage"
-	expires    = time.Minute * 15
 )
 
 func Run() error {
 	app := fiber.New()
-	s3Presigner := NewS3()
-	azPresigner, _ := NewAz()
-	gcpPresigner, _ := NewGCP()
+	s3Presigner := storage.NewS3()
+	azPresigner, _ := storage.NewAz()
+	gcpPresigner, _ := storage.NewGCP()
+
+	client, err := ent.Open("postgres", "host=<host> port=<port> user=<user> dbname=<database> password=<pass>")
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	fileHandler := handler.New(client, &s3Presigner, &azPresigner, &gcpPresigner)
+
+	app.Use(jwt.New(jwt.Config{
+		SigningKey: jwt.SigningKey{Key: []byte("secret")},
+	}))
 
 	app.Post("/upload/local", func(c *fiber.Ctx) error {
 		file, err := c.FormFile("document")
@@ -57,6 +67,8 @@ func Run() error {
 
 		return c.JSON(map[string]string{"url": url})
 	})
+
+	app.Get("/download/:id", fileHandler.Download)
 
 	return app.Listen(":3000")
 }

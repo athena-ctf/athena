@@ -1,4 +1,4 @@
-package fileserver
+package storage
 
 import (
 	"context"

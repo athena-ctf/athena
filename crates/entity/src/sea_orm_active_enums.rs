@@ -14,7 +14,6 @@ use serde::{Deserialize, Serialize};
     Serialize,
     Deserialize,
     utoipa :: ToSchema,
-    axum_typed_multipart :: TryFromField,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "category_enum")]
 #[serde(rename_all = "lowercase")]
@@ -35,7 +34,6 @@ pub enum CategoryEnum {
     Serialize,
     Deserialize,
     utoipa :: ToSchema,
-    axum_typed_multipart :: TryFromField,
 )]
 #[sea_orm(
     rs_type = "String",
@@ -62,7 +60,6 @@ pub enum ChallengeStatusEnum {
     Serialize,
     Deserialize,
     utoipa :: ToSchema,
-    axum_typed_multipart :: TryFromField,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "difficulty_enum")]
 #[serde(rename_all = "lowercase")]
@@ -87,7 +84,6 @@ pub enum DifficultyEnum {
     Serialize,
     Deserialize,
     utoipa :: ToSchema,
-    axum_typed_multipart :: TryFromField,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "flag_type_enum")]
 #[serde(rename_all = "lowercase")]
@@ -110,7 +106,6 @@ pub enum FlagTypeEnum {
     Serialize,
     Deserialize,
     utoipa :: ToSchema,
-    axum_typed_multipart :: TryFromField,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "group_enum")]
 #[serde(rename_all = "lowercase")]
@@ -131,7 +126,6 @@ pub enum GroupEnum {
     Serialize,
     Deserialize,
     utoipa :: ToSchema,
-    axum_typed_multipart :: TryFromField,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "role_enum")]
 #[serde(rename_all = "lowercase")]
@@ -158,7 +152,6 @@ pub enum RoleEnum {
     Serialize,
     Deserialize,
     utoipa :: ToSchema,
-    axum_typed_multipart :: TryFromField,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "ticket_status_enum")]
 #[serde(rename_all = "lowercase")]

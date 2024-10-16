@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use axum::routing::{get, post};
+use axum::routing::get;
 
 use super::router_wrapper::Router;
 use crate::handlers::file;
@@ -16,5 +16,4 @@ pub fn router() -> Router<Arc<AppState>> {
                 .patch(file::update_by_id),
         )
         .route("/file/:id/challenge", get(file::retrieve_challenge_by_id))
-        .route("/file/upload", post(file::upload))
 }

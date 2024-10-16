@@ -1,24 +1,15 @@
 use std::collections::HashMap;
 use std::iter::once_with;
-use std::sync::LazyLock;
 
-use bollard::auth::DockerCredentials;
 use bollard::container::{
     Config as ContainerConfig, CreateContainerOptions, RemoveContainerOptions,
     StartContainerOptions,
 };
-use bollard::image::{BuildImageOptions, PushImageOptions};
 use bollard::secret::{HostConfig, PortBinding};
 use bollard::Docker;
 use entity::extensions::ContainerMeta;
-use futures::StreamExt;
-use tokio::sync::RwLock;
 
 use crate::errors::Result;
-use crate::schemas::ImageStatus;
-
-pub static IMAGE_PUSH_STATE: LazyLock<RwLock<HashMap<String, ImageStatus>>> =
-    LazyLock::new(|| RwLock::new(HashMap::new()));
 
 #[inline]
 pub fn connect() -> Result<Docker> {
@@ -101,67 +92,4 @@ pub async fn delete_instance(docker: &Docker, container_id: String) -> Result<()
         .await?;
 
     Ok(())
-}
-
-pub fn upload_image(
-    contents: bytes::Bytes,
-    container_name: String,
-    challenge_title: String,
-    creds: DockerCredentials,
-    registry_url: String,
-    docker: Docker,
-) {
-    tokio::spawn(async move {
-        IMAGE_PUSH_STATE.write().await.insert(
-            format!("{challenge_title}_{container_name}"),
-            ImageStatus::Build,
-        );
-
-        let mut stream = docker.build_image(
-            BuildImageOptions {
-                dockerfile: "Dockerfile".to_owned(),
-                t: format!("{registry_url}/{challenge_title}_{container_name}"),
-                rm: true,
-                ..Default::default()
-            },
-            Some(HashMap::from([(registry_url.clone(), creds.clone())])),
-            Some(contents),
-        );
-
-        while let Some(chunk) = stream.next().await {
-            if let Err(err) = chunk {
-                IMAGE_PUSH_STATE.write().await.insert(
-                    format!("{challenge_title}_{container_name}"),
-                    ImageStatus::Failed,
-                );
-                panic!("{err}")
-            }
-        }
-
-        IMAGE_PUSH_STATE.write().await.insert(
-            format!("{challenge_title}_{container_name}"),
-            ImageStatus::Push,
-        );
-
-        let mut stream = docker.push_image(
-            &format!("{registry_url}/{challenge_title}_{container_name}"),
-            Some(PushImageOptions { tag: "latest" }),
-            Some(creds),
-        );
-
-        while let Some(chunk) = stream.next().await {
-            if let Err(err) = chunk {
-                IMAGE_PUSH_STATE.write().await.insert(
-                    format!("{challenge_title}_{container_name}"),
-                    ImageStatus::Failed,
-                );
-                panic!("{err}")
-            }
-        }
-
-        IMAGE_PUSH_STATE.write().await.insert(
-            format!("{challenge_title}_{container_name}"),
-            ImageStatus::Done,
-        );
-    });
 }

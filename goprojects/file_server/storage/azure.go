@@ -1,8 +1,7 @@
-package fileserver
+package storage
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
@@ -59,7 +58,6 @@ func NewAz() (AzPresigner, error) {
 	// TODO: add connection string
 	client, err := azblob.NewClientFromConnectionString("", nil)
 	if err != nil {
-		log.Printf("Couldn't create Azure Blob Storage client. Here's why: %v\n", err)
 		return AzPresigner{}, err
 	}
 

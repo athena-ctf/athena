@@ -8,7 +8,6 @@ pub mod config;
 pub mod file;
 pub mod flag;
 pub mod hint;
-pub mod image;
 pub mod instance;
 pub mod invite;
 pub mod leaderboard;
