@@ -6,14 +6,18 @@ require (
 	cloud.google.com/go/storage v1.44.0
 	entgo.io/ent v0.14.1
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.4.1
+	github.com/andybalholm/brotli v1.1.1
 	github.com/aws/aws-sdk-go-v2 v1.32.2
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.65.3
 	github.com/gofiber/contrib/jwt v1.0.10
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/google/uuid v1.6.0
+	github.com/klauspost/compress v1.17.11
 	golang.org/x/oauth2 v0.23.0
 	google.golang.org/api v0.197.0
 )
+
+replace athena.io/config => ../config
 
 require (
 	ariga.io/atlas v0.19.1-0.20240203083654-5948b60a8e43 // indirect
@@ -31,7 +35,6 @@ require (
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.48.1 // indirect
 	github.com/MicahParks/keyfunc/v2 v2.1.0 // indirect
 	github.com/agext/levenshtein v1.2.1 // indirect
-	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.6 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.21 // indirect
@@ -58,7 +61,6 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.3.4 // indirect
 	github.com/googleapis/gax-go/v2 v2.13.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.13.0 // indirect
-	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect

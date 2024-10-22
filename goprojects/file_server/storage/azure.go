@@ -2,17 +2,58 @@ package storage
 
 import (
 	"context"
+	"fmt"
+	"net/url"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
+func generateSasURL(accountName, accountKey, containerName, blobName, fileName string) (string, error) {
+	startTime := time.Now().UTC().Add(-1 * time.Minute)
+	expiryTime := time.Now().UTC().Add(expires)
+
+	sharedKey, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	if err != nil {
+		return "", err
+	}
+
+	permissions := sas.BlobPermissions{Read: true}
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:           sas.ProtocolHTTPS,
+		StartTime:          startTime,
+		ExpiryTime:         expiryTime,
+		Permissions:        permissions.String(),
+		ContainerName:      containerName,
+		BlobName:           blobName,
+		ContentDisposition: fmt.Sprintf("attachment; filename=\"%s\"", fileName),
+	}.SignWithSharedKey(sharedKey)
+
+	if err != nil {
+		return "", fmt.Errorf("error generating SAS query parameters: %v", err)
+	}
+
+	baseURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s",
+		accountName,
+		containerName,
+		blobName)
+
+	u, err := url.Parse(baseURL)
+	if err != nil {
+		return "", fmt.Errorf("error parsing URL: %v", err)
+	}
+
+	u.RawQuery = sasQueryParams.Encode()
+
+	return u.String(), nil
+}
+
 type AzPresigner struct {
 	Client *azblob.Client
 }
 
-func (presigner AzPresigner) Download(ctx context.Context, filename string) (string, error) {
+func (presigner AzPresigner) Download(ctx context.Context, filename string, displayName string) (string, error) {
 	blobClient := presigner.Client.ServiceClient().NewContainerClient(bucketName).NewBlobClient(filename)
 
 	permissions := sas.BlobPermissions{Read: true}

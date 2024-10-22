@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -11,12 +12,11 @@ type S3Presigner struct {
 	PresignClient *s3.PresignClient
 }
 
-func (presigner S3Presigner) Download(
-	ctx context.Context, filename string) (string, error) {
-
+func (presigner S3Presigner) Download(ctx context.Context, filename string, displayName string) (string, error) {
 	request, err := presigner.PresignClient.PresignGetObject(ctx, &s3.GetObjectInput{
-		Bucket: aws.String(bucketName),
-		Key:    aws.String(filename),
+		Bucket:                     aws.String(bucketName),
+		Key:                        aws.String(filename),
+		ResponseContentDisposition: aws.String(fmt.Sprintf("attachment;filename=\"%s\"", displayName)),
 	}, func(opts *s3.PresignOptions) {
 		opts.Expires = expires
 	})

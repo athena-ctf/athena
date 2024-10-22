@@ -1,10 +1,11 @@
 package fileserver
 
 import (
+	"encoding/base64"
 	"fmt"
 
+	"athena.io/config"
 	"athena.io/fileserver/ent"
-	"athena.io/fileserver/handler"
 	"athena.io/fileserver/storage"
 	jwt "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
@@ -13,62 +14,45 @@ import (
 func Run() error {
 	app := fiber.New()
 	s3Presigner := storage.NewS3()
-	azPresigner, _ := storage.NewAz()
-	gcpPresigner, _ := storage.NewGCP()
+	azPresigner, err := storage.NewAz()
+	if err != nil {
+		return err
+	}
 
-	client, err := ent.Open("postgres", "host=<host> port=<port> user=<user> dbname=<database> password=<pass>")
+	gcpPresigner, err := storage.NewGCP()
+	if err != nil {
+		return err
+	}
+
+	client, err := ent.Open(
+		"postgres",
+		fmt.Sprintf(
+			"host=%s port=%d user=%s dbname=athena_db password=%s",
+			config.Config.Database.Host,
+			config.Config.Database.Port,
+			config.Config.Database.Username,
+			config.Config.Database.Password,
+		),
+	)
 	if err != nil {
 		return err
 	}
 	defer client.Close()
 
-	fileHandler := handler.New(client, &s3Presigner, &azPresigner, &gcpPresigner)
+	fileHandler := NewHandler(client, &s3Presigner, &azPresigner, &gcpPresigner)
+	b64 := make([]byte, base64.StdEncoding.DecodedLen(len(config.Config.Jwt.Secret)))
+	n, err := base64.StdEncoding.Decode(b64, []byte(config.Config.Jwt.Secret))
+	if err != nil {
+		return err
+	}
 
 	app.Use(jwt.New(jwt.Config{
-		SigningKey: jwt.SigningKey{Key: []byte("secret")},
+		SigningKey: jwt.SigningKey{Key: b64[:n]},
 	}))
 
-	app.Post("/upload/local", func(c *fiber.Ctx) error {
-		file, err := c.FormFile("document")
-		if err != nil {
-			return err
-		}
-
-		// TODO: handle file location and hashing
-		return c.SaveFile(file, fmt.Sprintf("./%s", file.Filename))
-	})
-
-	app.Get("/upload/azure", func(c *fiber.Ctx) error {
-		url, err := azPresigner.Upload(c.Context(), c.Get("filename", ""))
-
-		if err != nil {
-			return c.Status(501).JSON(map[string]string{"err": err.Error()})
-		}
-
-		return c.JSON(map[string]string{"url": url})
-	})
-
-	app.Get("/upload/gcp", func(c *fiber.Ctx) error {
-		url, err := gcpPresigner.Upload(c.Context(), c.Get("filename", ""))
-
-		if err != nil {
-			return c.Status(501).JSON(map[string]string{"err": err.Error()})
-		}
-
-		return c.JSON(map[string]string{"url": url})
-	})
-
-	app.Get("/upload/s3", func(c *fiber.Ctx) error {
-		url, err := s3Presigner.Upload(c.Context(), c.Get("filename", ""))
-
-		if err != nil {
-			return c.Status(501).JSON(map[string]string{"err": err.Error()})
-		}
-
-		return c.JSON(map[string]string{"url": url})
-	})
-
+	app.Post("/upload/:location", fileHandler.Upload)
 	app.Get("/download/:id", fileHandler.Download)
+	app.Delete("/delete/:id", fileHandler.Delete)
 
 	return app.Listen(":3000")
 }

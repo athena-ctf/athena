@@ -13,7 +13,7 @@ type GcpPresigner struct {
 	Client *storage.Client
 }
 
-func (presigner GcpPresigner) Download(ctx context.Context, filename string) (string, error) {
+func (presigner GcpPresigner) Download(ctx context.Context, filename string, displayName string) (string, error) {
 	bucket := presigner.Client.Bucket(bucketName)
 
 	opts := &storage.SignedURLOptions{
