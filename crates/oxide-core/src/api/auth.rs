@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use super::router_wrapper::Router;
+use axum::Router;
 use crate::service::AppState;
 
 pub mod admin;

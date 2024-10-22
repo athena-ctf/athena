@@ -2255,7 +2255,6 @@ version = "0.1.0"
 dependencies = [
  "argon2",
  "askama",
- "async-compression",
  "axum",
  "base64ct",
  "bb8",

@@ -5,9 +5,9 @@ use std::time::Duration;
 use axum::extract::{MatchedPath, Request};
 use axum::http::Method;
 use axum::routing::get;
+use axum::Router;
 use bb8_redis::redis::{ConnectionAddr, ConnectionInfo, ProtocolVersion, RedisConnectionInfo};
 use bb8_redis::RedisConnectionManager;
-use router_wrapper::Router;
 use sea_orm::{Database, DatabaseConnection};
 use tokio::signal;
 use tokio::sync::RwLock;
@@ -36,7 +36,6 @@ mod invite;
 mod leaderboard;
 mod notification;
 mod player;
-pub mod router_wrapper;
 mod settings;
 mod submission;
 mod tag;
@@ -121,7 +120,7 @@ pub async fn start(settings: Settings) -> Result<()> {
 }
 
 pub fn app(state: Arc<AppState>) -> axum::Router {
-    let router = Router::new()
+    Router::new()
         .merge(achievement::router())
         .merge(auth::router())
         .merge(ban::router())
@@ -142,19 +141,7 @@ pub fn app(state: Arc<AppState>) -> axum::Router {
         .merge(team::router())
         .merge(ticket::router())
         .merge(unlock::router())
-        .route("/stats", get(crate::handlers::stats::get));
-
-    #[cfg(feature = "wrapped_router")]
-    {
-        let paths = router.paths;
-
-        tracing::debug!("paths list: {:?}", paths);
-    }
-
-    #[cfg(feature = "wrapped_router")]
-    let router = router.inner;
-
-    router
+        .route("/stats", get(crate::handlers::stats::get))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
             middleware::ctf_timer,

@@ -22,7 +22,7 @@ single_relation_api!(Achievement, Challenge);
 
 #[utoipa::path(
     post,
-    path = "/achievement",
+    path = "/admin/achievement",
     operation_id = "create_achievement",
     request_body = AchievementDetails,
     responses(
@@ -60,7 +60,7 @@ pub async fn create(
 
 #[utoipa::path(
     delete,
-    path = "/achievement/{id}",
+    path = "/admin/achievement/{id}",
     operation_id = "delete_achievement",
     params(("id" = Uuid, Path, description = "Id of entity")),
     responses(

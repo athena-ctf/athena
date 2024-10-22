@@ -279,7 +279,7 @@ macro_rules! list_api {
             #[doc = "List " $entity:snake "s"]
             #[utoipa::path(
                 get,
-                path = concat!("/",stringify!([<$entity:snake>])),
+                path = concat!("/admin/",stringify!([<$entity:snake>])),
                 operation_id = concat!("list_",stringify!([<$entity:snake>]),"s"),
                 responses(
                     (status = 200, description = concat!("Listed ",stringify!([<$entity:snake>]),"s successfully"), body = [[<$entity Model>]]),
@@ -302,7 +302,7 @@ macro_rules! create_api {
             #[doc = "Create " $entity]
             #[utoipa::path(
                 post,
-                path = concat!("/",stringify!([<$entity:snake>])),
+                path = concat!("/admin/",stringify!([<$entity:snake>])),
                 operation_id = concat!("create_",stringify!([<$entity:snake>])),
                 request_body = [<$entity Details>],
                 responses(
@@ -331,7 +331,7 @@ macro_rules! delete_api {
             #[doc = "Delete " $entity:snake " by id"]
             #[utoipa::path(
                 delete,
-                path = concat!("/",stringify!([<$entity:snake>]),"/{id}"),
+                path = concat!("/admin/",stringify!([<$entity:snake>]),"/{id}"),
                 operation_id = concat!("delete_",stringify!([<$entity:snake>]),"_by_id"),
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
@@ -367,7 +367,7 @@ macro_rules! retrieve_api {
             #[doc = "Retrieve " $entity:snake " by id"]
             #[utoipa::path(
                 get,
-                path = concat!("/",stringify!([<$entity:snake>]),"/{id}"),
+                path = concat!("/admin/",stringify!([<$entity:snake>]),"/{id}"),
                 operation_id = concat!("retrieve_",stringify!([<$entity:snake>]),"_by_id"),
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
@@ -405,7 +405,7 @@ macro_rules! update_api {
             #[doc = "Update " $entity:snake " by id"]
             #[utoipa::path(
                 patch,
-                path = concat!("/",stringify!([<$entity:snake>]),"/{id}"),
+                path = concat!("/admin/",stringify!([<$entity:snake>]),"/{id}"),
                 operation_id = concat!("update_",stringify!([<$entity:snake>]),"_by_id"),
                 request_body = [<$entity Details>],
                 params(("id" = Uuid, Path, description = "Id of entity")),
@@ -444,7 +444,7 @@ macro_rules! optional_relation_api {
             #[doc = "Retrieve " $entity:snake " " $related:snake " by id"]
             #[utoipa::path(
                 get,
-                path = concat!("/",stringify!([<$entity:snake>]),"/{id}/",stringify!([<$related:snake>])),
+                path = concat!("/admin/",stringify!([<$entity:snake>]),"/{id}/",stringify!([<$related:snake>])),
                 operation_id = concat!("retrieve_",stringify!([<$entity:snake>]),"_",stringify!([<$related:snake>]),"_by_id"),
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
@@ -482,7 +482,7 @@ macro_rules! single_relation_api {
             #[doc = "List " $entity:snake " " $related:snake " by id"]
             #[utoipa::path(
                 get,
-                path = concat!("/",stringify!([<$entity:snake>]),"/{id}/",stringify!([<$related:snake>])),
+                path = concat!("/admin/",stringify!([<$entity:snake>]),"/{id}/",stringify!([<$related:snake>])),
                 operation_id = concat!("retrieve_",stringify!([<$entity:snake>]),"_",stringify!([<$related:snake>]),"_by_id"),
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
@@ -517,7 +517,7 @@ macro_rules! multiple_relation_with_model_api {
             #[doc = "List " $entity:snake " " $related:snake " by id"]
             #[utoipa::path(
                 get,
-                path = concat!("/",stringify!([<$entity:snake>]),"/{id}/",stringify!([<$related:snake>]),"s"),
+                path = concat!("/admin/",stringify!([<$entity:snake>]),"/{id}/",stringify!([<$related:snake>]),"s"),
                 operation_id = concat!("list_",stringify!([<$entity:snake>]),"_",stringify!([<$related:snake>]),"s_by_id"),
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
@@ -558,7 +558,7 @@ macro_rules! multiple_relation_api {
             #[doc = "List " $entity:snake " " $related:snake " by id"]
             #[utoipa::path(
                 get,
-                path = concat!("/",stringify!([<$entity:snake>]),"/{id}/",stringify!([<$related:snake>]),"s"),
+                path = concat!("/admin/",stringify!([<$entity:snake>]),"/{id}/",stringify!([<$related:snake>]),"s"),
                 operation_id = concat!("list_",stringify!([<$entity:snake>]),"_",stringify!([<$related:snake>]),"s_by_id"),
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
@@ -605,7 +605,7 @@ macro_rules! join_crud_interface_api {
             #[doc = "List " $entity:snake "s"]
             #[utoipa::path(
                 get,
-                path = concat!("/",stringify!([<$entity:snake>])),
+                path = concat!("/admin/",stringify!([<$entity:snake>])),
                 operation_id = concat!("list_",stringify!([<$entity:snake>]),"s"),
                 responses(
                     (status = 200, description = concat!("Listed ",stringify!([<$entity:snake>]),"s successfully"), body = [[<$entity Model>]]),
@@ -621,7 +621,7 @@ macro_rules! join_crud_interface_api {
             #[doc = "Create " $entity]
             #[utoipa::path(
                 post,
-                path = concat!("/",stringify!([<$entity:snake>])),
+                path = concat!("/admin/",stringify!([<$entity:snake>])),
                 operation_id = concat!("create_",stringify!([<$entity:snake>])),
                 request_body = [<$entity Details>],
                 responses(
@@ -643,7 +643,7 @@ macro_rules! join_crud_interface_api {
             #[doc = "Delete " $entity:snake " by id"]
             #[utoipa::path(
                 delete,
-                path = concat!("/",stringify!([<$entity:snake>]),"/{",$related_from_id,"}-{",$related_to_id,"}"),
+                path = concat!("/admin/",stringify!([<$entity:snake>]),"/{",$related_from_id,"}-{",$related_to_id,"}"),
                 operation_id = concat!("delete_",stringify!([<$entity:snake>]),"_by_id"),
                 params(
                     ($related_from_id = Uuid, Path, description = "Id of entity"),
@@ -675,7 +675,7 @@ macro_rules! join_crud_interface_api {
             #[doc = "Retrieve " $entity:snake " by id"]
             #[utoipa::path(
                 get,
-                path = concat!("/",stringify!([<$entity:snake>]),"/{",$related_from_id,"}-{",$related_to_id,"}"),
+                path = concat!("/admin/",stringify!([<$entity:snake>]),"/{",$related_from_id,"}-{",$related_to_id,"}"),
                 operation_id = concat!("retrieve_",stringify!([<$entity:snake>]),"_by_id"),
                 params(
                     ($related_from_id = Uuid, Path, description = "Id of entity"),
@@ -709,7 +709,7 @@ macro_rules! join_crud_interface_api {
             #[doc = "Update " $entity:snake " by id"]
             #[utoipa::path(
                 patch,
-                path = concat!("/",stringify!([<$entity:snake>]),"/{",$related_from_id,"}-{",$related_to_id,"}"),
+                path = concat!("/admin/",stringify!([<$entity:snake>]),"/{",$related_from_id,"}-{",$related_to_id,"}"),
                 operation_id = concat!("update_",stringify!([<$entity:snake>]),"_by_id"),
                 params(
                     ($related_from_id = Uuid, Path, description = "Id of entity"),

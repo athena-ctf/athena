@@ -8,12 +8,6 @@ license = "MIT OR Apache-2.0"
 [dependencies]
 argon2 = { version = "0.5.3", features = ["std"] }
 askama = "0.12.1"
-async-compression = { version = "0.4.12", features = [
-    "tokio",
-    "gzip",
-    "zstd",
-    "brotli",
-] }
 axum = { workspace = true }
 base64ct = "1.6.0"
 bb8 = "0.8.5"
