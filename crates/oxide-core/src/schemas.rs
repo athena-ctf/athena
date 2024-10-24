@@ -1,4 +1,4 @@
-use entity::extensions::{ContainerMeta, HintSummary};
+use entity::extensions::{HintSummary, PartialChallenge};
 pub use entity::prelude::*;
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumString};
@@ -44,7 +44,7 @@ pub struct FlagVerificationResult {
     pub is_correct: bool,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, ToSchema)]
 pub enum TokenClaimKind {
     Player,
     Admin(RoleEnum),
@@ -81,31 +81,17 @@ pub struct RegisterPlayer {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct ChallengeSolves {
-    pub solves: u64,
+pub struct ChallengeSummary {
+    pub challenge: PartialChallenge,
+    pub tags: Vec<TagDetails>,
+    pub solved: bool,
 }
 
-#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct ChallengeRelations {
-    pub challenge: ChallengeModel,
+pub struct DetailedChallenge {
     pub files: Vec<FileModel>,
     pub hints: Vec<HintSummary>,
-    pub tags: Vec<TagModel>,
-    pub solves: u64,
 }
 
-#[derive(Debug, ToSchema, Serialize, Deserialize)]
-pub struct CreateChallengeSchema {
-    pub container_meta: Option<ContainerMeta>,
-    pub author_name: String,
-    pub description: String,
-    pub difficulty: DifficultyEnum,
-    pub points: i32,
-    pub status: ChallengeStatusEnum,
-    pub title: String,
-    pub tags: Vec<String>,
-    pub flag_type: FlagTypeEnum,
-}
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct StatSchema {
     pub achievement: u64,

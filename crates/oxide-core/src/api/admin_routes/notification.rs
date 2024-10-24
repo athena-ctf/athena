@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use axum::routing::get;
-
 use axum::Router;
+
 use crate::handlers::notification;
 use crate::service::AppState;
 

@@ -68,6 +68,7 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(Challenge::ContainerMeta).json())
                     .col(ColumnDef::new(Challenge::AuthorName).string().not_null())
+                    .col(ColumnDef::new(Challenge::Solves).integer().not_null())
                     .to_owned(),
             )
             .await?;
@@ -115,6 +116,7 @@ enum Challenge {
     ContainerMeta,
     Difficulty,
     FlagType,
+    Solves,
 }
 
 #[derive(DeriveIden)]

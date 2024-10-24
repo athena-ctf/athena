@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use axum::routing::get;
-
 use axum::Router;
+
 use crate::handlers::challenge;
 use crate::service::AppState;
 
@@ -22,14 +22,6 @@ pub fn router() -> Router<Arc<AppState>> {
             get(challenge::list_instances_by_id),
         )
         .route("/challenge/:id/tags", get(challenge::list_tags_by_id))
-        .route(
-            "/challenge/:id/solves",
-            get(challenge::calculate_solves_by_id),
-        )
-        .route(
-            "/challenge/:id/relations",
-            get(challenge::retrieve_relations_by_id),
-        )
         .route(
             "/challenge/:id/achievements",
             get(challenge::list_achievements_by_id),

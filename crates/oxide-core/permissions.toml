@@ -1,133 +1,113 @@
-[team]
-create = 0
-update = 0
-delete = 0
-list = 0
-retrieve = 0
-retrieve_invite = 0
-retrieve_player = 0
-calculate_points = 0
-list_achievements = 0
+[user]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
 
-[challenge]
-retrieve = 0
-create = 0
-delete = 0
-update = 0
-list = 0
-retrieve_file = 0
-retrieve_hint = 0
-retrieve_instance = 0
-retrieve_tag = 0
-calculate_solves = 0
-retrieve_relations = 0
-list_achievements = 0
-
-[file]
-create = 0
-retrieve = 0
-update = 0
-delete = 0
-list = 0
-retrieve_challenge = 0
-upload = 0
-download = 0
-
-[hint]
-create = 0
-retrieve = 0
-update = 0
-delete = 0
-list = 0
-retrieve_challenge = 0
-
-[instance]
-create = 0
-retrieve = 0
-update = 0
-list = 0
-delete = 0
-retrieve_player = 0
-retrieve_challenge = 0
-
-[notification]
-create = 0
-retrieve = 0
-update = 0
-delete = 0
-list = 0
-retrieve_player = 0
-
-[submission]
-create = 0
-retrieve = 0
-update = 0
-delete = 0
-list = 0
-retrieve_player = 0
-
-[flag]
-create = 0
-update = 0
-delete = 0
-verify = 0
-list = 0
-retrieve = 0
-retrieve_player = 0
-retrieve_challenge = 0
-
-[invite]
-retrieve = 0
-create = 0
-update = 0
-delete = 0
-list = 0
-retrieve_team = 0
-join_team = 0
+[admin]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
 
 [ban]
-create = 0
-update = 0
-retrieve = 0
-list = 0
-delete = 0
-retrieve_player = 0
-retrieve_team = 0
-ban_player = 0
-ban_team = 0
+create = "judge"
+update = "moderator"
+delete = "analyst"
+read = "analyst"
 
-[tag]
-create = 0
-update = 0
-retrieve = 0
-delete = 0
-list = 0
-retrieve_challenge = 0
+[team]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
 
 [player]
-create = 0
-update = 0
-list = 0
-delete = 0
-retrieve = 0
-update_profile = 0
-retrieve_flag = 0
-retrieve_submission = 0
-retrieve_team = 0
-list_achievements = 0
-retrieve_instance = 0
-calculate_points = 0
-rankings = 0
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[challenge]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
 
 [achievement]
-list = 0
-retrieve = 0
-update = 0
-create = 0
-delete = 0
-retrieve_challenge = 0
-retrieve_player = 0
-retrieve_team = 0
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
 
-[stat]
-get = 0
+[file]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[flag]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[tag]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[instance]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[hint]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[unlock]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[notification]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[invite]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[submission]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[challenge_tag]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[leaderboard]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[ticket]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"

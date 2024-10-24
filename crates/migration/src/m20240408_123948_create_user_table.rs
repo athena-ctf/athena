@@ -51,7 +51,7 @@ impl MigrationTrait for Migration {
             .await?;
 
         manager
-            .drop_type(Type::drop().if_exists().name(GroupEnum).to_owned())
+            .drop_type(Type::drop().name(GroupEnum).to_owned())
             .await?;
 
         Ok(())

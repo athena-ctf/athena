@@ -12,13 +12,13 @@ use crate::service::AppState;
     get,
     path = "/stats",
     responses(
-        (status = 200, description = "Got stats successfully", body = StatSchema),
+        (status = 200, description = "Retrieved stats successfully", body = StatSchema),
         (status = 401, description = "Action is permissible after login", body = ErrorModel),
         (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
         (status = 500, description = "Unexpected error", body = ErrorModel)
     )
 )]
-/// Get stats of all tables
-pub async fn get(state: State<Arc<AppState>>) -> Result<Json<StatSchema>> {
+/// Retrieve stats of all tables
+pub async fn retrieve(state: State<Arc<AppState>>) -> Result<Json<StatSchema>> {
     Ok(Json(db::stats(&state.db_conn).await?))
 }

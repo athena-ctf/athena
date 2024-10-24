@@ -47,4 +47,4 @@ RUN chown appuser /usr/local/bin/oxide
 USER appuser
 
 WORKDIR /oxide
-ENTRYPOINT oxide run /data/config.toml -m
+ENTRYPOINT oxide run /data/config.toml

@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
-use axum::routing::{delete, get, post};
-
+use axum::routing::get;
 use axum::Router;
+
 use crate::handlers::instance;
 use crate::service::AppState;
 
@@ -20,6 +20,4 @@ pub fn router() -> Router<Arc<AppState>> {
             get(instance::retrieve_challenge_by_id),
         )
         .route("/instance/:id/player", get(instance::retrieve_player_by_id))
-        .route("/instance/new", post(instance::create_new))
-        .route("/instance/:id/destroy", delete(instance::destroy))
 }

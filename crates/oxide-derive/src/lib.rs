@@ -68,7 +68,8 @@ pub fn derive_details(input: TokenStream) -> TokenStream {
     };
 
     quote! {
-        #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, utoipa::ToSchema)]
+        #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, utoipa::ToSchema, sea_orm::FromQueryResult, sea_orm::DerivePartialModel)]
+        #[sea_orm(entity = "Entity")]
         pub struct #details_name {
             #(pub #field_names_cloned: #field_types,)*
         }

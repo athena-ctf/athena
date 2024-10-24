@@ -34,6 +34,7 @@ pub struct Model {
     pub status: ChallengeStatusEnum,
     pub container_meta: Option<ContainerMeta>,
     pub author_name: String,
+    pub solves: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

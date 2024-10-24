@@ -8,7 +8,8 @@ use axum::response::IntoResponse;
 use axum::Json;
 use jsonwebtoken::{DecodingKey, Validation};
 
-use crate::schemas::{ErrorModel, TokenClaims};
+use crate::permissions::has_permission;
+use crate::schemas::{ErrorModel, TokenClaimKind, TokenClaims};
 use crate::service::AppState;
 
 pub async fn middleware(
@@ -47,7 +48,31 @@ pub async fn middleware(
     })?
     .claims;
 
+    let claims_kind = claims.kind;
+
     req.extensions_mut().insert(claims);
 
-    Ok(next.run(req).await)
+    match claims_kind {
+        TokenClaimKind::Player if req.uri().path().starts_with("/player") => {
+            Ok(next.run(req).await)
+        }
+
+        TokenClaimKind::Admin(role)
+            if req.uri().path().starts_with("/admin")
+                && has_permission(
+                    req.method(),
+                    req.uri().path().strip_prefix("/admin/").unwrap(),
+                    role,
+                ) =>
+        {
+            Ok(next.run(req).await)
+        }
+
+        _ => Err((
+            StatusCode::UNAUTHORIZED,
+            Json(ErrorModel {
+                message: "Cannot access specified resource".to_owned(),
+            }),
+        )),
+    }
 }

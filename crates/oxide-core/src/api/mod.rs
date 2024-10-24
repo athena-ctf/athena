@@ -21,28 +21,12 @@ use crate::errors::{Error, Result};
 use crate::service::{AppState, Settings};
 use crate::{docker, middleware};
 
-mod achievement;
-mod admin;
+mod admin_routes;
 mod auth;
-mod ban;
-mod challenge;
-mod challenge_tag;
 mod doc;
-mod file;
-mod flag;
-mod hint;
-mod instance;
-mod invite;
-mod leaderboard;
-mod notification;
-mod player;
+mod player_routes;
 mod settings;
-mod submission;
-mod tag;
 mod tasks;
-mod team;
-mod ticket;
-mod unlock;
 
 pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection) -> Result<()> {
     let listener = tokio::net::TcpListener::bind(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 7000))
@@ -121,34 +105,14 @@ pub async fn start(settings: Settings) -> Result<()> {
 
 pub fn app(state: Arc<AppState>) -> axum::Router {
     Router::new()
-        .merge(achievement::router())
         .merge(auth::router())
-        .merge(ban::router())
-        .merge(challenge::router())
-        .merge(challenge_tag::router())
-        .merge(file::router())
-        .merge(flag::router())
-        .merge(hint::router())
-        .merge(instance::router())
-        .merge(invite::router())
-        .merge(leaderboard::router())
-        .merge(admin::router())
-        .merge(notification::router())
-        .merge(player::router())
         .merge(settings::router())
-        .merge(submission::router())
-        .merge(tag::router())
-        .merge(team::router())
-        .merge(ticket::router())
-        .merge(unlock::router())
-        .route("/stats", get(crate::handlers::stats::get))
+        .merge(admin_routes::router())
+        .merge(player_routes::router())
+        .route("/stats", get(crate::handlers::stats::retrieve))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
             middleware::ctf_timer,
-        ))
-        .layer(axum::middleware::from_fn_with_state(
-            state.clone(),
-            middleware::access_control,
         ))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),

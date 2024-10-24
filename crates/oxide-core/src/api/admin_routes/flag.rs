@@ -1,15 +1,14 @@
 use std::sync::Arc;
 
-use axum::routing::{get, post};
-
+use axum::routing::get;
 use axum::Router;
+
 use crate::handlers::flag;
 use crate::service::AppState;
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/flag", get(flag::list).post(flag::create))
-        .route("/flag/verify", post(flag::verify))
         .route(
             "/flag/:id",
             get(flag::retrieve_by_id)

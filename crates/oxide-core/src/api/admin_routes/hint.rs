@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use axum::routing::get;
-
 use axum::Router;
+
 use crate::handlers::hint;
 use crate::service::AppState;
 
@@ -17,5 +17,4 @@ pub fn router() -> Router<Arc<AppState>> {
         )
         .route("/hint/:id/challenge", get(hint::retrieve_challenge_by_id))
         .route("/hint/:id/unlocks", get(hint::list_unlocks_by_id))
-        .route("/hint/unlock/:id", get(hint::unlock_by_id))
 }

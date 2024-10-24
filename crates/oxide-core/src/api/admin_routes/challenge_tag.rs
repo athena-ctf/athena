@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use axum::routing::get;
-
 use axum::Router;
+
 use crate::handlers::challenge_tag;
 use crate::service::AppState;
 

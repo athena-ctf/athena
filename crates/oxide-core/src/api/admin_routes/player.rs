@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
-use axum::routing::{get, patch};
-
+use axum::routing::get;
 use axum::Router;
+
 use crate::handlers::player;
 use crate::service::AppState;
 
@@ -15,17 +15,9 @@ pub fn router() -> Router<Arc<AppState>> {
                 .delete(player::delete_by_id)
                 .patch(player::update_by_id),
         )
-        .route(
-            "/player/:username/profile",
-            get(player::retrieve_profile_by_username),
-        )
         .route("/player/:id/flags", get(player::list_flags_by_id))
         .route("/player/:id/instance", get(player::retrieve_instance_by_id))
         .route("/player/:id/team", get(player::retrieve_team_by_id))
-        .route(
-            "/player/:id/update-profile",
-            patch(player::update_profile_by_id),
-        )
         .route(
             "/player/:id/achievements",
             get(player::list_achievements_by_id),

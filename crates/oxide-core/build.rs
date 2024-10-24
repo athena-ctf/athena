@@ -1,35 +1,65 @@
 use std::collections::BTreeMap;
 use std::path::Path;
 
-use codegen::{Scope, Type};
-use heck::{AsPascalCase, AsShoutySnekCase};
+use quote::quote;
 
-type PermissionTable = BTreeMap<String, BTreeMap<String, usize>>;
+#[derive(serde::Deserialize, Clone, Copy)]
+struct ObjectPerms {
+    create: RoleEnum,
+    read: RoleEnum,
+    update: RoleEnum,
+    delete: RoleEnum,
+}
+
+#[derive(serde::Deserialize, Clone, Copy)]
+#[serde(rename_all = "lowercase")]
+#[repr(u8)]
+pub enum RoleEnum {
+    Analyst,
+    Editor,
+    Judge,
+    Manager,
+    Moderator,
+}
+
+#[derive(serde::Deserialize)]
+struct PermissionsConfig(BTreeMap<String, ObjectPerms>);
 
 fn main() {
-    let table = toml::from_str::<PermissionTable>(include_str!("permissions.toml")).unwrap();
-    let mut scope = Scope::new();
+    let config: PermissionsConfig =
+        toml::from_str(include_str!("permissions.toml")).expect("Failed to parse permissions.toml");
 
-    for (obj, actions) in table {
-        let struct_name = AsPascalCase(obj).to_string() + "Perms";
-        let struct_name = struct_name.as_str();
+    let objects: Vec<_> = config.0.keys().collect();
+    let requirements = config
+        .0
+        .values()
+        .map(
+            |&ObjectPerms {
+                 create,
+                 read,
+                 update,
+                 delete,
+             }| {
+                let create = create as usize;
+                let update = update as usize;
+                let delete = delete as usize;
+                let read = read as usize;
 
-        scope.new_struct(struct_name).vis("pub");
-        let obj_impl = scope.new_impl(struct_name);
+                quote! {
+                    [#create, #read, #update, #delete]
+                }
+            },
+        )
+        .collect::<Vec<_>>();
 
-        for (action, min_role) in actions {
-            obj_impl.associate_const(
-                AsShoutySnekCase(action).to_string(),
-                Type::new("usize"),
-                min_role.to_string(),
-                "pub",
-            );
-        }
-    }
+    let perm_file = quote! {
+        const OBJECT_NAMES: &[&str] = &[#(#objects),*];
+        const REQUIREMENTS: &[[usize; 4]] = &[#(#requirements),*];
+    };
 
     std::fs::write(
         Path::new(&std::env::var("OUT_DIR").unwrap()).join("permissions.rs"),
-        scope.to_string(),
+        perm_file.to_string(),
     )
-    .unwrap();
+    .expect("Failed to write permissions file");
 }

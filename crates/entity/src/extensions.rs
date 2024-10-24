@@ -9,6 +9,7 @@ use sea_orm::{
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
+use super::challenge::Entity as Challenge;
 use super::hint::Entity as Hint;
 use super::sea_orm_active_enums::*;
 
@@ -86,6 +87,18 @@ impl IntoActiveModel<super::player::ActiveModel> for UpdateProfileSchema {
 pub struct HintSummary {
     pub id: Uuid,
     pub cost: i32,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema, DerivePartialModel, FromQueryResult)]
+#[sea_orm(entity = "Challenge")]
+pub struct PartialChallenge {
+    pub id: Uuid,
+    pub title: String,
+    pub description: String,
+    pub points: i32,
+    pub difficulty: DifficultyEnum,
+    pub author_name: String,
+    pub solves: i32,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, FromJsonQueryResult, ToSchema)]
