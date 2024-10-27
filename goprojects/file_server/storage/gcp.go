@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"athena.io/config"
 	"cloud.google.com/go/storage"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/option"
@@ -60,11 +61,15 @@ func (presigner GcpPresigner) Delete(ctx context.Context, filename string) (stri
 	return url, nil
 }
 
-func NewGCP() (GcpPresigner, error) {
-	client, err := storage.NewClient(context.TODO(), option.WithCredentials(&google.Credentials{}))
-	if err != nil {
-		return GcpPresigner{}, err
+func NewGCP() (*GcpPresigner, error) {
+	if gcp := config.Config.FileStorage.Gcp; gcp != nil {
+		client, err := storage.NewClient(context.TODO(), option.WithCredentials(&google.Credentials{}))
+		if err != nil {
+			return nil, err
+		}
+
+		return &GcpPresigner{Client: client}, nil
 	}
 
-	return GcpPresigner{Client: client}, nil
+	return nil, nil
 }

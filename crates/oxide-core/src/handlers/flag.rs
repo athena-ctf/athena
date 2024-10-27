@@ -21,7 +21,7 @@ single_relation_api!(Flag, Challenge);
 
 #[utoipa::path(
     post,
-    path = "/flag/verify",
+    path = "/player/flag/verify",
     request_body = VerifyFlagSchema,
     responses(
         (status = 201, description = "Verified flag successfully", body = FlagVerificationResult),

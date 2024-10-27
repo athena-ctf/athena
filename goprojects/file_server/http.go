@@ -39,7 +39,7 @@ func Run() error {
 	}
 	defer client.Close()
 
-	fileHandler := NewHandler(client, &s3Presigner, &azPresigner, &gcpPresigner)
+	fileHandler := NewHandler(client, s3Presigner, azPresigner, gcpPresigner)
 	b64 := make([]byte, base64.StdEncoding.DecodedLen(len(config.Config.Jwt.Secret)))
 	n, err := base64.StdEncoding.Decode(b64, []byte(config.Config.Jwt.Secret))
 	if err != nil {

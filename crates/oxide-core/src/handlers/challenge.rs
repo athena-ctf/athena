@@ -9,7 +9,7 @@ use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
     AchievementModel, ChallengeDetails, ChallengeModel, ChallengeSummary, ChallengeTagModel,
-    FileModel, HintModel, InstanceModel, SubmissionModel, TagModel, TokenClaims,
+    DetailedChallenge, FileModel, HintModel, InstanceModel, SubmissionModel, TagModel, TokenClaims,
 };
 use crate::service::AppState;
 
@@ -25,7 +25,7 @@ multiple_relation_with_model_api!(Challenge, ChallengeTag);
 
 #[utoipa::path(
     get,
-    path = "/challenges",
+    path = "/player/challenges",
     responses(
         (status = 200, description = "Listed player challenges successfully", body = [ChallengeSummary]),
         (status = 400, description = "Invalid parameters format", body = ErrorModel),
@@ -35,7 +35,7 @@ multiple_relation_with_model_api!(Challenge, ChallengeTag);
         (status = 500, description = "Unexpected error", body = ErrorModel)
     )
 )]
-/// Retrieve challenge summary by id
+/// List challenge summary by id
 pub async fn player_challenges(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
@@ -43,4 +43,27 @@ pub async fn player_challenges(
     db::challenge::list_summaries(claims.id, &state.db_conn)
         .await
         .map(Json)
+}
+
+#[axum::debug_handler]
+#[utoipa::path(
+    get,
+    path = "/player/challenge/details/{id}",
+    responses(
+        (status = 200, description = "Retrieved player challenge details successfully", body = DetailedChallenge),
+        (status = 400, description = "Invalid parameters format", body = ErrorModel),
+        (status = 401, description = "Action is permissible after login", body = ErrorModel),
+        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
+        (status = 404, description = "No challenge found with specified id", body = ErrorModel),
+        (status = 500, description = "Unexpected error", body = ErrorModel)
+    )
+)]
+/// Retrieve challenge details by id
+pub async fn detailed_challenge(
+    Path(id): Path<Uuid>,
+    state: State<Arc<AppState>>,
+) -> Result<Json<DetailedChallenge>> {
+    Ok(Json(
+        db::challenge::detailed_challenge(id, &state.db_conn).await?,
+    ))
 }

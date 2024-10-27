@@ -1,0 +1,70 @@
+{
+  "ctf": {
+    "name": "Athena CTF",
+    "domain": "athena.io",
+    "description": "Athena is a hosted platform for CTFs",
+    "time": {
+      "span": "2days",
+      "start": "2024-10-26T02:31:08.924579568Z",
+      "freeze": "1day"
+    },
+    "challenge": {
+      "max_attempts": 10
+    },
+    "sponsors": {},
+    "prizes": {}
+  },
+  "database": {
+    "host": "postgres",
+    "port": 5432,
+    "username": "postgres",
+    "password": "yZbkfx8xauCc"
+  },
+  "redis": {
+    "cache": {
+      "host": "redis",
+      "port": 6379,
+      "username": "redis_cache",
+      "password": "JSsgclhS3jRw"
+    },
+    "token": {
+      "host": "redis",
+      "port": 6379,
+      "username": "redis_token",
+      "password": "5Mk4BqYejSBw"
+    }
+  },
+  "file_storage": {
+    "local": {
+      "compress": "gzip",
+      "path": "/var/athena/static"
+    }
+  },
+  "jwt": {
+    "secret": "zgjzda7tbv3jAl1gxS9GuxZvs2xdVHS1JTw0+LjwruA=",
+    "access_token_timeout": 600,
+    "refresh_token_timeout": 86400
+  },
+  "smtp": {
+    "from": "noreply@athena.io",
+    "reply_to": "Admin <admin@athena.io>",
+    "username": "athena_smtp",
+    "password": "ZTdWXLh77g89",
+    "server_url": "smtp.athena.io"
+  },
+  "docker": {
+    "single_instance_duration": 15,
+    "registry_url": "registry.athena.io",
+    "registry_username": "athena",
+    "registry_password": "XivtO5dQiCe0"
+  },
+  "discord": {
+    "welcome_channel_id": "",
+    "editor_role_id": "",
+    "viewer_role_id": "",
+    "reaction_role_message_id": "",
+    "logs_channel_id": "",
+    "genral_channel_id": "",
+    "bot_token": ""
+  }
+}

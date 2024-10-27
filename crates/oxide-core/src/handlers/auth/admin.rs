@@ -14,6 +14,7 @@ use crate::service::AppState;
     post,
     path = "/auth/admin/login",
     request_body = LoginModel,
+    operation_id = "admin_login",
     responses(
         (status = 200, description = "user logged in successfully", body = TokenPair),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -41,6 +42,7 @@ pub async fn login(
     post,
     path = "/auth/admin/token/refresh",
     request_body = TokenPair,
+    operation_id = "admin_refresh_token",
     responses(
         (status = 200, description = "user logged in successfully", body = TokenPair),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -80,8 +82,9 @@ pub async fn refresh_token(
 #[utoipa::path(
     get,
     path = "/auth/admin/profile",
+    operation_id = "admin_get_profile",
     responses(
-        (status = 200, description = "Password reset email sent successful", body = Account),
+        (status = 200, description = "Password reset email sent successful", body = AdminModel),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
         (status = 404, description = "User not found", body = ErrorModel),
         (status = 500, description = "Unexpected error", body = ErrorModel)

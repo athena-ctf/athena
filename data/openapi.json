@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Athena CTF",
-    "description": "# Oxide\n\nOxide is the api server of [Athena CTF](https://github.com/athena-ctf/athena-ctf) platform.\n\n## Usage\n\n```\noxide run /data/config.toml\n```\n",
+    "description": "# Oxide\n\nOxide is the api server of [Athena CTF](https://github.com/athena-ctf/athena-ctf) platform.\n\n## Usage\n\n```\noxide run /data/config.json\n```\n",
     "contact": {
       "name": "AthenaCTF Team",
       "email": "athena.help@gmail.com"

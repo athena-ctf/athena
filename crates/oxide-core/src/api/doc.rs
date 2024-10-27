@@ -1,4 +1,4 @@
-use entity::extensions::{ContainerMeta, HintSummary, UpdateProfileSchema};
+use entity::extensions::{ContainerMeta, HintSummary, PartialChallenge, UpdateProfileSchema};
 use utoipa::openapi::security::{Http, HttpAuthScheme, SecurityScheme};
 use utoipa::{Modify, OpenApi};
 
@@ -34,7 +34,16 @@ use crate::schemas::*;
         admin::update_by_id,
         admin::delete_by_id,
         admin::list_tickets_by_id,
-        // TODO: auth routes
+        auth::admin::login,
+        auth::admin::refresh_token,
+        auth::admin::get_profile,
+        auth::player::login,
+        auth::player::refresh_token,
+        auth::player::get_profile,
+        auth::player::register,
+        auth::player::register_send_token,
+        auth::player::reset_password,
+        auth::player::reset_password_send_token,
         ban::list,
         ban::create,
         ban::retrieve_by_id,
@@ -217,7 +226,8 @@ use crate::schemas::*;
             ChallengeSummary,
             StatSchema,
             TagSolves,
-            PlayerProfile
+            PlayerProfile,
+            PartialChallenge
         )
     ),
     modifiers(&SecurityAddon),

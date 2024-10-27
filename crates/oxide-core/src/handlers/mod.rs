@@ -13,7 +13,6 @@ pub mod invite;
 pub mod leaderboard;
 pub mod notification;
 pub mod player;
-pub mod settings;
 pub mod stats;
 pub mod submission;
 pub mod tag;

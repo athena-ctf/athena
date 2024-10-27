@@ -19,12 +19,14 @@ import (
 	"github.com/klauspost/compress/zstd"
 )
 
-func createFile(name string) (*os.File, error) {
-	return os.Create(path.Join(config.Config.FileStorage.Path, name))
+var notConfiguredError = errors.New("store not configured")
+
+func createFile(basePath, name string) (*os.File, error) {
+	return os.Create(path.Join(basePath, name))
 }
 
-func compressGzip(name string, multipartFile multipart.File) error {
-	compressedFile, err := createFile(fmt.Sprintf("%s.gz", name))
+func compressGzip(basePath, name string, multipartFile multipart.File) error {
+	compressedFile, err := createFile(basePath, fmt.Sprintf("%s.gz", name))
 	if err != nil {
 		return err
 	}
@@ -36,8 +38,8 @@ func compressGzip(name string, multipartFile multipart.File) error {
 	return err
 }
 
-func compressZstd(name string, multipartFile multipart.File) error {
-	compressedFile, err := createFile(fmt.Sprintf("%s.zstd", name))
+func compressZstd(basePath, name string, multipartFile multipart.File) error {
+	compressedFile, err := createFile(basePath, fmt.Sprintf("%s.zstd", name))
 	if err != nil {
 		return err
 	}
@@ -53,8 +55,8 @@ func compressZstd(name string, multipartFile multipart.File) error {
 	return err
 }
 
-func compressBrotli(name string, multipartFile multipart.File) error {
-	compressedFile, err := createFile(fmt.Sprintf("%s.br", name))
+func compressBrotli(basePath, name string, multipartFile multipart.File) error {
+	compressedFile, err := createFile(basePath, fmt.Sprintf("%s.br", name))
 	if err != nil {
 		return err
 	}
@@ -94,36 +96,49 @@ func (handler Handler) Download(c *fiber.Ctx) error {
 
 	switch model.Backend {
 	case file.BackendLocal:
-		{
+		if local := config.Config.FileStorage.Local; local != nil {
 			var filepath string
-			if compress := config.Config.FileStorage.Compress; compress != nil {
+			if compress := local.Compress; compress != nil {
 				switch *compress {
-				// TODO: check accept encodings format
 				case config.CompressionBr:
-					if c.AcceptsEncodings("brotli") == "brotli" {
-						filepath = path.Join(config.Config.FileStorage.Path, fmt.Sprintf("%s.br", id))
+					if c.AcceptsEncodings("br") == "br" {
+						filepath = path.Join(local.Path, fmt.Sprintf("%s.br", id))
 					}
 				case config.CompressionGzip:
 					if c.AcceptsEncodings("gzip") == "gzip" {
-						filepath = path.Join(config.Config.FileStorage.Path, fmt.Sprintf("%s.gz", id))
+						filepath = path.Join(local.Path, fmt.Sprintf("%s.gz", id))
 					}
 				case config.CompressionZstd:
 					if c.AcceptsEncodings("zstd") == "zstd" {
-						filepath = path.Join(config.Config.FileStorage.Path, fmt.Sprintf("%s.zstd", id))
+						filepath = path.Join(local.Path, fmt.Sprintf("%s.zstd", id))
 					}
 				}
 			} else {
-				filepath = path.Join(config.Config.FileStorage.Path, id)
+				filepath = path.Join(local.Path, id)
 			}
 
 			return c.Download(filepath, model.Name)
+		} else {
+			return notConfiguredError
 		}
 	case file.BackendAzure:
-		url, err = handler.azPresigner.Download(ctx, id, model.Name)
+		if handler.azPresigner != nil {
+			url, err = handler.azPresigner.Download(ctx, id, model.Name)
+		} else {
+			return notConfiguredError
+		}
 	case file.BackendGcp:
-		url, err = handler.gcpPresigner.Download(ctx, id, model.Name)
+		if handler.gcpPresigner != nil {
+			url, err = handler.gcpPresigner.Download(ctx, id, model.Name)
+		} else {
+			return notConfiguredError
+		}
 	case file.BackendS3:
-		url, err = handler.s3Presigner.Download(ctx, id, model.Name)
+		if handler.s3Presigner != nil {
+			url, err = handler.s3Presigner.Download(ctx, id, model.Name)
+		} else {
+			return notConfiguredError
+		}
 	}
 
 	if err != nil {
@@ -150,19 +165,19 @@ func (handler Handler) Delete(c *fiber.Ctx) error {
 
 	switch model.Backend {
 	case file.BackendLocal:
-		{
+		if local := config.Config.FileStorage.Local; local != nil {
 			filepaths := []string{}
-			if compress := config.Config.FileStorage.Compress; compress != nil {
+			if compress := local.Compress; compress != nil {
 				switch *compress {
 				case config.CompressionBr:
-					filepaths = append(filepaths, path.Join(config.Config.FileStorage.Path, fmt.Sprintf("%s.br", id)))
+					filepaths = append(filepaths, path.Join(local.Path, fmt.Sprintf("%s.br", id)))
 				case config.CompressionGzip:
-					filepaths = append(filepaths, path.Join(config.Config.FileStorage.Path, fmt.Sprintf("%s.gz", id)))
+					filepaths = append(filepaths, path.Join(local.Path, fmt.Sprintf("%s.gz", id)))
 				case config.CompressionZstd:
-					filepaths = append(filepaths, path.Join(config.Config.FileStorage.Path, fmt.Sprintf("%s.zstd", id)))
+					filepaths = append(filepaths, path.Join(local.Path, fmt.Sprintf("%s.zstd", id)))
 				}
 			} else {
-				filepaths = append(filepaths, path.Join(config.Config.FileStorage.Path, id))
+				filepaths = append(filepaths, path.Join(local.Path, id))
 			}
 
 			for _, filepath := range filepaths {
@@ -173,13 +188,27 @@ func (handler Handler) Delete(c *fiber.Ctx) error {
 			}
 
 			return c.SendStatus(fiber.StatusNoContent)
+		} else {
+			return notConfiguredError
 		}
 	case file.BackendAzure:
-		url, err = handler.azPresigner.Delete(ctx, id)
+		if handler.azPresigner != nil {
+			url, err = handler.azPresigner.Delete(ctx, id)
+		} else {
+			return notConfiguredError
+		}
 	case file.BackendGcp:
-		url, err = handler.gcpPresigner.Delete(ctx, id)
+		if handler.gcpPresigner != nil {
+			url, err = handler.gcpPresigner.Delete(ctx, id)
+		} else {
+			return notConfiguredError
+		}
 	case file.BackendS3:
-		url, err = handler.s3Presigner.Delete(ctx, id)
+		if handler.s3Presigner != nil {
+			url, err = handler.s3Presigner.Delete(ctx, id)
+		} else {
+			return notConfiguredError
+		}
 	}
 
 	if err != nil {
@@ -200,7 +229,7 @@ func (handler Handler) Upload(c *fiber.Ctx) error {
 
 	switch location {
 	case "local":
-		{
+		if local := config.Config.FileStorage.Local; local != nil {
 			file, err := c.FormFile("file")
 			if err != nil {
 				return err
@@ -210,7 +239,7 @@ func (handler Handler) Upload(c *fiber.Ctx) error {
 				return err
 			}
 
-			if compress := config.Config.FileStorage.Compress; compress != nil {
+			if compress := local.Compress; compress != nil {
 				openedFile, err := file.Open()
 				if err != nil {
 					return err
@@ -218,22 +247,36 @@ func (handler Handler) Upload(c *fiber.Ctx) error {
 
 				switch *compress {
 				case config.CompressionBr:
-					compressBrotli(name.String(), openedFile)
+					compressBrotli(local.Path, name.String(), openedFile)
 				case config.CompressionZstd:
-					compressZstd(name.String(), openedFile)
+					compressZstd(local.Path, name.String(), openedFile)
 				case config.CompressionGzip:
-					compressGzip(name.String(), openedFile)
+					compressGzip(local.Path, name.String(), openedFile)
 				}
 			}
 
 			return c.JSON(map[string]string{"status": "successfully uploaded"})
+		} else {
+			return notConfiguredError
 		}
 	case "s3":
-		url, err = handler.s3Presigner.Upload(c.Context(), name.String())
+		if handler.s3Presigner != nil {
+			url, err = handler.s3Presigner.Upload(c.Context(), name.String())
+		} else {
+			return notConfiguredError
+		}
 	case "azure":
-		url, err = handler.azPresigner.Upload(c.Context(), name.String())
+		if handler.azPresigner != nil {
+			url, err = handler.azPresigner.Upload(c.Context(), name.String())
+		} else {
+			return notConfiguredError
+		}
 	case "gcp":
-		url, err = handler.gcpPresigner.Upload(c.Context(), name.String())
+		if handler.gcpPresigner != nil {
+			url, err = handler.gcpPresigner.Upload(c.Context(), name.String())
+		} else {
+			return notConfiguredError
+		}
 	default:
 		return errors.New("invalid storage location")
 	}

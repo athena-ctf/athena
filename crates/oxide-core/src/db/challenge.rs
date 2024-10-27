@@ -9,7 +9,7 @@ use sea_orm::{ActiveValue, IntoActiveModel, QueryOrder, QuerySelect};
 
 use super::CachedValue;
 use crate::errors::Result;
-use crate::schemas::ChallengeSummary;
+use crate::schemas::{ChallengeSummary, DetailedChallenge};
 
 crud_interface_db!(Challenge);
 
@@ -56,13 +56,17 @@ pub async fn list_summaries(player_id: Uuid, db: &DbConn) -> Result<Vec<Challeng
     Ok(summaries)
 }
 
-pub async fn related_hint_summaries(
-    model: &ChallengeModel,
-    db: &DbConn,
-) -> Result<Vec<HintSummary>> {
-    Ok(model
-        .find_related(Hint)
-        .into_partial_model::<HintSummary>()
-        .all(db)
-        .await?)
+pub async fn detailed_challenge(challenge_id: Uuid, db: &DbConn) -> Result<DetailedChallenge> {
+    Ok(DetailedChallenge {
+        files: File::find()
+            .filter(entity::file::Column::ChallengeId.eq(challenge_id))
+            .into_partial_model::<FileDetails>()
+            .all(db)
+            .await?,
+        hints: Hint::find()
+            .filter(entity::hint::Column::ChallengeId.eq(challenge_id))
+            .into_partial_model::<HintSummary>()
+            .all(db)
+            .await?,
+    })
 }

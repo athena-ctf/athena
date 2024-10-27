@@ -25,7 +25,7 @@ pub async fn main() {
                 &generate.out,
                 if generate.config {
                     oxide_core::settings::Settings::default()
-                        .default_toml()
+                        .default_json()
                         .unwrap()
                 } else {
                     api::get_schema().unwrap()
@@ -33,8 +33,18 @@ pub async fn main() {
             )
             .await
             .unwrap();
+
+            tracing::info!(
+                "successfully written {} to {}",
+                if generate.config {
+                    "config"
+                } else {
+                    "openapi schema"
+                },
+                generate.out
+            );
         }
     }
 
-    tracing::info!("exited successfully");
+    tracing::debug!("exited successfully");
 }

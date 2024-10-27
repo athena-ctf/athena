@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"athena.io/config"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
@@ -58,9 +59,13 @@ func (presigner S3Presigner) Delete(ctx context.Context, filename string) (strin
 	return request.URL, nil
 }
 
-func NewS3() S3Presigner {
-	s3Client := s3.NewFromConfig(aws.Config{})
-	presignClient := s3.NewPresignClient(s3Client)
+func NewS3() *S3Presigner {
+	if s3cfg := config.Config.FileStorage.Aws; s3cfg != nil {
+		s3Client := s3.NewFromConfig(aws.Config{})
+		presignClient := s3.NewPresignClient(s3Client)
 
-	return S3Presigner{PresignClient: presignClient}
+		return &S3Presigner{PresignClient: presignClient}
+	}
+
+	return nil
 }

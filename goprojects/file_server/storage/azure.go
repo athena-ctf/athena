@@ -6,6 +6,8 @@ import (
 	"net/url"
 	"time"
 
+	"athena.io/config"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
@@ -34,10 +36,8 @@ func generateSasURL(accountName, accountKey, containerName, blobName, fileName s
 		return "", fmt.Errorf("error generating SAS query parameters: %v", err)
 	}
 
-	baseURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s",
-		accountName,
-		containerName,
-		blobName)
+	baseURL := fmt.Sprintf("https://%s.blob.core.windows.net",
+		accountName)
 
 	u, err := url.Parse(baseURL)
 	if err != nil {
@@ -95,12 +95,26 @@ func (presigner AzPresigner) Delete(ctx context.Context, objectKey string) (stri
 	return sasURL, nil
 }
 
-func NewAz() (AzPresigner, error) {
-	// TODO: add connection string
-	client, err := azblob.NewClientFromConnectionString("", nil)
-	if err != nil {
-		return AzPresigner{}, err
+func NewAz() (*AzPresigner, error) {
+	if azure := config.Config.FileStorage.Azure; azure != nil {
+		cred, err := azidentity.NewClientSecretCredential(
+			azure.TenantId,
+			azure.ClientId,
+			azure.ClientSecret,
+			nil,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		serviceUrl := fmt.Sprintf("https://%s.blob.core.windows.net/", azure.AccountName)
+		client, err := azblob.NewClient(serviceUrl, cred, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		return &AzPresigner{Client: client}, nil
 	}
 
-	return AzPresigner{Client: client}, nil
+	return nil, nil
 }

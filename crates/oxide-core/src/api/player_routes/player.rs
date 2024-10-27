@@ -9,11 +9,8 @@ use crate::service::AppState;
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route(
-            "/player/:username/profile",
+            "/:username/profile",
             get(player::retrieve_profile_by_username),
         )
-        .route(
-            "/player/:id/update-profile",
-            put(player::update_profile_by_id),
-        )
+        .route("/:id/update-profile", put(player::update_profile_by_id))
 }

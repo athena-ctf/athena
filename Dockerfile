@@ -26,7 +26,7 @@ RUN pnpm install --frozen-lockfile
 COPY --from=pruner /app/out/full/ .
 COPY turbo.json turbo.json
 
-COPY --from=parent ./data/config.toml /data/config.toml
+COPY --from=parent ./data/config.json /data/config.json
 RUN pnpm dlx turbo build --filter=${PROJECT}
 RUN pnpm prune --prod --no-optional
 RUN rm -rf ./**/*/src

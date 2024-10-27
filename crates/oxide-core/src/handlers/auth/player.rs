@@ -23,6 +23,7 @@ use crate::{db, token};
     post,
     path = "/auth/player/register",
     request_body = RegisterPlayer,
+    operation_id = "player_register",
     responses(
         (status = 200, description = "Password reset email sent successful", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -80,6 +81,7 @@ pub async fn register(
     post,
     path = "/auth/player/register/send-token",
     request_body = SendTokenSchema,
+    operation_id = "player_register_send_token",
     responses(
         (status = 200, description = "Token sent successful", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -137,6 +139,7 @@ pub async fn register_send_token(
     post,
     path = "/auth/player/reset-password",
     request_body = ResetPasswordSchema,
+    operation_id = "player_reset_password",
     responses(
         (status = 200, description = "Password reset email sent successful", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -181,6 +184,7 @@ pub async fn reset_password(
     post,
     path = "/auth/player/reset-password/send-token",
     request_body = SendTokenSchema,
+    operation_id = "player_reset_password_send_token",
     responses(
         (status = 200, description = "Token sent successful", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -238,6 +242,7 @@ pub async fn reset_password_send_token(
     post,
     path = "/auth/player/login",
     request_body = LoginModel,
+    operation_id = "player_login",
     responses(
         (status = 200, description = "user logged in successfully", body = TokenPair),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -281,6 +286,7 @@ pub async fn login(
     post,
     path = "/auth/player/token/refresh",
     request_body = TokenPair,
+    operation_id = "player_refresh_token",
     responses(
         (status = 200, description = "user logged in successfully", body = TokenPair),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -322,8 +328,9 @@ pub async fn refresh_token(
 #[utoipa::path(
     get,
     path = "/auth/player/me",
+    operation_id = "player_get_profile",
     responses(
-        (status = 200, description = "Password reset email sent successful", body = Account),
+        (status = 200, description = "Password reset email sent successful", body = PlayerModel),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
         (status = 404, description = "User not found", body = ErrorModel),
         (status = 500, description = "Unexpected error", body = ErrorModel)

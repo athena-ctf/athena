@@ -1,8 +1,9 @@
+import json
+
 import slugify
-import toml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-config = toml.load("config.toml")
+config = json.load(open("config.json"))
 env = Environment(
     loader=FileSystemLoader("data/templates"), autoescape=select_autoescape
 )

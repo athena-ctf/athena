@@ -25,7 +25,6 @@ mod admin_routes;
 mod auth;
 mod doc;
 mod player_routes;
-mod settings;
 mod tasks;
 
 pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection) -> Result<()> {
@@ -106,7 +105,6 @@ pub async fn start(settings: Settings) -> Result<()> {
 pub fn app(state: Arc<AppState>) -> axum::Router {
     Router::new()
         .merge(auth::router())
-        .merge(settings::router())
         .merge(admin_routes::router())
         .merge(player_routes::router())
         .route("/stats", get(crate::handlers::stats::retrieve))

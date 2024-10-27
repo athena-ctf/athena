@@ -87,8 +87,9 @@ pub struct ChallengeSummary {
     pub solved: bool,
 }
 
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct DetailedChallenge {
-    pub files: Vec<FileModel>,
+    pub files: Vec<FileDetails>,
     pub hints: Vec<HintSummary>,
 }
 

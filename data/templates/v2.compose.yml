@@ -1,68 +1,68 @@
 services:
-  registry:
-    image: registry:2
-    container_name: registry
-    restart: always
-    ports:
-      - "5001:5000"
-    environment:
-      REGISTRY_AUTH: htpasswd
-      REGISTRY_AUTH_HTPASSWD_REALM: Registry-Realm
-      REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.passwd
-      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
-    volumes:
-      - registrydata:/data
-      - ./auth:/auth
+    registry:
+        image: registry:2
+        container_name: registry
+        restart: always
+        ports:
+            - "5001:5000"
+        environment:
+            REGISTRY_AUTH: htpasswd
+            REGISTRY_AUTH_HTPASSWD_REALM: Registry-Realm
+            REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.passwd
+            REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+        volumes:
+            - registrydata:/data
+            - ./auth:/auth
 
-  alloy:
-    image: grafana/alloy:latest
-    container_name: alloy
-    ports:
-      - "3100:3100"
-    restart: always
-    volumes:
-      - ./config/alloy-config.yml:/etc/grafana/alloy-config.yml
-    environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: admin
+    alloy:
+        image: grafana/alloy:latest
+        container_name: alloy
+        ports:
+            - "3100:3100"
+        restart: always
+        volumes:
+            - ./config/alloy-config.yml:/etc/grafana/alloy-config.yml
+        environment:
+            GF_SECURITY_ADMIN_USER: admin
+            GF_SECURITY_ADMIN_PASSWORD: admin
 
-  loki:
-    image: grafana/loki:latest
-    container_name: loki
-    restart: always
-    ports:
-      - "3301:3300"
-    volumes:
-      - ./config/loki-config.yml:/etc/loki/local-config.yaml
+    loki:
+        image: grafana/loki:latest
+        container_name: loki
+        restart: always
+        ports:
+            - "3301:3300"
+        volumes:
+            - ./config/loki-config.yml:/etc/loki/local-config.yaml
 
-  tempo:
-    image: grafana/tempo:latest
-    container_name: tempo
-    restart: always
-    ports:
-      - "3200:3200"
-    volumes:
-      - ./config/tempo-config.yml:/etc/tempo/tempo-local.yaml
+    tempo:
+        image: grafana/tempo:latest
+        container_name: tempo
+        restart: always
+        ports:
+            - "3200:3200"
+        volumes:
+            - ./config/tempo-config.yml:/etc/tempo/tempo-local.yaml
 
-  mimir:
-    image: grafana/mimir:latest
-    container_name: mimir
-    restart: always
-    ports:
-      - "3501:3500"
-    volumes:
-      - ./config/mimir-config.yml:/etc/mimir/mimir-local.yaml
+    mimir:
+        image: grafana/mimir:latest
+        container_name: mimir
+        restart: always
+        ports:
+            - "3501:3500"
+        volumes:
+            - ./config/mimir-config.yml:/etc/mimir/mimir-local.yaml
 
-  stalwart-mail:
-    image: stalwartlabs/mail-server:latest
-    container_name: stalwart-mail
-    restart: always
-    ports:
-      - "8081:8080"
-    volumes:
-      - ./config/stalwart-mail:/opt/stalwart-mail/etc
+    stalwart-mail:
+        image: stalwartlabs/mail-server:latest
+        container_name: stalwart-mail
+        restart: always
+        ports:
+            - "8081:8080"
+        volumes:
+            - ./config/stalwart-mail:/opt/stalwart-mail/etc
 
-  postgres:
+    postgres:
         restart: always
         container_name: "postgres"
         image: postgres
@@ -76,7 +76,7 @@ services:
         volumes:
             - postgres:/data/postgres
 
-  redis:
+    redis:
         restart: unless-stopped
         container_name: "redis"
         image: redis
@@ -85,58 +85,58 @@ services:
             - redis_data:/data/redis
             - redis.conf:/usr/local/etc/redis/redis.conf
 
-  oxide:
-    image: athena-ctf/oxide
-    container_name: "oxide"
-    build:
-      context: ./oxide
-    restart: always
-    depends_on:
-      - postgres
-    volumes:
-      - ./emails:/oxide/emails
-      - ./data/config.toml:/data/config.toml:ro
+    oxide:
+        image: athena-ctf/oxide
+        container_name: "oxide"
+        build:
+            context: ./oxide
+        restart: always
+        depends_on:
+            - postgres
+        volumes:
+            - ./emails:/oxide/emails
+            - ./data/config.json:/data/config.json:ro
 
-  codex:
-    image: athena-ctf/codex
-    container_name: codex
-    build:
-      context: ./frontend
-      args:
-        - PROJECT=codex
-    restart: always
-    depends_on:
-      - oxide
-    ports:
-      - "3000:3000"
-    entrypoint: ["node", "apps/codex/server.js"]
+    codex:
+        image: athena-ctf/codex
+        container_name: codex
+        build:
+            context: ./frontend
+            args:
+                - PROJECT=codex
+        restart: always
+        depends_on:
+            - oxide
+        ports:
+            - "3000:3000"
+        entrypoint: ["node", "apps/codex/server.js"]
 
-  admin:
-    image: athena-ctf/admin
-    container_name: admin
-    build:
-      context: ./frontend
-      args:
-        - PROJECT=admin
-    restart: always
-    depends_on:
-      - oxide
-    ports:
-      - "3001:3000"
-    entrypoint: ["node", "apps/admin/server.js"]
+    admin:
+        image: athena-ctf/admin
+        container_name: admin
+        build:
+            context: ./frontend
+            args:
+                - PROJECT=admin
+        restart: always
+        depends_on:
+            - oxide
+        ports:
+            - "3001:3000"
+        entrypoint: ["node", "apps/admin/server.js"]
 
-  docs:
-    image: athena-ctf/docs
-    container_name: docs
-    build:
-      context: ./frontend
-      args:
-          - PROJECT=docs
-    restart: always
-    ports:
-      - "3002:3000"
-    entrypoint: ["node", "apps/docs/server.js"]
+    docs:
+        image: athena-ctf/docs
+        container_name: docs
+        build:
+            context: ./frontend
+            args:
+                - PROJECT=docs
+        restart: always
+        ports:
+            - "3002:3000"
+        entrypoint: ["node", "apps/docs/server.js"]
 
 volumes:
-  registrydata:
-  postgres:
+    registrydata:
+    postgres:

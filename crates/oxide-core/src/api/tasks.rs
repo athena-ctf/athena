@@ -87,13 +87,13 @@ pub async fn remove_instances(docker_conn: &Docker, db_conn: &DbConn) -> Result<
 pub fn run(docker_conn: &Docker, db_conn: &DbConn) -> Vec<AbortHandle> {
     let db_conn_cloned = db_conn.clone();
 
-    #[allow(unreachable_code)]
     let update_leaderboard_handle = tokio::spawn(async move {
         loop {
             update_leaderboard(&db_conn_cloned).await?;
             tokio::time::sleep(Duration::from_secs(60)).await;
         }
 
+        #[allow(unreachable_code)]
         Ok::<(), Error>(())
     })
     .abort_handle();
@@ -101,13 +101,13 @@ pub fn run(docker_conn: &Docker, db_conn: &DbConn) -> Vec<AbortHandle> {
     let db_conn_cloned = db_conn.clone();
     let docker_conn_cloned = docker_conn.clone();
 
-    #[allow(unreachable_code)]
     let remove_instances_handle = tokio::spawn(async move {
         loop {
             remove_instances(&docker_conn_cloned, &db_conn_cloned).await?;
-            tokio::time::sleep(Duration::from_secs(10)).await;
+            tokio::time::sleep(Duration::from_secs(1)).await;
         }
 
+        #[allow(unreachable_code)]
         Ok::<(), Error>(())
     })
     .abort_handle();

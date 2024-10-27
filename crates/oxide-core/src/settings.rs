@@ -111,10 +111,36 @@ pub enum CompressionKind {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct FileStorage {
+pub struct Local {
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub compress: Option<CompressionKind>,
     pub path: String,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Aws {}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Gcp {}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct Azure {
+    account_name: String,
+    client_id: String,
+    client_secret: String,
+    tenant_id: String,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct FileStorage {
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub local: Option<Local>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub aws: Option<Aws>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub gcp: Option<Gcp>,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub azure: Option<Azure>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -216,8 +242,13 @@ impl Default for Settings {
                 refresh_token_timeout: 86400,
             },
             file_storage: FileStorage {
-                compress: Some(CompressionKind::Gzip),
-                path: "/var/athena/static".to_owned(),
+                local: Some(Local {
+                    compress: Some(CompressionKind::Gzip),
+                    path: "/var/athena/static".to_owned(),
+                }),
+                aws: None,
+                azure: None,
+                gcp: None,
             },
             smtp: Smtp {
                 from: Mailbox::new(None, Address::new("noreply", "athena.io").unwrap()),
@@ -270,7 +301,7 @@ impl Settings {
         )
     }
 
-    pub fn default_toml(&self) -> Result<String> {
-        Ok(toml::to_string(self)?)
+    pub fn default_json(&self) -> Result<String> {
+        Ok(serde_json::to_string_pretty(self)?)
     }
 }

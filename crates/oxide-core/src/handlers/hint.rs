@@ -17,7 +17,7 @@ multiple_relation_api!(Hint, Unlock);
 
 #[utoipa::path(
     get,
-    path = "/hint/unlock/{id}",
+    path = "/player/hint/unlock/{id}",
     params(("id" = Uuid, Path, description = "Id of entity")),
     responses(
         (status = 200, description = "Unlocked hint by id successfully", body = HintModel),
