@@ -64,7 +64,7 @@ impl IntoActiveModel<super::player::ActiveModel> for UpdateProfileSchema {
             display_name: ActiveValue::Set(self.display_name),
             created_at: ActiveValue::NotSet,
             updated_at: ActiveValue::Set(Utc::now().naive_utc()),
-            team_id: ActiveValue::Set(Some(self.team_id)),
+            team_id: ActiveValue::Set(self.team_id),
             ban_id: ActiveValue::NotSet,
             discord_id: ActiveValue::Set(self.discord_id),
             score: ActiveValue::NotSet,

@@ -13,5 +13,8 @@ pub fn router() -> Router<Arc<AppState>> {
             "/auth/admin/token/refresh",
             post(auth::admin::refresh_token),
         )
-        .route("/auth/admin/profile", get(auth::admin::get_profile))
+        .route(
+            "/auth/admin/current",
+            get(auth::admin::get_current_logged_in),
+        )
 }

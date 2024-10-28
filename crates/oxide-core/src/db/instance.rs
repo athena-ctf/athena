@@ -35,7 +35,7 @@ pub async fn destroy(
 }
 
 pub async fn new(
-    details: InstanceDetails,
+    details: CreateInstanceSchema,
     client: &Docker,
     db: &DbConn,
     redis_client: &mut PooledConnection<'_, RedisConnectionManager>,

@@ -24,7 +24,7 @@ pub struct Model {
     pub created_at: DateTime,
     pub updated_at: DateTime,
     pub display_name: String,
-    pub team_id: Option<Uuid>,
+    pub team_id: Uuid,
     pub ban_id: Option<Uuid>,
     #[sea_orm(unique)]
     pub discord_id: Option<String>,

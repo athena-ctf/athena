@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use entity::extensions::{HintSummary, PartialChallenge};
 pub use entity::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -77,19 +79,27 @@ pub struct RegisterPlayer {
     pub email: String,
     pub username: String,
     pub password: String,
+    pub team_id: Uuid,
     pub token: String,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub enum PlayerChallengeState {
+    Solved,
+    Unsolved,
+    ChallengeLimitReached,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct ChallengeSummary {
     pub challenge: PartialChallenge,
-    pub tags: Vec<TagDetails>,
-    pub solved: bool,
+    pub tags: Vec<CreateTagSchema>,
+    pub state: PlayerChallengeState,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct DetailedChallenge {
-    pub files: Vec<FileDetails>,
+    pub files: Vec<CreateFileSchema>,
     pub hints: Vec<HintSummary>,
 }
 
@@ -122,5 +132,33 @@ pub struct TagSolves {
 pub struct PlayerProfile {
     pub player: PlayerModel,
     pub solved_challenges: Vec<ChallengeModel>,
+    pub tag_solves: Vec<TagSolves>,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct PlayerSummary {
+    pub player: PlayerModel,
+    pub user: UserModel,
+    pub submissions: Vec<SubmissionModel>,
+    pub unlocks: Vec<UnlockModel>,
+    pub achievements: Vec<AchievementModel>,
+    pub tag_solves: Vec<TagSolves>,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct TeamProfile {
+    pub team: TeamModel,
+    pub solved_challenges: Vec<ChallengeModel>,
+    pub tag_solves: Vec<TagSolves>,
+    pub members: Vec<CreatePlayerSchema>,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct TeamSummary {
+    pub team: TeamModel,
+    pub members: HashMap<String, PlayerSummary>,
+    pub submissions: Vec<SubmissionModel>,
+    pub unlocks: Vec<UnlockModel>,
+    pub achievements: Vec<AchievementModel>,
     pub tag_solves: Vec<TagSolves>,
 }

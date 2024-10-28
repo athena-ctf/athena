@@ -26,5 +26,8 @@ pub fn router() -> Router<Arc<AppState>> {
             "/auth/player/register/send-token",
             post(auth::player::register_send_token),
         )
-        .route("/auth/player/profile", get(auth::player::get_profile))
+        .route(
+            "/auth/player/current",
+            get(auth::player::get_current_logged_in),
+        )
 }

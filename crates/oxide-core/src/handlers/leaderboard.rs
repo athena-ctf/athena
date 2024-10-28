@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{LeaderboardDetails, LeaderboardModel};
+use crate::schemas::{CreateLeaderboardSchema, LeaderboardModel};
 use crate::service::AppState;
 
 crud_interface_api!(Leaderboard);

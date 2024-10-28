@@ -49,7 +49,7 @@ macro_rules! update_db {
         $crate::paste! {
             pub async fn update(
                 id: Uuid,
-                details: [<$entity Details>],
+                details: [<Create $entity Schema>],
                 db: &DbConn,
                 client: &mut PooledConnection<'_, RedisConnectionManager>,
             ) -> Result<[<$entity Model>]> {
@@ -94,7 +94,7 @@ macro_rules! delete_db {
 macro_rules! create_db {
     ($entity:ident) => {
         $crate::paste! {
-            pub async fn create(details: [<$entity Details>], db: &DbConn) -> Result<[<$entity Model>]> {
+            pub async fn create(details: [<Create $entity Schema>], db: &DbConn) -> Result<[<$entity Model>]> {
                 let mut model = details.into_active_model();
                 model.id = ActiveValue::Set(Uuid::now_v7());
                 model.created_at = model.updated_at.clone();
@@ -155,7 +155,7 @@ macro_rules! join_crud_interface_db {
 
             pub async fn update(
                 ([<$related_from:snake _id>], [<$related_to:snake _id>]): (Uuid, Uuid),
-                details: [<$entity Details>],
+                details: [<Create $entity Schema>],
                 db: &DbConn,
                 client: &mut PooledConnection<'_, RedisConnectionManager>,
             ) -> Result<[<$entity Model>]> {
@@ -187,7 +187,7 @@ macro_rules! join_crud_interface_db {
                 Ok(delete_result.rows_affected == 1)
             }
 
-            pub async fn create(details: [<$entity Details>], db: &DbConn) -> Result<[<$entity Model>]> {
+            pub async fn create(details: [<Create $entity Schema>], db: &DbConn) -> Result<[<$entity Model>]> {
                 let mut model = details.into_active_model();
                 model.created_at = ActiveValue::Set(Utc::now().naive_utc());
                 model.updated_at = ActiveValue::Set(Utc::now().naive_utc());
@@ -304,7 +304,7 @@ macro_rules! create_api {
                 post,
                 path = concat!("/admin/",stringify!([<$entity:snake>])),
                 operation_id = concat!("create_",stringify!([<$entity:snake>])),
-                request_body = [<$entity Details>],
+                request_body = [<Create $entity Schema>],
                 responses(
                     (status = 201, description = concat!("Created ",stringify!([<$entity:snake>])," successfully"), body = [<$entity Model>]),
                     (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -316,7 +316,7 @@ macro_rules! create_api {
             )]
             pub async fn create(
                 state: State<Arc<AppState>>,
-                Json(body): Json<[<$entity Details>]>,
+                Json(body): Json<[<Create $entity Schema>]>,
             ) -> Result<Json<[<$entity Model>]>> {
                 Ok(Json(db::[<$entity:snake>]::create(body, &state.db_conn).await?))
             }
@@ -407,7 +407,7 @@ macro_rules! update_api {
                 patch,
                 path = concat!("/admin/",stringify!([<$entity:snake>]),"/{id}"),
                 operation_id = concat!("update_",stringify!([<$entity:snake>]),"_by_id"),
-                request_body = [<$entity Details>],
+                request_body = [<Create $entity Schema>],
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
                     (status = 200, description = concat!("Updated ",stringify!([<$entity:snake>])," by id successfully"), body = [<$entity Model>]),
@@ -421,7 +421,7 @@ macro_rules! update_api {
             pub async fn update_by_id(
                 state: State<Arc<AppState>>,
                 Path(id): Path<Uuid>,
-                Json(body): Json<[<$entity Details>]>,
+                Json(body): Json<[<Create $entity Schema>]>,
             ) -> Result<Json<[<$entity Model>]>> {
                 Ok(Json(
                     db::[<$entity:snake>]::update(
@@ -623,7 +623,7 @@ macro_rules! join_crud_interface_api {
                 post,
                 path = concat!("/admin/",stringify!([<$entity:snake>])),
                 operation_id = concat!("create_",stringify!([<$entity:snake>])),
-                request_body = [<$entity Details>],
+                request_body = [<Create $entity Schema>],
                 responses(
                     (status = 201, description = concat!("Created ",stringify!([<$entity:snake>])," successfully"), body = [<$entity Model>]),
                     (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -635,7 +635,7 @@ macro_rules! join_crud_interface_api {
             )]
             pub async fn create(
                 state: State<Arc<AppState>>,
-                Json(body): Json<[<$entity Details>]>,
+                Json(body): Json<[<Create $entity Schema>]>,
             ) -> Result<Json<[<$entity Model>]>> {
                 Ok(Json(db::[<$entity:snake>]::create(body, &state.db_conn).await?))
             }
@@ -715,7 +715,7 @@ macro_rules! join_crud_interface_api {
                     ($related_from_id = Uuid, Path, description = "Id of entity"),
                     ($related_to_id = Uuid, Path, description = "Id of entity"),
                 ),
-                request_body = [<$entity Details>],
+                request_body = [<Create $entity Schema>],
                 responses(
                     (status = 200, description = concat!("Updated ",stringify!([<$entity:snake>])," by id successfully"), body = [<$entity Model>]),
                     (status = 400, description = "Invalid parameters/request body format", body = ErrorModel),
@@ -728,7 +728,7 @@ macro_rules! join_crud_interface_api {
             pub async fn update_by_id(
                 state: State<Arc<AppState>>,
                 Path(id): Path<(Uuid, Uuid)>,
-                Json(body): Json<[<$entity Details>]>,
+                Json(body): Json<[<Create $entity Schema>]>,
             ) -> Result<Json<[<$entity Model>]>> {
                 Ok(Json(
                     db::[<$entity:snake>]::update(

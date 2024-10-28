@@ -8,6 +8,7 @@ mod challenge;
 mod flag;
 mod hint;
 mod player;
+mod team;
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new().nest(
@@ -16,6 +17,7 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(challenge::router())
             .merge(flag::router())
             .merge(hint::router())
-            .merge(player::router()),
+            .merge(player::router())
+            .merge(team::router()),
     )
 }

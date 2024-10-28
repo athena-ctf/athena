@@ -81,8 +81,8 @@ pub async fn refresh_token(
 
 #[utoipa::path(
     get,
-    path = "/auth/admin/profile",
-    operation_id = "admin_get_profile",
+    path = "/auth/admin/current",
+    operation_id = "admin_get_current_logged_in",
     responses(
         (status = 200, description = "Password reset email sent successful", body = AdminModel),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -91,7 +91,7 @@ pub async fn refresh_token(
     ),
 )]
 /// Return currently authenticated user
-pub async fn get_profile(
+pub async fn get_current_logged_in(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<AdminModel>> {

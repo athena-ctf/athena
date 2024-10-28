@@ -15,7 +15,7 @@ single_relation_db!(Hint, Challenge);
 multiple_relation_db!(Hint, Unlock);
 
 pub async fn unlock(hint_id: Uuid, player_id: Uuid, db: &DbConn) -> Result<Option<HintModel>> {
-    super::unlock::create(UnlockDetails { player_id, hint_id }, db).await?;
+    super::unlock::create(CreateUnlockSchema { player_id, hint_id }, db).await?;
 
     let Some(hint_model) = Hint::find_by_id(hint_id).one(db).await? else {
         return Ok(None);

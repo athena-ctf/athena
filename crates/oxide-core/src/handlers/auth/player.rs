@@ -12,8 +12,8 @@ use lettre::{Message, Transport};
 use crate::db::player;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    JsonResponse, LoginModel, PlayerDetails, RegisterPlayer, ResetPasswordSchema, SendTokenSchema,
-    TokenClaims, TokenPair,
+    CreatePlayerSchema, JsonResponse, LoginModel, RegisterPlayer, ResetPasswordSchema,
+    SendTokenSchema, TokenClaims, TokenPair,
 };
 use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
@@ -49,7 +49,7 @@ pub async fn register(
     }
 
     let user = db::user::create(
-        UserDetails {
+        CreateUserSchema {
             email: body.email,
             username: body.username,
             password: body.password,
@@ -60,10 +60,10 @@ pub async fn register(
     .await?;
 
     db::player::create(
-        PlayerDetails {
+        CreatePlayerSchema {
             user_id: user.id,
             display_name: body.display_name,
-            team_id: None,
+            team_id: body.team_id,
             ban_id: None,
             discord_id: None,
             score: 0,
@@ -268,9 +268,7 @@ pub async fn login(
 
     if db::player::related_team(player_model.id, &state.db_conn)
         .await?
-        .is_some_and(|(_, team_model)| {
-            team_model.is_some_and(|team_model| team_model.ban_id.is_some())
-        })
+        .is_some_and(|(_, team_model)| team_model.ban_id.is_some())
     {
         return Err(Error::BadRequest("Player team is banned".to_owned()));
     }
@@ -327,8 +325,8 @@ pub async fn refresh_token(
 
 #[utoipa::path(
     get,
-    path = "/auth/player/me",
-    operation_id = "player_get_profile",
+    path = "/auth/player/current",
+    operation_id = "player_get_current_logged_in",
     responses(
         (status = 200, description = "Password reset email sent successful", body = PlayerModel),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -337,7 +335,7 @@ pub async fn refresh_token(
     ),
 )]
 /// Return currently authenticated user
-pub async fn get_profile(
+pub async fn get_current_logged_in(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<PlayerModel>> {

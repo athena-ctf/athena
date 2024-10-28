@@ -13,4 +13,5 @@ pub fn router() -> Router<Arc<AppState>> {
             get(player::retrieve_profile_by_username),
         )
         .route("/:id/update-profile", put(player::update_profile_by_id))
+        .route("/summary", get(player::retrieve_summary))
 }

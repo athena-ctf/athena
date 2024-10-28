@@ -49,7 +49,7 @@ async fn main() {
 }
 
 async fn call_back(model: entity::notification::Model) {
-    if let Some(tx) = CONNECTED_CLIENTS.read().await.get(&model.id) {
+    if let Some(tx) = CONNECTED_CLIENTS.read().await.get(&model.player_id) {
         tx.send(model).await.unwrap();
     }
 }

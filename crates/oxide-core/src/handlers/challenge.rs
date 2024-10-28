@@ -8,7 +8,7 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    AchievementModel, ChallengeDetails, ChallengeModel, ChallengeSummary, ChallengeTagModel,
+    AchievementModel, CreateChallengeSchema, ChallengeModel, ChallengeSummary, ChallengeTagModel,
     DetailedChallenge, FileModel, HintModel, InstanceModel, SubmissionModel, TagModel, TokenClaims,
 };
 use crate::service::AppState;
@@ -40,9 +40,20 @@ pub async fn player_challenges(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<Vec<ChallengeSummary>>> {
-    db::challenge::list_summaries(claims.id, &state.db_conn)
-        .await
-        .map(Json)
+    db::challenge::list_summaries(
+        claims.id,
+        state
+            .settings
+            .read()
+            .await
+            .ctf
+            .challenge
+            .clone()
+            .map(|challenge| challenge.max_attempts),
+        &state.db_conn,
+    )
+    .await
+    .map(Json)
 }
 
 #[axum::debug_handler]

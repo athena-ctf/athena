@@ -9,7 +9,7 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    AchievementDetails, AchievementModel, ChallengeModel, PlayerModel, TokenClaims,
+    CreateAchievementSchema, AchievementModel, ChallengeModel, PlayerModel, TokenClaims,
 };
 use crate::service::AppState;
 
@@ -24,7 +24,7 @@ single_relation_api!(Achievement, Challenge);
     post,
     path = "/admin/achievement",
     operation_id = "create_achievement",
-    request_body = AchievementDetails,
+    request_body = CreateAchievementSchema,
     responses(
         (status = 201, description = "Created achievement successfully", body = AchievementModel),
         (status = 400, description = "Invalid request body format", body = ErrorModel),
@@ -37,7 +37,7 @@ single_relation_api!(Achievement, Challenge);
 pub async fn create(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
-    Json(body): Json<AchievementDetails>,
+    Json(body): Json<CreateAchievementSchema>,
 ) -> Result<Json<AchievementModel>> {
     let Some(player_model) = db::player::retrieve(
         claims.id,

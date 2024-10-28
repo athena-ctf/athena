@@ -31,7 +31,7 @@ struct DetailsDerive {
 pub fn derive_details(input: TokenStream) -> TokenStream {
     let input =
         DetailsDerive::from_derive_input(&parse_macro_input!(input as DeriveInput)).unwrap();
-    let details_name = format_ident!("{}Details", input.table.name);
+    let details_name = format_ident!("Create{}Schema", input.table.name);
 
     let binding = input.data.take_struct().unwrap();
     let detail_fields = binding.fields.iter().filter(|f| {

@@ -7,7 +7,7 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{ChallengeModel, HintDetails, HintModel, TokenClaims, UnlockModel};
+use crate::schemas::{ChallengeModel, CreateHintSchema, HintModel, TokenClaims, UnlockModel};
 use crate::service::AppState;
 
 crud_interface_api!(Hint);

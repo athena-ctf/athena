@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{UnlockDetails, UnlockModel};
+use crate::schemas::{CreateUnlockSchema, UnlockModel};
 use crate::service::AppState;
 
 join_crud_interface_api!(Unlock, "player_id", "hint_id");

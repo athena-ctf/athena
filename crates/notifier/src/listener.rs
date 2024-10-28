@@ -1,15 +1,8 @@
-use std::fmt::Debug;
 use std::future::Future;
 
-use serde::Deserialize;
 use sqlx::error::Error;
 use sqlx::postgres::PgListener;
 use sqlx::{Pool, Postgres};
-
-#[derive(Deserialize, Debug)]
-pub struct Payload {
-    pub data: entity::notification::Model,
-}
 
 pub async fn start_listening<F, Fut>(pool: &Pool<Postgres>, call_back: F) -> Result<(), Error>
 where
@@ -21,14 +14,14 @@ where
     loop {
         while let Some(notification) = listener.try_recv().await? {
             tracing::info!(
-                "Getting notification from channel {:?}",
+                "received notification from channel {:?}",
                 notification.channel()
             );
 
             let payload = notification.payload().to_owned();
-            let payload = serde_json::from_str::<Payload>(&payload).unwrap();
+            let payload = serde_json::from_str::<entity::notification::Model>(&payload).unwrap();
 
-            call_back(payload.data).await;
+            call_back(payload).await;
         }
     }
 }

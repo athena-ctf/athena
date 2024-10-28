@@ -10,7 +10,7 @@ use tokio::task::AbortHandle;
 
 use crate::db::leaderboard;
 use crate::errors::{Error, Result};
-use crate::schemas::{CategoryEnum, Instance, LeaderboardDetails, Player, Team};
+use crate::schemas::{CategoryEnum, Instance, CreateLeaderboardSchema, Player, Team};
 
 pub async fn update_leaderboard(db_conn: &DbConn) -> Result<()> {
     let players = Player::find()
@@ -32,7 +32,7 @@ pub async fn update_leaderboard(db_conn: &DbConn) -> Result<()> {
         .collect::<Vec<_>>();
 
     leaderboard::create(
-        LeaderboardDetails {
+        CreateLeaderboardSchema {
             category: CategoryEnum::Player,
             rank0: players.first().cloned(),
             rank1: players.get(1).cloned(),
@@ -50,7 +50,7 @@ pub async fn update_leaderboard(db_conn: &DbConn) -> Result<()> {
     .await?;
 
     leaderboard::create(
-        LeaderboardDetails {
+        CreateLeaderboardSchema {
             category: CategoryEnum::Team,
             rank0: teams.first().cloned(),
             rank1: teams.get(1).cloned(),

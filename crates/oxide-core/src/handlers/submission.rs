@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{SubmissionDetails, SubmissionModel};
+use crate::schemas::{CreateSubmissionSchema, SubmissionModel};
 use crate::service::AppState;
 
 join_crud_interface_api!(Submission, "challenge_id", "player_id");

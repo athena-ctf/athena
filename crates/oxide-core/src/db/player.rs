@@ -8,18 +8,21 @@ use bb8_redis::redis::AsyncCommands;
 use bb8_redis::RedisConnectionManager;
 use entity::extensions::UpdateProfileSchema;
 use entity::prelude::*;
-use oxide_macros::{crud_interface_db, multiple_relation_db, optional_relation_db};
+use oxide_macros::{
+    crud_interface_db, multiple_relation_db, optional_relation_db, single_relation_db,
+};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 
 use super::CachedValue;
-use crate::errors::Result;
-use crate::schemas::{PlayerProfile, TagSolves};
+use crate::errors::{Error, Result};
+use crate::schemas::{PlayerProfile, PlayerSummary, TagSolves};
 
 crud_interface_db!(Player);
 
+single_relation_db!(Player, Team);
+
 optional_relation_db!(Player, Instance);
-optional_relation_db!(Player, Team);
 optional_relation_db!(Player, Ban);
 
 multiple_relation_db!(Player, Flag);
@@ -105,7 +108,12 @@ pub async fn retrieve_profile_by_username(
 
     let mut challenges = Vec::new();
 
-    for submitted_challenge in player_model.find_related(Challenge).all(db).await? {
+    for submitted_challenge in player_model
+        .find_related(Challenge)
+        .filter(entity::submission::Column::IsCorrect.eq(true))
+        .all(db)
+        .await?
+    {
         let tags = crate::db::challenge::related_tags(&submitted_challenge, db).await?;
         for tag in tags {
             tags_map
@@ -123,7 +131,56 @@ pub async fn retrieve_profile_by_username(
     }))
 }
 
-pub async fn ban(id: Uuid, details: BanDetails, db: &DbConn) -> Result<Option<BanModel>> {
+pub async fn retrieve_player_summary_by_id(id: Uuid, db: &DbConn) -> Result<Option<PlayerSummary>> {
+    let Some((user_model, Some(player_model))) = User::find_by_id(id)
+        .find_also_related(Player)
+        .one(db)
+        .await?
+    else {
+        return Ok(None);
+    };
+
+    let mut tags_map = Tag::find()
+        .all(db)
+        .await?
+        .into_iter()
+        .map(|tag| {
+            (
+                tag.value.clone(),
+                TagSolves {
+                    tag_id: tag.id,
+                    tag_value: tag.value,
+                    solves: 0,
+                },
+            )
+        })
+        .collect::<HashMap<String, TagSolves>>();
+
+    for submitted_challenge in player_model
+        .find_related(Challenge)
+        .filter(entity::submission::Column::IsCorrect.eq(true))
+        .all(db)
+        .await?
+    {
+        let tags = crate::db::challenge::related_tags(&submitted_challenge, db).await?;
+        for tag in tags {
+            tags_map
+                .entry(tag.value)
+                .and_modify(|tag_solves| tag_solves.solves += 1);
+        }
+    }
+
+    Ok(Some(PlayerSummary {
+        submissions: player_model.find_related(Submission).all(db).await?,
+        unlocks: player_model.find_related(Unlock).all(db).await?,
+        achievements: player_model.find_related(Achievement).all(db).await?,
+        player: player_model,
+        user: user_model,
+        tag_solves: tags_map.values().cloned().collect(),
+    }))
+}
+
+pub async fn ban(id: Uuid, details: CreateBanSchema, db: &DbConn) -> Result<Option<BanModel>> {
     if let Some(player) = Player::find_by_id(id).one(db).await? {
         let ban_model = crate::db::ban::create(details, db).await?;
         let mut active_player = player.into_active_model();

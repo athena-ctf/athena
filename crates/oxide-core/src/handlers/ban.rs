@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{BanDetails, BanModel, PlayerModel, TeamModel};
+use crate::schemas::{CreateBanSchema, BanModel, PlayerModel, TeamModel};
 use crate::service::AppState;
 
 crud_interface_api!(Ban);
@@ -17,7 +17,7 @@ optional_relation_api!(Ban, Team);
 #[utoipa::path(
     post,
     path = "/ban/player/{id}",
-    request_body = BanDetails,
+    request_body = CreateBanSchema,
     params(("id" = Uuid, Path, description = "Id of entity")),
     responses(
         (status = 201, description = "Banned player by id successfully", body = BanModel),
@@ -32,7 +32,7 @@ optional_relation_api!(Ban, Team);
 pub async fn add_player_by_id(
     state: State<Arc<AppState>>,
     Path(id): Path<Uuid>,
-    Json(body): Json<BanDetails>,
+    Json(body): Json<CreateBanSchema>,
 ) -> Result<Json<BanModel>> {
     db::player::ban(id, body, &state.db_conn)
         .await?
@@ -45,7 +45,7 @@ pub async fn add_player_by_id(
 #[utoipa::path(
     post,
     path = "/ban/team/{id}",
-    request_body = BanDetails,
+    request_body = CreateBanSchema,
     params(("id" = Uuid, Path, description = "Id of entity")),
     responses(
         (status = 201, description = "Banned team by id successfully", body = BanModel),
@@ -60,7 +60,7 @@ pub async fn add_player_by_id(
 pub async fn add_team_by_id(
     state: State<Arc<AppState>>,
     Path(id): Path<Uuid>,
-    Json(body): Json<BanDetails>,
+    Json(body): Json<CreateBanSchema>,
 ) -> Result<Json<BanModel>> {
     db::team::ban(id, body, &state.db_conn).await?.map_or_else(
         || Err(Error::NotFound("Ban does not exist".to_owned())),

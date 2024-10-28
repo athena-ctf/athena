@@ -9,8 +9,8 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    ChallengeModel, FlagDetails, FlagModel, FlagVerificationResult, PlayerModel, Submission,
-    SubmissionDetails, TokenClaims, VerifyFlagSchema,
+    ChallengeModel, CreateFlagSchema, FlagModel, FlagVerificationResult, PlayerModel, Submission,
+    CreateSubmissionSchema, TokenClaims, VerifyFlagSchema,
 };
 use crate::service::AppState;
 
@@ -95,7 +95,7 @@ pub async fn verify(
             .await?;
     } else {
         db::submission::create(
-            SubmissionDetails {
+            CreateSubmissionSchema {
                 player_id: player_model.id,
                 challenge_id: body.challenge_id,
                 is_correct,
