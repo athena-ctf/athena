@@ -19,7 +19,7 @@ import (
 	"github.com/klauspost/compress/zstd"
 )
 
-var notConfiguredError = errors.New("store not configured")
+var errNotConfigured = errors.New("store not configured")
 
 func createFile(basePath, name string) (*os.File, error) {
 	return os.Create(path.Join(basePath, name))
@@ -119,25 +119,25 @@ func (handler Handler) Download(c *fiber.Ctx) error {
 
 			return c.Download(filepath, model.Name)
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	case file.BackendAzure:
 		if handler.azPresigner != nil {
 			url, err = handler.azPresigner.Download(ctx, id, model.Name)
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	case file.BackendGcp:
 		if handler.gcpPresigner != nil {
 			url, err = handler.gcpPresigner.Download(ctx, id, model.Name)
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	case file.BackendS3:
 		if handler.s3Presigner != nil {
 			url, err = handler.s3Presigner.Download(ctx, id, model.Name)
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	}
 
@@ -189,25 +189,25 @@ func (handler Handler) Delete(c *fiber.Ctx) error {
 
 			return c.SendStatus(fiber.StatusNoContent)
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	case file.BackendAzure:
 		if handler.azPresigner != nil {
 			url, err = handler.azPresigner.Delete(ctx, id)
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	case file.BackendGcp:
 		if handler.gcpPresigner != nil {
 			url, err = handler.gcpPresigner.Delete(ctx, id)
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	case file.BackendS3:
 		if handler.s3Presigner != nil {
 			url, err = handler.s3Presigner.Delete(ctx, id)
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	}
 
@@ -257,25 +257,25 @@ func (handler Handler) Upload(c *fiber.Ctx) error {
 
 			return c.JSON(map[string]string{"status": "successfully uploaded"})
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	case "s3":
 		if handler.s3Presigner != nil {
 			url, err = handler.s3Presigner.Upload(c.Context(), name.String())
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	case "azure":
 		if handler.azPresigner != nil {
 			url, err = handler.azPresigner.Upload(c.Context(), name.String())
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	case "gcp":
 		if handler.gcpPresigner != nil {
 			url, err = handler.gcpPresigner.Upload(c.Context(), name.String())
 		} else {
-			return notConfiguredError
+			return errNotConfigured
 		}
 	default:
 		return errors.New("invalid storage location")

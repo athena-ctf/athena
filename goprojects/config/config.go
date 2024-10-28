@@ -78,17 +78,21 @@ type Gcp struct {
 }
 
 type Azure struct {
-	AccountName  string `json:"account_name"`
-	ClientId     string `json:"client_id"`
-	TenantId     string `json:"tenant_id"`
-	ClientSecret string `json:"client_secret"`
+	AccountName string `json:"account_name"`
+	AccountKey  string `json:"account_key"`
+}
+
+type RemoteStorageOptions struct {
+	BucketName string `json:"bucket_name"`
+	Expires    int32  `json:"expires"`
 }
 
 type FileStorage struct {
-	Local *Local `json:"local,omitempty"`
-	Aws   *Aws   `json:"aws,omitempty"`
-	Gcp   *Gcp   `json:"gcp,omitempty"`
-	Azure *Azure `json:"azure,omitempty"`
+	Local                *Local                `json:"local,omitempty"`
+	Aws                  *Aws                  `json:"aws,omitempty"`
+	Gcp                  *Gcp                  `json:"gcp,omitempty"`
+	Azure                *Azure                `json:"azure,omitempty"`
+	RemoteStorageOptions *RemoteStorageOptions `json:"remote_storage_options,omitempty"`
 }
 
 type Smtp struct {

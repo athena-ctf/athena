@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"athena.io/config"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -13,13 +14,13 @@ type S3Presigner struct {
 	PresignClient *s3.PresignClient
 }
 
-func (presigner S3Presigner) Download(ctx context.Context, filename string, displayName string) (string, error) {
+func (presigner S3Presigner) Download(ctx context.Context, filename, displayName string) (string, error) {
 	request, err := presigner.PresignClient.PresignGetObject(ctx, &s3.GetObjectInput{
-		Bucket:                     aws.String(bucketName),
+		Bucket:                     aws.String(config.Config.FileStorage.RemoteStorageOptions.BucketName),
 		Key:                        aws.String(filename),
-		ResponseContentDisposition: aws.String(fmt.Sprintf("attachment;filename=\"%s\"", displayName)),
+		ResponseContentDisposition: aws.String(fmt.Sprintf("attachment; filename=\"%s\"", displayName)),
 	}, func(opts *s3.PresignOptions) {
-		opts.Expires = expires
+		opts.Expires = time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)
 	})
 
 	if err != nil {
@@ -31,10 +32,10 @@ func (presigner S3Presigner) Download(ctx context.Context, filename string, disp
 
 func (presigner S3Presigner) Upload(ctx context.Context, filename string) (string, error) {
 	request, err := presigner.PresignClient.PresignPutObject(ctx, &s3.PutObjectInput{
-		Bucket: aws.String(bucketName),
+		Bucket: aws.String(config.Config.FileStorage.RemoteStorageOptions.BucketName),
 		Key:    aws.String(filename),
 	}, func(opts *s3.PresignOptions) {
-		opts.Expires = expires
+		opts.Expires = time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)
 	})
 
 	if err != nil {
@@ -46,10 +47,10 @@ func (presigner S3Presigner) Upload(ctx context.Context, filename string) (strin
 
 func (presigner S3Presigner) Delete(ctx context.Context, filename string) (string, error) {
 	request, err := presigner.PresignClient.PresignDeleteObject(ctx, &s3.DeleteObjectInput{
-		Bucket: aws.String(bucketName),
+		Bucket: aws.String(config.Config.FileStorage.RemoteStorageOptions.BucketName),
 		Key:    aws.String(filename),
 	}, func(opts *s3.PresignOptions) {
-		opts.Expires = expires
+		opts.Expires = time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)
 	})
 
 	if err != nil {

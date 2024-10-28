@@ -20,6 +20,6 @@ func init() {
 	}
 
 	if err := v.Unmarshal(&config); err != nil {
-		log.Fatalf("Error unmarshaling config: %s", err)
+		log.Fatalf("Error unmarshalling config: %s", err)
 	}
 }

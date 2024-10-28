@@ -2,6 +2,8 @@ package storage
 
 import (
 	"context"
+	"fmt"
+	"net/url"
 	"time"
 
 	"athena.io/config"
@@ -14,12 +16,15 @@ type GcpPresigner struct {
 	Client *storage.Client
 }
 
-func (presigner GcpPresigner) Download(ctx context.Context, filename string, displayName string) (string, error) {
-	bucket := presigner.Client.Bucket(bucketName)
+func (presigner GcpPresigner) Download(ctx context.Context, filename, displayName string) (string, error) {
+	bucket := presigner.Client.Bucket(config.Config.FileStorage.RemoteStorageOptions.BucketName)
 
 	opts := &storage.SignedURLOptions{
 		Method:  "GET",
-		Expires: time.Now().Add(expires),
+		Expires: time.Now().Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)),
+		QueryParameters: url.Values{
+			"response-content-disposition": []string{fmt.Sprintf("attachment; filename=\"%s\"", displayName)},
+		},
 	}
 
 	url, err := bucket.SignedURL(filename, opts)
@@ -31,11 +36,11 @@ func (presigner GcpPresigner) Download(ctx context.Context, filename string, dis
 }
 
 func (presigner GcpPresigner) Upload(ctx context.Context, filename string) (string, error) {
-	bucket := presigner.Client.Bucket(bucketName)
+	bucket := presigner.Client.Bucket(config.Config.FileStorage.RemoteStorageOptions.BucketName)
 
 	opts := &storage.SignedURLOptions{
 		Method:  "PUT",
-		Expires: time.Now().Add(expires),
+		Expires: time.Now().Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)),
 	}
 
 	url, err := bucket.SignedURL(filename, opts)
@@ -46,11 +51,11 @@ func (presigner GcpPresigner) Upload(ctx context.Context, filename string) (stri
 }
 
 func (presigner GcpPresigner) Delete(ctx context.Context, filename string) (string, error) {
-	bucket := presigner.Client.Bucket(bucketName)
+	bucket := presigner.Client.Bucket(config.Config.FileStorage.RemoteStorageOptions.BucketName)
 
 	opts := &storage.SignedURLOptions{
 		Method:  "DELETE",
-		Expires: time.Now().Add(expires),
+		Expires: time.Now().Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)),
 	}
 
 	url, err := bucket.SignedURL(filename, opts)
