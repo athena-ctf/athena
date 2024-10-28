@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"athena.io/fileserver/ent/file"
-	"athena.io/fileserver/ent/predicate"
+	"athena.io/ent/file"
+	"athena.io/ent/predicate"
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/google/uuid"

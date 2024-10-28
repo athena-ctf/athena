@@ -9,10 +9,10 @@ import (
 	"log"
 	"reflect"
 
-	"athena.io/fileserver/ent/migrate"
+	"athena.io/ent/migrate"
 	"github.com/google/uuid"
 
-	"athena.io/fileserver/ent/file"
+	"athena.io/ent/file"
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"

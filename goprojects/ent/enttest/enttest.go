@@ -5,11 +5,11 @@ package enttest
 import (
 	"context"
 
-	"athena.io/fileserver/ent"
+	"athena.io/ent"
 	// required by schema hooks.
-	_ "athena.io/fileserver/ent/runtime"
+	_ "athena.io/ent/runtime"
 
-	"athena.io/fileserver/ent/migrate"
+	"athena.io/ent/migrate"
 	"entgo.io/ent/dialect/sql/schema"
 )
 

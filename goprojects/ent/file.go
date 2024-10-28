@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"athena.io/fileserver/ent/file"
+	"athena.io/ent/file"
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/google/uuid"

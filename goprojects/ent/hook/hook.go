@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"athena.io/fileserver/ent"
+	"athena.io/ent"
 )
 
 // The FileFunc type is an adapter to allow the use of ordinary

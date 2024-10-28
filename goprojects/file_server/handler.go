@@ -10,8 +10,8 @@ import (
 	"path"
 
 	"athena.io/config"
-	"athena.io/fileserver/ent"
-	"athena.io/fileserver/ent/file"
+	"athena.io/ent"
+	"athena.io/ent/file"
 	"athena.io/fileserver/storage"
 	"github.com/andybalholm/brotli"
 	"github.com/gofiber/fiber/v2"

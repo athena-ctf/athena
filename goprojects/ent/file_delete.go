@@ -5,8 +5,8 @@ package ent
 import (
 	"context"
 
-	"athena.io/fileserver/ent/file"
-	"athena.io/fileserver/ent/predicate"
+	"athena.io/ent/file"
+	"athena.io/ent/predicate"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"

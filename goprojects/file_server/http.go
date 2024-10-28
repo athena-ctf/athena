@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"athena.io/config"
-	"athena.io/fileserver/ent"
+	"athena.io/ent"
 	"athena.io/fileserver/storage"
 	jwt "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"

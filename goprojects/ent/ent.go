@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"sync"
 
-	"athena.io/fileserver/ent/file"
+	"athena.io/ent/file"
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"

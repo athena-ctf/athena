@@ -4,8 +4,8 @@ go 1.23.2
 
 require (
 	athena.io/config v0.0.0-00010101000000-000000000000
+	athena.io/ent v0.0.0-00010101000000-000000000000
 	cloud.google.com/go/storage v1.44.0
-	entgo.io/ent v0.14.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.7.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.4.1
 	github.com/andybalholm/brotli v1.1.1
@@ -21,6 +21,8 @@ require (
 
 replace athena.io/config => ../config
 
+replace athena.io/ent => ../ent
+
 require (
 	ariga.io/atlas v0.19.1-0.20240203083654-5948b60a8e43 // indirect
 	cel.dev/expr v0.16.1 // indirect
@@ -30,6 +32,7 @@ require (
 	cloud.google.com/go/compute/metadata v0.5.1 // indirect
 	cloud.google.com/go/iam v1.2.1 // indirect
 	cloud.google.com/go/monitoring v1.21.0 // indirect
+	entgo.io/ent v0.14.1 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.14.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.10.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.2.2 // indirect

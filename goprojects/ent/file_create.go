@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"time"
 
-	"athena.io/fileserver/ent/file"
+	"athena.io/ent/file"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/google/uuid"
