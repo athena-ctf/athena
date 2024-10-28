@@ -1,6 +1,6 @@
 "use client";
 
-import type { components } from "@repo/api";
+import { apiQueryClient, type components } from "@repo/api";
 import {
   Accordion,
   AccordionContent,
@@ -37,6 +37,7 @@ import { Link } from "@tanstack/react-router";
 import type React from "react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 const difficultyColors = {
   easy: "fill-green-400 text-green-400",
@@ -46,41 +47,60 @@ const difficultyColors = {
 };
 
 export function ChallengeModal({
-  challenge: {
-    id,
-    difficulty,
-    title,
-    author_name,
-    description,
-    max_points,
-    min_points,
-    container_details,
-  },
-  tags,
-  solves,
-  files,
-  hints,
+  challengeSummary,
   children,
-}: components["schemas"]["ChallengeRelations"] & {
+}: {
+  challengeSummary: components["schemas"]["ChallengeSummary"];
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   const [flag, setFlag] = useState("");
 
-  const handleVerify = () => {
-    console.log(flag, id);
-    verifyFlag(flag, id)
-      .then((res) => {
-        setOpen(false);
-        if (res.result === "pass") {
-          toast.success("Correct flag!");
-        } else {
-          toast.error("Invalid flag!");
-        }
+  const queryClient = useQueryClient();
+  const { data, error, isLoading } = apiQueryClient.useQuery(
+    "get",
+    "/player/challenge/details/{id}",
+    {
+      params: {
+        path: {
+          id: challengeSummary.challenge.id,
+        },
+      },
+    },
+    {},
+    queryClient,
+  );
 
-        setFlag("");
-      })
-      .catch((err) => toast.error(err));
+  const { mutate } = apiQueryClient.useMutation(
+    "post",
+    "/player/flag/verify",
+    {},
+    queryClient,
+  );
+
+  if (error) {
+    return <>{/* TODO */}</>;
+  }
+
+  const handleVerify = () => {
+    mutate({
+      body: {
+        challenge_id: challengeSummary.challenge.id,
+        flag,
+      },
+    });
+    // verifyFlag(flag, id)
+    //   .then((res) => {
+    //     setOpen(false);
+    //     if (res.result === "pass") {
+    //       toast.success("Correct flag!");
+    //     } else {
+    //       toast.error("Invalid flag!");
+    //     }
+
+    //     setFlag("");
+    //   })
+    //   .catch((err) => toast.error(err));
   };
 
   return (
@@ -89,18 +109,22 @@ export function ChallengeModal({
       <DialogContent>
         <DialogHeader>
           <div className="flex place-content-center justify-between">
-            <Circle className={difficultyColors[difficulty]} />
+            <Circle
+              className={
+                difficultyColors[challengeSummary.challenge.difficulty]
+              }
+            />
             <div>
-              <DialogTitle>{title}</DialogTitle>
+              <DialogTitle>{challengeSummary.challenge.title}</DialogTitle>
               <DialogDescription className="flex flex-col items-center py-3">
-                @{author_name} &bull;{" "}
-                {Math.floor((max_points - min_points) / solves + min_points)}{" "}
-                points &bull; {solves} Solves
+                @{challengeSummary.challenge.author_name} &bull;{" "}
+                {challengeSummary.challenge.points} points &bull;{" "}
+                {challengeSummary.challenge.solves} Solves
               </DialogDescription>
             </div>
             <div className="flex flex-row space-x-2">
-              {tags.map((tag) => (
-                <Badge className="my-auto" key={tag.id}>
+              {challengeSummary.tags.map((tag) => (
+                <Badge className="my-auto" key={tag.value}>
                   {tag.value}
                 </Badge>
               ))}
@@ -119,7 +143,7 @@ export function ChallengeModal({
                 </Tooltip>
               </TooltipProvider>
             </VerticalTabsTrigger>
-            {container_details?.per_user && (
+            {challengeSummary.challenge.container_details?.per_user && (
               <VerticalTabsTrigger value="instance">
                 <TooltipProvider>
                   <Tooltip>
@@ -131,7 +155,7 @@ export function ChallengeModal({
                 </TooltipProvider>
               </VerticalTabsTrigger>
             )}
-            {files.length && (
+            {data?.files.length && (
               <VerticalTabsTrigger value="files">
                 <TooltipProvider>
                   <Tooltip>
@@ -143,7 +167,7 @@ export function ChallengeModal({
                 </TooltipProvider>
               </VerticalTabsTrigger>
             )}
-            {hints.length && (
+            {data?.hints.length && (
               <VerticalTabsTrigger value="hints">
                 <TooltipProvider>
                   <Tooltip>
@@ -157,15 +181,17 @@ export function ChallengeModal({
             )}
           </VerticalTabsList>
           <VerticalTabsContent value="description">
-            <ScrollArea className="h-max">{description}</ScrollArea>
+            <ScrollArea className="h-max">
+              {challengeSummary.challenge.description}
+            </ScrollArea>
           </VerticalTabsContent>
           <VerticalTabsContent value="instance">
             {/* TODO */}
           </VerticalTabsContent>
           <VerticalTabsContent value="files">
             <div className="flex flex-col justify-between space-y-2">
-              {files.map((file) => (
-                <Button key={file.id} variant="default" asChild>
+              {data?.files.map((file) => (
+                <Button key={file.name} variant="default" asChild>
                   <Link href={file.url}>
                     <Download /> {file.name}
                   </Link>
@@ -175,12 +201,14 @@ export function ChallengeModal({
           </VerticalTabsContent>
           <VerticalTabsContent value="hints">
             <Accordion type="single" collapsible className="w-full">
-              {hints.map((hint, index) => (
+              {data?.hints.map((hint, index) => (
                 <AccordionItem value={hint.id} key={hint.id}>
                   <AccordionTrigger>
                     Hint #{index} ({hint.cost} Points)
                   </AccordionTrigger>
-                  <AccordionContent>{hint.description}</AccordionContent>
+                  <AccordionContent>
+                    {/* TODO: add unlock function */}
+                  </AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>

@@ -9,12 +9,27 @@ import {
   MainChallengesSearch,
   MobileChallengesSearch,
 } from "@/components/challenge/search";
+import { apiQueryClient } from "@repo/api";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Route = createLazyFileRoute("/challenges")({
   component: Index,
 });
 
 function Index() {
+  const queryClient = useQueryClient();
+  const { data, error, isLoading } = apiQueryClient.useQuery(
+    "get",
+    "/player/challenges",
+    {},
+    {},
+    queryClient,
+  );
+
+  if (error) {
+    // TODO
+  }
+
   return (
     <div className="m-2">
       <div className="mr-4 flex justify-between md:hidden">
@@ -29,10 +44,10 @@ function Index() {
         </div>
       </div>
       <div className="py-5">
-        {challenges.map(async (challenge) => (
+        {data?.map((challengeSummary) => (
           <ChallengeCard
-            relations={await getChallengeRelations(challenge.id)}
-            key={challenge.id}
+            challengeSummary={challengeSummary}
+            key={challengeSummary.challenge.id}
           />
         ))}
       </div>

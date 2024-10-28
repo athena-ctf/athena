@@ -35,7 +35,7 @@ export const Route = createFileRoute("/auth/login")({
 });
 
 const loginSchema = z.object({
-  email: z.string().email(),
+  username: z.string(),
   password: z.string().min(8),
 });
 
@@ -51,11 +51,13 @@ export default function Index() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  function onSubmit(values: z.infer<typeof loginSchema>) {
+  function onSubmit(body: z.infer<typeof loginSchema>) {
     const { data, error } = apiQueryClient.useQuery(
-      "get",
-      "/auth/me",
-      {},
+      "post",
+      "/auth/player/login",
+      {
+        body,
+      },
       {},
       queryClient,
     );
@@ -81,7 +83,7 @@ export default function Index() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="email"
+              name="username"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>

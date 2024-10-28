@@ -18,34 +18,30 @@ const difficulty = {
 };
 
 export function ChallengeCard({
-  relations: { challenge, tags, files, hints },
+  challengeSummary,
 }: {
-  relations: components["schemas"]["ChallengeRelations"];
+  challengeSummary: components["schemas"]["ChallengeSummary"];
 }) {
   return (
-    <div className="mx-[10%] my-2 cursor-pointer">
-      <ChallengeModal
-        files={files}
-        hints={hints}
-        challenge={challenge}
-        tags={tags}
-        solves={30}
-      >
+    <div className="mx-[7%] my-2 cursor-pointer">
+      <ChallengeModal challengeSummary={challengeSummary}>
         <Card className="shadow-2xl">
           <CardHeader>
             <div className="flex place-content-center justify-between">
               <div className="flex place-items-center space-x-4">
-                <Circle className={difficulty[challenge.difficulty]} />
+                <Circle
+                  className={difficulty[challengeSummary.challenge.difficulty]}
+                />
                 <CardTitle className="flex flex-col items-center text-xl">
-                  {challenge.title}
+                  {challengeSummary.challenge.title}
                 </CardTitle>
                 <CardDescription className="flex flex-col items-center">
-                  @{challenge.author_name}
+                  @{challengeSummary.challenge.author_name}
                 </CardDescription>
               </div>
               <div className="flex flex-row space-x-2 py-3">
-                {tags.map((tag) => (
-                  <Badge className="h-7" key={tag.id}>
+                {challengeSummary.tags.map((tag) => (
+                  <Badge className="h-7" key={tag.value}>
                     {tag.value}
                   </Badge>
                 ))}
@@ -54,7 +50,7 @@ export function ChallengeCard({
           </CardHeader>
           <CardContent className="px-10">
             <div className="flex justify-between text-ellipsis p-2 px-6 text-sm">
-              <div>{challenge.description}</div>
+              <div>{challengeSummary.challenge.description}</div>
             </div>
           </CardContent>
         </Card>
