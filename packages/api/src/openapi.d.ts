@@ -4,6179 +4,11607 @@
  */
 
 export interface paths {
-  "/achievement": {
-    /** List achievements */
-    get: operations["list_achievements"];
-    /** Create achievement */
-    post: operations["create_achievement"];
-  };
-  "/achievement/{id}": {
-    /** Delete achievement by id */
-    delete: operations["delete_achievement_by_id"];
-    /** Update achievement by id */
-    patch: operations["update_achievement_by_id"];
-  };
-  "/achievement/{id}/challenge": {
-    /** List achievement challenge by id */
-    get: operations["retrieve_achievement_challenge_by_id"];
-  };
-  "/achievement/{id}/player": {
-    /** List achievement player by id */
-    get: operations["retrieve_achievement_player_by_id"];
-  };
-  "/achievement/{id}/team": {
-    /** List achievement team by id */
-    get: operations["retrieve_achievement_team_by_id"];
-  };
-  "/achivement/{id}": {
-    /** Retrieve achievement by id */
-    get: operations["retrieve_achievement_by_id"];
-  };
-  "/auth/me": {
-    /** Return currently authenticated user */
-    get: operations["auth_get_me"];
-  };
-  "/auth/register": {
-    /** Register user */
-    post: operations["auth_register"];
-  };
-  "/auth/register/sendcode": {
-    /** Send verification code to email */
-    post: operations["auth_register_sendcode"];
-  };
-  "/auth/reset-password": {
-    /** Auth reset password */
-    post: operations["auth_reset_password"];
-  };
-  "/auth/reset-password/sendcode": {
-    /** Send reset code to email */
-    post: operations["auth_reset_password_sendcode"];
-  };
-  "/auth/token": {
-    /** Create auth token */
-    post: operations["create_auth_token"];
-  };
-  "/auth/token/refresh": {
-    /** Refresh auth token */
-    post: operations["refresh_auth_token"];
-  };
-  "/ban": {
-    /** List bans */
-    get: operations["list_bans"];
-    /** Create ban */
-    post: operations["create_ban"];
-  };
-  "/ban/player/{id}": {
-    /** Ban player by id */
-    post: operations["ban_player_by_id"];
-  };
-  "/ban/team/{id}": {
-    /** Ban team by id */
-    post: operations["ban_team_by_id"];
-  };
-  "/ban/{id}": {
-    /** Retrieve ban by id */
-    get: operations["retrieve_ban_by_id"];
-    /** Delete ban by id */
-    delete: operations["delete_ban_by_id"];
-    /** Update ban by id */
-    patch: operations["update_ban_by_id"];
-  };
-  "/ban/{id}/player": {
-    /** Retrieve ban player by id */
-    get: operations["retrieve_ban_player_by_id"];
-  };
-  "/ban/{id}/team": {
-    /** Retrieve ban team by id */
-    get: operations["retrieve_ban_team_by_id"];
-  };
-  "/challenge": {
-    /** List challenges */
-    get: operations["list_challenges"];
-    /** Create challenge */
-    post: operations["create_challenge"];
-  };
-  "/challenge/{id}": {
-    /** Retrieve challenge by id */
-    get: operations["retrieve_challenge_by_id"];
-    /** Delete challenge by id */
-    delete: operations["delete_challenge_by_id"];
-    /** Update challenge by id */
-    patch: operations["update_challenge_by_id"];
-  };
-  "/challenge/{id}/achievements": {
-    /** List challenge achievements by id */
-    get: operations["list_challenge_achievements_by_id"];
-  };
-  "/challenge/{id}/files": {
-    /** List challenge files by id */
-    get: operations["list_challenge_files_by_id"];
-  };
-  "/challenge/{id}/hints": {
-    /** List challenge hints by id */
-    get: operations["list_challenge_hints_by_id"];
-  };
-  "/challenge/{id}/instances": {
-    /** List challenge instances by id */
-    get: operations["list_challenge_instances_by_id"];
-  };
-  "/challenge/{id}/relations": {
-    /** Retrieve challenge relations by id */
-    get: operations["retrieve_challenge_relations_by_id"];
-  };
-  "/challenge/{id}/solves": {
-    /** Calculate challenge solves by id */
-    get: operations["calculate_challenge_solves_by_id"];
-  };
-  "/challenge/{id}/tags": {
-    /** List challenge tags by id */
-    get: operations["list_challenge_tags_by_id"];
-  };
-  "/file": {
-    /** List files */
-    get: operations["list_files"];
-    /** Create file */
-    post: operations["create_file"];
-  };
-  "/file/upload": {
-    /** Upload files */
-    post: operations["file_upload"];
-  };
-  "/file/{id}": {
-    /** Retrieve file by id */
-    get: operations["retrieve_file_by_id"];
-    /** Delete file by id */
-    delete: operations["delete_file_by_id"];
-    /** Update file by id */
-    patch: operations["update_file_by_id"];
-  };
-  "/file/{id}/challenge": {
-    /** Retrieve file challenge by id */
-    get: operations["retrieve_file_challenge_by_id"];
-  };
-  "/flag": {
-    /** List flags */
-    get: operations["list_flags"];
-    /** Create flag */
-    post: operations["create_flag"];
-  };
-  "/flag/verify": {
-    /** Verify flag */
-    post: operations["verify_flag"];
-  };
-  "/flag/{id}": {
-    /** Retrieve flag by id */
-    get: operations["retrieve_flag_by_id"];
-    /** Delete flag by id */
-    delete: operations["delete_flag_by_id"];
-    /** Update flag by id */
-    patch: operations["update_flag_by_id"];
-  };
-  "/flag/{id}/challenge": {
-    /** Retrieve flag challenge by id */
-    get: operations["retrieve_flag_challenge_by_id"];
-  };
-  "/flag/{id}/player": {
-    /** Retrieve flag player by id */
-    get: operations["retrieve_flag_player_by_id"];
-  };
-  "/hint": {
-    /** List hints */
-    get: operations["list_hints"];
-    /** Create hint */
-    post: operations["create_hint"];
-  };
-  "/hint/{id}": {
-    /** Retrieve hint by id */
-    get: operations["retrieve_hint_by_id"];
-    /** Delete hint by id */
-    delete: operations["delete_hint_by_id"];
-    /** Update hint by id */
-    patch: operations["update_hint_by_id"];
-  };
-  "/hint/{id}/challenge": {
-    /** Retrieve hint challenge by id */
-    get: operations["retrieve_hint_challenge_by_id"];
-  };
-  "/instance": {
-    /** List instances */
-    get: operations["list_instances"];
-    /** Create instance */
-    post: operations["create_instance"];
-  };
-  "/instance/{id}": {
-    /** Retrieve instance by id */
-    get: operations["retrieve_instance_by_id"];
-    /** Delete instance by id */
-    delete: operations["delete_instance_by_id"];
-    /** Update instance by id */
-    patch: operations["update_instance_by_id"];
-  };
-  "/instance/{id}/challenge": {
-    /** Retrieve instance challenge by id */
-    get: operations["retrieve_instance_challenge_by_id"];
-  };
-  "/instance/{id}/extend": {
-    /** Extend instance by id */
-    patch: operations["extend_instance_by_id"];
-  };
-  "/instance/{id}/player": {
-    /** Retrieve instance player by id */
-    get: operations["retrieve_instance_player_by_id"];
-  };
-  "/invite": {
-    /** List invites */
-    get: operations["list_invites"];
-    /** Create invite */
-    post: operations["create_invite"];
-  };
-  "/invite/{id}": {
-    /** Retrieve invite by id */
-    get: operations["retrieve_invite_by_id"];
-    /** Delete invite by id */
-    delete: operations["delete_invite_by_id"];
-    /** Update invite by id */
-    patch: operations["update_invite_by_id"];
-  };
-  "/invite/{id}/join": {
-    /** Join invite team by id */
-    get: operations["join_invite_team_by_id"];
-  };
-  "/invite/{id}/team": {
-    /** Retrieve invite team by id */
-    get: operations["retrieve_invite_team_by_id"];
-  };
-  "/notification": {
-    /** List notifications */
-    get: operations["list_notifications"];
-    /** Create notification */
-    post: operations["create_notification"];
-  };
-  "/notification/{id}": {
-    /** Retrieve notification by id */
-    get: operations["retrieve_notification_by_id"];
-    /** Delete notification by id */
-    delete: operations["delete_notification_by_id"];
-    /** Update notification by id */
-    patch: operations["update_notification_by_id"];
-  };
-  "/notification/{id}/player": {
-    /** Retrieve notification player by id */
-    get: operations["retrieve_notification_player_by_id"];
-  };
-  "/player": {
-    /** List players */
-    get: operations["list_players"];
-    /** Create player */
-    post: operations["create_player"];
-  };
-  "/player/join/{team_name}": {
-    /** Join team by team name */
-    get: operations["join_team_by_team_name"];
-  };
-  "/player/me": {
-    /** Return currently authenticated player */
-    get: operations["player_get_me"];
-  };
-  "/player/rankings": {
-    /** Calculate player rankings */
-    get: operations["calculate_player_rankings"];
-  };
-  "/player/{id}": {
-    /** Retrieve player by id */
-    get: operations["retrieve_player_by_id"];
-    /** Delete player by id */
-    delete: operations["delete_player_by_id"];
-    /** Update player by id */
-    patch: operations["update_player_by_id"];
-  };
-  "/player/{id}/achievements": {
-    /** List player achievements by id */
-    get: operations["list_player_achievements_by_id"];
-  };
-  "/player/{id}/flags": {
-    /** List player flags by id */
-    get: operations["list_player_flags_by_id"];
-  };
-  "/player/{id}/instance": {
-    /** Retrieve player instance by id */
-    get: operations["retrieve_player_instance_by_id"];
-  };
-  "/player/{id}/points": {
-    /** List player points by id */
-    get: operations["calculate_player_points_by_id"];
-  };
-  "/player/{id}/submissions": {
-    /** List player submissions by id */
-    get: operations["list_player_submissions_by_id"];
-  };
-  "/player/{id}/team": {
-    /** Retrieve player team by id */
-    get: operations["retrieve_player_team_by_id"];
-  };
-  "/player/{id}/update-profile": {
-    /** Update player profile by id */
-    patch: operations["update_player_profile_by_id"];
-  };
-  "/player/{username}/profile": {
-    /** Retrieve player profile by username */
-    get: operations["retrieve_player_profile_by_username"];
-  };
-  "/stats": {
-    /** Get stats of all tables */
-    get: operations["get_stats"];
-  };
-  "/submission": {
-    /** List submissions */
-    get: operations["list_submissions"];
-    /** Create submission */
-    post: operations["create_submission"];
-  };
-  "/submission/{id}": {
-    /** Retrieve submission by id */
-    get: operations["retrieve_submission_by_id"];
-    /** Delete submission by id */
-    delete: operations["delete_submission_by_id"];
-    /** Update submission by id */
-    patch: operations["update_submission_by_id"];
-  };
-  "/submission/{id}/player": {
-    /** Retrieve submission player by id */
-    get: operations["retrieve_submission_player_by_id"];
-  };
-  "/tag": {
-    /** List tags */
-    get: operations["list_tags"];
-    /** Create tag */
-    post: operations["create_tag"];
-  };
-  "/tag/{id}": {
-    /** Retrieve tag by id */
-    get: operations["retrieve_tag_by_id"];
-    /** Delete tag by id */
-    delete: operations["delete_tag_by_id"];
-    /** Update tag by id */
-    patch: operations["update_tag_by_id"];
-  };
-  "/tag/{id}/challenges": {
-    /** List tag challenges by id */
-    get: operations["list_tag_challenges_by_id"];
-  };
-  "/team": {
-    /** List teams */
-    get: operations["list_teams"];
-    /** Create team */
-    post: operations["create_team"];
-  };
-  "/team/points": {
-    /** List team points */
-    get: operations["list_team_points"];
-  };
-  "/team/{id}": {
-    /** Retrieve team by id */
-    get: operations["retrieve_team_by_id"];
-    /** Delete team by id */
-    delete: operations["delete_team_by_id"];
-    /** Update team by id */
-    patch: operations["update_team_by_id"];
-  };
-  "/team/{id}/achievements": {
-    /** List team achievements by id */
-    get: operations["list_team_achievements_by_id"];
-  };
-  "/team/{id}/invites": {
-    /** List team invites by id */
-    get: operations["list_team_invites_by_id"];
-  };
-  "/team/{id}/players": {
-    /** List team players by id */
-    get: operations["list_team_players_by_id"];
-  };
-  "/team/{id}/points": {
-    /** Calculate team points by id */
-    get: operations["calculate_team_points_by_id"];
-  };
-  "/user": {
-    /** List users */
-    get: operations["list_users"];
-    /** Create user */
-    post: operations["create_user"];
-  };
-  "/user/{id}": {
-    /** Retrieve user by id */
-    get: operations["retrieve_user_by_id"];
-    /** Delete user by id */
-    delete: operations["delete_user_by_id"];
-    /** Update user by id */
-    patch: operations["update_user_by_id"];
-  };
+    "/admin/achievement": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List achievements */
+        get: operations["list_achievements"];
+        put?: never;
+        /** Create achievement */
+        post: operations["create_achievement"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/achievement/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve achievement by id */
+        get: operations["retrieve_achievement_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete achievement by id */
+        delete: operations["delete_achievement"];
+        options?: never;
+        head?: never;
+        /** Update achievement by id */
+        patch: operations["update_achievement_by_id"];
+        trace?: never;
+    };
+    "/admin/achievement/{id}/challenge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List achievement challenge by id */
+        get: operations["retrieve_achievement_challenge_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/achievement/{id}/player": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List achievement player by id */
+        get: operations["retrieve_achievement_player_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/admin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List admins */
+        get: operations["list_admins"];
+        put?: never;
+        /** Create Admin */
+        post: operations["create_admin"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/admin/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve admin by id */
+        get: operations["retrieve_admin_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete admin by id */
+        delete: operations["delete_admin_by_id"];
+        options?: never;
+        head?: never;
+        /** Update admin by id */
+        patch: operations["update_admin_by_id"];
+        trace?: never;
+    };
+    "/admin/admin/{id}/tickets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List admin ticket by id */
+        get: operations["list_admin_tickets_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/ban": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List bans */
+        get: operations["list_bans"];
+        put?: never;
+        /** Create Ban */
+        post: operations["create_ban"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/ban/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve ban by id */
+        get: operations["retrieve_ban_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete ban by id */
+        delete: operations["delete_ban_by_id"];
+        options?: never;
+        head?: never;
+        /** Update ban by id */
+        patch: operations["update_ban_by_id"];
+        trace?: never;
+    };
+    "/admin/ban/{id}/player": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve ban player by id */
+        get: operations["retrieve_ban_player_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/ban/{id}/team": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve ban team by id */
+        get: operations["retrieve_ban_team_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/challenge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenges */
+        get: operations["list_challenges"];
+        put?: never;
+        /** Create Challenge */
+        post: operations["create_challenge"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/challenge/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve challenge by id */
+        get: operations["retrieve_challenge_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete challenge by id */
+        delete: operations["delete_challenge_by_id"];
+        options?: never;
+        head?: never;
+        /** Update challenge by id */
+        patch: operations["update_challenge_by_id"];
+        trace?: never;
+    };
+    "/admin/challenge/{id}/achievements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenge achievement by id */
+        get: operations["list_challenge_achievements_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/challenge/{id}/challenge_tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenge challenge_tag by id */
+        get: operations["list_challenge_challenge_tags_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/challenge/{id}/files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenge file by id */
+        get: operations["list_challenge_files_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/challenge/{id}/hints": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenge hint by id */
+        get: operations["list_challenge_hints_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/challenge/{id}/instances": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenge instance by id */
+        get: operations["list_challenge_instances_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/challenge/{id}/submissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenge submission by id */
+        get: operations["list_challenge_submissions_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/challenge/{id}/tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenge tag by id */
+        get: operations["list_challenge_tags_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/challenge_tag": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenge_tags */
+        get: operations["list_challenge_tags"];
+        put?: never;
+        /** Create ChallengeTag */
+        post: operations["create_challenge_tag"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/challenge_tag/{challenge_id}-{tag_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve challenge_tag by id */
+        get: operations["retrieve_challenge_tag_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete challenge_tag by id */
+        delete: operations["delete_challenge_tag_by_id"];
+        options?: never;
+        head?: never;
+        /** Update challenge_tag by id */
+        patch: operations["update_challenge_tag_by_id"];
+        trace?: never;
+    };
+    "/admin/file": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List files */
+        get: operations["list_files"];
+        put?: never;
+        /** Create File */
+        post: operations["create_file"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/file/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve file by id */
+        get: operations["retrieve_file_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete file by id */
+        delete: operations["delete_file_by_id"];
+        options?: never;
+        head?: never;
+        /** Update file by id */
+        patch: operations["update_file_by_id"];
+        trace?: never;
+    };
+    "/admin/file/{id}/challenge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List file challenge by id */
+        get: operations["retrieve_file_challenge_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/flag": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List flags */
+        get: operations["list_flags"];
+        put?: never;
+        /** Create Flag */
+        post: operations["create_flag"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/flag/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve flag by id */
+        get: operations["retrieve_flag_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete flag by id */
+        delete: operations["delete_flag_by_id"];
+        options?: never;
+        head?: never;
+        /** Update flag by id */
+        patch: operations["update_flag_by_id"];
+        trace?: never;
+    };
+    "/admin/flag/{id}/challenge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List flag challenge by id */
+        get: operations["retrieve_flag_challenge_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/flag/{id}/player": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve flag player by id */
+        get: operations["retrieve_flag_player_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/hint": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List hints */
+        get: operations["list_hints"];
+        put?: never;
+        /** Create Hint */
+        post: operations["create_hint"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/hint/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve hint by id */
+        get: operations["retrieve_hint_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete hint by id */
+        delete: operations["delete_hint_by_id"];
+        options?: never;
+        head?: never;
+        /** Update hint by id */
+        patch: operations["update_hint_by_id"];
+        trace?: never;
+    };
+    "/admin/hint/{id}/challenge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List hint challenge by id */
+        get: operations["retrieve_hint_challenge_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/hint/{id}/unlocks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List hint unlock by id */
+        get: operations["list_hint_unlocks_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/instance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List instances */
+        get: operations["list_instances"];
+        put?: never;
+        /** Create Instance */
+        post: operations["create_instance"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/instance/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve instance by id */
+        get: operations["retrieve_instance_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete instance by id */
+        delete: operations["delete_instance_by_id"];
+        options?: never;
+        head?: never;
+        /** Update instance by id */
+        patch: operations["update_instance_by_id"];
+        trace?: never;
+    };
+    "/admin/instance/{id}/challenge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List instance challenge by id */
+        get: operations["retrieve_instance_challenge_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/instance/{id}/player": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List instance player by id */
+        get: operations["retrieve_instance_player_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/invite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List invites */
+        get: operations["list_invites"];
+        put?: never;
+        /** Create Invite */
+        post: operations["create_invite"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/invite/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve invite by id */
+        get: operations["retrieve_invite_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete invite by id */
+        delete: operations["delete_invite_by_id"];
+        options?: never;
+        head?: never;
+        /** Update invite by id */
+        patch: operations["update_invite_by_id"];
+        trace?: never;
+    };
+    "/admin/invite/{id}/team": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List invite team by id */
+        get: operations["retrieve_invite_team_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/leaderboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List leaderboards */
+        get: operations["list_leaderboards"];
+        put?: never;
+        /** Create Leaderboard */
+        post: operations["create_leaderboard"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/leaderboard/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve leaderboard by id */
+        get: operations["retrieve_leaderboard_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete leaderboard by id */
+        delete: operations["delete_leaderboard_by_id"];
+        options?: never;
+        head?: never;
+        /** Update leaderboard by id */
+        patch: operations["update_leaderboard_by_id"];
+        trace?: never;
+    };
+    "/admin/notification": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List notifications */
+        get: operations["list_notifications"];
+        put?: never;
+        /** Create Notification */
+        post: operations["create_notification"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/notification/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve notification by id */
+        get: operations["retrieve_notification_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete notification by id */
+        delete: operations["delete_notification_by_id"];
+        options?: never;
+        head?: never;
+        /** Update notification by id */
+        patch: operations["update_notification_by_id"];
+        trace?: never;
+    };
+    "/admin/notification/{id}/player": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List notification player by id */
+        get: operations["retrieve_notification_player_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/player": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List players */
+        get: operations["list_players"];
+        put?: never;
+        /** Create Player */
+        post: operations["create_player"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/player/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve player by id */
+        get: operations["retrieve_player_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete player by id */
+        delete: operations["delete_player_by_id"];
+        options?: never;
+        head?: never;
+        /** Update player by id */
+        patch: operations["update_player_by_id"];
+        trace?: never;
+    };
+    "/admin/player/{id}/achievements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List player achievement by id */
+        get: operations["list_player_achievements_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/player/{id}/ban": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve player ban by id */
+        get: operations["retrieve_player_ban_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/player/{id}/flags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List player flag by id */
+        get: operations["list_player_flags_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/player/{id}/instance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve player instance by id */
+        get: operations["retrieve_player_instance_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/player/{id}/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List player notification by id */
+        get: operations["list_player_notifications_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/player/{id}/submissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List player submission by id */
+        get: operations["list_player_submissions_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/player/{id}/team": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List player team by id */
+        get: operations["retrieve_player_team_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/player/{id}/unlocks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List player unlock by id */
+        get: operations["list_player_unlocks_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/submission": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List submissions */
+        get: operations["list_submissions"];
+        put?: never;
+        /** Create Submission */
+        post: operations["create_submission"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/submission/{challenge_id}-{player_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve submission by id */
+        get: operations["retrieve_submission_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete submission by id */
+        delete: operations["delete_submission_by_id"];
+        options?: never;
+        head?: never;
+        /** Update submission by id */
+        patch: operations["update_submission_by_id"];
+        trace?: never;
+    };
+    "/admin/tag": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List tags */
+        get: operations["list_tags"];
+        put?: never;
+        /** Create Tag */
+        post: operations["create_tag"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/tag/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve tag by id */
+        get: operations["retrieve_tag_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete tag by id */
+        delete: operations["delete_tag_by_id"];
+        options?: never;
+        head?: never;
+        /** Update tag by id */
+        patch: operations["update_tag_by_id"];
+        trace?: never;
+    };
+    "/admin/tag/{id}/challenges": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List tag challenge by id */
+        get: operations["list_tag_challenges_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/team": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List teams */
+        get: operations["list_teams"];
+        put?: never;
+        /** Create Team */
+        post: operations["create_team"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/team/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve team by id */
+        get: operations["retrieve_team_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete team by id */
+        delete: operations["delete_team_by_id"];
+        options?: never;
+        head?: never;
+        /** Update team by id */
+        patch: operations["update_team_by_id"];
+        trace?: never;
+    };
+    "/admin/team/{id}/ban": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve team ban by id */
+        get: operations["retrieve_team_ban_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/team/{id}/invites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List team invite by id */
+        get: operations["list_team_invites_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/team/{id}/players": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List team player by id */
+        get: operations["list_team_players_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/ticket": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List tickets */
+        get: operations["list_tickets"];
+        put?: never;
+        /** Create Ticket */
+        post: operations["create_ticket"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/ticket/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve ticket by id */
+        get: operations["retrieve_ticket_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete ticket by id */
+        delete: operations["delete_ticket_by_id"];
+        options?: never;
+        head?: never;
+        /** Update ticket by id */
+        patch: operations["update_ticket_by_id"];
+        trace?: never;
+    };
+    "/admin/ticket/{id}/admin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve ticket admin by id */
+        get: operations["retrieve_ticket_admin_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/unlock": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List unlocks */
+        get: operations["list_unlocks"];
+        put?: never;
+        /** Create Unlock */
+        post: operations["create_unlock"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/unlock/{player_id}-{hint_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve unlock by id */
+        get: operations["retrieve_unlock_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete unlock by id */
+        delete: operations["delete_unlock_by_id"];
+        options?: never;
+        head?: never;
+        /** Update unlock by id */
+        patch: operations["update_unlock_by_id"];
+        trace?: never;
+    };
+    "/auth/admin/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Return currently authenticated user */
+        get: operations["admin_get_current_logged_in"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/admin/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create auth token */
+        post: operations["admin_login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/admin/token/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Refresh auth token */
+        post: operations["admin_refresh_token"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/player/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Return currently authenticated user */
+        get: operations["player_get_current_logged_in"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/player/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create auth token */
+        post: operations["player_login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/player/register": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Register user */
+        post: operations["player_register"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/player/register/send-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send verification token to email */
+        post: operations["player_register_send_token"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/player/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Auth reset password */
+        post: operations["player_reset_password"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/player/reset-password/send-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send reset token to email */
+        post: operations["player_reset_password_send_token"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/player/token/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Refresh auth token */
+        post: operations["player_refresh_token"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ban/player/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ban player by id */
+        post: operations["add_player_by_id"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ban/team/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ban team by id */
+        post: operations["add_team_by_id"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/challenge/details/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve challenge details by id */
+        get: operations["detailed_challenge"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/challenges": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenge summary by id */
+        get: operations["player_challenges"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/flag/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify flag */
+        post: operations["verify"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/hint/unlock/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Unlock hint by id */
+        get: operations["unlock_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve player summary */
+        get: operations["retrieve_player_summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/team/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve team summary */
+        get: operations["retrieve_team_summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/team/{id}/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Retrieve team details by teamname */
+        put: operations["update_team_profile"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/team/{teamname}/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve team details by teamname */
+        get: operations["retrieve_team_by_teamname"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/{id}/update-profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update player profile by id */
+        put: operations["update_player_profile"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/{username}/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve player profile by username */
+        get: operations["retrieve_profile_by_username"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-
 export type webhooks = Record<string, never>;
-
 export interface components {
-  schemas: {
-    AchievementDetails: {
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: uuid */
-      player_id?: string;
-      /** Format: int32 */
-      prize: number;
-      /** Format: uuid */
-      team_id?: string;
-      value: string;
+    schemas: {
+        AchievementModel: {
+            /** Format: uuid */
+            challenge_id: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: uuid */
+            player_id: string;
+            /** Format: int32 */
+            prize: number;
+            /** Format: date-time */
+            updated_at: string;
+            value: string;
+        };
+        AdminModel: {
+            /** Format: date-time */
+            created_at: string;
+            role: components["schemas"]["RoleEnum"];
+            /** Format: date-time */
+            updated_at: string;
+            /** Format: uuid */
+            user_id: string;
+        };
+        BanModel: {
+            /** Format: date-time */
+            created_at: string;
+            /** Format: int32 */
+            duration: number;
+            reason: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        /** @enum {string} */
+        CategoryEnum: "player" | "team";
+        ChallengeModel: {
+            author_name: string;
+            container_meta?: components["schemas"]["ContainerMeta"] | null;
+            /** Format: date-time */
+            created_at: string;
+            description: string;
+            difficulty: components["schemas"]["DifficultyEnum"];
+            flag_type: components["schemas"]["FlagTypeEnum"];
+            /** Format: int32 */
+            points: number;
+            /** Format: int32 */
+            solves: number;
+            status: components["schemas"]["ChallengeStatusEnum"];
+            title: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        /** @enum {string} */
+        ChallengeStatusEnum: "active" | "maintenance" | "scheduled";
+        ChallengeSummary: {
+            challenge: components["schemas"]["PartialChallenge"];
+            state: components["schemas"]["PlayerChallengeState"];
+            tags: components["schemas"]["CreateTagSchema"][];
+        };
+        ChallengeTagModel: {
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        ContainerMeta: {
+            cmd: string;
+            env: {
+                [key: string]: string;
+            };
+            image: string;
+            ports: number[];
+            sidecars: {
+                [key: string]: string;
+            };
+            single_instance: boolean;
+            volumes: string[];
+        };
+        CreateAchievementSchema: {
+            /** Format: uuid */
+            challenge_id: string;
+            /** Format: uuid */
+            player_id: string;
+            /** Format: int32 */
+            prize: number;
+            value: string;
+        };
+        CreateAdminSchema: {
+            role: components["schemas"]["RoleEnum"];
+            /** Format: uuid */
+            user_id: string;
+        };
+        CreateBanSchema: {
+            /** Format: int32 */
+            duration: number;
+            reason: string;
+        };
+        CreateChallengeSchema: {
+            author_name: string;
+            container_meta?: components["schemas"]["ContainerMeta"] | null;
+            description: string;
+            difficulty: components["schemas"]["DifficultyEnum"];
+            flag_type: components["schemas"]["FlagTypeEnum"];
+            /** Format: int32 */
+            points: number;
+            /** Format: int32 */
+            solves: number;
+            status: components["schemas"]["ChallengeStatusEnum"];
+            title: string;
+        };
+        CreateChallengeTagSchema: {
+            /** Format: uuid */
+            challenge_id: string;
+            /** Format: uuid */
+            tag_id: string;
+        };
+        CreateFileSchema: {
+            /** Format: uuid */
+            challenge_id: string;
+            name: string;
+            url: string;
+        };
+        CreateFlagSchema: {
+            /** Format: uuid */
+            challenge_id: string;
+            /** Format: uuid */
+            player_id?: string | null;
+            value: string;
+        };
+        CreateHintSchema: {
+            /** Format: uuid */
+            challenge_id: string;
+            /** Format: int32 */
+            cost: number;
+            description: string;
+        };
+        CreateInstanceSchema: {
+            /** Format: uuid */
+            challenge_id: string;
+            container_id: string;
+            /** Format: date-time */
+            expiry: string;
+            /** Format: uuid */
+            player_id: string;
+        };
+        CreateInviteSchema: {
+            /** Format: int32 */
+            remaining: number;
+            /** Format: uuid */
+            team_id: string;
+            /** Format: int32 */
+            usages: number;
+        };
+        CreateLeaderboardSchema: {
+            category: components["schemas"]["CategoryEnum"];
+            rank0?: string | null;
+            rank1?: string | null;
+            rank2?: string | null;
+            rank3?: string | null;
+            rank4?: string | null;
+            rank5?: string | null;
+            rank6?: string | null;
+            rank7?: string | null;
+            rank8?: string | null;
+            rank9?: string | null;
+        };
+        CreateNotificationSchema: {
+            content: string;
+            /** Format: uuid */
+            player_id: string;
+            title: string;
+        };
+        CreatePlayerSchema: {
+            /** Format: uuid */
+            ban_id?: string | null;
+            discord_id?: string | null;
+            display_name: string;
+            /** Format: int32 */
+            score: number;
+            /** Format: uuid */
+            team_id: string;
+            /** Format: uuid */
+            user_id: string;
+        };
+        CreateSubmissionSchema: {
+            /** Format: uuid */
+            challenge_id: string;
+            flags: string[];
+            is_correct: boolean;
+            /** Format: uuid */
+            player_id: string;
+        };
+        CreateTagSchema: {
+            value: string;
+        };
+        CreateTeamSchema: {
+            /** Format: uuid */
+            ban_id?: string | null;
+            email: string;
+            name: string;
+            /** Format: int32 */
+            score: number;
+        };
+        CreateTicketSchema: {
+            /** Format: uuid */
+            assigned_to?: string | null;
+            status: components["schemas"]["TicketStatusEnum"];
+            title: string;
+        };
+        CreateUnlockSchema: {
+            /** Format: uuid */
+            hint_id: string;
+            /** Format: uuid */
+            player_id: string;
+        };
+        CreateUserSchema: {
+            email: string;
+            group: components["schemas"]["GroupEnum"];
+            password: string;
+            username: string;
+        };
+        DetailedChallenge: {
+            files: components["schemas"]["CreateFileSchema"][];
+            hints: components["schemas"]["HintSummary"][];
+        };
+        /** @enum {string} */
+        DifficultyEnum: "easy" | "extreme" | "hard" | "medium";
+        ErrorModel: {
+            message: string;
+        };
+        FileModel: {
+            /** Format: uuid */
+            challenge_id: string;
+            /** Format: date-time */
+            created_at: string;
+            name: string;
+            /** Format: date-time */
+            updated_at: string;
+            url: string;
+        };
+        FlagModel: {
+            /** Format: uuid */
+            challenge_id: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: uuid */
+            player_id?: string | null;
+            /** Format: date-time */
+            updated_at: string;
+            value: string;
+        };
+        /** @enum {string} */
+        FlagTypeEnum: "peruser" | "regex" | "static";
+        FlagVerificationResult: {
+            is_correct: boolean;
+        };
+        /** @enum {string} */
+        GroupEnum: "admin" | "player";
+        HintModel: {
+            /** Format: uuid */
+            challenge_id: string;
+            /** Format: int32 */
+            cost: number;
+            /** Format: date-time */
+            created_at: string;
+            description: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        HintSummary: {
+            /** Format: int32 */
+            cost: number;
+            /** Format: uuid */
+            id: string;
+        };
+        InstanceModel: {
+            /** Format: uuid */
+            challenge_id: string;
+            container_id: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            expiry: string;
+            /** Format: uuid */
+            player_id: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        InviteModel: {
+            /** Format: date-time */
+            created_at: string;
+            /** Format: int32 */
+            remaining: number;
+            /** Format: uuid */
+            team_id: string;
+            /** Format: date-time */
+            updated_at: string;
+            /** Format: int32 */
+            usages: number;
+        };
+        JsonResponse: {
+            message: string;
+        };
+        LeaderboardModel: {
+            category: components["schemas"]["CategoryEnum"];
+            /** Format: date-time */
+            created_at: string;
+            rank0?: string | null;
+            rank1?: string | null;
+            rank2?: string | null;
+            rank3?: string | null;
+            rank4?: string | null;
+            rank5?: string | null;
+            rank6?: string | null;
+            rank7?: string | null;
+            rank8?: string | null;
+            rank9?: string | null;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        LoginModel: {
+            password: string;
+            username: string;
+        };
+        NotificationModel: {
+            content: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: uuid */
+            player_id: string;
+            title: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        PartialChallenge: {
+            author_name: string;
+            description: string;
+            difficulty: components["schemas"]["DifficultyEnum"];
+            /** Format: uuid */
+            id: string;
+            /** Format: int32 */
+            points: number;
+            /** Format: int32 */
+            solves: number;
+            title: string;
+        };
+        /** @enum {string} */
+        PlayerChallengeState: "Solved" | "Unsolved" | "ChallengeLimitReached";
+        PlayerModel: {
+            /** Format: uuid */
+            ban_id?: string | null;
+            /** Format: date-time */
+            created_at: string;
+            discord_id?: string | null;
+            display_name: string;
+            /** Format: int32 */
+            score: number;
+            /** Format: uuid */
+            team_id: string;
+            /** Format: date-time */
+            updated_at: string;
+            /** Format: uuid */
+            user_id: string;
+        };
+        PlayerProfile: {
+            player: components["schemas"]["PlayerModel"];
+            solved_challenges: components["schemas"]["ChallengeModel"][];
+            tag_solves: components["schemas"]["TagSolves"][];
+        };
+        PlayerSummary: {
+            achievements: components["schemas"]["AchievementModel"][];
+            player: components["schemas"]["PlayerModel"];
+            submissions: components["schemas"]["SubmissionModel"][];
+            tag_solves: components["schemas"]["TagSolves"][];
+            unlocks: components["schemas"]["UnlockModel"][];
+            user: components["schemas"]["UserModel"];
+        };
+        RegisterPlayer: {
+            display_name: string;
+            email: string;
+            password: string;
+            /** Format: uuid */
+            team_id: string;
+            token: string;
+            username: string;
+        };
+        ResetPasswordSchema: {
+            email: string;
+            new_password: string;
+            token: string;
+        };
+        /** @enum {string} */
+        RoleEnum: "analyst" | "editor" | "judge" | "manager" | "moderator";
+        SendTokenSchema: {
+            email: string;
+        };
+        StatSchema: {
+            /** Format: int64 */
+            achievement: number;
+            /** Format: int64 */
+            ban: number;
+            /** Format: int64 */
+            challenge: number;
+            /** Format: int64 */
+            file: number;
+            /** Format: int64 */
+            flag: number;
+            /** Format: int64 */
+            hint: number;
+            /** Format: int64 */
+            instance: number;
+            /** Format: int64 */
+            invite: number;
+            /** Format: int64 */
+            notification: number;
+            /** Format: int64 */
+            player: number;
+            /** Format: int64 */
+            submission: number;
+            /** Format: int64 */
+            tag: number;
+            /** Format: int64 */
+            team: number;
+            /** Format: int64 */
+            unlocks: number;
+        };
+        SubmissionModel: {
+            /** Format: date-time */
+            created_at: string;
+            flags: string[];
+            is_correct: boolean;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        TagModel: {
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+            value: string;
+        };
+        TagSolves: {
+            solves: number;
+            /** Format: uuid */
+            tag_id: string;
+            tag_value: string;
+        };
+        TeamModel: {
+            /** Format: uuid */
+            ban_id?: string | null;
+            /** Format: date-time */
+            created_at: string;
+            email: string;
+            name: string;
+            /** Format: int32 */
+            score: number;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        TeamProfile: {
+            members: components["schemas"]["CreatePlayerSchema"][];
+            solved_challenges: components["schemas"]["ChallengeModel"][];
+            tag_solves: components["schemas"]["TagSolves"][];
+            team: components["schemas"]["TeamModel"];
+        };
+        TeamSummary: {
+            achievements: components["schemas"]["AchievementModel"][];
+            members: {
+                [key: string]: components["schemas"]["PlayerSummary"];
+            };
+            submissions: components["schemas"]["SubmissionModel"][];
+            tag_solves: components["schemas"]["TagSolves"][];
+            team: components["schemas"]["TeamModel"];
+            unlocks: components["schemas"]["UnlockModel"][];
+        };
+        TicketModel: {
+            /** Format: uuid */
+            assigned_to?: string | null;
+            /** Format: date-time */
+            created_at: string;
+            status: components["schemas"]["TicketStatusEnum"];
+            title: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        /** @enum {string} */
+        TicketStatusEnum: "closed" | "open" | "resolved";
+        TokenClaimKind: "Player" | {
+            Admin: components["schemas"]["RoleEnum"];
+        };
+        TokenClaims: {
+            /** Format: int64 */
+            exp: number;
+            /** Format: int64 */
+            iat: number;
+            /** Format: uuid */
+            id: string;
+            kind: components["schemas"]["TokenClaimKind"];
+            token_type: components["schemas"]["TokenType"];
+        };
+        TokenPair: {
+            access_token: string;
+            refresh_token: string;
+        };
+        /** @enum {string} */
+        TokenType: "Access" | "Refresh";
+        UnlockModel: {
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        UpdateProfileSchema: {
+            discord_id?: string | null;
+            display_name: string;
+            /** Format: uuid */
+            team_id: string;
+        };
+        UserModel: {
+            /** Format: date-time */
+            created_at: string;
+            email: string;
+            group: components["schemas"]["GroupEnum"];
+            /** Format: date-time */
+            updated_at: string;
+            username: string;
+        };
+        VerifyFlagSchema: {
+            /** Format: uuid */
+            challenge_id: string;
+            flag: string;
+        };
     };
-    AchievementModel: {
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: date-time */
-      date_created: string;
-      /** Format: uuid */
-      id: string;
-      /** Format: uuid */
-      player_id?: string;
-      /** Format: int32 */
-      prize: number;
-      /** Format: uuid */
-      team_id?: string;
-      value: string;
-    };
-    /** @enum {string} */
-    BackendEnum: "s3bucket" | "server";
-    BanDetails: {
-      /** Format: int32 */
-      duration: number;
-      reason: string;
-    };
-    BanModel: {
-      /** Format: date-time */
-      date_created: string;
-      /** Format: int32 */
-      duration: number;
-      /** Format: uuid */
-      id: string;
-      reason: string;
-    };
-    ChallengeDetails: {
-      author_name: string;
-      container_details?: components["schemas"]["ContainerDetails"];
-      description: string;
-      difficulty: components["schemas"]["DifficultyEnum"];
-      flag_type: components["schemas"]["FlagTypeEnum"];
-      /** Format: int32 */
-      max_points: number;
-      /** Format: int32 */
-      min_points: number;
-      status: components["schemas"]["StatusEnum"];
-      title: string;
-    };
-    ChallengeHint: {
-      /** Format: int32 */
-      cost: number;
-      /** Format: uuid */
-      id: string;
-    };
-    ChallengeModel: {
-      author_name: string;
-      container_details?: components["schemas"]["ContainerDetails"];
-      description: string;
-      difficulty: components["schemas"]["DifficultyEnum"];
-      flag_type: components["schemas"]["FlagTypeEnum"];
-      /** Format: uuid */
-      id: string;
-      /** Format: int32 */
-      max_points: number;
-      /** Format: int32 */
-      min_points: number;
-      /** Format: int32 */
-      points: number;
-      status: components["schemas"]["StatusEnum"];
-      title: string;
-    };
-    ChallengeRelations: {
-      challenge: components["schemas"]["ChallengeModel"];
-      files: components["schemas"]["FileModel"][];
-      hints: components["schemas"]["ChallengeHint"][];
-      /** Format: int64 */
-      solves: number;
-      tags: components["schemas"]["TagModel"][];
-    };
-    ChallengeSolves: {
-      /** Format: int64 */
-      solves: number;
-    };
-    ContainerDetails: {
-      cmd: string[];
-      env: string[];
-      image: string;
-      per_user: boolean;
-      /** Format: int32 */
-      port: number;
-      readonly: boolean;
-      root: boolean;
-    };
-    CreateChallengeSchema: {
-      author_name: string;
-      /** Format: binary */
-      container_build_context: File;
-      description: string;
-      difficulty: components["schemas"]["DifficultyEnum"];
-      flag_type: components["schemas"]["FlagTypeEnum"];
-      /** Format: int32 */
-      max_points: number;
-      /** Format: int32 */
-      min_points: number;
-      status: components["schemas"]["StatusEnum"];
-      tags: string[];
-      title: string;
-    };
-    /** @enum {string} */
-    DifficultyEnum: "easy" | "extreme" | "hard" | "medium";
-    ErrorModel: {
-      message: string;
-    };
-    FileDetails: {
-      backend: components["schemas"]["BackendEnum"];
-      /** Format: uuid */
-      challenge_id: string;
-      mime: string;
-      name: string;
-      sha1_hash: string;
-    };
-    FileModel: {
-      backend: components["schemas"]["BackendEnum"];
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: uuid */
-      id: string;
-      mime: string;
-      name: string;
-      sha1_hash: string;
-    };
-    FlagDetails: {
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: uuid */
-      player_id?: string;
-      value: string;
-    };
-    FlagModel: {
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: uuid */
-      id: string;
-      /** Format: uuid */
-      player_id?: string;
-      value: string;
-    };
-    /** @enum {string} */
-    FlagTypeEnum: "peruser" | "regex" | "static";
-    FlagVerificationResult: {
-      result: components["schemas"]["ResultEnum"];
-    };
-    HintDetails: {
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: int32 */
-      cost: number;
-      description: string;
-    };
-    HintModel: {
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: int32 */
-      cost: number;
-      description: string;
-      /** Format: uuid */
-      id: string;
-    };
-    InstanceDetails: {
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: uuid */
-      player_id: string;
-    };
-    InstanceModel: {
-      /** Format: uuid */
-      challenge_id: string;
-      container_id: string;
-      /** Format: int64 */
-      container_port: number;
-      /** Format: date-time */
-      date_created: string;
-      /** Format: date-time */
-      expiry: string;
-      /** Format: uuid */
-      id: string;
-      /** Format: uuid */
-      player_id: string;
-    };
-    InviteDetails: {
-      /** Format: int32 */
-      remaining: number;
-      /** Format: uuid */
-      team_id: string;
-      /** Format: int32 */
-      usages: number;
-    };
-    InviteModel: {
-      /** Format: uuid */
-      id: string;
-      /** Format: int32 */
-      remaining: number;
-      /** Format: uuid */
-      team_id: string;
-      /** Format: int32 */
-      usages: number;
-    };
-    JsonResponse: {
-      message: string;
-    };
-    LoginModel: {
-      password: string;
-      username: string;
-    };
-    NotificationDetails: {
-      content: string;
-      /** Format: uuid */
-      player_id: string;
-      title: string;
-    };
-    NotificationModel: {
-      content: string;
-      /** Format: date-time */
-      date: string;
-      /** Format: uuid */
-      id: string;
-      /** Format: uuid */
-      player_id: string;
-      title: string;
-    };
-    PlayerDetails: {
-      /** Format: uuid */
-      ban_id?: string;
-      discord_id?: string;
-      display_name: string;
-      /** Format: uuid */
-      team_id?: string;
-      /** Format: uuid */
-      user_id: string;
-      verified: boolean;
-    };
-    PlayerModel: {
-      /** Format: uuid */
-      ban_id?: string;
-      discord_id?: string;
-      display_name: string;
-      /** Format: uuid */
-      id: string;
-      /** Format: uuid */
-      team_id?: string;
-      /** Format: uuid */
-      user_id: string;
-      verified: boolean;
-    };
-    PlayerPoints: {
-      player: components["schemas"]["PlayerModel"];
-      /** Format: int32 */
-      points: number;
-    };
-    PlayerProfile: {
-      player: components["schemas"]["PlayerModel"];
-      solved_challenges: components["schemas"]["ChallengeModel"][];
-      tag_solves: components["schemas"]["TagSolves"][];
-      user: components["schemas"]["UserModel"];
-    };
-    PlayerRankings: {
-      rank1: components["schemas"]["PlayerPoints"];
-      rank10: components["schemas"]["PlayerPoints"];
-      rank2: components["schemas"]["PlayerPoints"];
-      rank3: components["schemas"]["PlayerPoints"];
-      rank4: components["schemas"]["PlayerPoints"];
-      rank5: components["schemas"]["PlayerPoints"];
-      rank6: components["schemas"]["PlayerPoints"];
-      rank7: components["schemas"]["PlayerPoints"];
-      rank8: components["schemas"]["PlayerPoints"];
-      rank9: components["schemas"]["PlayerPoints"];
-    };
-    RegisterPlayer: {
-      code: string;
-      display_name: string;
-      email: string;
-      password: string;
-      username: string;
-    };
-    ResetPasswordSchema: {
-      code: string;
-      email: string;
-      new_password: string;
-    };
-    /** @enum {string} */
-    ResultEnum: "fail" | "pass";
-    /** @enum {string} */
-    RoleEnum: "player" | "manager";
-    SendCodeSchema: {
-      email: string;
-    };
-    StatSchema: {
-      /** Format: int64 */
-      achievement: number;
-      /** Format: int64 */
-      ban: number;
-      /** Format: int64 */
-      challenge: number;
-      /** Format: int64 */
-      file: number;
-      /** Format: int64 */
-      flag: number;
-      /** Format: int64 */
-      hint: number;
-      /** Format: int64 */
-      instance: number;
-      /** Format: int64 */
-      invite: number;
-      /** Format: int64 */
-      notification: number;
-      /** Format: int64 */
-      player: number;
-      /** Format: int64 */
-      submission: number;
-      /** Format: int64 */
-      tag: number;
-      /** Format: int64 */
-      team: number;
-      /** Format: int64 */
-      unlocks: number;
-      /** Format: int64 */
-      user: number;
-    };
-    /** @enum {string} */
-    StatusEnum: "active" | "maintenance" | "scheduled";
-    SubmissionDetails: {
-      /** Format: uuid */
-      challenge_id: string;
-      flag: string;
-      /** Format: uuid */
-      player_id: string;
-      result: components["schemas"]["ResultEnum"];
-    };
-    SubmissionModel: {
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: date-time */
-      date_created: string;
-      flag: string;
-      /** Format: uuid */
-      id: string;
-      /** Format: uuid */
-      player_id: string;
-      result: components["schemas"]["ResultEnum"];
-    };
-    TagDetails: {
-      value: string;
-    };
-    TagModel: {
-      /** Format: uuid */
-      id: string;
-      value: string;
-    };
-    TagSolves: {
-      solves: number;
-      /** Format: uuid */
-      tag_id: string;
-      tag_value: string;
-    };
-    TeamDetails: {
-      email: string;
-      name: string;
-    };
-    TeamModel: {
-      /** Format: uuid */
-      ban_id?: string;
-      /** Format: date-time */
-      date_created: string;
-      email: string;
-      /** Format: uuid */
-      id: string;
-      name: string;
-    };
-    TeamPoints: {
-      players: components["schemas"]["PlayerPoints"][];
-      team: components["schemas"]["TeamModel"];
-      /** Format: int32 */
-      total_points: number;
-    };
-    TokenPair: {
-      access_token: string;
-      refresh_token: string;
-    };
-    UpdateProfileSchema: {
-      discord_id?: string;
-      display_name: string;
-      /** Format: uuid */
-      team_id: string;
-    };
-    UploadedFile: {
-      backend: components["schemas"]["BackendEnum"];
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: binary */
-      file: File;
-    };
-    UserDetails: {
-      email: string;
-      password: string;
-      role: components["schemas"]["RoleEnum"];
-      username: string;
-    };
-    UserModel: {
-      /** Format: date-time */
-      date_created: string;
-      email: string;
-      /** Format: uuid */
-      id: string;
-      role: components["schemas"]["RoleEnum"];
-      username: string;
-    };
-    VerifyFlagSchema: {
-      /** Format: uuid */
-      challenge_id: string;
-      flag: string;
-    };
-    VerifySchema: {
-      code: string;
-      /** Format: uuid */
-      player_id: string;
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-
 export type $defs = Record<string, never>;
-
-export type external = Record<string, never>;
-
 export interface operations {
-  /** List achievements */
-  list_achievements: {
-    responses: {
-      /** @description Listed achievements successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AchievementModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create achievement */
-  create_achievement: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AchievementDetails"];
-      };
-    };
-    responses: {
-      /** @description Created achievement successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["AchievementModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete achievement by id */
-  delete_achievement_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted achievement by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No achievement found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update achievement by id */
-  update_achievement_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AchievementDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated achievement by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AchievementModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No achievement found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List achievement challenge by id */
-  retrieve_achievement_challenge_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved achievement challenge by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChallengeModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No achievement found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List achievement player by id */
-  retrieve_achievement_player_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved achievement player by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No achievement found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List achievement team by id */
-  retrieve_achievement_team_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved achievement team by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TeamModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No achievement found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve achievement by id */
-  retrieve_achievement_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved achievement by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AchievementModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No achievement found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Return currently authenticated user */
-  auth_get_me: {
-    responses: {
-      /** @description Password reset email sent successful */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Register user */
-  auth_register: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["RegisterPlayer"];
-      };
-    };
-    responses: {
-      /** @description Password reset email sent successful */
-      200: {
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Send verification code to email */
-  auth_register_sendcode: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SendCodeSchema"];
-      };
-    };
-    responses: {
-      /** @description Code sent successful */
-      200: {
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Auth reset password */
-  auth_reset_password: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ResetPasswordSchema"];
-      };
-    };
-    responses: {
-      /** @description Password reset email sent successful */
-      200: {
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Send reset code to email */
-  auth_reset_password_sendcode: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SendCodeSchema"];
-      };
-    };
-    responses: {
-      /** @description Code sent successful */
-      200: {
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create auth token */
-  create_auth_token: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["LoginModel"];
-      };
-    };
-    responses: {
-      /** @description user logged in successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TokenPair"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Refresh auth token */
-  refresh_auth_token: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TokenPair"];
-      };
-    };
-    responses: {
-      /** @description user logged in successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TokenPair"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List bans */
-  list_bans: {
-    responses: {
-      /** @description Listed bans successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["BanModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create ban */
-  create_ban: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["BanDetails"];
-      };
-    };
-    responses: {
-      /** @description Created ban successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["BanModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description BanModel ID not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Ban player by id */
-  ban_player_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["BanDetails"];
-      };
-    };
-    responses: {
-      /** @description Banned player by id successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["BanModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No ban found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Ban team by id */
-  ban_team_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["BanDetails"];
-      };
-    };
-    responses: {
-      /** @description Banned team by id successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["BanModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No ban found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve ban by id */
-  retrieve_ban_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved ban by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["BanModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No ban found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete ban by id */
-  delete_ban_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted ban by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No ban found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update ban by id */
-  update_ban_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["BanDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated ban by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["BanModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No ban found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve ban player by id */
-  retrieve_ban_player_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved ban player by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"] | null;
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No ban found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve ban team by id */
-  retrieve_ban_team_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved ban team by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TeamModel"] | null;
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No ban found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List challenges */
-  list_challenges: {
-    responses: {
-      /** @description Listed challenges successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChallengeModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create challenge */
-  create_challenge: {
-    requestBody: {
-      content: {
-        "multipart/form-data": components["schemas"]["CreateChallengeSchema"];
-      };
-    };
-    responses: {
-      /** @description Created challenge successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["ChallengeModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve challenge by id */
-  retrieve_challenge_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved challenge by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChallengeModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No challenge found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete challenge by id */
-  delete_challenge_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted challenge by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No challenge found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update challenge by id */
-  update_challenge_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ChallengeDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated challenge by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChallengeModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No challenge found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List challenge achievements by id */
-  list_challenge_achievements_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed challenge achievements by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AchievementModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No challenge found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List challenge files by id */
-  list_challenge_files_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed challenge files by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["FileModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No challenge found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List challenge hints by id */
-  list_challenge_hints_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed challenge hints by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["HintModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No challenge found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List challenge instances by id */
-  list_challenge_instances_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed challenge instances by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InstanceModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No challenge found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve challenge relations by id */
-  retrieve_challenge_relations_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved challenge relations by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChallengeRelations"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No challenge found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Calculate challenge solves by id */
-  calculate_challenge_solves_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Calculates challenge solves by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChallengeSolves"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No challenge found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List challenge tags by id */
-  list_challenge_tags_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed challenge tags by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TagModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No challenge found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List files */
-  list_files: {
-    responses: {
-      /** @description Listed files successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["FileModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create file */
-  create_file: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["FileDetails"];
-      };
-    };
-    responses: {
-      /** @description Created file successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["FileModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Upload files */
-  file_upload: {
-    requestBody: {
-      content: {
-        "multipart/form-data": components["schemas"]["UploadedFile"];
-      };
-    };
-    responses: {
-      /** @description Uploaded file successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["FileModel"];
-        };
-      };
-      /** @description Invalid file upload */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve file by id */
-  retrieve_file_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved file by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["FileModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No file found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete file by id */
-  delete_file_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted file by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No file found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update file by id */
-  update_file_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["FileDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated file by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["FileModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No file found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve file challenge by id */
-  retrieve_file_challenge_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved file challenge by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChallengeModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No file found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description File size is too large */
-      413: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List flags */
-  list_flags: {
-    responses: {
-      /** @description Listed flags successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["FlagModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create flag */
-  create_flag: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["FlagDetails"];
-      };
-    };
-    responses: {
-      /** @description Created flag successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["FlagModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Verify flag */
-  verify_flag: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["VerifyFlagSchema"];
-      };
-    };
-    responses: {
-      /** @description Verified flag successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["FlagVerificationResult"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve flag by id */
-  retrieve_flag_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved flag by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["FlagModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No flag found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete flag by id */
-  delete_flag_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted flag by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No flag found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update flag by id */
-  update_flag_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["FlagDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated flag by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["FlagModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No flag found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve flag challenge by id */
-  retrieve_flag_challenge_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved flag challenge by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChallengeModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No flag found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve flag player by id */
-  retrieve_flag_player_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved flag player by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"] | null;
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No flag found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List hints */
-  list_hints: {
-    responses: {
-      /** @description Listed hints successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["HintModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create hint */
-  create_hint: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["HintDetails"];
-      };
-    };
-    responses: {
-      /** @description Created hint successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["HintModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description HintModel ID not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve hint by id */
-  retrieve_hint_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved hint by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["HintModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No hint found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete hint by id */
-  delete_hint_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted hint by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No hint found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update hint by id */
-  update_hint_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["HintDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated hint by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["HintModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No hint found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve hint challenge by id */
-  retrieve_hint_challenge_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved hint challenge by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChallengeModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No hint found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List instances */
-  list_instances: {
-    responses: {
-      /** @description Listed instances successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InstanceModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create instance */
-  create_instance: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["InstanceDetails"];
-      };
-    };
-    responses: {
-      /** @description Created instance successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["InstanceModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description InstanceModel ID not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve instance by id */
-  retrieve_instance_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved instance by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InstanceModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No instance found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete instance by id */
-  delete_instance_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted instance by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No instance found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update instance by id */
-  update_instance_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["InstanceDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated instance by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InstanceModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No instance found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve instance challenge by id */
-  retrieve_instance_challenge_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved instance challenge by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChallengeModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No instance found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Extend instance by id */
-  extend_instance_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Extended instance by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InstanceModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No instance found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve instance player by id */
-  retrieve_instance_player_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved instance user by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No instance found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List invites */
-  list_invites: {
-    responses: {
-      /** @description Listed invites successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InviteModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create invite */
-  create_invite: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["InviteDetails"];
-      };
-    };
-    responses: {
-      /** @description Created invite successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["InviteModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve invite by id */
-  retrieve_invite_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved invite by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InviteModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No invite found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete invite by id */
-  delete_invite_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted invite by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No invite found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update invite by id */
-  update_invite_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["InviteDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated invite by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InviteModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No invite found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Join invite team by id */
-  join_invite_team_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Joined invite team by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: never;
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: never;
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: never;
-      };
-      /** @description No invite found with specified id */
-      404: {
-        content: never;
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve invite team by id */
-  retrieve_invite_team_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved invite team by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TeamModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No invite found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List notifications */
-  list_notifications: {
-    responses: {
-      /** @description Listed notifications successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["NotificationModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create notification */
-  create_notification: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["NotificationDetails"];
-      };
-    };
-    responses: {
-      /** @description Created notification successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["NotificationModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description NotificationModel ID not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve notification by id */
-  retrieve_notification_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved notification by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["NotificationModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No notification found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete notification by id */
-  delete_notification_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted notification by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No notification found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update notification by id */
-  update_notification_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["NotificationDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated notification by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["NotificationModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No notification found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve notification player by id */
-  retrieve_notification_player_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved notification player by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No notification found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List players */
-  list_players: {
-    responses: {
-      /** @description Listed players successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create player */
-  create_player: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["PlayerDetails"];
-      };
-    };
-    responses: {
-      /** @description Created player successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Join team by team name */
-  join_team_by_team_name: {
-    parameters: {
-      path: {
-        /** @description Name of team to join */
-        team_name: string;
-      };
-    };
-    responses: {
-      /** @description Joined team by team name */
-      200: {
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No user found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Return currently authenticated player */
-  player_get_me: {
-    responses: {
-      /** @description Retrieved authenticated player successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Player not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Calculate player rankings */
-  calculate_player_rankings: {
-    responses: {
-      /** @description Listed player rankings */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerRankings"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No user found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve player by id */
-  retrieve_player_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved player by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No player found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete player by id */
-  delete_player_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted player by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No player found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update player by id */
-  update_player_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["PlayerDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated player by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No player found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List player achievements by id */
-  list_player_achievements_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed player achievements by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AchievementModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No player found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List player flags by id */
-  list_player_flags_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed user flags by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["FlagModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No user found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve player instance by id */
-  retrieve_player_instance_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved user instance by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InstanceModel"] | null;
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No user found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List player points by id */
-  calculate_player_points_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved player points by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerPoints"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No player found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List player submissions by id */
-  list_player_submissions_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed player submissions by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["SubmissionModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No user found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve player team by id */
-  retrieve_player_team_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved player team by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TeamModel"] | null;
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No player found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update player profile by id */
-  update_player_profile_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UpdateProfileSchema"];
-      };
-    };
-    responses: {
-      /** @description Updated player profile by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No player found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve player profile by username */
-  retrieve_player_profile_by_username: {
-    parameters: {
-      path: {
-        /** @description Username of user */
-        username: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved player profile by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerProfile"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No player found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Get stats of all tables */
-  get_stats: {
-    responses: {
-      /** @description Got stats successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["StatSchema"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List submissions */
-  list_submissions: {
-    responses: {
-      /** @description Listed submissions successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["SubmissionModel"][];
-        };
-      };
-      /** @description Invalid id format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create submission */
-  create_submission: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SubmissionDetails"];
-      };
-    };
-    responses: {
-      /** @description Created submission successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["SubmissionModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve submission by id */
-  retrieve_submission_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved submission by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["SubmissionModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No submission found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete submission by id */
-  delete_submission_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted submission by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No submission found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update submission by id */
-  update_submission_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SubmissionDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated submission by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["SubmissionModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No submission found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve submission player by id */
-  retrieve_submission_player_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved submission player by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No submission found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List tags */
-  list_tags: {
-    responses: {
-      /** @description Listed tags successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TagModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create tag */
-  create_tag: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TagDetails"];
-      };
-    };
-    responses: {
-      /** @description Created tag successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["TagModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve tag by id */
-  retrieve_tag_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved tag by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TagModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No tag found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete tag by id */
-  delete_tag_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted tag by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No tag found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update tag by id */
-  update_tag_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TagDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated tag by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TagModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No tag found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List tag challenges by id */
-  list_tag_challenges_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed tag challenges by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["ChallengeModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No tag found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List teams */
-  list_teams: {
-    responses: {
-      /** @description Listed teams successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TeamModel"][];
-        };
-      };
-      /** @description Invalid request */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create team */
-  create_team: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TeamDetails"];
-      };
-    };
-    responses: {
-      /** @description Created team successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["TeamModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List team points */
-  list_team_points: {
-    responses: {
-      /** @description Listed team points by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TeamPoints"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No team found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve team by id */
-  retrieve_team_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved team by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TeamModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No team found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete team by id */
-  delete_team_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted team by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No team found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update team by id */
-  update_team_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TeamDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated team by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TeamModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No team found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List team achievements by id */
-  list_team_achievements_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed team achievements by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["AchievementModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No team found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List team invites by id */
-  list_team_invites_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed team invites by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["InviteModel"][];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No team found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List team players by id */
-  list_team_players_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Listed team players by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["PlayerModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No team found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Calculate team points by id */
-  calculate_team_points_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Calculated team points by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TeamPoints"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No team found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** List users */
-  list_users: {
-    responses: {
-      /** @description Listed users successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Create user */
-  create_user: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserDetails"];
-      };
-    };
-    responses: {
-      /** @description Created user successfully */
-      201: {
-        content: {
-          "application/json": components["schemas"]["UserModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Retrieve user by id */
-  retrieve_user_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Retrieved user by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No user found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Delete user by id */
-  delete_user_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description Deleted user by id successfully */
-      204: {
-        content: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No user found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
-  /** Update user by id */
-  update_user_by_id: {
-    parameters: {
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserDetails"];
-      };
-    };
-    responses: {
-      /** @description Updated user by id successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description No user found with specified id */
-      404: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["ErrorModel"];
-        };
-      };
-    };
-  };
+    list_achievements: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed achievements successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AchievementModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_achievement: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateAchievementSchema"];
+            };
+        };
+        responses: {
+            /** @description Created achievement successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AchievementModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_achievement_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved achievement by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AchievementModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No achievement found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_achievement: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted achievement by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No achievement found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_achievement_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateAchievementSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated achievement by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AchievementModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No achievement found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_achievement_challenge_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved achievementchallenge by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No achievement found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_achievement_player_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved achievementplayer by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No achievement found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_admins: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed admins successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_admin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateAdminSchema"];
+            };
+        };
+        responses: {
+            /** @description Created admin successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No admin found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_admin_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved admin by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No admin found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_admin_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted admin by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No admin found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_admin_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateAdminSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated admin by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No admin found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_admin_tickets_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed admintickets by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TicketModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No admin found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_bans: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed bans successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BanModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_ban: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateBanSchema"];
+            };
+        };
+        responses: {
+            /** @description Created ban successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BanModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ban found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_ban_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved ban by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BanModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ban found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_ban_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted ban by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ban found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_ban_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateBanSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated ban by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BanModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ban found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_ban_player_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved banplayer by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ban found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_ban_team_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved banteam by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ban found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_challenges: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed challenges successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_challenge: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateChallengeSchema"];
+            };
+        };
+        responses: {
+            /** @description Created challenge successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_challenge_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved challenge by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_challenge_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted challenge by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_challenge_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateChallengeSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated challenge by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_challenge_achievements_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed challengeachievements by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AchievementModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_challenge_challenge_tags_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed challengechallenge_tags by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeTagModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_challenge_files_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed challengefiles by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FileModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_challenge_hints_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed challengehints by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HintModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_challenge_instances_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed challengeinstances by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstanceModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_challenge_submissions_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed challengesubmissions by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubmissionModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_challenge_tags_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed challengetags by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TagModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_challenge_tags: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed challenge_tags successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeTagModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_challenge_tag: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateChallengeTagSchema"];
+            };
+        };
+        responses: {
+            /** @description Created challenge_tag successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeTagModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge_tag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_challenge_tag_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                challenge_id: string;
+                /** @description Id of entity */
+                tag_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved challenge_tag by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeTagModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge_tag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_challenge_tag_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                challenge_id: string;
+                /** @description Id of entity */
+                tag_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted challenge_tag by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge_tag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_challenge_tag_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                challenge_id: string;
+                /** @description Id of entity */
+                tag_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateChallengeTagSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated challenge_tag by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeTagModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge_tag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_files: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed files successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FileModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_file: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateFileSchema"];
+            };
+        };
+        responses: {
+            /** @description Created file successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FileModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No file found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_file_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved file by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FileModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No file found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_file_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted file by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No file found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_file_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateFileSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated file by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FileModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No file found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_file_challenge_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved filechallenge by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No file found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_flags: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed flags successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FlagModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_flag: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateFlagSchema"];
+            };
+        };
+        responses: {
+            /** @description Created flag successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FlagModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No flag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_flag_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved flag by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FlagModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No flag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_flag_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted flag by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No flag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_flag_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateFlagSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated flag by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FlagModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No flag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_flag_challenge_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved flagchallenge by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No flag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_flag_player_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved flagplayer by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No flag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_hints: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed hints successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HintModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_hint: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateHintSchema"];
+            };
+        };
+        responses: {
+            /** @description Created hint successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HintModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No hint found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_hint_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved hint by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HintModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No hint found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_hint_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted hint by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No hint found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_hint_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateHintSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated hint by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HintModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No hint found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_hint_challenge_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved hintchallenge by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No hint found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_hint_unlocks_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed hintunlocks by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnlockModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No hint found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_instances: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed instances successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstanceModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_instance: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateInstanceSchema"];
+            };
+        };
+        responses: {
+            /** @description Created instance successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstanceModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No instance found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_instance_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved instance by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstanceModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No instance found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_instance_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted instance by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No instance found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_instance_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateInstanceSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated instance by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstanceModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No instance found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_instance_challenge_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved instancechallenge by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No instance found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_instance_player_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved instanceplayer by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No instance found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_invites: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed invites successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_invite: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateInviteSchema"];
+            };
+        };
+        responses: {
+            /** @description Created invite successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No invite found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_invite_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved invite by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No invite found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_invite_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted invite by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No invite found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_invite_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateInviteSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated invite by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No invite found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_invite_team_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved inviteteam by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No invite found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_leaderboards: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed leaderboards successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LeaderboardModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_leaderboard: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateLeaderboardSchema"];
+            };
+        };
+        responses: {
+            /** @description Created leaderboard successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LeaderboardModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No leaderboard found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_leaderboard_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved leaderboard by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LeaderboardModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No leaderboard found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_leaderboard_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted leaderboard by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No leaderboard found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_leaderboard_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateLeaderboardSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated leaderboard by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LeaderboardModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No leaderboard found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_notifications: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed notifications successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_notification: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateNotificationSchema"];
+            };
+        };
+        responses: {
+            /** @description Created notification successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No notification found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_notification_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved notification by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No notification found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_notification_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted notification by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No notification found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_notification_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateNotificationSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated notification by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No notification found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_notification_player_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved notificationplayer by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No notification found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_players: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed players successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_player: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreatePlayerSchema"];
+            };
+        };
+        responses: {
+            /** @description Created player successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_player_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved player by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_player_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted player by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_player_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreatePlayerSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated player by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_player_achievements_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed playerachievements by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AchievementModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_player_ban_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved playerban by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BanModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_player_flags_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed playerflags by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FlagModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_player_instance_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved playerinstance by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstanceModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_player_notifications_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed playernotifications by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificationModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_player_submissions_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed playersubmissions by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubmissionModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_player_team_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved playerteam by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_player_unlocks_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed playerunlocks by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnlockModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_submissions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed submissions successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubmissionModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_submission: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateSubmissionSchema"];
+            };
+        };
+        responses: {
+            /** @description Created submission successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubmissionModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No submission found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_submission_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                challenge_id: string;
+                /** @description Id of entity */
+                player_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved submission by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubmissionModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No submission found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_submission_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                challenge_id: string;
+                /** @description Id of entity */
+                player_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted submission by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No submission found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_submission_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                challenge_id: string;
+                /** @description Id of entity */
+                player_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateSubmissionSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated submission by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubmissionModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No submission found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_tags: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed tags successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TagModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_tag: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTagSchema"];
+            };
+        };
+        responses: {
+            /** @description Created tag successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TagModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No tag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_tag_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved tag by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TagModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No tag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_tag_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted tag by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No tag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_tag_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTagSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated tag by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TagModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No tag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_tag_challenges_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed tagchallenges by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No tag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_teams: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed teams successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_team: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTeamSchema"];
+            };
+        };
+        responses: {
+            /** @description Created team successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No team found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_team_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved team by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No team found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_team_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted team by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No team found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_team_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTeamSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated team by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No team found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_team_ban_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved teamban by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BanModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No team found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_team_invites_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed teaminvites by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InviteModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No team found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_team_players_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed teamplayers by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No team found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_tickets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed tickets successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TicketModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_ticket: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTicketSchema"];
+            };
+        };
+        responses: {
+            /** @description Created ticket successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TicketModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ticket found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_ticket_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved ticket by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TicketModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ticket found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_ticket_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted ticket by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ticket found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_ticket_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTicketSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated ticket by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TicketModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ticket found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_ticket_admin_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved ticketadmin by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ticket found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    list_unlocks: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed unlocks successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnlockModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    create_unlock: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUnlockSchema"];
+            };
+        };
+        responses: {
+            /** @description Created unlock successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnlockModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No unlock found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_unlock_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                player_id: string;
+                /** @description Id of entity */
+                hint_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved unlock by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnlockModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No unlock found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    delete_unlock_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                player_id: string;
+                /** @description Id of entity */
+                hint_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted unlock by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No unlock found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_unlock_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                player_id: string;
+                /** @description Id of entity */
+                hint_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUnlockSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated unlock by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnlockModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No unlock found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    admin_get_current_logged_in: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Password reset email sent successful */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    admin_login: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginModel"];
+            };
+        };
+        responses: {
+            /** @description user logged in successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenPair"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    admin_refresh_token: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TokenPair"];
+            };
+        };
+        responses: {
+            /** @description user logged in successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenPair"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    player_get_current_logged_in: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Password reset email sent successful */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    player_login: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginModel"];
+            };
+        };
+        responses: {
+            /** @description user logged in successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenPair"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    player_register: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RegisterPlayer"];
+            };
+        };
+        responses: {
+            /** @description Password reset email sent successful */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    player_register_send_token: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendTokenSchema"];
+            };
+        };
+        responses: {
+            /** @description Token sent successful */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    player_reset_password: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResetPasswordSchema"];
+            };
+        };
+        responses: {
+            /** @description Password reset email sent successful */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    player_reset_password_send_token: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendTokenSchema"];
+            };
+        };
+        responses: {
+            /** @description Token sent successful */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    player_refresh_token: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TokenPair"];
+            };
+        };
+        responses: {
+            /** @description user logged in successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenPair"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    add_player_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateBanSchema"];
+            };
+        };
+        responses: {
+            /** @description Banned player by id successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BanModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ban found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    add_team_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateBanSchema"];
+            };
+        };
+        responses: {
+            /** @description Banned team by id successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BanModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No ban found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    detailed_challenge: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved player challenge details successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DetailedChallenge"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    player_challenges: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed player challenges successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeSummary"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    verify: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerifyFlagSchema"];
+            };
+        };
+        responses: {
+            /** @description Verified flag successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FlagVerificationResult"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    unlock_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Unlocked hint by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HintModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No hint found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_player_summary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved player summary by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerSummary"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_team_summary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved team summary by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamSummary"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_team_profile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTeamSchema"];
+            };
+        };
+        responses: {
+            /** @description Retrieved team details by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_team_by_teamname: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Team name of team */
+                teamname: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved team details by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamProfile"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    update_player_profile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateProfileSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated player profile by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
+    retrieve_profile_by_username: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Username of user */
+                username: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved player profile by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerProfile"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description No player found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorModel"];
+                };
+            };
+        };
+    };
 }
