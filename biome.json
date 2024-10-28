@@ -18,6 +18,12 @@
       },
       "suspicious": {
         "noExplicitAny": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "warn"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "warn"
       }
     }
   },
