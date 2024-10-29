@@ -11,9 +11,9 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    AchievementModel, BanModel, CreatePlayerSchema, FlagModel, InstanceModel, NotificationModel,
-    PlayerModel, PlayerProfile, PlayerSummary, SubmissionModel, TeamModel, TokenClaims,
-    UnlockModel,
+    AchievementModel, BanModel, CreatePlayerSchema, JsonResponse, FlagModel, InstanceModel,
+    NotificationModel, PlayerModel, PlayerProfile, PlayerSummary, SubmissionModel, TeamModel,
+    TokenClaims, UnlockModel,
 };
 use crate::service::AppState;
 
@@ -36,11 +36,11 @@ multiple_relation_api!(Player, Unlock);
     params(("username" = String, Path, description = "Username of user")),
     responses(
         (status = 200, description = "Retrieved player profile by id successfully", body = PlayerProfile),
-        (status = 400, description = "Invalid parameters format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 404, description = "No player found with specified id", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid parameters format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 404, description = "No player found with specified id", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Retrieve player profile by username
@@ -48,12 +48,8 @@ pub async fn retrieve_profile_by_username(
     state: State<Arc<AppState>>,
     Path(username): Path<String>,
 ) -> Result<Json<PlayerProfile>> {
-    let Some(player_profile) = db::player::retrieve_profile_by_username(
-        username,
-        &state.db_conn,
-        &mut state.cache_client.get().await.unwrap(),
-    )
-    .await?
+    let Some(player_profile) =
+        db::player::retrieve_profile_by_username(username, &state.db_conn).await?
     else {
         return Err(Error::NotFound("Player does not exist".to_owned()));
     };
@@ -69,11 +65,11 @@ pub async fn retrieve_profile_by_username(
     operation_id = "update_player_profile",
     responses(
         (status = 200, description = "Updated player profile by id successfully", body = PlayerModel),
-        (status = 400, description = "Invalid parameters/request body format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 404, description = "No player found with specified id", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 404, description = "No player found with specified id", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Update player profile by id
@@ -93,11 +89,11 @@ pub async fn update_profile_by_id(
     operation_id = "retrieve_player_summary",
     responses(
         (status = 200, description = "Retrieved player summary by id successfully", body = PlayerSummary),
-        (status = 400, description = "Invalid parameters/request body format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 404, description = "No player found with specified id", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 404, description = "No player found with specified id", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Retrieve player summary

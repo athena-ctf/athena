@@ -9,7 +9,7 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    ChallengeModel, CreateFlagSchema, FlagModel, FlagVerificationResult, PlayerModel, Submission,
+    JsonResponse,ChallengeModel, CreateFlagSchema, FlagModel, FlagVerificationResult, PlayerModel, Submission,
     CreateSubmissionSchema, TokenClaims, VerifyFlagSchema,
 };
 use crate::service::AppState;
@@ -25,10 +25,10 @@ single_relation_api!(Flag, Challenge);
     request_body = VerifyFlagSchema,
     responses(
         (status = 201, description = "Verified flag successfully", body = FlagVerificationResult),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Verify flag

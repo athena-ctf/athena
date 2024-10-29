@@ -8,8 +8,8 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    BanModel, CreateTeamSchema, InviteModel, PlayerModel, TeamModel, TeamProfile, TeamSummary,
-    TokenClaims,
+    BanModel, CreateTeamSchema, JsonResponse, InviteModel, PlayerModel, TeamModel, TeamProfile,
+    TeamSummary, TokenClaims,
 };
 use crate::service::AppState;
 
@@ -26,11 +26,11 @@ multiple_relation_api!(Team, Player);
     params(("teamname" = String, Path, description = "Team name of team")),
     responses(
         (status = 200, description = "Retrieved team details by id successfully", body = TeamProfile),
-        (status = 400, description = "Invalid parameters format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 404, description = "No player found with specified id", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid parameters format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 404, description = "No player found with specified id", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Retrieve team details by teamname
@@ -53,11 +53,11 @@ pub async fn retrieve_team_by_teamname(
     operation_id = "update_team_profile",
     responses(
         (status = 200, description = "Retrieved team details by id successfully", body = TeamModel),
-        (status = 400, description = "Invalid parameters format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 404, description = "No player found with specified id", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid parameters format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 404, description = "No player found with specified id", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Retrieve team details by teamname
@@ -83,11 +83,11 @@ pub async fn update_details(
     operation_id = "retrieve_team_summary",
     responses(
         (status = 200, description = "Retrieved team summary by id successfully", body = TeamSummary),
-        (status = 400, description = "Invalid parameters/request body format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 404, description = "No player found with specified id", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 404, description = "No player found with specified id", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Retrieve team summary

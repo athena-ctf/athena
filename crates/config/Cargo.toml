@@ -1,0 +1,19 @@
+[package]
+name = "config"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+base64ct = "1.6.0"
+chrono = { workspace = true }
+config_rs = { package = "config", version = "0.14.0", default-features = false, features = [
+    "async",
+    "convert-case",
+    "json",
+] }
+fastrand = "2.1.1"
+humantime = "2.1.0"
+indexmap = { version = "2.6.0", features = ["serde"] }
+schemars = { version = "0.8.21", features = ["uuid1", "indexmap2", "chrono"] }
+serde = { workspace = true }
+serde_json = { workspace = true }

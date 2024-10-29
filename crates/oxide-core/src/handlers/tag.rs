@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{ChallengeModel, CreateTagSchema, TagModel};
+use crate::schemas::{ChallengeModel, CreateTagSchema, JsonResponse, TagModel};
 use crate::service::AppState;
 
 crud_interface_api!(Tag);

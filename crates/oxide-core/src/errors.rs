@@ -3,7 +3,7 @@ use axum::response::IntoResponse;
 use axum::Json;
 use thiserror::Error as ThisError;
 
-use crate::schemas::ErrorModel;
+use crate::schemas::JsonResponse;
 
 #[derive(Debug, ThisError)]
 pub enum Error {
@@ -21,9 +21,6 @@ pub enum Error {
 
     #[error("JSON serialization/deserialization error: {0:?}")]
     Json(#[from] serde_json::Error),
-
-    #[error("Could not load config: {0:#?}")]
-    Config(#[from] config::ConfigError),
 
     #[error("Error while doing db operations: {0:?}")]
     Db(#[from] sea_orm::DbErr),
@@ -64,17 +61,17 @@ impl IntoResponse for Error {
 
         match self {
             Self::BadRequest(message) => {
-                { (StatusCode::BAD_REQUEST, Json(ErrorModel { message })).into_response() }
+                { (StatusCode::BAD_REQUEST, Json(JsonResponse { message })).into_response() }
                     .into_response()
             }
 
             Self::NotFound(message) => {
-                (StatusCode::NOT_FOUND, Json(ErrorModel { message })).into_response()
+                (StatusCode::NOT_FOUND, Json(JsonResponse { message })).into_response()
             }
 
             _ => (
                 StatusCode::INTERNAL_SERVER_ERROR,
-                Json(ErrorModel {
+                Json(JsonResponse {
                     message: self.to_string(),
                 }),
             )

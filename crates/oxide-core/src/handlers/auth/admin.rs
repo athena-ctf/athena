@@ -7,7 +7,7 @@ use jsonwebtoken::{DecodingKey, Validation};
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{LoginModel, TokenClaims, TokenPair};
+use crate::schemas::{JsonResponse, LoginModel, TokenClaims, TokenPair};
 use crate::service::AppState;
 
 #[utoipa::path(
@@ -17,9 +17,9 @@ use crate::service::AppState;
     operation_id = "admin_login",
     responses(
         (status = 200, description = "user logged in successfully", body = TokenPair),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 404, description = "User not found", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
 )]
@@ -45,10 +45,10 @@ pub async fn login(
     operation_id = "admin_refresh_token",
     responses(
         (status = 200, description = "user logged in successfully", body = TokenPair),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 404, description = "User not found", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Refresh auth token
@@ -85,9 +85,9 @@ pub async fn refresh_token(
     operation_id = "admin_get_current_logged_in",
     responses(
         (status = 200, description = "Password reset email sent successful", body = AdminModel),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 404, description = "User not found", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
 )]
 /// Return currently authenticated user

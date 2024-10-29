@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{ChallengeModel, CreateInstanceSchema, InstanceModel, PlayerModel};
+use crate::schemas::{JsonResponse,ChallengeModel, CreateInstanceSchema, InstanceModel, PlayerModel};
 use crate::service::AppState;
 
 crud_interface_api!(Instance);

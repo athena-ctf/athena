@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use entity::extensions::{HintSummary, PartialChallenge};
 pub use entity::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -14,7 +12,7 @@ pub struct LoginModel {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
-pub struct ErrorModel {
+pub struct JsonResponse {
     pub message: String,
 }
 
@@ -22,11 +20,6 @@ pub struct ErrorModel {
 pub struct TokenPair {
     pub access_token: String,
     pub refresh_token: String,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
-pub struct JsonResponse {
-    pub message: String,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
@@ -156,7 +149,7 @@ pub struct TeamProfile {
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct TeamSummary {
     pub team: TeamModel,
-    pub members: HashMap<String, PlayerSummary>,
+    pub members: Vec<PlayerProfile>,
     pub submissions: Vec<SubmissionModel>,
     pub unlocks: Vec<UnlockModel>,
     pub achievements: Vec<AchievementModel>,

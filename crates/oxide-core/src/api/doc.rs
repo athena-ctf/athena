@@ -219,7 +219,7 @@ use crate::schemas::*;
             RoleEnum,
             TicketStatusEnum,
             LoginModel,
-            ErrorModel,
+            JsonResponse,
             TokenPair,
             JsonResponse,
             ResetPasswordSchema,
@@ -254,7 +254,7 @@ pub struct SecurityAddon;
 impl Modify for SecurityAddon {
     fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
         let mut bearer_auth = Http::new(HttpAuthScheme::Bearer);
-        bearer_auth.bearer_format = Some("JWT".to_owned());
+        bearer_auth.bearer_format = Some("Bearer".to_owned());
 
         if let Some(components) = openapi.components.as_mut() {
             components.add_security_scheme("bearerAuth", SecurityScheme::Http(bearer_auth));

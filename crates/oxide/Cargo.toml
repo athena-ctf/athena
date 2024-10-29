@@ -6,6 +6,7 @@ default-run = "oxide"
 
 [dependencies]
 argh = "0.1.12"
+config = { path = "../config" }
 oxide-core = { path = "../oxide-core" }
 tokio = { workspace = true }
 tracing = { workspace = true }

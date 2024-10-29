@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{CreateInviteSchema, InviteModel, TeamModel};
+use crate::schemas::{JsonResponse,CreateInviteSchema, InviteModel, TeamModel};
 use crate::service::AppState;
 
 crud_interface_api!(Invite);

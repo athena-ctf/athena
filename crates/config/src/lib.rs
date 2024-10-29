@@ -1,15 +1,14 @@
+use std::error::Error;
 use std::iter::repeat_with;
 use std::time::Duration;
 
 use base64ct::{Base64, Encoding};
 use chrono::{DateTime, Utc};
-use config::{Config, File};
+use config_rs::{Config, File};
 use indexmap::IndexMap;
-use lettre::message::Mailbox;
-use lettre::Address;
+use schemars::gen::SchemaSettings;
+use schemars::{schema_for, JsonSchema};
 use serde::{Deserialize, Serialize};
-
-use crate::errors::Result;
 
 mod human_duration {
     use std::time::Duration;
@@ -33,7 +32,7 @@ mod human_duration {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Ctf {
     pub name: String,
     pub domain: String,
@@ -45,30 +44,45 @@ pub struct Ctf {
     pub prizes: IndexMap<String, Vec<String>>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Sponsor {
     name: String,
     logo: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Time {
-    #[serde(with = "human_duration")]
+    #[serde(
+        serialize_with = "human_duration::serialize",
+        deserialize_with = "human_duration::deserialize"
+    )]
+    #[schemars(with = "String")]
     pub span: Duration,
     pub start: DateTime<Utc>,
-    #[serde(with = "human_duration")]
+    #[serde(
+        serialize_with = "human_duration::serialize",
+        deserialize_with = "human_duration::deserialize"
+    )]
+    #[schemars(with = "String")]
     pub freeze: Duration,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Database {
     pub host: String,
     pub port: u16,
     pub username: String,
     pub password: String,
+    pub listener_channel: String,
+    #[serde(default = "athena_db")]
+    pub database_name: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+fn athena_db() -> String {
+    "athena_db".to_owned()
+}
+
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct RedisInner {
     pub host: String,
     pub port: u16,
@@ -76,7 +90,7 @@ pub struct RedisInner {
     pub password: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Redis {
     pub cache: RedisInner,
     pub token: RedisInner,
@@ -86,7 +100,7 @@ fn default_region() -> String {
     "ap-south-1".to_owned()
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct AwsS3 {
     #[serde(default = "default_region")]
     pub region: String,
@@ -95,14 +109,14 @@ pub struct AwsS3 {
     pub bucket_name: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Jwt {
     pub secret: String,
     pub access_token_timeout: u64,
     pub refresh_token_timeout: u64,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, Copy)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, Copy)]
 #[serde(rename_all = "lowercase")]
 pub enum CompressionKind {
     Gzip,
@@ -110,29 +124,35 @@ pub enum CompressionKind {
     Br,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Local {
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub compress: Option<CompressionKind>,
     pub path: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Aws {}
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Gcp {}
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Azure {
     account_name: String,
-    client_id: String,
-    client_secret: String,
-    tenant_id: String,
+    account_key: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+pub struct RemoteStorageOptions {
+    bucket_name: String,
+    expires: i32,
+}
+
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct FileStorage {
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub remote_storage_options: Option<RemoteStorageOptions>,
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub local: Option<Local>,
     #[serde(skip_serializing_if = "Option::is_none", default)]
@@ -143,21 +163,21 @@ pub struct FileStorage {
     pub azure: Option<Azure>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Smtp {
-    pub from: Mailbox,
-    pub reply_to: Mailbox,
+    pub from: String,
+    pub reply_to: String,
     pub username: String,
     pub password: String,
     pub server_url: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Challenge {
     pub max_attempts: usize,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Docker {
     pub single_instance_duration: usize,
     pub registry_url: String,
@@ -165,18 +185,18 @@ pub struct Docker {
     pub registry_password: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Discord {
     pub welcome_channel_id: String,
     pub editor_role_id: String,
     pub viewer_role_id: String,
     pub reaction_role_message_id: String,
     pub logs_channel_id: String,
-    pub genral_channel_id: String,
+    pub general_channel_id: String,
     pub bot_token: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Settings {
     pub ctf: Ctf,
     pub database: Database,
@@ -193,8 +213,6 @@ fn gen_random_password() -> String {
         .take(12)
         .collect()
 }
-
-const DB_NAME: &str = "athena_db";
 
 impl Default for Settings {
     fn default() -> Self {
@@ -217,6 +235,8 @@ impl Default for Settings {
                 port: 5432,
                 username: "postgres".to_owned(),
                 password: gen_random_password(),
+                listener_channel: "notification_change".to_owned(),
+                database_name: "athena_db".to_owned(),
             },
             redis: Redis {
                 cache: RedisInner {
@@ -242,6 +262,7 @@ impl Default for Settings {
                 refresh_token_timeout: 86400,
             },
             file_storage: FileStorage {
+                remote_storage_options: None,
                 local: Some(Local {
                     compress: Some(CompressionKind::Gzip),
                     path: "/var/athena/static".to_owned(),
@@ -251,11 +272,8 @@ impl Default for Settings {
                 gcp: None,
             },
             smtp: Smtp {
-                from: Mailbox::new(None, Address::new("noreply", "athena.io").unwrap()),
-                reply_to: Mailbox::new(
-                    Some("Admin".to_owned()),
-                    Address::new("admin", "athena.io").unwrap(),
-                ),
+                from: "noreply@athena.io".to_owned(),
+                reply_to: "admin@athena.io".to_owned(),
                 username: "athena_smtp".to_owned(),
                 password: gen_random_password(),
                 server_url: "smtp.athena.io".to_owned(),
@@ -272,7 +290,7 @@ impl Default for Settings {
                 viewer_role_id: String::new(),
                 reaction_role_message_id: String::new(),
                 logs_channel_id: String::new(),
-                genral_channel_id: String::new(),
+                general_channel_id: String::new(),
                 bot_token: String::new(),
             },
         }
@@ -280,7 +298,7 @@ impl Default for Settings {
 }
 
 impl Settings {
-    pub fn new(location: &str) -> Result<Self> {
+    pub fn new(location: &str) -> Result<Self, Box<dyn Error>> {
         let s = Config::builder()
             .add_source(File::with_name(location))
             .build()?;
@@ -297,11 +315,19 @@ impl Settings {
             self.database.password,
             self.database.host,
             self.database.port,
-            DB_NAME
+            self.database.database_name
         )
     }
 
-    pub fn default_json(&self) -> Result<String> {
-        Ok(serde_json::to_string_pretty(self)?)
+    pub fn default_json(&self) -> Result<String, serde_json::Error> {
+        serde_json::to_string_pretty(self)
+    }
+
+    pub fn json_schema() -> Result<String, serde_json::Error> {
+        let schema = SchemaSettings::default()
+            .with(|s| s.option_add_null_type = false)
+            .into_generator()
+            .into_root_schema_for::<Self>();
+        serde_json::to_string_pretty(&schema)
     }
 }

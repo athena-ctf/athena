@@ -283,9 +283,9 @@ macro_rules! list_api {
                 operation_id = concat!("list_",stringify!([<$entity:snake>]),"s"),
                 responses(
                     (status = 200, description = concat!("Listed ",stringify!([<$entity:snake>]),"s successfully"), body = [[<$entity Model>]]),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn list(state: State<Arc<AppState>>) -> Result<Json<Vec<[<$entity Model>]>>> {
@@ -307,11 +307,11 @@ macro_rules! create_api {
                 request_body = [<Create $entity Schema>],
                 responses(
                     (status = 201, description = concat!("Created ",stringify!([<$entity:snake>])," successfully"), body = [<$entity Model>]),
-                    (status = 400, description = "Invalid request body format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid request body format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn create(
@@ -336,11 +336,11 @@ macro_rules! delete_api {
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
                     (status = 204, description = concat!("Deleted ",stringify!([<$entity:snake>])," by id successfully")),
-                    (status = 400, description = "Invalid parameters format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid parameters format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn delete_by_id(state: State<Arc<AppState>>, Path(id): Path<Uuid>) -> Result<()> {
@@ -372,11 +372,11 @@ macro_rules! retrieve_api {
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
                     (status = 200, description = concat!("Retrieved ",stringify!([<$entity:snake>])," by id successfully"), body = [<$entity Model>]),
-                    (status = 400, description = "Invalid parameters format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid parameters format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn retrieve_by_id(
@@ -411,11 +411,11 @@ macro_rules! update_api {
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
                     (status = 200, description = concat!("Updated ",stringify!([<$entity:snake>])," by id successfully"), body = [<$entity Model>]),
-                    (status = 400, description = "Invalid parameters/request body format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn update_by_id(
@@ -449,11 +449,11 @@ macro_rules! optional_relation_api {
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
                     (status = 200, description = concat!("Retrieved ",stringify!([<$entity:snake>]),stringify!([<$related:snake>])," by id successfully"), body = [<$related Model>]),
-                    (status = 400, description = "Invalid parameters format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid parameters format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn [<retrieve_ $related:snake _by_id>](
@@ -487,11 +487,11 @@ macro_rules! single_relation_api {
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
                     (status = 200, description = concat!("Retrieved ",stringify!([<$entity:snake>]),stringify!([<$related:snake>])," by id successfully"), body = [<$related Model>]),
-                    (status = 400, description = "Invalid parameters format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid parameters format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn [<retrieve_ $related:snake _by_id>](
@@ -522,11 +522,11 @@ macro_rules! multiple_relation_with_model_api {
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
                     (status = 200, description = concat!("Listed ",stringify!([<$entity:snake>]),stringify!([<$related:snake>]),"s by id successfully"), body = [[<$related Model>]]),
-                    (status = 400, description = "Invalid parameters format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid parameters format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn [<list_ $related:snake s_by_id>](
@@ -563,11 +563,11 @@ macro_rules! multiple_relation_api {
                 params(("id" = Uuid, Path, description = "Id of entity")),
                 responses(
                     (status = 200, description = concat!("Listed ",stringify!([<$entity:snake>]),stringify!([<$related:snake>]),"s by id successfully"), body = [[<$related Model>]]),
-                    (status = 400, description = "Invalid parameters format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid parameters format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn [<list_ $related:snake s_by_id>](
@@ -609,9 +609,9 @@ macro_rules! join_crud_interface_api {
                 operation_id = concat!("list_",stringify!([<$entity:snake>]),"s"),
                 responses(
                     (status = 200, description = concat!("Listed ",stringify!([<$entity:snake>]),"s successfully"), body = [[<$entity Model>]]),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn list(state: State<Arc<AppState>>) -> Result<Json<Vec<[<$entity Model>]>>> {
@@ -626,11 +626,11 @@ macro_rules! join_crud_interface_api {
                 request_body = [<Create $entity Schema>],
                 responses(
                     (status = 201, description = concat!("Created ",stringify!([<$entity:snake>])," successfully"), body = [<$entity Model>]),
-                    (status = 400, description = "Invalid request body format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid request body format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn create(
@@ -651,11 +651,11 @@ macro_rules! join_crud_interface_api {
                 ),
                 responses(
                     (status = 204, description = concat!("Deleted ",stringify!([<$entity:snake>])," by id successfully")),
-                    (status = 400, description = "Invalid parameters format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid parameters format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn delete_by_id(state: State<Arc<AppState>>, Path(id): Path<(Uuid, Uuid)>) -> Result<()> {
@@ -683,11 +683,11 @@ macro_rules! join_crud_interface_api {
                 ),
                 responses(
                     (status = 200, description = concat!("Retrieved ",stringify!([<$entity:snake>])," by id successfully"), body = [<$entity Model>]),
-                    (status = 400, description = "Invalid parameters format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid parameters format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn retrieve_by_id(
@@ -718,11 +718,11 @@ macro_rules! join_crud_interface_api {
                 request_body = [<Create $entity Schema>],
                 responses(
                     (status = 200, description = concat!("Updated ",stringify!([<$entity:snake>])," by id successfully"), body = [<$entity Model>]),
-                    (status = 400, description = "Invalid parameters/request body format", body = ErrorModel),
-                    (status = 401, description = "Action is permissible after login", body = ErrorModel),
-                    (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = ErrorModel),
-                    (status = 500, description = "Unexpected error", body = ErrorModel)
+                    (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
+                    (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                    (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                    (status = 404, description = concat!("No ",stringify!([<$entity:snake>])," found with specified id"), body = JsonResponse),
+                    (status = 500, description = "Unexpected error", body = JsonResponse)
                 )
             )]
             pub async fn update_by_id(

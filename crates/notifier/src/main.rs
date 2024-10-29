@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::future::Future;
 use std::sync::LazyLock;
 
 use async_stream::stream;
@@ -7,7 +8,9 @@ use axum::response::Sse;
 use axum::routing::get;
 use axum::{Error, Extension, Router};
 use futures::Stream;
-use listener::start_listening;
+use sqlx::error::Error as SqlxError;
+use sqlx::postgres::PgListener;
+use sqlx::{Pool, Postgres};
 use tokio::net::TcpListener;
 use tokio::sync::mpsc::{self, Sender};
 use tokio::sync::RwLock;
@@ -16,27 +19,47 @@ use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 use uuid::Uuid;
 
-mod listener;
-
-pub const CHANNEL_NAME: &str = "users_notify_change";
-
 static CONNECTED_CLIENTS: LazyLock<RwLock<HashMap<Uuid, Sender<entity::notification::Model>>>> =
     LazyLock::new(|| RwLock::new(HashMap::new()));
+
+pub async fn start_listening<F, Fut>(
+    channel_name: &str,
+    pool: &Pool<Postgres>,
+    call_back: F,
+) -> Result<(), SqlxError>
+where
+    F: Fn(entity::notification::Model) -> Fut + Send + Sync,
+    Fut: Future<Output = ()> + Send,
+{
+    let mut listener = PgListener::connect_with(pool).await.unwrap();
+    listener.listen(channel_name).await?;
+    loop {
+        while let Some(notification) = listener.try_recv().await? {
+            tracing::info!(
+                "received notification from channel {:?}",
+                notification.channel()
+            );
+
+            let payload = notification.payload().to_owned();
+            let payload = serde_json::from_str::<entity::notification::Model>(&payload).unwrap();
+
+            call_back(payload).await;
+        }
+    }
+}
 
 #[tokio::main]
 async fn main() {
     tracing_subscriber::registry()
-        .with(
-            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| {
-                format!("{}=debug,tower_http=debug", env!("CARGO_CRATE_NAME")).into()
-            }),
-        )
         .with(tracing_subscriber::fmt::layer())
         .init();
+    let settings = config::Settings::new("").unwrap(); // TODO
 
-    let pool = sqlx::PgPool::connect("").await.unwrap();
+    let pool = sqlx::PgPool::connect(&settings.db_url()).await.unwrap();
 
-    start_listening(&pool, call_back).await.unwrap();
+    start_listening(&settings.database.listener_channel, &pool, call_back)
+        .await
+        .unwrap();
 
     let listener = TcpListener::bind("127.0.0.1:3000").await.unwrap();
     let app = Router::new()
@@ -49,7 +72,12 @@ async fn main() {
 }
 
 async fn call_back(model: entity::notification::Model) {
-    if let Some(tx) = CONNECTED_CLIENTS.read().await.get(&model.player_id) {
+    let value = CONNECTED_CLIENTS
+        .read()
+        .await
+        .get(&model.player_id)
+        .cloned();
+    if let Some(tx) = value {
         tx.send(model).await.unwrap();
     }
 }

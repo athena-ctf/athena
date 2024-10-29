@@ -31,65 +31,20 @@ multiple_relation_db!(Player, Achievement);
 multiple_relation_db!(Player, Submission);
 multiple_relation_db!(Player, Unlock);
 
-pub async fn retrieve_by_email(
-    email: String,
-    db: &DbConn,
-    client: &mut PooledConnection<'_, RedisConnectionManager>,
-) -> Result<Option<UserModel>> {
-    let value: CachedValue<UserModel> = client.get(format!("user:email:{email}")).await?;
-
-    if let CachedValue::Hit(value) = value {
-        Ok(Some(value))
-    } else {
-        let Some((user_model, Some(_))) = User::find()
-            .find_also_related(Player)
-            .filter(entity::user::Column::Email.eq(&email))
-            .one(db)
-            .await?
-        else {
-            return Ok(None);
-        };
-
-        client
-            .set::<_, _, ()>(
-                format!("user:email:{email}"),
-                &serde_json::to_vec(&user_model)?,
-            )
-            .await?;
-
-        Ok(Some(user_model))
-    }
-}
-
-pub async fn retrieve_profile_by_username(
-    username: String,
-    db: &DbConn,
-    client: &mut PooledConnection<'_, RedisConnectionManager>,
-) -> Result<Option<PlayerProfile>> {
-    let value: CachedValue<PlayerModel> = client.get(format!("player:username:{username}")).await?;
-
-    let player_model = if let CachedValue::Hit(value) = value {
-        value
-    } else {
-        let Some((_, Some(player_model))) = User::find()
-            .find_also_related(Player)
-            .filter(entity::user::Column::Username.eq(&username))
-            .one(db)
-            .await?
-        else {
-            return Ok(None);
-        };
-
-        client
-            .set::<_, _, ()>(
-                format!("player:username:{username}"),
-                &serde_json::to_vec(&player_model)?,
-            )
-            .await?;
-
-        player_model
+pub async fn retrieve_by_email(email: String, db: &DbConn) -> Result<Option<UserModel>> {
+    let Some((user_model, Some(_))) = User::find()
+        .find_also_related(Player)
+        .filter(entity::user::Column::Email.eq(&email))
+        .one(db)
+        .await?
+    else {
+        return Ok(None);
     };
 
+    Ok(Some(user_model))
+}
+
+pub async fn retrieve_profile(player_model: PlayerModel, db: &DbConn) -> Result<PlayerProfile> {
     let mut tags_map = Tag::find()
         .all(db)
         .await?
@@ -124,11 +79,27 @@ pub async fn retrieve_profile_by_username(
         challenges.push(submitted_challenge);
     }
 
-    Ok(Some(PlayerProfile {
+    Ok(PlayerProfile {
         player: player_model,
         solved_challenges: challenges,
         tag_solves: tags_map.values().cloned().collect(),
-    }))
+    })
+}
+
+pub async fn retrieve_profile_by_username(
+    username: String,
+    db: &DbConn,
+) -> Result<Option<PlayerProfile>> {
+    let Some((_, Some(player_model))) = User::find()
+        .find_also_related(Player)
+        .filter(entity::user::Column::Username.eq(&username))
+        .one(db)
+        .await?
+    else {
+        return Ok(None);
+    };
+
+    retrieve_profile(player_model, db).await.map(Some)
 }
 
 pub async fn retrieve_player_summary_by_id(id: Uuid, db: &DbConn) -> Result<Option<PlayerSummary>> {

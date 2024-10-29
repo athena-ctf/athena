@@ -1,13 +1,13 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use bollard::Docker;
+pub use config::Settings;
 use entity::prelude::*;
 use jsonwebtoken::{EncodingKey, Header};
 use tokio::sync::RwLock;
 
 use crate::errors::Result;
 use crate::schemas::{TokenClaimKind, TokenClaims, TokenPair, TokenType};
-pub use crate::settings::Settings;
 
 pub struct AppState {
     pub db_conn: sea_orm::DatabaseConnection,
@@ -24,7 +24,7 @@ pub struct AppState {
     pub mail_transport: lettre::SmtpTransport,
 }
 
-fn generate_token_pair<F>(token_claims_fn: F, settings: &crate::settings::Jwt) -> Result<TokenPair>
+fn generate_token_pair<F>(token_claims_fn: F, settings: &config::Jwt) -> Result<TokenPair>
 where
     F: Fn(TokenType, u64, u64) -> TokenClaims,
 {
@@ -57,7 +57,7 @@ where
 
 pub fn generate_player_token_pair(
     model: &PlayerModel,
-    settings: &crate::settings::Jwt,
+    settings: &config::Jwt,
 ) -> Result<TokenPair> {
     generate_token_pair(
         |token_type, iat, exp| TokenClaims {
@@ -71,10 +71,7 @@ pub fn generate_player_token_pair(
     )
 }
 
-pub fn generate_admin_token_pair(
-    model: &AdminModel,
-    settings: &crate::settings::Jwt,
-) -> Result<TokenPair> {
+pub fn generate_admin_token_pair(model: &AdminModel, settings: &config::Jwt) -> Result<TokenPair> {
     generate_token_pair(
         |token_type, iat, exp| TokenClaims {
             id: model.id,

@@ -7,7 +7,7 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{ChallengeModel, CreateHintSchema, HintModel, TokenClaims, UnlockModel};
+use crate::schemas::{JsonResponse,ChallengeModel, CreateHintSchema, HintModel, TokenClaims, UnlockModel};
 use crate::service::AppState;
 
 crud_interface_api!(Hint);
@@ -21,11 +21,11 @@ multiple_relation_api!(Hint, Unlock);
     params(("id" = Uuid, Path, description = "Id of entity")),
     responses(
         (status = 200, description = "Unlocked hint by id successfully", body = HintModel),
-        (status = 400, description = "Invalid parameters format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 404, description = "No hint found with specified id", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid parameters format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 404, description = "No hint found with specified id", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Unlock hint by id

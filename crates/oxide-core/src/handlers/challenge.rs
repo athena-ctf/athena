@@ -8,8 +8,9 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    AchievementModel, CreateChallengeSchema, ChallengeModel, ChallengeSummary, ChallengeTagModel,
-    DetailedChallenge, FileModel, HintModel, InstanceModel, SubmissionModel, TagModel, TokenClaims,
+    AchievementModel, ChallengeModel, ChallengeSummary, ChallengeTagModel, CreateChallengeSchema,
+    DetailedChallenge, FileModel, HintModel, InstanceModel, JsonResponse, SubmissionModel,
+    TagModel, TokenClaims,
 };
 use crate::service::AppState;
 
@@ -28,11 +29,11 @@ multiple_relation_with_model_api!(Challenge, ChallengeTag);
     path = "/player/challenges",
     responses(
         (status = 200, description = "Listed player challenges successfully", body = [ChallengeSummary]),
-        (status = 400, description = "Invalid parameters format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 404, description = "No challenge found with specified id", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid parameters format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 404, description = "No challenge found with specified id", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// List challenge summary by id
@@ -62,11 +63,11 @@ pub async fn player_challenges(
     path = "/player/challenge/details/{id}",
     responses(
         (status = 200, description = "Retrieved player challenge details successfully", body = DetailedChallenge),
-        (status = 400, description = "Invalid parameters format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 404, description = "No challenge found with specified id", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid parameters format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 404, description = "No challenge found with specified id", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Retrieve challenge details by id

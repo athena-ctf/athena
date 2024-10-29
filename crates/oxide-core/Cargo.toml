@@ -9,23 +9,16 @@ license = "MIT OR Apache-2.0"
 argon2 = { version = "0.5.3", features = ["std"] }
 askama = "0.12.1"
 axum = { workspace = true }
-base64ct = "1.6.0"
 bb8 = "0.8.5"
 bb8-redis = "0.17.0"
 bollard = { version = "0.17.1", features = ["chrono"] }
+config = { path = "../config" }
 chrono = { workspace = true }
-config = { version = "0.14.0", default-features = false, features = [
-    "async",
-    "convert-case",
-    "json",
-] }
 entity = { path = "../entity" }
 faster-hex = "0.10.0"
 fastrand = "2.1.1"
-humantime = "2.1.0"
 imap = "3.0.0-alpha.14"
 imap-proto = "0.16.5"
-indexmap = { version = "2.6.0", features = ["serde"] }
 jsonwebtoken = "9.3.0"
 lettre = { version = "0.11.9", default-features = false, features = [
     "rustls-tls",

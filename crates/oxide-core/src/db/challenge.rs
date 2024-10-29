@@ -54,7 +54,7 @@ pub async fn list_summaries(
         let state = submissions
             .binary_search_by_key(&challenge.id, |(id, ..)| *id)
             .ok()
-            .map(|idx: usize| {
+            .map_or(PlayerChallengeState::ChallengeLimitReached, |idx: usize| {
                 let (_, flags, is_correct) = &submissions[idx];
 
                 if *is_correct {
@@ -64,14 +64,13 @@ pub async fn list_summaries(
                 } else {
                     PlayerChallengeState::Unsolved
                 }
-            })
-            .unwrap_or(PlayerChallengeState::ChallengeLimitReached);
+            });
 
         summaries.push(ChallengeSummary {
-            state,
             challenge,
             tags,
-        })
+            state,
+        });
     }
 
     // TODO: check performance

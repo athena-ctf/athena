@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use std::sync::Arc;
 
 use askama::Template;
@@ -6,7 +7,7 @@ use axum::{Extension, Json};
 use entity::prelude::*;
 use jsonwebtoken::{DecodingKey, Validation};
 use lettre::message::header::ContentType;
-use lettre::message::{MultiPart, SinglePart};
+use lettre::message::{Mailbox, MultiPart, SinglePart};
 use lettre::{Message, Transport};
 
 use crate::db::player;
@@ -26,9 +27,9 @@ use crate::{db, token};
     operation_id = "player_register",
     responses(
         (status = 200, description = "Password reset email sent successful", body = JsonResponse),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 404, description = "User not found", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
 )]
@@ -84,9 +85,9 @@ pub async fn register(
     operation_id = "player_register_send_token",
     responses(
         (status = 200, description = "Token sent successful", body = JsonResponse),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 404, description = "User not found", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
 )]
@@ -106,7 +107,7 @@ pub async fn register_send_token(
     .await?;
 
     let email = Message::builder()
-        .from(state.settings.read().await.smtp.from.clone())
+        .from(Mailbox::from_str(&state.settings.read().await.smtp.from).unwrap())
         .to(body.email.parse().unwrap())
         .subject("Verification email for Athena CTF")
         .multipart(
@@ -142,8 +143,8 @@ pub async fn register_send_token(
     operation_id = "player_reset_password",
     responses(
         (status = 200, description = "Password reset email sent successful", body = JsonResponse),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
 )]
@@ -163,13 +164,7 @@ pub async fn reset_password(
         return Err(Error::BadRequest("Incorrect token".to_owned()));
     }
 
-    let Some(user_model) = player::retrieve_by_email(
-        body.email,
-        &state.db_conn,
-        &mut state.cache_client.get().await.unwrap(),
-    )
-    .await?
-    else {
+    let Some(user_model) = player::retrieve_by_email(body.email, &state.db_conn).await? else {
         return Err(Error::NotFound("User does not exist".to_owned()));
     };
 
@@ -187,9 +182,9 @@ pub async fn reset_password(
     operation_id = "player_reset_password_send_token",
     responses(
         (status = 200, description = "Token sent successful", body = JsonResponse),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 404, description = "User not found", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
 )]
@@ -209,7 +204,7 @@ pub async fn reset_password_send_token(
     .await?;
 
     let email = Message::builder()
-        .from(state.settings.read().await.smtp.from.clone())
+        .from(Mailbox::from_str(&state.settings.read().await.smtp.from).unwrap())
         .to(body.email.parse().unwrap())
         .subject("Verification email for Athena CTF")
         .multipart(
@@ -245,9 +240,9 @@ pub async fn reset_password_send_token(
     operation_id = "player_login",
     responses(
         (status = 200, description = "user logged in successfully", body = TokenPair),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 404, description = "User not found", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
 )]
@@ -287,10 +282,10 @@ pub async fn login(
     operation_id = "player_refresh_token",
     responses(
         (status = 200, description = "user logged in successfully", body = TokenPair),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 404, description = "User not found", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Refresh auth token
@@ -329,9 +324,9 @@ pub async fn refresh_token(
     operation_id = "player_get_current_logged_in",
     responses(
         (status = 200, description = "Password reset email sent successful", body = PlayerModel),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 404, description = "User not found", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
 )]
 /// Return currently authenticated user

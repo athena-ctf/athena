@@ -9,7 +9,8 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    CreateAchievementSchema, AchievementModel, ChallengeModel, PlayerModel, TokenClaims,
+    AchievementModel, ChallengeModel, CreateAchievementSchema, JsonResponse, PlayerModel,
+    TokenClaims,
 };
 use crate::service::AppState;
 
@@ -27,10 +28,10 @@ single_relation_api!(Achievement, Challenge);
     request_body = CreateAchievementSchema,
     responses(
         (status = 201, description = "Created achievement successfully", body = AchievementModel),
-        (status = 400, description = "Invalid request body format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Create achievement
@@ -65,11 +66,11 @@ pub async fn create(
     params(("id" = Uuid, Path, description = "Id of entity")),
     responses(
         (status = 204, description = "Deleted achievement by id successfully"),
-        (status = 400, description = "Invalid parameters format", body = ErrorModel),
-        (status = 401, description = "Action is permissible after login", body = ErrorModel),
-        (status = 403, description = "User does not have sufficient permissions", body = ErrorModel),
-        (status = 404, description = "No achievement found with specified id", body = ErrorModel),
-        (status = 500, description = "Unexpected error", body = ErrorModel)
+        (status = 400, description = "Invalid parameters format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 404, description = "No achievement found with specified id", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Delete achievement by id

@@ -74,12 +74,15 @@ pub async fn new(
     let flag = if challenge_model.flag_type == FlagTypeEnum::PerUser {
         Uuid::new_v4().to_string()
     } else {
-        // TODO: fix unwrap and add proper error invalid table state
         Flag::find()
             .filter(entity::flag::Column::ChallengeId.eq(challenge_model.id))
             .one(db)
             .await?
-            .unwrap()
+            .ok_or_else(|| {
+                Error::Db(sea_orm::error::DbErr::Custom(
+                    "Invalid table state".to_owned(),
+                ))
+            })?
             .value
     };
 

@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+//go:generate go-jsonschema ../../data/config.schema.json -o config.go -p config --only-models -t --tags json
 var Config Settings
 
 func init() {

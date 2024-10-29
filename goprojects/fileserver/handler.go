@@ -100,15 +100,15 @@ func (handler Handler) Download(c *fiber.Ctx) error {
 			var filepath string
 			if compress := local.Compress; compress != nil {
 				switch *compress {
-				case config.CompressionBr:
+				case config.CompressionKindBr:
 					if c.AcceptsEncodings("br") == "br" {
 						filepath = path.Join(local.Path, fmt.Sprintf("%s.br", id))
 					}
-				case config.CompressionGzip:
+				case config.CompressionKindGzip:
 					if c.AcceptsEncodings("gzip") == "gzip" {
 						filepath = path.Join(local.Path, fmt.Sprintf("%s.gz", id))
 					}
-				case config.CompressionZstd:
+				case config.CompressionKindZstd:
 					if c.AcceptsEncodings("zstd") == "zstd" {
 						filepath = path.Join(local.Path, fmt.Sprintf("%s.zstd", id))
 					}
@@ -169,11 +169,11 @@ func (handler Handler) Delete(c *fiber.Ctx) error {
 			filepaths := []string{}
 			if compress := local.Compress; compress != nil {
 				switch *compress {
-				case config.CompressionBr:
+				case config.CompressionKindBr:
 					filepaths = append(filepaths, path.Join(local.Path, fmt.Sprintf("%s.br", id)))
-				case config.CompressionGzip:
+				case config.CompressionKindGzip:
 					filepaths = append(filepaths, path.Join(local.Path, fmt.Sprintf("%s.gz", id)))
-				case config.CompressionZstd:
+				case config.CompressionKindZstd:
 					filepaths = append(filepaths, path.Join(local.Path, fmt.Sprintf("%s.zstd", id)))
 				}
 			} else {
@@ -246,11 +246,11 @@ func (handler Handler) Upload(c *fiber.Ctx) error {
 				}
 
 				switch *compress {
-				case config.CompressionBr:
+				case config.CompressionKindBr:
 					compressBrotli(local.Path, name.String(), openedFile)
-				case config.CompressionZstd:
+				case config.CompressionKindZstd:
 					compressZstd(local.Path, name.String(), openedFile)
-				case config.CompressionGzip:
+				case config.CompressionKindGzip:
 					compressGzip(local.Path, name.String(), openedFile)
 				}
 			}
