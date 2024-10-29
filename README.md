@@ -3,7 +3,7 @@
 #### `notifier`
 
 -   path: `crates/notifier`
--   usage: `notifier <db_url>`
+-   usage: `notifier <config_path>`
 
 #### `oxide`
 

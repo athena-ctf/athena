@@ -1,7 +1,8 @@
 go 1.23.2
 
 use (
-	./goprojects/file_server
+	./goprojects/fileserver
 	./goprojects/discord_bot
 	./goprojects/config
+	./goprojects/ent
 )

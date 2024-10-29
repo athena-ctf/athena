@@ -1,0 +1,399 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Settings",
+  "type": "object",
+  "required": [
+    "ctf",
+    "database",
+    "discord",
+    "docker",
+    "file_storage",
+    "jwt",
+    "redis",
+    "smtp"
+  ],
+  "properties": {
+    "ctf": {
+      "$ref": "#/definitions/Ctf"
+    },
+    "database": {
+      "$ref": "#/definitions/Database"
+    },
+    "discord": {
+      "$ref": "#/definitions/Discord"
+    },
+    "docker": {
+      "$ref": "#/definitions/Docker"
+    },
+    "file_storage": {
+      "$ref": "#/definitions/FileStorage"
+    },
+    "jwt": {
+      "$ref": "#/definitions/Jwt"
+    },
+    "redis": {
+      "$ref": "#/definitions/Redis"
+    },
+    "smtp": {
+      "$ref": "#/definitions/Smtp"
+    }
+  },
+  "definitions": {
+    "Aws": {
+      "type": "object"
+    },
+    "Azure": {
+      "type": "object",
+      "required": [
+        "account_key",
+        "account_name"
+      ],
+      "properties": {
+        "account_key": {
+          "type": "string"
+        },
+        "account_name": {
+          "type": "string"
+        }
+      }
+    },
+    "Challenge": {
+      "type": "object",
+      "required": [
+        "max_attempts"
+      ],
+      "properties": {
+        "max_attempts": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        }
+      }
+    },
+    "CompressionKind": {
+      "type": "string",
+      "enum": [
+        "gzip",
+        "zstd",
+        "br"
+      ]
+    },
+    "Ctf": {
+      "type": "object",
+      "required": [
+        "description",
+        "domain",
+        "name",
+        "prizes",
+        "sponsors",
+        "time"
+      ],
+      "properties": {
+        "challenge": {
+          "$ref": "#/definitions/Challenge"
+        },
+        "description": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "prizes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "sponsors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Sponsor"
+            }
+          }
+        },
+        "time": {
+          "$ref": "#/definitions/Time"
+        }
+      }
+    },
+    "Database": {
+      "type": "object",
+      "required": [
+        "host",
+        "listener_channel",
+        "password",
+        "port",
+        "username"
+      ],
+      "properties": {
+        "database_name": {
+          "default": "athena_db",
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "listener_channel": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "format": "uint16",
+          "minimum": 0.0
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "Discord": {
+      "type": "object",
+      "required": [
+        "bot_token",
+        "editor_role_id",
+        "general_channel_id",
+        "logs_channel_id",
+        "reaction_role_message_id",
+        "viewer_role_id",
+        "welcome_channel_id"
+      ],
+      "properties": {
+        "bot_token": {
+          "type": "string"
+        },
+        "editor_role_id": {
+          "type": "string"
+        },
+        "general_channel_id": {
+          "type": "string"
+        },
+        "logs_channel_id": {
+          "type": "string"
+        },
+        "reaction_role_message_id": {
+          "type": "string"
+        },
+        "viewer_role_id": {
+          "type": "string"
+        },
+        "welcome_channel_id": {
+          "type": "string"
+        }
+      }
+    },
+    "Docker": {
+      "type": "object",
+      "required": [
+        "registry_password",
+        "registry_url",
+        "registry_username",
+        "single_instance_duration"
+      ],
+      "properties": {
+        "registry_password": {
+          "type": "string"
+        },
+        "registry_url": {
+          "type": "string"
+        },
+        "registry_username": {
+          "type": "string"
+        },
+        "single_instance_duration": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        }
+      }
+    },
+    "FileStorage": {
+      "type": "object",
+      "properties": {
+        "aws": {
+          "$ref": "#/definitions/Aws"
+        },
+        "azure": {
+          "$ref": "#/definitions/Azure"
+        },
+        "gcp": {
+          "$ref": "#/definitions/Gcp"
+        },
+        "local": {
+          "$ref": "#/definitions/Local"
+        },
+        "remote_storage_options": {
+          "$ref": "#/definitions/RemoteStorageOptions"
+        }
+      }
+    },
+    "Gcp": {
+      "type": "object"
+    },
+    "Jwt": {
+      "type": "object",
+      "required": [
+        "access_token_timeout",
+        "refresh_token_timeout",
+        "secret"
+      ],
+      "properties": {
+        "access_token_timeout": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "refresh_token_timeout": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "secret": {
+          "type": "string"
+        }
+      }
+    },
+    "Local": {
+      "type": "object",
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "compress": {
+          "$ref": "#/definitions/CompressionKind"
+        },
+        "path": {
+          "type": "string"
+        }
+      }
+    },
+    "Redis": {
+      "type": "object",
+      "required": [
+        "cache",
+        "token"
+      ],
+      "properties": {
+        "cache": {
+          "$ref": "#/definitions/RedisInner"
+        },
+        "token": {
+          "$ref": "#/definitions/RedisInner"
+        }
+      }
+    },
+    "RedisInner": {
+      "type": "object",
+      "required": [
+        "host",
+        "password",
+        "port",
+        "username"
+      ],
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "format": "uint16",
+          "minimum": 0.0
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "RemoteStorageOptions": {
+      "type": "object",
+      "required": [
+        "bucket_name",
+        "expires"
+      ],
+      "properties": {
+        "bucket_name": {
+          "type": "string"
+        },
+        "expires": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Smtp": {
+      "type": "object",
+      "required": [
+        "from",
+        "password",
+        "reply_to",
+        "server_url",
+        "username"
+      ],
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "reply_to": {
+          "type": "string"
+        },
+        "server_url": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "Sponsor": {
+      "type": "object",
+      "required": [
+        "logo",
+        "name"
+      ],
+      "properties": {
+        "logo": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Time": {
+      "type": "object",
+      "required": [
+        "freeze",
+        "span",
+        "start"
+      ],
+      "properties": {
+        "freeze": {
+          "type": "string"
+        },
+        "span": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

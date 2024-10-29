@@ -7,7 +7,7 @@ use chrono::{DateTime, Utc};
 use config_rs::{Config, File};
 use indexmap::IndexMap;
 use schemars::gen::SchemaSettings;
-use schemars::{schema_for, JsonSchema};
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 mod human_duration {
