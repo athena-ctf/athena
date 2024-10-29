@@ -3,9 +3,6 @@ use std::collections::HashMap;
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
 use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
-use bb8::PooledConnection;
-use bb8_redis::redis::AsyncCommands;
-use bb8_redis::RedisConnectionManager;
 use entity::extensions::UpdateProfileSchema;
 use entity::prelude::*;
 use oxide_macros::{
@@ -14,7 +11,6 @@ use oxide_macros::{
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 
-use super::CachedValue;
 use crate::errors::{Error, Result};
 use crate::schemas::{PlayerProfile, PlayerSummary, TagSolves};
 

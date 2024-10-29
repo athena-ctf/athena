@@ -235,18 +235,18 @@ impl Default for Settings {
                 port: 5432,
                 username: "postgres".to_owned(),
                 password: gen_random_password(),
-                listener_channel: "notification_change".to_owned(),
+                listener_channel: "notification_insert".to_owned(),
                 database_name: "athena_db".to_owned(),
             },
             redis: Redis {
                 cache: RedisInner {
-                    host: "redis".to_owned(),
+                    host: "redis_cache".to_owned(),
                     port: 6379,
                     username: "redis_cache".to_owned(),
                     password: gen_random_password(),
                 },
                 token: RedisInner {
-                    host: "redis".to_owned(),
+                    host: "redis_token".to_owned(),
                     port: 6379,
                     username: "redis_token".to_owned(),
                     password: gen_random_password(),

@@ -1,14 +1,11 @@
-use bb8::PooledConnection;
-use bb8_redis::redis::AsyncCommands;
-use bb8_redis::RedisConnectionManager;
 use bollard::Docker;
 use chrono::{TimeDelta, Utc};
 use entity::prelude::*;
+use fred::prelude::*;
 use oxide_macros::{crud_interface_db, single_relation_db};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 
-use super::CachedValue;
 use crate::docker;
 use crate::errors::{Error, Result};
 
@@ -21,7 +18,7 @@ pub async fn destroy(
     id: Uuid,
     docker_client: &Docker,
     db: &DbConn,
-    redis_client: &mut PooledConnection<'_, RedisConnectionManager>,
+    redis_client: RedisPool,
 ) -> Result<bool> {
     let Some(instance_model) = Instance::find_by_id(id).one(db).await? else {
         return Err(Error::Db(DbErr::Custom("Instance not found".to_owned())));
@@ -30,7 +27,7 @@ pub async fn destroy(
     docker::delete_instance(docker_client, instance_model.container_id).await?;
     let delete_result = Instance::delete_by_id(id).exec(db).await?;
 
-    redis_client.del::<_, ()>(format!("instance:{id}")).await?;
+    redis_client.del::<(), _>(format!("instance:{id}")).await?;
     Ok(delete_result.rows_affected == 1)
 }
 
@@ -38,10 +35,8 @@ pub async fn new(
     details: CreateInstanceSchema,
     client: &Docker,
     db: &DbConn,
-    redis_client: &mut PooledConnection<'_, RedisConnectionManager>,
 ) -> Result<InstanceModel> {
-    let Some(challenge_model) =
-        crate::db::challenge::retrieve(details.challenge_id, db, redis_client).await?
+    let Some(challenge_model) = crate::db::challenge::retrieve(details.challenge_id, db).await?
     else {
         return Err(Error::NotFound("Challenge".to_owned()));
     };

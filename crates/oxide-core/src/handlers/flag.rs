@@ -9,8 +9,8 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    JsonResponse,ChallengeModel, CreateFlagSchema, FlagModel, FlagVerificationResult, PlayerModel, Submission,
-    CreateSubmissionSchema, TokenClaims, VerifyFlagSchema,
+    ChallengeModel, CreateFlagSchema, CreateSubmissionSchema, FlagModel, FlagVerificationResult,
+    JsonResponse, PlayerModel, Submission, TokenClaims, VerifyFlagSchema,
 };
 use crate::service::AppState;
 
@@ -37,13 +37,7 @@ pub async fn verify(
     state: State<Arc<AppState>>,
     Json(body): Json<VerifyFlagSchema>,
 ) -> Result<Json<FlagVerificationResult>> {
-    let Some(player_model) = db::player::retrieve(
-        claims.id,
-        &state.db_conn,
-        &mut state.cache_client.get().await.unwrap(),
-    )
-    .await?
-    else {
+    let Some(player_model) = db::player::retrieve(claims.id, &state.db_conn).await? else {
         return Err(Error::NotFound("Player does not exist".to_owned()));
     };
 

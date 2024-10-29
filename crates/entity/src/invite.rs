@@ -23,7 +23,6 @@ pub struct Model {
     pub id: Uuid,
     pub created_at: DateTime,
     pub updated_at: DateTime,
-    pub usages: i32,
     pub remaining: i32,
     pub team_id: Uuid,
 }

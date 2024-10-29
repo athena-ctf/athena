@@ -40,13 +40,7 @@ pub async fn create(
     state: State<Arc<AppState>>,
     Json(body): Json<CreateAchievementSchema>,
 ) -> Result<Json<AchievementModel>> {
-    let Some(player_model) = db::player::retrieve(
-        claims.id,
-        &state.db_conn,
-        &mut state.cache_client.get().await.unwrap(),
-    )
-    .await?
-    else {
+    let Some(player_model) = db::player::retrieve(claims.id, &state.db_conn).await? else {
         return Err(Error::NotFound("Player does not exist".to_owned()));
     };
 
@@ -79,20 +73,8 @@ pub async fn delete_by_id(
     state: State<Arc<AppState>>,
     Path(id): Path<Uuid>,
 ) -> Result<()> {
-    if let Some(achievement_model) = db::achievement::retrieve(
-        id,
-        &state.db_conn,
-        &mut state.cache_client.get().await.unwrap(),
-    )
-    .await?
-    {
-        let Some(player_model) = db::player::retrieve(
-            claims.id,
-            &state.db_conn,
-            &mut state.cache_client.get().await.unwrap(),
-        )
-        .await?
-        else {
+    if let Some(achievement_model) = db::achievement::retrieve(id, &state.db_conn).await? {
+        let Some(player_model) = db::player::retrieve(claims.id, &state.db_conn).await? else {
             return Err(Error::NotFound("Achievement does not exist".to_owned()));
         };
 

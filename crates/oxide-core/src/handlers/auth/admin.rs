@@ -63,13 +63,7 @@ pub async fn refresh_token(
     )?
     .claims;
 
-    let Some(admin_model) = db::admin::retrieve(
-        claims.id,
-        &state.db_conn,
-        &mut state.cache_client.get().await.unwrap(),
-    )
-    .await?
-    else {
+    let Some(admin_model) = db::admin::retrieve(claims.id, &state.db_conn).await? else {
         return Err(Error::NotFound("User does not exist".to_owned()));
     };
 
@@ -95,14 +89,10 @@ pub async fn get_current_logged_in(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<AdminModel>> {
-    db::admin::retrieve(
-        claims.id,
-        &state.db_conn,
-        &mut state.cache_client.get().await.unwrap(),
-    )
-    .await?
-    .map_or_else(
-        || Err(Error::NotFound("User does not exist".to_owned())),
-        |user_model| Ok(Json(user_model)),
-    )
+    db::admin::retrieve(claims.id, &state.db_conn)
+        .await?
+        .map_or_else(
+            || Err(Error::NotFound("User does not exist".to_owned())),
+            |user_model| Ok(Json(user_model)),
+        )
 }

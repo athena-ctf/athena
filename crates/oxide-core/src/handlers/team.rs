@@ -8,7 +8,7 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    BanModel, CreateTeamSchema, JsonResponse, InviteModel, PlayerModel, TeamModel, TeamProfile,
+    BanModel, CreateTeamSchema, InviteModel, JsonResponse, PlayerModel, TeamModel, TeamProfile,
     TeamSummary, TokenClaims,
 };
 use crate::service::AppState;
@@ -66,15 +66,7 @@ pub async fn update_details(
     Path(id): Path<Uuid>,
     Json(details): Json<CreateTeamSchema>,
 ) -> Result<Json<TeamModel>> {
-    Ok(Json(
-        db::team::update(
-            id,
-            details,
-            &state.db_conn,
-            &mut state.cache_client.get().await.unwrap(),
-        )
-        .await?,
-    ))
+    Ok(Json(db::team::update(id, details, &state.db_conn).await?))
 }
 
 #[utoipa::path(

@@ -3,6 +3,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use bollard::Docker;
 pub use config::Settings;
 use entity::prelude::*;
+use fred::prelude::*;
 use jsonwebtoken::{EncodingKey, Header};
 use tokio::sync::RwLock;
 
@@ -13,8 +14,8 @@ pub struct AppState {
     pub db_conn: sea_orm::DatabaseConnection,
     pub settings: RwLock<Settings>,
 
-    pub cache_client: bb8::Pool<bb8_redis::RedisConnectionManager>,
-    pub token_client: bb8::Pool<bb8_redis::RedisConnectionManager>,
+    pub cache_pool: RedisPool,
+    pub token_pool: RedisPool,
     pub docker_client: Docker,
 
     #[cfg(feature = "file-transport")]

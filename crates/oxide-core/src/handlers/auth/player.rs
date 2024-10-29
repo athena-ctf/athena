@@ -41,8 +41,8 @@ pub async fn register(
     if token::check(
         &body.email,
         &body.token,
-        token::HashKey::Register,
-        &mut state.token_client.get().await.unwrap(),
+        "register",
+        state.token_pool.clone(),
     )
     .await?
     {
@@ -98,13 +98,7 @@ pub async fn register_send_token(
 ) -> Result<Json<JsonResponse>> {
     let token = token::create();
 
-    token::store(
-        &body.email,
-        &token,
-        token::HashKey::Register,
-        &mut state.token_client.get().await.unwrap(),
-    )
-    .await?;
+    token::store(&body.email, &token, "register", state.token_pool.clone()).await?;
 
     let email = Message::builder()
         .from(Mailbox::from_str(&state.settings.read().await.smtp.from).unwrap())
@@ -156,8 +150,8 @@ pub async fn reset_password(
     if token::check(
         &body.email,
         &body.token,
-        token::HashKey::Register,
-        &mut state.token_client.get().await.unwrap(),
+        "register",
+        state.token_pool.clone(),
     )
     .await?
     {
@@ -195,13 +189,7 @@ pub async fn reset_password_send_token(
 ) -> Result<Json<JsonResponse>> {
     let token = token::create();
 
-    token::store(
-        &body.email,
-        &token,
-        token::HashKey::Register,
-        &mut state.token_client.get().await.unwrap(),
-    )
-    .await?;
+    token::store(&body.email, &token, "register", state.token_pool.clone()).await?;
 
     let email = Message::builder()
         .from(Mailbox::from_str(&state.settings.read().await.smtp.from).unwrap())
@@ -300,13 +288,7 @@ pub async fn refresh_token(
     )?
     .claims;
 
-    let Some(player_model) = db::player::retrieve(
-        claims.id,
-        &state.db_conn,
-        &mut state.cache_client.get().await.unwrap(),
-    )
-    .await?
-    else {
+    let Some(player_model) = db::player::retrieve(claims.id, &state.db_conn).await? else {
         return Err(Error::NotFound("User does not exist".to_owned()));
     };
 
@@ -334,14 +316,10 @@ pub async fn get_current_logged_in(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<PlayerModel>> {
-    db::player::retrieve(
-        claims.id,
-        &state.db_conn,
-        &mut state.cache_client.get().await.unwrap(),
-    )
-    .await?
-    .map_or_else(
-        || Err(Error::NotFound("User does not exist".to_owned())),
-        |user_model| Ok(Json(user_model)),
-    )
+    db::player::retrieve(claims.id, &state.db_conn)
+        .await?
+        .map_or_else(
+            || Err(Error::NotFound("User does not exist".to_owned())),
+            |user_model| Ok(Json(user_model)),
+        )
 }

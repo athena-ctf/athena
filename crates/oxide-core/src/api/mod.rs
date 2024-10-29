@@ -6,8 +6,7 @@ use axum::extract::{MatchedPath, Request};
 use axum::http::Method;
 use axum::routing::get;
 use axum::Router;
-use bb8_redis::redis::{ConnectionAddr, ConnectionInfo, ProtocolVersion, RedisConnectionInfo};
-use bb8_redis::RedisConnectionManager;
+use fred::prelude::*;
 use sea_orm::{Database, DatabaseConnection};
 use tokio::signal;
 use tokio::sync::RwLock;
@@ -49,30 +48,27 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
     #[cfg(feature = "file-transport")]
     let mail_transport = lettre::FileTransport::new("./emails");
 
-    let cache_manager = RedisConnectionManager::new(ConnectionInfo {
-        addr: ConnectionAddr::Tcp(settings.redis.cache.host.clone(), settings.redis.cache.port),
-        redis: RedisConnectionInfo {
-            db: 2,
-            username: Some(settings.redis.cache.username.clone()),
-            password: Some(settings.redis.cache.password.clone()),
-            protocol: ProtocolVersion::RESP3,
-        },
-    })?;
-    let cache_client = bb8::Pool::builder().build(cache_manager).await?;
+    let cache_config = RedisConfig::from_url("redis://foo:bar@127.0.0.1:6379").unwrap();
+    let cache_pool = Builder::from_config(cache_config)
+        .with_connection_config(|config| {
+            config.connection_timeout = Duration::from_secs(10);
+        })
+        .set_policy(ReconnectPolicy::new_exponential(0, 100, 30_000, 2))
+        .build_pool(8)
+        .unwrap();
+    cache_pool.init().await.unwrap();
 
-    let token_manager = RedisConnectionManager::new(ConnectionInfo {
-        addr: ConnectionAddr::Tcp(settings.redis.token.host.clone(), settings.redis.token.port),
-        redis: RedisConnectionInfo {
-            db: 2,
-            username: Some(settings.redis.token.username.clone()),
-            password: Some(settings.redis.token.password.clone()),
-            protocol: ProtocolVersion::RESP3,
-        },
-    })?;
-    let token_client = bb8::Pool::builder().build(token_manager).await?;
+    let token_config = RedisConfig::from_url("redis://foo:bar@127.0.0.1:6379").unwrap();
+    let token_pool = Builder::from_config(token_config)
+        .with_connection_config(|config| {
+            config.connection_timeout = Duration::from_secs(10);
+        })
+        .set_policy(ReconnectPolicy::new_exponential(0, 100, 30_000, 2))
+        .build_pool(8)
+        .unwrap();
+    token_pool.init().await.unwrap();
 
     let docker_client = docker::connect()?;
-
     let handles = tasks::run(&docker_client, &db_conn);
 
     axum::serve(
@@ -80,9 +76,8 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
         app(Arc::new(AppState {
             db_conn,
             settings: RwLock::new(settings),
-
-            cache_client,
-            token_client,
+            cache_pool,
+            token_pool,
             docker_client,
             mail_transport,
         })),

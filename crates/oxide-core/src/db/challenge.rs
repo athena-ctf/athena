@@ -1,13 +1,9 @@
-use bb8::PooledConnection;
-use bb8_redis::redis::AsyncCommands;
-use bb8_redis::RedisConnectionManager;
 use entity::extensions::{HintSummary, PartialChallenge};
 use entity::prelude::*;
 use oxide_macros::{crud_interface_db, multiple_relation_with_model_db};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel, QueryOrder, QuerySelect};
 
-use super::CachedValue;
 use crate::errors::Result;
 use crate::schemas::{ChallengeSummary, DetailedChallenge, PlayerChallengeState};
 

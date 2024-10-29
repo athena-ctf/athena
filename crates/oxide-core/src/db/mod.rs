@@ -18,9 +18,7 @@ pub mod ticket;
 pub mod unlock;
 pub mod user;
 
-use bb8_redis::redis::FromRedisValue;
 use sea_orm::prelude::*;
-use serde::de::DeserializeOwned;
 
 use crate::errors::Result;
 use crate::schemas::StatSchema;
@@ -42,24 +40,4 @@ pub async fn stats(db: &DbConn) -> Result<StatSchema> {
         team: entity::team::Entity::find().count(db).await?,
         unlocks: entity::unlock::Entity::find().count(db).await?,
     })
-}
-
-pub enum CachedValue<T> {
-    Hit(T),
-    Miss,
-}
-
-impl<T: DeserializeOwned> FromRedisValue for CachedValue<T> {
-    fn from_redis_value(v: &bb8_redis::redis::Value) -> bb8_redis::redis::RedisResult<Self> {
-        Ok(match v {
-            bb8_redis::redis::Value::Nil => Self::Miss,
-            bb8_redis::redis::Value::BulkString(data) => {
-                let data = serde_json::from_slice::<T>(data)
-                    .map_err(bb8_redis::redis::RedisError::from)?;
-
-                Self::Hit(data)
-            }
-            _ => unreachable!(),
-        })
-    }
 }

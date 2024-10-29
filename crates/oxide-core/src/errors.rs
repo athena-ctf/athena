@@ -41,7 +41,7 @@ pub enum Error {
     Docker(#[from] bollard::errors::Error),
 
     #[error("Redis client did not reply as intended: {0}")]
-    Redis(#[from] bb8_redis::redis::RedisError),
+    Redis(#[from] fred::error::RedisError),
 
     #[error("Could not send mail: {0}")]
     Smtp(#[from] lettre::transport::smtp::Error),

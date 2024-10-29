@@ -9,8 +9,7 @@ license = "MIT OR Apache-2.0"
 argon2 = { version = "0.5.3", features = ["std"] }
 askama = "0.12.1"
 axum = { workspace = true }
-bb8 = "0.8.5"
-bb8-redis = "0.17.0"
+fred = "9.3.0"
 bollard = { version = "0.17.1", features = ["chrono"] }
 config = { path = "../config" }
 chrono = { workspace = true }
@@ -30,10 +29,6 @@ lettre = { version = "0.11.9", default-features = false, features = [
 ] }
 oxide-macros = { path = "../oxide-macros" }
 phf = { version = "0.11.2", features = ["macros"] }
-redis = { version = "*", default-features = false, features = [
-    "json",
-    "tokio-comp",
-] }
 regex = "1.10.6"
 ring = "0.17.8"
 sea-orm = { workspace = true }

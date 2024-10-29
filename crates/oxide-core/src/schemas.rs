@@ -73,7 +73,27 @@ pub struct RegisterPlayer {
     pub username: String,
     pub password: String,
     pub team_id: Uuid,
+    pub invite_id: Uuid,
     pub token: String,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct VerifyInviteRequest {
+    pub team_name: String,
+    pub invite_id: Uuid,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub enum VerifyInviteResponseKind {
+    TeamNotFound,
+    InviteNotFound,
+    InviteUsedUp,
+    Valid,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct VerifyInviteResponse {
+    pub response_kind: VerifyInviteResponseKind,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

@@ -16,28 +16,12 @@ macro_rules! retrieve_db {
             pub async fn retrieve(
                 id: Uuid,
                 db: &DbConn,
-                client: &mut PooledConnection<'_, RedisConnectionManager>,
             ) -> Result<Option<[<$entity Model>]>> {
-                let value: CachedValue<[<$entity Model>]> = client
-                    .get(format!("{}:{id}", stringify!([<$entity:snake>])))
-                    .await?;
+                let Some(model) = $entity::find_by_id(id).one(db).await? else {
+                    return Ok(None);
+                };
 
-                if let CachedValue::Hit(value) = value {
-                    Ok(Some(value))
-                } else {
-                    let Some(model) = $entity::find_by_id(id).one(db).await? else {
-                        return Ok(None);
-                    };
-
-                    client
-                        .set::<_, _, ()>(
-                            format!("{}:{id}", stringify!([<$entity:snake>])),
-                            &serde_json::to_vec(&model)?,
-                        )
-                        .await?;
-
-                    Ok(Some(model))
-                }
+                Ok(Some(model))
             }
         }
     };
@@ -51,17 +35,12 @@ macro_rules! update_db {
                 id: Uuid,
                 details: [<Create $entity Schema>],
                 db: &DbConn,
-                client: &mut PooledConnection<'_, RedisConnectionManager>,
             ) -> Result<[<$entity Model>]> {
                 let mut model = details.into_active_model();
                 model.id = ActiveValue::Set(id);
 
                 let model = $entity::update(model)
                     .exec(db)
-                    .await?;
-
-                client
-                    .del::<_, ()>(format!("{}:{id}", stringify!([<$entity:snake>])))
                     .await?;
 
                 Ok(model)
@@ -77,13 +56,8 @@ macro_rules! delete_db {
             pub async fn delete(
                 id: Uuid,
                 db: &DbConn,
-                client: &mut PooledConnection<'_, RedisConnectionManager>,
             ) -> Result<bool> {
                 let delete_result = $entity::delete_by_id(id).exec(db).await?;
-
-                client
-                    .del::<_, ()>(format!("{}:{id}", stringify!([<$entity:snake>])))
-                    .await?;
                 Ok(delete_result.rows_affected == 1)
             }
         }
@@ -129,35 +103,18 @@ macro_rules! join_crud_interface_db {
             pub async fn retrieve(
                 ([<$related_from:snake _id>], [<$related_to:snake _id>]): (Uuid, Uuid),
                 db: &DbConn,
-                client: &mut PooledConnection<'_, RedisConnectionManager>,
             ) -> Result<Option<[<$entity Model>]>> {
-                let value: CachedValue<[<$entity Model>]> = client
-                    .get(format!("{}:{}:{}", stringify!([<$entity:snake>]), [<$related_from:snake _id>], [<$related_to:snake _id>]))
-                    .await?;
+                let Some(model) = $entity::find_by_id(([<$related_from:snake _id>], [<$related_to:snake _id>])).one(db).await? else {
+                    return Ok(None);
+                };
 
-                if let CachedValue::Hit(value) = value {
-                    Ok(Some(value))
-                } else {
-                    let Some(model) = $entity::find_by_id(([<$related_from:snake _id>], [<$related_to:snake _id>])).one(db).await? else {
-                        return Ok(None);
-                    };
-
-                    client
-                        .set::<_, _, ()>(
-                            format!("{}:{}:{}", stringify!([<$entity:snake>]), [<$related_from:snake _id>], [<$related_to:snake _id>]),
-                            &serde_json::to_vec(&model)?,
-                        )
-                        .await?;
-
-                    Ok(Some(model))
-                }
+                Ok(Some(model))
             }
 
             pub async fn update(
                 ([<$related_from:snake _id>], [<$related_to:snake _id>]): (Uuid, Uuid),
                 details: [<Create $entity Schema>],
                 db: &DbConn,
-                client: &mut PooledConnection<'_, RedisConnectionManager>,
             ) -> Result<[<$entity Model>]> {
                 let mut model = details.into_active_model();
                 model.[<$related_from:snake _id>] = ActiveValue::Set([<$related_from:snake _id>]);
@@ -167,23 +124,14 @@ macro_rules! join_crud_interface_db {
                     .exec(db)
                     .await?;
 
-                client
-                    .del::<_, ()>(format!("{}:{}:{}", stringify!([<$entity:snake>]), [<$related_from:snake _id>], [<$related_to:snake _id>]))
-                    .await?;
-
                 Ok(model)
             }
 
             pub async fn delete(
                 ([<$related_from:snake _id>], [<$related_to:snake _id>]): (Uuid, Uuid),
                 db: &DbConn,
-                client: &mut PooledConnection<'_, RedisConnectionManager>,
             ) -> Result<bool> {
                 let delete_result = $entity::delete_by_id(([<$related_from:snake _id>], [<$related_to:snake _id>])).exec(db).await?;
-
-                client
-                    .del::<_, ()>(format!("{}:{}:{}", stringify!([<$entity:snake>]), [<$related_from:snake _id>], [<$related_to:snake _id>]))
-                    .await?;
                 Ok(delete_result.rows_affected == 1)
             }
 
@@ -324,6 +272,7 @@ macro_rules! create_api {
     };
 }
 
+// TODO: add redis caching here
 #[macro_export]
 macro_rules! delete_api {
     ($entity:ident) => {
@@ -347,7 +296,6 @@ macro_rules! delete_api {
                 if db::[<$entity:snake>]::delete(
                     id,
                     &state.db_conn,
-                    &mut state.cache_client.get().await.unwrap(),
                 )
                 .await?
                 {
@@ -360,6 +308,7 @@ macro_rules! delete_api {
     };
 }
 
+// TODO: add redis caching here
 #[macro_export]
 macro_rules! retrieve_api {
     ($entity:ident) => {
@@ -386,7 +335,6 @@ macro_rules! retrieve_api {
                 db::[<$entity:snake>]::retrieve(
                     id,
                     &state.db_conn,
-                    &mut state.cache_client.get().await.unwrap(),
                 )
                 .await?
                 .map_or_else(
@@ -398,6 +346,7 @@ macro_rules! retrieve_api {
     };
 }
 
+// TODO: add redis caching here
 #[macro_export]
 macro_rules! update_api {
     ($entity:ident) => {
@@ -428,7 +377,6 @@ macro_rules! update_api {
                         id,
                         body,
                         &state.db_conn,
-                        &mut state.cache_client.get().await.unwrap(),
                     )
                     .await?,
                 ))
@@ -536,7 +484,6 @@ macro_rules! multiple_relation_with_model_api {
                 let Some(model) = db::[<$entity:snake>]::retrieve(
                     id,
                     &state.db_conn,
-                    &mut state.cache_client.get().await.unwrap(),
                 )
                 .await?
                 else {
@@ -598,6 +545,7 @@ macro_rules! crud_interface_api {
     };
 }
 
+// TODO: add redis caching here in delete, update and retrieve
 #[macro_export]
 macro_rules! join_crud_interface_api {
     ($entity:ident, $related_from_id:literal, $related_to_id:literal) => {
@@ -662,7 +610,6 @@ macro_rules! join_crud_interface_api {
                 if db::[<$entity:snake>]::delete(
                     id,
                     &state.db_conn,
-                    &mut state.cache_client.get().await.unwrap(),
                 )
                 .await?
                 {
@@ -697,7 +644,6 @@ macro_rules! join_crud_interface_api {
                 db::[<$entity:snake>]::retrieve(
                     id,
                     &state.db_conn,
-                    &mut state.cache_client.get().await.unwrap(),
                 )
                 .await?
                 .map_or_else(
@@ -735,7 +681,6 @@ macro_rules! join_crud_interface_api {
                         id,
                         body,
                         &state.db_conn,
-                        &mut state.cache_client.get().await.unwrap(),
                     )
                     .await?,
                 ))
