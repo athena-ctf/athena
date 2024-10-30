@@ -20,6 +20,7 @@ use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
 use crate::{db, token};
 
+// TODO: add validation for invite usage and already registered user
 #[utoipa::path(
     post,
     path = "/auth/player/register",
@@ -73,6 +74,8 @@ pub async fn register(
     )
     .await?;
 
+    db::invite::accept(body.invite_id, &state.db_conn).await?;
+
     Ok(Json(JsonResponse {
         message: "Successfully registered".to_string(),
     }))
@@ -97,7 +100,6 @@ pub async fn register_send_token(
     Json(body): Json<SendTokenSchema>,
 ) -> Result<Json<JsonResponse>> {
     let token = token::create();
-
     token::store(&body.email, &token, "register", state.token_pool.clone()).await?;
 
     let email = Message::builder()

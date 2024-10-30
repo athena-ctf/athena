@@ -35,7 +35,7 @@ pub struct VerifyFlagSchema {
     pub flag: String,
 }
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
-pub struct FlagVerificationResult {
+pub struct VerificationResult {
     pub is_correct: bool,
 }
 
@@ -78,22 +78,9 @@ pub struct RegisterPlayer {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct VerifyInviteRequest {
+pub struct VerifyInviteSchema {
     pub team_name: String,
     pub invite_id: Uuid,
-}
-
-#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub enum VerifyInviteResponseKind {
-    TeamNotFound,
-    InviteNotFound,
-    InviteUsedUp,
-    Valid,
-}
-
-#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct VerifyInviteResponse {
-    pub response_kind: VerifyInviteResponseKind,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

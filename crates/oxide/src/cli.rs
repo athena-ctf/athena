@@ -31,12 +31,12 @@ pub struct RunSubCommand {
 #[argh(subcommand, name = "generate")]
 pub struct GenerateSubCommand {
     #[argh(positional)]
-    /// output file path
-    pub out: String,
-
-    #[argh(positional)]
     /// kind of output to generate
     pub kind: GenerateKind,
+
+    #[argh(positional)]
+    /// output file path
+    pub out: String,
 }
 
 pub enum GenerateKind {

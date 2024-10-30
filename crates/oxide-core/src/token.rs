@@ -30,11 +30,11 @@ pub async fn store(email: &str, token: &str, key: &str, redis_client: RedisPool)
 
 pub async fn check(email: &str, token: &str, key: &str, redis_client: RedisPool) -> Result<bool> {
     let resp = redis_client
-        .hget::<Option<Vec<u8>>, _, _>(key, email)
+        .hget::<Option<String>, _, _>(key, email)
         .await?;
 
     if let Some(s) = resp {
-        Ok(s == faster_hex::hex_string(digest(&SHA256, token.as_bytes()).as_ref()).as_bytes())
+        Ok(s == faster_hex::hex_string(digest(&SHA256, token.as_bytes()).as_ref()))
     } else {
         Ok(false)
     }

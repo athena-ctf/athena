@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::Extension;
+use fred::prelude::*;
 use oxide_macros::{crud_interface_api, optional_relation_api, single_relation_api};
 use sea_orm::{ActiveModelTrait, ActiveValue, EntityTrait, IntoActiveModel};
 use uuid::Uuid;
@@ -9,10 +10,10 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    ChallengeModel, CreateFlagSchema, CreateSubmissionSchema, FlagModel, FlagVerificationResult,
-    JsonResponse, PlayerModel, Submission, TokenClaims, VerifyFlagSchema,
+    ChallengeModel, CreateFlagSchema, CreateSubmissionSchema, FlagModel, JsonResponse, PlayerModel,
+    Submission, TokenClaims, VerificationResult, VerifyFlagSchema,
 };
-use crate::service::AppState;
+use crate::service::{AppState, CachedJson};
 
 crud_interface_api!(Flag);
 
@@ -23,8 +24,9 @@ single_relation_api!(Flag, Challenge);
     post,
     path = "/player/flag/verify",
     request_body = VerifyFlagSchema,
+    operation_id = "verify_flag",
     responses(
-        (status = 201, description = "Verified flag successfully", body = FlagVerificationResult),
+        (status = 200, description = "Verified flag successfully", body = VerificationResult),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
@@ -36,7 +38,7 @@ pub async fn verify(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
     Json(body): Json<VerifyFlagSchema>,
-) -> Result<Json<FlagVerificationResult>> {
+) -> Result<Json<VerificationResult>> {
     let Some(player_model) = db::player::retrieve(claims.id, &state.db_conn).await? else {
         return Err(Error::NotFound("Player does not exist".to_owned()));
     };
@@ -100,5 +102,5 @@ pub async fn verify(
         .await?;
     }
 
-    Ok(Json(FlagVerificationResult { is_correct }))
+    Ok(Json(VerificationResult { is_correct }))
 }

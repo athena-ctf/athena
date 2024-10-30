@@ -272,7 +272,6 @@ macro_rules! create_api {
     };
 }
 
-// TODO: add redis caching here
 #[macro_export]
 macro_rules! delete_api {
     ($entity:ident) => {
@@ -299,6 +298,7 @@ macro_rules! delete_api {
                 )
                 .await?
                 {
+                    state.cache_pool.del::<(), _>(format!("{}:{}", stringify!([<$entity:snake>]), id)).await?;
                     Ok(())
                 } else {
                     Err(Error::NotFound(concat!(stringify!([<$entity:snake>])," not found").to_owned()))
@@ -308,7 +308,6 @@ macro_rules! delete_api {
     };
 }
 
-// TODO: add redis caching here
 #[macro_export]
 macro_rules! retrieve_api {
     ($entity:ident) => {
@@ -331,22 +330,24 @@ macro_rules! retrieve_api {
             pub async fn retrieve_by_id(
                 state: State<Arc<AppState>>,
                 Path(id): Path<Uuid>,
-            ) -> Result<Json<[<$entity Model>]>> {
-                db::[<$entity:snake>]::retrieve(
-                    id,
-                    &state.db_conn,
-                )
-                .await?
-                .map_or_else(
-                    || Err(Error::NotFound(concat!(stringify!([<$entity:snake>])," not found").to_owned())),
-                    |model| Ok(Json(model)),
-                )
+            ) -> Result<CachedJson<[<$entity Model>]>> {
+                let cached = state.cache_pool.get::<Option<String>, _>(format!("{}:{}", stringify!([<$entity:snake>]), id)).await?;
+
+                if let Some(value) = cached {
+                    Ok(CachedJson::Cached(value))
+                } else {
+                    if let Some(model) = db::[<$entity:snake>]::retrieve(id, &state.db_conn).await? {
+                        state.cache_pool.set::<(), _, _>(format!("{}:{}", stringify!([<$entity:snake>]), id), serde_json::to_string(&model)?, None, None, false).await?;
+                        Ok(CachedJson::New(Json(model)))
+                    } else {
+                        Err(Error::NotFound(concat!(stringify!([<$entity:snake>])," not found").to_owned()))
+                    }
+                }
             }
         }
     };
 }
 
-// TODO: add redis caching here
 #[macro_export]
 macro_rules! update_api {
     ($entity:ident) => {
@@ -372,14 +373,9 @@ macro_rules! update_api {
                 Path(id): Path<Uuid>,
                 Json(body): Json<[<Create $entity Schema>]>,
             ) -> Result<Json<[<$entity Model>]>> {
-                Ok(Json(
-                    db::[<$entity:snake>]::update(
-                        id,
-                        body,
-                        &state.db_conn,
-                    )
-                    .await?,
-                ))
+                let model = db::[<$entity:snake>]::update(id, body, &state.db_conn).await?;
+                state.cache_pool.del::<(), _>(format!("{}:{}", stringify!([<$entity:snake>]), id)).await?;
+                Ok(Json(model))
             }
         }
     };
@@ -545,7 +541,6 @@ macro_rules! crud_interface_api {
     };
 }
 
-// TODO: add redis caching here in delete, update and retrieve
 #[macro_export]
 macro_rules! join_crud_interface_api {
     ($entity:ident, $related_from_id:literal, $related_to_id:literal) => {
@@ -613,6 +608,7 @@ macro_rules! join_crud_interface_api {
                 )
                 .await?
                 {
+                    state.cache_pool.del::<(), _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1)).await?;
                     Ok(())
                 } else {
                     Err(Error::NotFound(concat!(stringify!([<$entity:snake>])," not found").to_owned()))
@@ -640,16 +636,18 @@ macro_rules! join_crud_interface_api {
             pub async fn retrieve_by_id(
                 state: State<Arc<AppState>>,
                 Path(id): Path<(Uuid, Uuid)>,
-            ) -> Result<Json<[<$entity Model>]>> {
-                db::[<$entity:snake>]::retrieve(
-                    id,
-                    &state.db_conn,
-                )
-                .await?
-                .map_or_else(
-                    || Err(Error::NotFound(concat!(stringify!([<$entity:snake>])," not found").to_owned())),
-                    |model| Ok(Json(model)),
-                )
+            ) -> Result<CachedJson<[<$entity Model>]>> {
+                let value = state.cache_pool.get::<Option<String>, _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1)).await?;
+                if let Some(cached) = value {
+                    Ok(CachedJson::Cached(cached))
+                } else {
+                    if let Some(model) = db::[<$entity:snake>]::retrieve(id, &state.db_conn).await? {
+                        state.cache_pool.set::<(), _, _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1), serde_json::to_string(&model)?, None, None, false).await?;
+                        Ok(CachedJson::New(Json(model)))
+                    } else {
+                        Err(Error::NotFound(concat!(stringify!([<$entity:snake>])," not found").to_owned()))
+                    }
+                }
             }
 
             #[doc = "Update " $entity:snake " by id"]
@@ -676,14 +674,9 @@ macro_rules! join_crud_interface_api {
                 Path(id): Path<(Uuid, Uuid)>,
                 Json(body): Json<[<Create $entity Schema>]>,
             ) -> Result<Json<[<$entity Model>]>> {
-                Ok(Json(
-                    db::[<$entity:snake>]::update(
-                        id,
-                        body,
-                        &state.db_conn,
-                    )
-                    .await?,
-                ))
+                let model = db::[<$entity:snake>]::update(id, body, &state.db_conn).await?;
+                state.cache_pool.del::<(), _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1)).await?;
+                Ok(Json(model))
             }
         }
     };

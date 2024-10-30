@@ -1496,7 +1496,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Verify flag */
-        post: operations["verify"];
+        post: operations["verify_flag"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1514,6 +1514,23 @@ export interface paths {
         get: operations["unlock_by_id"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/invite/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Verify invite */
+        post: operations["verify_invite"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1661,7 +1678,7 @@ export interface components {
         CategoryEnum: "player" | "team";
         ChallengeModel: {
             author_name: string;
-            container_meta?: components["schemas"]["ContainerMeta"] | null;
+            container_meta?: null | components["schemas"]["ContainerMeta"];
             /** Format: date-time */
             created_at: string;
             description: string;
@@ -1723,7 +1740,7 @@ export interface components {
         };
         CreateChallengeSchema: {
             author_name: string;
-            container_meta?: components["schemas"]["ContainerMeta"] | null;
+            container_meta?: null | components["schemas"]["ContainerMeta"];
             description: string;
             difficulty: components["schemas"]["DifficultyEnum"];
             flag_type: components["schemas"]["FlagTypeEnum"];
@@ -1774,8 +1791,6 @@ export interface components {
             remaining: number;
             /** Format: uuid */
             team_id: string;
-            /** Format: int32 */
-            usages: number;
         };
         CreateLeaderboardSchema: {
             category: components["schemas"]["CategoryEnum"];
@@ -1851,9 +1866,6 @@ export interface components {
         };
         /** @enum {string} */
         DifficultyEnum: "easy" | "extreme" | "hard" | "medium";
-        ErrorModel: {
-            message: string;
-        };
         FileModel: {
             /** Format: uuid */
             challenge_id: string;
@@ -1877,9 +1889,6 @@ export interface components {
         };
         /** @enum {string} */
         FlagTypeEnum: "peruser" | "regex" | "static";
-        FlagVerificationResult: {
-            is_correct: boolean;
-        };
         /** @enum {string} */
         GroupEnum: "admin" | "player";
         HintModel: {
@@ -1921,8 +1930,6 @@ export interface components {
             team_id: string;
             /** Format: date-time */
             updated_at: string;
-            /** Format: int32 */
-            usages: number;
         };
         JsonResponse: {
             message: string;
@@ -2004,6 +2011,8 @@ export interface components {
         RegisterPlayer: {
             display_name: string;
             email: string;
+            /** Format: uuid */
+            invite_id: string;
             password: string;
             /** Format: uuid */
             team_id: string;
@@ -2091,9 +2100,7 @@ export interface components {
         };
         TeamSummary: {
             achievements: components["schemas"]["AchievementModel"][];
-            members: {
-                [key: string]: components["schemas"]["PlayerSummary"];
-            };
+            members: components["schemas"]["PlayerProfile"][];
             submissions: components["schemas"]["SubmissionModel"][];
             tag_solves: components["schemas"]["TagSolves"][];
             team: components["schemas"]["TeamModel"];
@@ -2151,10 +2158,18 @@ export interface components {
             updated_at: string;
             username: string;
         };
+        VerificationResult: {
+            is_correct: boolean;
+        };
         VerifyFlagSchema: {
             /** Format: uuid */
             challenge_id: string;
             flag: string;
+        };
+        VerifyInviteSchema: {
+            /** Format: uuid */
+            invite_id: string;
+            team_name: string;
         };
     };
     responses: never;
@@ -2189,7 +2204,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2198,7 +2213,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2207,7 +2222,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2240,7 +2255,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -2249,7 +2264,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2258,7 +2273,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2267,7 +2282,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2299,7 +2314,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -2308,7 +2323,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2317,7 +2332,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No achievement found with specified id */
@@ -2326,7 +2341,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2335,7 +2350,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2365,7 +2380,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -2374,7 +2389,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2383,7 +2398,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No achievement found with specified id */
@@ -2392,7 +2407,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2401,7 +2416,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2437,7 +2452,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -2446,7 +2461,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2455,7 +2470,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No achievement found with specified id */
@@ -2464,7 +2479,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2473,7 +2488,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2505,7 +2520,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -2514,7 +2529,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2523,7 +2538,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No achievement found with specified id */
@@ -2532,7 +2547,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2541,7 +2556,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2573,7 +2588,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -2582,7 +2597,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2591,7 +2606,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No achievement found with specified id */
@@ -2600,7 +2615,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2609,7 +2624,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2638,7 +2653,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2647,7 +2662,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2656,7 +2671,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2689,7 +2704,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -2698,7 +2713,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2707,7 +2722,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No admin found with specified id */
@@ -2716,7 +2731,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2725,7 +2740,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2757,7 +2772,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -2766,7 +2781,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2775,7 +2790,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No admin found with specified id */
@@ -2784,7 +2799,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2793,7 +2808,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2823,7 +2838,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -2832,7 +2847,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2841,7 +2856,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No admin found with specified id */
@@ -2850,7 +2865,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2859,7 +2874,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2895,7 +2910,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -2904,7 +2919,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2913,7 +2928,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No admin found with specified id */
@@ -2922,7 +2937,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2931,7 +2946,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -2963,7 +2978,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -2972,7 +2987,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -2981,7 +2996,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No admin found with specified id */
@@ -2990,7 +3005,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -2999,7 +3014,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3028,7 +3043,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3037,7 +3052,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3046,7 +3061,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3079,7 +3094,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3088,7 +3103,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3097,7 +3112,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ban found with specified id */
@@ -3106,7 +3121,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3115,7 +3130,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3147,7 +3162,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3156,7 +3171,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3165,7 +3180,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ban found with specified id */
@@ -3174,7 +3189,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3183,7 +3198,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3213,7 +3228,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3222,7 +3237,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3231,7 +3246,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ban found with specified id */
@@ -3240,7 +3255,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3249,7 +3264,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3285,7 +3300,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3294,7 +3309,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3303,7 +3318,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ban found with specified id */
@@ -3312,7 +3327,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3321,7 +3336,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3353,7 +3368,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3362,7 +3377,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3371,7 +3386,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ban found with specified id */
@@ -3380,7 +3395,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3389,7 +3404,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3421,7 +3436,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3430,7 +3445,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3439,7 +3454,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ban found with specified id */
@@ -3448,7 +3463,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3457,7 +3472,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3486,7 +3501,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3495,7 +3510,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3504,7 +3519,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3537,7 +3552,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3546,7 +3561,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3555,7 +3570,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -3564,7 +3579,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3573,7 +3588,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3605,7 +3620,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3614,7 +3629,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3623,7 +3638,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -3632,7 +3647,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3641,7 +3656,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3671,7 +3686,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3680,7 +3695,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3689,7 +3704,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -3698,7 +3713,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3707,7 +3722,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3743,7 +3758,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3752,7 +3767,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3761,7 +3776,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -3770,7 +3785,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3779,7 +3794,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3811,7 +3826,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3820,7 +3835,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3829,7 +3844,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -3838,7 +3853,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3847,7 +3862,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3879,7 +3894,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3888,7 +3903,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3897,7 +3912,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -3906,7 +3921,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3915,7 +3930,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -3947,7 +3962,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3956,7 +3971,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -3965,7 +3980,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -3974,7 +3989,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -3983,7 +3998,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4015,7 +4030,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4024,7 +4039,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4033,7 +4048,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -4042,7 +4057,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4051,7 +4066,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4083,7 +4098,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4092,7 +4107,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4101,7 +4116,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -4110,7 +4125,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4119,7 +4134,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4151,7 +4166,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4160,7 +4175,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4169,7 +4184,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -4178,7 +4193,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4187,7 +4202,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4219,7 +4234,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4228,7 +4243,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4237,7 +4252,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -4246,7 +4261,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4255,7 +4270,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4284,7 +4299,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4293,7 +4308,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4302,7 +4317,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4335,7 +4350,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4344,7 +4359,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4353,7 +4368,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge_tag found with specified id */
@@ -4362,7 +4377,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4371,7 +4386,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4405,7 +4420,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4414,7 +4429,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4423,7 +4438,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge_tag found with specified id */
@@ -4432,7 +4447,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4441,7 +4456,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4473,7 +4488,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4482,7 +4497,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4491,7 +4506,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge_tag found with specified id */
@@ -4500,7 +4515,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4509,7 +4524,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4547,7 +4562,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4556,7 +4571,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4565,7 +4580,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge_tag found with specified id */
@@ -4574,7 +4589,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4583,7 +4598,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4612,7 +4627,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4621,7 +4636,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4630,7 +4645,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4663,7 +4678,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4672,7 +4687,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4681,7 +4696,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No file found with specified id */
@@ -4690,7 +4705,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4699,7 +4714,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4731,7 +4746,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4740,7 +4755,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4749,7 +4764,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No file found with specified id */
@@ -4758,7 +4773,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4767,7 +4782,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4797,7 +4812,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4806,7 +4821,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4815,7 +4830,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No file found with specified id */
@@ -4824,7 +4839,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4833,7 +4848,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4869,7 +4884,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4878,7 +4893,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4887,7 +4902,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No file found with specified id */
@@ -4896,7 +4911,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4905,7 +4920,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -4937,7 +4952,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4946,7 +4961,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -4955,7 +4970,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No file found with specified id */
@@ -4964,7 +4979,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -4973,7 +4988,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5002,7 +5017,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5011,7 +5026,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5020,7 +5035,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5053,7 +5068,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5062,7 +5077,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5071,7 +5086,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No flag found with specified id */
@@ -5080,7 +5095,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5089,7 +5104,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5121,7 +5136,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5130,7 +5145,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5139,7 +5154,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No flag found with specified id */
@@ -5148,7 +5163,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5157,7 +5172,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5187,7 +5202,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5196,7 +5211,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5205,7 +5220,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No flag found with specified id */
@@ -5214,7 +5229,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5223,7 +5238,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5259,7 +5274,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5268,7 +5283,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5277,7 +5292,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No flag found with specified id */
@@ -5286,7 +5301,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5295,7 +5310,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5327,7 +5342,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5336,7 +5351,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5345,7 +5360,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No flag found with specified id */
@@ -5354,7 +5369,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5363,7 +5378,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5395,7 +5410,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5404,7 +5419,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5413,7 +5428,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No flag found with specified id */
@@ -5422,7 +5437,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5431,7 +5446,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5460,7 +5475,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5469,7 +5484,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5478,7 +5493,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5511,7 +5526,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5520,7 +5535,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5529,7 +5544,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No hint found with specified id */
@@ -5538,7 +5553,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5547,7 +5562,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5579,7 +5594,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5588,7 +5603,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5597,7 +5612,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No hint found with specified id */
@@ -5606,7 +5621,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5615,7 +5630,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5645,7 +5660,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5654,7 +5669,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5663,7 +5678,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No hint found with specified id */
@@ -5672,7 +5687,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5681,7 +5696,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5717,7 +5732,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5726,7 +5741,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5735,7 +5750,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No hint found with specified id */
@@ -5744,7 +5759,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5753,7 +5768,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5785,7 +5800,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5794,7 +5809,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5803,7 +5818,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No hint found with specified id */
@@ -5812,7 +5827,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5821,7 +5836,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5853,7 +5868,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5862,7 +5877,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5871,7 +5886,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No hint found with specified id */
@@ -5880,7 +5895,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5889,7 +5904,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5918,7 +5933,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5927,7 +5942,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -5936,7 +5951,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -5969,7 +5984,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5978,7 +5993,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -5987,7 +6002,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No instance found with specified id */
@@ -5996,7 +6011,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6005,7 +6020,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6037,7 +6052,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6046,7 +6061,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6055,7 +6070,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No instance found with specified id */
@@ -6064,7 +6079,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6073,7 +6088,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6103,7 +6118,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6112,7 +6127,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6121,7 +6136,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No instance found with specified id */
@@ -6130,7 +6145,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6139,7 +6154,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6175,7 +6190,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6184,7 +6199,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6193,7 +6208,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No instance found with specified id */
@@ -6202,7 +6217,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6211,7 +6226,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6243,7 +6258,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6252,7 +6267,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6261,7 +6276,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No instance found with specified id */
@@ -6270,7 +6285,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6279,7 +6294,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6311,7 +6326,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6320,7 +6335,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6329,7 +6344,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No instance found with specified id */
@@ -6338,7 +6353,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6347,7 +6362,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6376,7 +6391,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6385,7 +6400,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6394,7 +6409,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6427,7 +6442,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6436,7 +6451,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6445,7 +6460,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No invite found with specified id */
@@ -6454,7 +6469,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6463,7 +6478,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6495,7 +6510,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6504,7 +6519,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6513,7 +6528,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No invite found with specified id */
@@ -6522,7 +6537,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6531,7 +6546,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6561,7 +6576,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6570,7 +6585,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6579,7 +6594,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No invite found with specified id */
@@ -6588,7 +6603,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6597,7 +6612,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6633,7 +6648,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6642,7 +6657,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6651,7 +6666,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No invite found with specified id */
@@ -6660,7 +6675,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6669,7 +6684,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6701,7 +6716,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6710,7 +6725,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6719,7 +6734,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No invite found with specified id */
@@ -6728,7 +6743,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6737,7 +6752,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6766,7 +6781,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6775,7 +6790,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6784,7 +6799,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6817,7 +6832,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6826,7 +6841,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6835,7 +6850,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No leaderboard found with specified id */
@@ -6844,7 +6859,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6853,7 +6868,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6885,7 +6900,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6894,7 +6909,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6903,7 +6918,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No leaderboard found with specified id */
@@ -6912,7 +6927,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6921,7 +6936,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -6951,7 +6966,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6960,7 +6975,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -6969,7 +6984,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No leaderboard found with specified id */
@@ -6978,7 +6993,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -6987,7 +7002,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7023,7 +7038,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7032,7 +7047,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7041,7 +7056,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No leaderboard found with specified id */
@@ -7050,7 +7065,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7059,7 +7074,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7088,7 +7103,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7097,7 +7112,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7106,7 +7121,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7139,7 +7154,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7148,7 +7163,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7157,7 +7172,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No notification found with specified id */
@@ -7166,7 +7181,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7175,7 +7190,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7207,7 +7222,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7216,7 +7231,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7225,7 +7240,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No notification found with specified id */
@@ -7234,7 +7249,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7243,7 +7258,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7273,7 +7288,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7282,7 +7297,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7291,7 +7306,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No notification found with specified id */
@@ -7300,7 +7315,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7309,7 +7324,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7345,7 +7360,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7354,7 +7369,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7363,7 +7378,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No notification found with specified id */
@@ -7372,7 +7387,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7381,7 +7396,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7413,7 +7428,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7422,7 +7437,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7431,7 +7446,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No notification found with specified id */
@@ -7440,7 +7455,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7449,7 +7464,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7478,7 +7493,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7487,7 +7502,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7496,7 +7511,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7529,7 +7544,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7538,7 +7553,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7547,7 +7562,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -7556,7 +7571,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7565,7 +7580,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7597,7 +7612,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7606,7 +7621,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7615,7 +7630,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -7624,7 +7639,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7633,7 +7648,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7663,7 +7678,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7672,7 +7687,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7681,7 +7696,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -7690,7 +7705,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7699,7 +7714,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7735,7 +7750,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7744,7 +7759,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7753,7 +7768,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -7762,7 +7777,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7771,7 +7786,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7803,7 +7818,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7812,7 +7827,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7821,7 +7836,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -7830,7 +7845,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7839,7 +7854,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7871,7 +7886,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7880,7 +7895,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7889,7 +7904,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -7898,7 +7913,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7907,7 +7922,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -7939,7 +7954,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7948,7 +7963,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -7957,7 +7972,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -7966,7 +7981,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -7975,7 +7990,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8007,7 +8022,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8016,7 +8031,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8025,7 +8040,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -8034,7 +8049,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8043,7 +8058,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8075,7 +8090,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8084,7 +8099,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8093,7 +8108,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -8102,7 +8117,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8111,7 +8126,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8143,7 +8158,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8152,7 +8167,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8161,7 +8176,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -8170,7 +8185,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8179,7 +8194,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8211,7 +8226,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8220,7 +8235,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8229,7 +8244,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -8238,7 +8253,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8247,7 +8262,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8279,7 +8294,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8288,7 +8303,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8297,7 +8312,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -8306,7 +8321,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8315,7 +8330,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8344,7 +8359,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8353,7 +8368,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8362,7 +8377,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8395,7 +8410,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8404,7 +8419,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8413,7 +8428,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No submission found with specified id */
@@ -8422,7 +8437,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8431,7 +8446,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8465,7 +8480,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8474,7 +8489,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8483,7 +8498,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No submission found with specified id */
@@ -8492,7 +8507,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8501,7 +8516,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8533,7 +8548,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8542,7 +8557,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8551,7 +8566,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No submission found with specified id */
@@ -8560,7 +8575,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8569,7 +8584,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8607,7 +8622,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8616,7 +8631,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8625,7 +8640,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No submission found with specified id */
@@ -8634,7 +8649,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8643,7 +8658,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8672,7 +8687,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8681,7 +8696,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8690,7 +8705,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8723,7 +8738,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8732,7 +8747,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8741,7 +8756,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No tag found with specified id */
@@ -8750,7 +8765,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8759,7 +8774,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8791,7 +8806,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8800,7 +8815,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8809,7 +8824,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No tag found with specified id */
@@ -8818,7 +8833,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8827,7 +8842,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8857,7 +8872,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8866,7 +8881,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8875,7 +8890,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No tag found with specified id */
@@ -8884,7 +8899,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8893,7 +8908,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8929,7 +8944,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8938,7 +8953,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -8947,7 +8962,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No tag found with specified id */
@@ -8956,7 +8971,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -8965,7 +8980,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -8997,7 +9012,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9006,7 +9021,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9015,7 +9030,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No tag found with specified id */
@@ -9024,7 +9039,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9033,7 +9048,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9062,7 +9077,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9071,7 +9086,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9080,7 +9095,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9113,7 +9128,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9122,7 +9137,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9131,7 +9146,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No team found with specified id */
@@ -9140,7 +9155,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9149,7 +9164,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9181,7 +9196,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9190,7 +9205,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9199,7 +9214,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No team found with specified id */
@@ -9208,7 +9223,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9217,7 +9232,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9247,7 +9262,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9256,7 +9271,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9265,7 +9280,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No team found with specified id */
@@ -9274,7 +9289,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9283,7 +9298,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9319,7 +9334,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9328,7 +9343,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9337,7 +9352,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No team found with specified id */
@@ -9346,7 +9361,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9355,7 +9370,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9387,7 +9402,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9396,7 +9411,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9405,7 +9420,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No team found with specified id */
@@ -9414,7 +9429,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9423,7 +9438,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9455,7 +9470,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9464,7 +9479,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9473,7 +9488,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No team found with specified id */
@@ -9482,7 +9497,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9491,7 +9506,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9523,7 +9538,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9532,7 +9547,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9541,7 +9556,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No team found with specified id */
@@ -9550,7 +9565,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9559,7 +9574,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9588,7 +9603,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9597,7 +9612,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9606,7 +9621,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9639,7 +9654,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9648,7 +9663,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9657,7 +9672,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ticket found with specified id */
@@ -9666,7 +9681,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9675,7 +9690,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9707,7 +9722,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9716,7 +9731,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9725,7 +9740,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ticket found with specified id */
@@ -9734,7 +9749,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9743,7 +9758,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9773,7 +9788,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9782,7 +9797,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9791,7 +9806,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ticket found with specified id */
@@ -9800,7 +9815,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9809,7 +9824,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9845,7 +9860,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9854,7 +9869,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9863,7 +9878,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ticket found with specified id */
@@ -9872,7 +9887,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9881,7 +9896,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9913,7 +9928,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9922,7 +9937,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9931,7 +9946,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ticket found with specified id */
@@ -9940,7 +9955,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9949,7 +9964,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -9978,7 +9993,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -9987,7 +10002,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -9996,7 +10011,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10029,7 +10044,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -10038,7 +10053,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -10047,7 +10062,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No unlock found with specified id */
@@ -10056,7 +10071,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10065,7 +10080,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10099,7 +10114,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -10108,7 +10123,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -10117,7 +10132,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No unlock found with specified id */
@@ -10126,7 +10141,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10135,7 +10150,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10167,7 +10182,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -10176,7 +10191,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -10185,7 +10200,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No unlock found with specified id */
@@ -10194,7 +10209,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10203,7 +10218,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10241,7 +10256,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -10250,7 +10265,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -10259,7 +10274,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No unlock found with specified id */
@@ -10268,7 +10283,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10277,7 +10292,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10306,7 +10321,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User not found */
@@ -10315,7 +10330,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10324,7 +10339,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10357,7 +10372,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User not found */
@@ -10366,7 +10381,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10375,7 +10390,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10408,7 +10423,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -10417,7 +10432,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User not found */
@@ -10426,7 +10441,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10435,7 +10450,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10464,7 +10479,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User not found */
@@ -10473,7 +10488,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10482,7 +10497,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10515,7 +10530,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User not found */
@@ -10524,7 +10539,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10533,7 +10548,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10566,7 +10581,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User not found */
@@ -10575,7 +10590,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10584,7 +10599,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10617,7 +10632,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User not found */
@@ -10626,7 +10641,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10635,7 +10650,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10668,7 +10683,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10677,7 +10692,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10710,7 +10725,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User not found */
@@ -10719,7 +10734,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10728,7 +10743,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10761,7 +10776,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -10770,7 +10785,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User not found */
@@ -10779,7 +10794,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10788,7 +10803,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10824,7 +10839,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -10833,7 +10848,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -10842,7 +10857,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ban found with specified id */
@@ -10851,7 +10866,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10860,7 +10875,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10896,7 +10911,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -10905,7 +10920,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -10914,7 +10929,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No ban found with specified id */
@@ -10923,7 +10938,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10932,7 +10947,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -10963,7 +10978,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -10972,7 +10987,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -10981,7 +10996,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -10990,7 +11005,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -10999,7 +11014,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -11028,7 +11043,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -11037,7 +11052,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -11046,7 +11061,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No challenge found with specified id */
@@ -11055,7 +11070,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -11064,12 +11079,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
     };
-    verify: {
+    verify_flag: {
         parameters: {
             query?: never;
             header?: never;
@@ -11083,12 +11098,12 @@ export interface operations {
         };
         responses: {
             /** @description Verified flag successfully */
-            201: {
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FlagVerificationResult"];
+                    "application/json": components["schemas"]["VerificationResult"];
                 };
             };
             /** @description Invalid request body format */
@@ -11097,7 +11112,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -11106,7 +11121,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -11115,7 +11130,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -11124,7 +11139,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -11156,7 +11171,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -11165,7 +11180,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -11174,7 +11189,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No hint found with specified id */
@@ -11183,7 +11198,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -11192,7 +11207,67 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    verify_invite: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerifyInviteSchema"];
+            };
+        };
+        responses: {
+            /** @description Verified invite successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerificationResult"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -11221,7 +11296,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -11230,7 +11305,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -11239,7 +11314,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -11248,7 +11323,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -11257,7 +11332,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -11286,7 +11361,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -11295,7 +11370,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -11304,7 +11379,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -11313,7 +11388,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -11322,7 +11397,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -11358,7 +11433,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -11367,7 +11442,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -11376,7 +11451,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -11385,7 +11460,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -11394,7 +11469,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -11426,7 +11501,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -11435,7 +11510,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -11444,7 +11519,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -11453,7 +11528,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -11462,7 +11537,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -11498,7 +11573,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -11507,7 +11582,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -11516,7 +11591,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -11525,7 +11600,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -11534,7 +11609,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };
@@ -11566,7 +11641,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Action is permissible after login */
@@ -11575,7 +11650,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description User does not have sufficient permissions */
@@ -11584,7 +11659,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description No player found with specified id */
@@ -11593,7 +11668,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
             /** @description Unexpected error */
@@ -11602,7 +11677,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorModel"];
+                    "application/json": components["schemas"]["JsonResponse"];
                 };
             };
         };

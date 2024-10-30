@@ -1,10 +1,13 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
+use axum::response::IntoResponse;
+use axum::Json;
 use bollard::Docker;
 pub use config::Settings;
 use entity::prelude::*;
 use fred::prelude::*;
 use jsonwebtoken::{EncodingKey, Header};
+use serde::Serialize;
 use tokio::sync::RwLock;
 
 use crate::errors::Result;
@@ -83,4 +86,18 @@ pub fn generate_admin_token_pair(model: &AdminModel, settings: &config::Jwt) -> 
         },
         settings,
     )
+}
+
+pub enum CachedJson<T> {
+    Cached(String),
+    New(Json<T>),
+}
+
+impl<T: Serialize> IntoResponse for CachedJson<T> {
+    fn into_response(self) -> axum::response::Response {
+        match self {
+            Self::Cached(value) => value.into_response(),
+            Self::New(value) => value.into_response(),
+        }
+    }
 }

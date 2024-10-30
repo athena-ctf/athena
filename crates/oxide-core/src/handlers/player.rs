@@ -3,6 +3,7 @@ use std::sync::Arc;
 use axum::extract::{Json, Path, State};
 use axum::Extension;
 use entity::extensions::UpdateProfileSchema;
+use fred::prelude::*;
 use oxide_macros::{
     crud_interface_api, multiple_relation_api, optional_relation_api, single_relation_api,
 };
@@ -11,11 +12,11 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    AchievementModel, BanModel, CreatePlayerSchema, JsonResponse, FlagModel, InstanceModel,
+    AchievementModel, BanModel, CreatePlayerSchema, FlagModel, InstanceModel, JsonResponse,
     NotificationModel, PlayerModel, PlayerProfile, PlayerSummary, SubmissionModel, TeamModel,
     TokenClaims, UnlockModel,
 };
-use crate::service::AppState;
+use crate::service::{AppState, CachedJson};
 
 crud_interface_api!(Player);
 

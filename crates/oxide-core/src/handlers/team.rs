@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::Extension;
+use fred::prelude::*;
 use oxide_macros::{crud_interface_api, multiple_relation_api, optional_relation_api};
 use uuid::Uuid;
 
@@ -11,7 +12,7 @@ use crate::schemas::{
     BanModel, CreateTeamSchema, InviteModel, JsonResponse, PlayerModel, TeamModel, TeamProfile,
     TeamSummary, TokenClaims,
 };
-use crate::service::AppState;
+use crate::service::{AppState, CachedJson};
 
 crud_interface_api!(Team);
 

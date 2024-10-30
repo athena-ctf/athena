@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::Extension;
+use fred::prelude::*;
 use oxide_macros::{list_api, retrieve_api, single_relation_api, update_api};
 use sea_orm::{ActiveModelTrait, ActiveValue, IntoActiveModel, ModelTrait};
 use uuid::Uuid;
@@ -12,7 +13,7 @@ use crate::schemas::{
     AchievementModel, ChallengeModel, CreateAchievementSchema, JsonResponse, PlayerModel,
     TokenClaims,
 };
-use crate::service::AppState;
+use crate::service::{AppState, CachedJson};
 
 list_api!(Achievement);
 retrieve_api!(Achievement);

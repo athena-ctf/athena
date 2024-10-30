@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::Extension;
+use fred::prelude::*;
 use oxide_macros::{crud_interface_api, multiple_relation_with_model_api};
 use uuid::Uuid;
 
@@ -12,7 +13,7 @@ use crate::schemas::{
     DetailedChallenge, FileModel, HintModel, InstanceModel, JsonResponse, SubmissionModel,
     TagModel, TokenClaims,
 };
-use crate::service::AppState;
+use crate::service::{AppState, CachedJson};
 
 crud_interface_api!(Challenge);
 
