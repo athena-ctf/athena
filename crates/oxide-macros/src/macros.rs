@@ -298,7 +298,7 @@ macro_rules! delete_api {
                 )
                 .await?
                 {
-                    state.cache_pool.del::<(), _>(format!("{}:{}", stringify!([<$entity:snake>]), id)).await?;
+                    state.cache_client.del::<(), _>(format!("{}:{}", stringify!([<$entity:snake>]), id)).await?;
                     Ok(())
                 } else {
                     Err(Error::NotFound(concat!(stringify!([<$entity:snake>])," not found").to_owned()))
@@ -331,13 +331,13 @@ macro_rules! retrieve_api {
                 state: State<Arc<AppState>>,
                 Path(id): Path<Uuid>,
             ) -> Result<CachedJson<[<$entity Model>]>> {
-                let cached = state.cache_pool.get::<Option<String>, _>(format!("{}:{}", stringify!([<$entity:snake>]), id)).await?;
+                let cached = state.cache_client.get::<Option<String>, _>(format!("{}:{}", stringify!([<$entity:snake>]), id)).await?;
 
                 if let Some(value) = cached {
                     Ok(CachedJson::Cached(value))
                 } else {
                     if let Some(model) = db::[<$entity:snake>]::retrieve(id, &state.db_conn).await? {
-                        state.cache_pool.set::<(), _, _>(format!("{}:{}", stringify!([<$entity:snake>]), id), serde_json::to_string(&model)?, None, None, false).await?;
+                        state.cache_client.set::<(), _, _>(format!("{}:{}", stringify!([<$entity:snake>]), id), serde_json::to_string(&model)?, None, None, false).await?;
                         Ok(CachedJson::New(Json(model)))
                     } else {
                         Err(Error::NotFound(concat!(stringify!([<$entity:snake>])," not found").to_owned()))
@@ -374,7 +374,7 @@ macro_rules! update_api {
                 Json(body): Json<[<Create $entity Schema>]>,
             ) -> Result<Json<[<$entity Model>]>> {
                 let model = db::[<$entity:snake>]::update(id, body, &state.db_conn).await?;
-                state.cache_pool.del::<(), _>(format!("{}:{}", stringify!([<$entity:snake>]), id)).await?;
+                state.cache_client.del::<(), _>(format!("{}:{}", stringify!([<$entity:snake>]), id)).await?;
                 Ok(Json(model))
             }
         }
@@ -608,7 +608,7 @@ macro_rules! join_crud_interface_api {
                 )
                 .await?
                 {
-                    state.cache_pool.del::<(), _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1)).await?;
+                    state.cache_client.del::<(), _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1)).await?;
                     Ok(())
                 } else {
                     Err(Error::NotFound(concat!(stringify!([<$entity:snake>])," not found").to_owned()))
@@ -637,12 +637,12 @@ macro_rules! join_crud_interface_api {
                 state: State<Arc<AppState>>,
                 Path(id): Path<(Uuid, Uuid)>,
             ) -> Result<CachedJson<[<$entity Model>]>> {
-                let value = state.cache_pool.get::<Option<String>, _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1)).await?;
+                let value = state.cache_client.get::<Option<String>, _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1)).await?;
                 if let Some(cached) = value {
                     Ok(CachedJson::Cached(cached))
                 } else {
                     if let Some(model) = db::[<$entity:snake>]::retrieve(id, &state.db_conn).await? {
-                        state.cache_pool.set::<(), _, _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1), serde_json::to_string(&model)?, None, None, false).await?;
+                        state.cache_client.set::<(), _, _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1), serde_json::to_string(&model)?, None, None, false).await?;
                         Ok(CachedJson::New(Json(model)))
                     } else {
                         Err(Error::NotFound(concat!(stringify!([<$entity:snake>])," not found").to_owned()))
@@ -675,7 +675,7 @@ macro_rules! join_crud_interface_api {
                 Json(body): Json<[<Create $entity Schema>]>,
             ) -> Result<Json<[<$entity Model>]>> {
                 let model = db::[<$entity:snake>]::update(id, body, &state.db_conn).await?;
-                state.cache_pool.del::<(), _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1)).await?;
+                state.cache_client.del::<(), _>(format!("{}:{}:{}", stringify!([<$entity:snake>]), id.0, id.1)).await?;
                 Ok(Json(model))
             }
         }

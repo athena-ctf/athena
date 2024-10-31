@@ -17,8 +17,8 @@ pub struct AppState {
     pub db_conn: sea_orm::DatabaseConnection,
     pub settings: RwLock<Settings>,
 
-    pub cache_pool: RedisPool,
-    pub token_pool: RedisPool,
+    pub cache_client: RedisPool,
+    pub persistent_client: RedisPool,
     pub docker_client: Docker,
 
     #[cfg(feature = "file-transport")]

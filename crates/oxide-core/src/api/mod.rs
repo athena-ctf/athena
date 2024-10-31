@@ -7,6 +7,7 @@ use axum::http::Method;
 use axum::routing::get;
 use axum::Router;
 use fred::prelude::*;
+use fred::types::RespVersion;
 use sea_orm::{Database, DatabaseConnection};
 use tokio::signal;
 use tokio::sync::RwLock;
@@ -48,25 +49,23 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
     #[cfg(feature = "file-transport")]
     let mail_transport = lettre::FileTransport::new("./emails");
 
-    let cache_config = RedisConfig::from_url("redis://foo:bar@127.0.0.1:6379").unwrap();
-    let cache_pool = Builder::from_config(cache_config)
-        .with_connection_config(|config| {
-            config.connection_timeout = Duration::from_secs(10);
+    let cache_config = RedisConfig::from_url("redis://foo:bar@127.0.0.1:6379")?;
+    let cache_client = Builder::from_config(cache_config)
+        .with_config(|config| {
+            config.version = RespVersion::RESP3;
         })
         .set_policy(ReconnectPolicy::new_exponential(0, 100, 30_000, 2))
-        .build_pool(8)
-        .unwrap();
-    cache_pool.init().await.unwrap();
+        .build_pool(8)?;
+    cache_client.init().await?;
 
-    let token_config = RedisConfig::from_url("redis://foo:bar@127.0.0.1:6379").unwrap();
-    let token_pool = Builder::from_config(token_config)
-        .with_connection_config(|config| {
-            config.connection_timeout = Duration::from_secs(10);
+    let persistent_config = RedisConfig::from_url("redis://foo:bar@127.0.0.1:6379")?;
+    let persistent_client = Builder::from_config(persistent_config)
+        .with_config(|config| {
+            config.version = RespVersion::RESP3;
         })
         .set_policy(ReconnectPolicy::new_exponential(0, 100, 30_000, 2))
-        .build_pool(8)
-        .unwrap();
-    token_pool.init().await.unwrap();
+        .build_pool(8)?;
+    persistent_client.init().await?;
 
     let docker_client = docker::connect()?;
     let handles = tasks::run(&docker_client, &db_conn);
@@ -76,8 +75,8 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
         app(Arc::new(AppState {
             db_conn,
             settings: RwLock::new(settings),
-            cache_pool,
-            token_pool,
+            cache_client,
+            persistent_client,
             docker_client,
             mail_transport,
         })),

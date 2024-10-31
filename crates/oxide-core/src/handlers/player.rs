@@ -49,8 +49,12 @@ pub async fn retrieve_profile_by_username(
     state: State<Arc<AppState>>,
     Path(username): Path<String>,
 ) -> Result<Json<PlayerProfile>> {
-    let Some(player_profile) =
-        db::player::retrieve_profile_by_username(username, &state.db_conn).await?
+    let Some(player_profile) = db::player::retrieve_profile_by_username(
+        username,
+        &state.db_conn,
+        &state.persistent_client,
+    )
+    .await?
     else {
         return Err(Error::NotFound("Player does not exist".to_owned()));
     };
@@ -102,8 +106,12 @@ pub async fn retrieve_summary(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<PlayerSummary>> {
-    let Some(summary) =
-        db::player::retrieve_player_summary_by_id(claims.id, &state.db_conn).await?
+    let Some(summary) = db::player::retrieve_player_summary_by_id(
+        claims.id,
+        &state.db_conn,
+        &state.persistent_client,
+    )
+    .await?
     else {
         return Err(Error::NotFound("Player does not exist".to_owned()));
     };

@@ -21,10 +21,8 @@ pub struct Model {
     pub created_at: DateTime,
     pub updated_at: DateTime,
     #[sea_orm(primary_key, auto_increment = false)]
-    #[serde(skip_deserializing)]
     pub challenge_id: Uuid,
     #[sea_orm(primary_key, auto_increment = false)]
-    #[serde(skip_deserializing)]
     pub tag_id: Uuid,
 }
 

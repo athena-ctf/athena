@@ -4,7 +4,7 @@ use axum::extract::{Json, Path, State};
 use axum::Extension;
 use fred::prelude::*;
 use oxide_macros::{crud_interface_api, optional_relation_api, single_relation_api};
-use sea_orm::{ActiveModelTrait, ActiveValue, EntityTrait, IntoActiveModel};
+use sea_orm::{ActiveModelTrait, EntityTrait, IntoActiveModel};
 use uuid::Uuid;
 
 use crate::db;
@@ -76,10 +76,15 @@ pub async fn verify(
     .await?;
 
     if is_correct {
-        let player_model_cloned = player_model.clone();
-        let mut active_model = player_model_cloned.into_active_model();
+        let mut player_model_cloned = player_model.clone();
+        player_model_cloned.score += points;
 
-        active_model.score = ActiveValue::Set(player_model.score + points);
+        state
+            .persistent_client
+            .zincrby::<(), _, _>("leaderboard", points as f64, &player_model.display_name)
+            .await?;
+
+        let active_model = player_model_cloned.into_active_model();
         active_model.update(&state.db_conn).await?;
     }
 

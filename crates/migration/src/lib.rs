@@ -17,7 +17,6 @@ mod m20240408_124505_create_notification_table;
 mod m20240408_124527_create_invite_table;
 mod m20240408_124602_create_submission_table;
 mod m20240408_124634_create_challenge_tag_table;
-mod m20240408_124750_create_leaderboard_table;
 mod m20240408_124760_create_ticket_table;
 mod m20241029_113729_create_update_notify_function;
 mod m20241029_114100_create_notification_change_trigger;
@@ -45,7 +44,6 @@ impl MigratorTrait for Migrator {
             Box::new(m20240408_124527_create_invite_table::Migration),
             Box::new(m20240408_124602_create_submission_table::Migration),
             Box::new(m20240408_124634_create_challenge_tag_table::Migration),
-            Box::new(m20240408_124750_create_leaderboard_table::Migration),
             Box::new(m20240408_124760_create_ticket_table::Migration),
             // FIXME: These 2 have hardcoded trigger and notification channel name
             Box::new(m20241029_113729_create_update_notify_function::Migration),

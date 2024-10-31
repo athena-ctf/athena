@@ -11508,6 +11508,7 @@
       "AchievementModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "value",
@@ -11523,6 +11524,10 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "player_id": {
             "type": "string",
@@ -11544,6 +11549,7 @@
       "AdminModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "role",
@@ -11553,6 +11559,10 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "role": {
             "$ref": "#/components/schemas/RoleEnum"
@@ -11570,6 +11580,7 @@
       "BanModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "reason",
@@ -11583,6 +11594,10 @@
           "duration": {
             "type": "integer",
             "format": "int32"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "reason": {
             "type": "string"
@@ -11603,6 +11618,7 @@
       "ChallengeModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "title",
@@ -11640,6 +11656,10 @@
           },
           "flag_type": {
             "$ref": "#/components/schemas/FlagTypeEnum"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "points": {
             "type": "integer",
@@ -11695,12 +11715,22 @@
         "type": "object",
         "required": [
           "created_at",
-          "updated_at"
+          "updated_at",
+          "challenge_id",
+          "tag_id"
         ],
         "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "tag_id": {
+            "type": "string",
+            "format": "uuid"
           },
           "updated_at": {
             "type": "string",
@@ -12287,6 +12317,7 @@
       "FileModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "name",
@@ -12301,6 +12332,10 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "name": {
             "type": "string"
@@ -12317,6 +12352,7 @@
       "FlagModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "value",
@@ -12330,6 +12366,10 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "player_id": {
             "type": [
@@ -12365,6 +12405,7 @@
       "HintModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "description",
@@ -12386,6 +12427,10 @@
           },
           "description": {
             "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "updated_at": {
             "type": "string",
@@ -12413,6 +12458,7 @@
       "InstanceModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "container_id",
@@ -12436,6 +12482,10 @@
             "type": "string",
             "format": "date-time"
           },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "player_id": {
             "type": "string",
             "format": "uuid"
@@ -12449,6 +12499,7 @@
       "InviteModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "remaining",
@@ -12458,6 +12509,10 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "remaining": {
             "type": "integer",
@@ -12487,6 +12542,7 @@
       "LeaderboardModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "category"
@@ -12498,6 +12554,10 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "rank0": {
             "type": [
@@ -12583,6 +12643,7 @@
       "NotificationModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "title",
@@ -12596,6 +12657,10 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "player_id": {
             "type": "string",
@@ -12659,6 +12724,7 @@
       "PlayerModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "display_name",
@@ -12686,6 +12752,10 @@
           },
           "display_name": {
             "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "score": {
             "type": "integer",
@@ -12947,9 +13017,15 @@
           "created_at",
           "updated_at",
           "is_correct",
+          "player_id",
+          "challenge_id",
           "flags"
         ],
         "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time"
@@ -12963,6 +13039,10 @@
           "is_correct": {
             "type": "boolean"
           },
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "updated_at": {
             "type": "string",
             "format": "date-time"
@@ -12972,6 +13052,7 @@
       "TagModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "value"
@@ -12980,6 +13061,10 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "updated_at": {
             "type": "string",
@@ -13014,6 +13099,7 @@
       "TeamModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "email",
@@ -13034,6 +13120,10 @@
           },
           "email": {
             "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "name": {
             "type": "string"
@@ -13129,6 +13219,7 @@
       "TicketModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "title",
@@ -13145,6 +13236,10 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "status": {
             "$ref": "#/components/schemas/TicketStatusEnum"
@@ -13245,12 +13340,22 @@
         "type": "object",
         "required": [
           "created_at",
-          "updated_at"
+          "updated_at",
+          "player_id",
+          "hint_id"
         ],
         "properties": {
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "hint_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
           },
           "updated_at": {
             "type": "string",
@@ -13283,6 +13388,7 @@
       "UserModel": {
         "type": "object",
         "required": [
+          "id",
           "created_at",
           "updated_at",
           "username",
@@ -13299,6 +13405,10 @@
           },
           "group": {
             "$ref": "#/components/schemas/GroupEnum"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "updated_at": {
             "type": "string",

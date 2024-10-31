@@ -5,6 +5,7 @@ use argon2::password_hash::SaltString;
 use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use entity::extensions::UpdateProfileSchema;
 use entity::prelude::*;
+use fred::prelude::{RedisPool, SortedSetsInterface};
 use oxide_macros::{
     crud_interface_db, multiple_relation_db, optional_relation_db, single_relation_db,
 };
@@ -40,7 +41,15 @@ pub async fn retrieve_by_email(email: String, db: &DbConn) -> Result<Option<User
     Ok(Some(user_model))
 }
 
-pub async fn retrieve_profile(player_model: PlayerModel, db: &DbConn) -> Result<PlayerProfile> {
+pub async fn retrieve_profile(
+    user_model: UserModel,
+    player_model: PlayerModel,
+    db: &DbConn,
+    pool: &RedisPool,
+) -> Result<PlayerProfile> {
+    let rank = pool
+        .zrevrank("leaderboard", &player_model.display_name)
+        .await?;
     let mut tags_map = Tag::find()
         .all(db)
         .await?
@@ -57,36 +66,36 @@ pub async fn retrieve_profile(player_model: PlayerModel, db: &DbConn) -> Result<
         })
         .collect::<HashMap<String, TagSolves>>();
 
-    let mut challenges = Vec::new();
-
-    for submitted_challenge in player_model
+    let solved_challenges = player_model
         .find_related(Challenge)
         .filter(entity::submission::Column::IsCorrect.eq(true))
         .all(db)
-        .await?
-    {
+        .await?;
+
+    for submitted_challenge in &solved_challenges {
         let tags = crate::db::challenge::related_tags(&submitted_challenge, db).await?;
         for tag in tags {
             tags_map
                 .entry(tag.value)
                 .and_modify(|tag_solves| tag_solves.solves += 1);
         }
-
-        challenges.push(submitted_challenge);
     }
 
     Ok(PlayerProfile {
+        user: user_model,
         player: player_model,
-        solved_challenges: challenges,
+        solved_challenges,
         tag_solves: tags_map.values().cloned().collect(),
+        rank,
     })
 }
 
 pub async fn retrieve_profile_by_username(
     username: String,
     db: &DbConn,
+    pool: &RedisPool,
 ) -> Result<Option<PlayerProfile>> {
-    let Some((_, Some(player_model))) = User::find()
+    let Some((user_model, Some(player_model))) = User::find()
         .find_also_related(Player)
         .filter(entity::user::Column::Username.eq(&username))
         .one(db)
@@ -95,10 +104,16 @@ pub async fn retrieve_profile_by_username(
         return Ok(None);
     };
 
-    retrieve_profile(player_model, db).await.map(Some)
+    retrieve_profile(user_model, player_model, db, pool)
+        .await
+        .map(Some)
 }
 
-pub async fn retrieve_player_summary_by_id(id: Uuid, db: &DbConn) -> Result<Option<PlayerSummary>> {
+pub async fn retrieve_player_summary_by_id(
+    id: Uuid,
+    db: &DbConn,
+    pool: &RedisPool,
+) -> Result<Option<PlayerSummary>> {
     let Some((user_model, Some(player_model))) = User::find_by_id(id)
         .find_also_related(Player)
         .one(db)
@@ -107,43 +122,11 @@ pub async fn retrieve_player_summary_by_id(id: Uuid, db: &DbConn) -> Result<Opti
         return Ok(None);
     };
 
-    let mut tags_map = Tag::find()
-        .all(db)
-        .await?
-        .into_iter()
-        .map(|tag| {
-            (
-                tag.value.clone(),
-                TagSolves {
-                    tag_id: tag.id,
-                    tag_value: tag.value,
-                    solves: 0,
-                },
-            )
-        })
-        .collect::<HashMap<String, TagSolves>>();
-
-    for submitted_challenge in player_model
-        .find_related(Challenge)
-        .filter(entity::submission::Column::IsCorrect.eq(true))
-        .all(db)
-        .await?
-    {
-        let tags = crate::db::challenge::related_tags(&submitted_challenge, db).await?;
-        for tag in tags {
-            tags_map
-                .entry(tag.value)
-                .and_modify(|tag_solves| tag_solves.solves += 1);
-        }
-    }
-
     Ok(Some(PlayerSummary {
         submissions: player_model.find_related(Submission).all(db).await?,
         unlocks: player_model.find_related(Unlock).all(db).await?,
         achievements: player_model.find_related(Achievement).all(db).await?,
-        player: player_model,
-        user: user_model,
-        tag_solves: tags_map.values().cloned().collect(),
+        profile: retrieve_profile(user_model, player_model, db, pool).await?,
     }))
 }
 

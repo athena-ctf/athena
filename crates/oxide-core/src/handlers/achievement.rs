@@ -48,6 +48,11 @@ pub async fn create(
     let player_model_cloned = player_model.clone();
     let mut active_model = player_model_cloned.into_active_model();
 
+    state
+        .persistent_client
+        .zincrby::<(), _, _>("leaderboard", body.prize as f64, &player_model.display_name)
+        .await?;
+
     active_model.score = ActiveValue::Set(player_model.score + body.prize);
     active_model.update(&state.db_conn).await?;
 
@@ -75,15 +80,22 @@ pub async fn delete_by_id(
     Path(id): Path<Uuid>,
 ) -> Result<()> {
     if let Some(achievement_model) = db::achievement::retrieve(id, &state.db_conn).await? {
-        let Some(player_model) = db::player::retrieve(claims.id, &state.db_conn).await? else {
+        let Some(mut player_model) = db::player::retrieve(claims.id, &state.db_conn).await? else {
             return Err(Error::NotFound("Achievement does not exist".to_owned()));
         };
 
-        let score = player_model.score;
-        let mut active_model = player_model.into_active_model();
+        player_model.score -= achievement_model.prize;
 
-        active_model.score = ActiveValue::Set(score - achievement_model.prize);
+        state
+            .persistent_client
+            .zincrby::<(), _, _>(
+                "leaderboard",
+                -achievement_model.prize as f64,
+                &player_model.display_name,
+            )
+            .await?;
 
+        let active_model = player_model.into_active_model();
         active_model.update(&state.db_conn).await?;
         achievement_model.delete(&state.db_conn).await?;
 

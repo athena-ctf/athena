@@ -5,6 +5,7 @@ use askama::Template;
 use axum::extract::State;
 use axum::{Extension, Json};
 use entity::prelude::*;
+use fred::prelude::SortedSetsInterface;
 use jsonwebtoken::{DecodingKey, Validation};
 use lettre::message::header::ContentType;
 use lettre::message::{Mailbox, MultiPart, SinglePart};
@@ -43,7 +44,7 @@ pub async fn register(
         &body.email,
         &body.token,
         "register",
-        state.token_pool.clone(),
+        state.persistent_client.clone(),
     )
     .await?
     {
@@ -60,6 +61,18 @@ pub async fn register(
         &state.db_conn,
     )
     .await?;
+
+    state
+        .persistent_client
+        .zadd::<(), _, _>(
+            "leaderboard",
+            None,
+            None,
+            false,
+            false,
+            (0.0, &body.display_name),
+        )
+        .await?;
 
     db::player::create(
         CreatePlayerSchema {
@@ -100,7 +113,13 @@ pub async fn register_send_token(
     Json(body): Json<SendTokenSchema>,
 ) -> Result<Json<JsonResponse>> {
     let token = token::create();
-    token::store(&body.email, &token, "register", state.token_pool.clone()).await?;
+    token::store(
+        &body.email,
+        &token,
+        "register",
+        state.persistent_client.clone(),
+    )
+    .await?;
 
     let email = Message::builder()
         .from(Mailbox::from_str(&state.settings.read().await.smtp.from).unwrap())
@@ -153,7 +172,7 @@ pub async fn reset_password(
         &body.email,
         &body.token,
         "register",
-        state.token_pool.clone(),
+        state.persistent_client.clone(),
     )
     .await?
     {
@@ -191,7 +210,13 @@ pub async fn reset_password_send_token(
 ) -> Result<Json<JsonResponse>> {
     let token = token::create();
 
-    token::store(&body.email, &token, "register", state.token_pool.clone()).await?;
+    token::store(
+        &body.email,
+        &token,
+        "register",
+        state.persistent_client.clone(),
+    )
+    .await?;
 
     let email = Message::builder()
         .from(Mailbox::from_str(&state.settings.read().await.smtp.from).unwrap())

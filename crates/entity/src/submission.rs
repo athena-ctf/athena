@@ -22,10 +22,8 @@ pub struct Model {
     pub updated_at: DateTime,
     pub is_correct: bool,
     #[sea_orm(primary_key, auto_increment = false)]
-    #[serde(skip_deserializing)]
     pub player_id: Uuid,
     #[sea_orm(primary_key, auto_increment = false)]
-    #[serde(skip_deserializing)]
     pub challenge_id: Uuid,
     pub flags: Vec<String>,
 }

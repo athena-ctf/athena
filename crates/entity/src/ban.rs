@@ -19,7 +19,6 @@ use serde::{Deserialize, Serialize};
 #[oxide(table(name = "Ban"))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
-    #[serde(skip_deserializing)]
     pub id: Uuid,
     pub created_at: DateTime,
     pub updated_at: DateTime,

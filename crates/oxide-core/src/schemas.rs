@@ -131,18 +131,18 @@ pub struct TagSolves {
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct PlayerProfile {
     pub player: PlayerModel,
+    pub user: UserModel,
     pub solved_challenges: Vec<ChallengeModel>,
     pub tag_solves: Vec<TagSolves>,
+    pub rank: i64,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct PlayerSummary {
-    pub player: PlayerModel,
-    pub user: UserModel,
+    pub profile: PlayerProfile,
     pub submissions: Vec<SubmissionModel>,
     pub unlocks: Vec<UnlockModel>,
     pub achievements: Vec<AchievementModel>,
-    pub tag_solves: Vec<TagSolves>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -161,4 +161,18 @@ pub struct TeamSummary {
     pub unlocks: Vec<UnlockModel>,
     pub achievements: Vec<AchievementModel>,
     pub tag_solves: Vec<TagSolves>,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct LeaderboardRankings {
+    pub total: i64,
+    pub offset: i64,
+    pub count: i64,
+    pub rankings: Vec<(String, f64)>,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct RankingQuery {
+    pub offset: i64,
+    pub count: i64,
 }

@@ -15,7 +15,6 @@ pub mod flag;
 pub mod hint;
 pub mod instance;
 pub mod invite;
-pub mod leaderboard;
 pub mod notification;
 pub mod player;
 pub mod sea_orm_active_enums;

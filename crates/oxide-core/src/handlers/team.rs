@@ -88,7 +88,9 @@ pub async fn retrieve_summary(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<TeamSummary>> {
-    let Some(summary) = db::team::retrieve_team_summary_by_id(claims.id, &state.db_conn).await?
+    let Some(summary) =
+        db::team::retrieve_team_summary_by_id(claims.id, &state.db_conn, &state.persistent_client)
+            .await?
     else {
         return Err(Error::NotFound("Player does not exist".to_owned()));
     };

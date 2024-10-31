@@ -9,13 +9,13 @@ license = "MIT OR Apache-2.0"
 argon2 = { version = "0.5.3", features = ["std"] }
 askama = "0.12.1"
 axum = { workspace = true }
-fred = "9.3.0"
 bollard = { version = "0.17.1", features = ["chrono"] }
 config = { path = "../config" }
 chrono = { workspace = true }
 entity = { path = "../entity" }
 faster-hex = "0.10.0"
 fastrand = "2.1.1"
+fred = { version = "9.3.0", features = ["partial-tracing"] }
 imap = "3.0.0-alpha.14"
 imap-proto = "0.16.5"
 jsonwebtoken = "9.3.0"

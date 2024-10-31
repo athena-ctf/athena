@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 use entity::links::{TeamToAchievement, TeamToChallenge, TeamToSubmission, TeamToUnlock};
 use entity::prelude::*;
+use fred::prelude::RedisPool;
 use oxide_macros::{crud_interface_db, multiple_relation_db, optional_relation_db};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
@@ -96,7 +97,11 @@ pub async fn retrieve_team_by_teamname(
     }))
 }
 
-pub async fn retrieve_team_summary_by_id(id: Uuid, db: &DbConn) -> Result<Option<TeamSummary>> {
+pub async fn retrieve_team_summary_by_id(
+    id: Uuid,
+    db: &DbConn,
+    pool: &RedisPool,
+) -> Result<Option<TeamSummary>> {
     let Some((_, team_model)) = crate::db::player::related_team(id, db).await? else {
         return Ok(None);
     };
@@ -135,7 +140,15 @@ pub async fn retrieve_team_summary_by_id(id: Uuid, db: &DbConn) -> Result<Option
     let mut members = Vec::with_capacity(players.len());
 
     for player_model in players {
-        members.push(crate::db::player::retrieve_profile(player_model, db).await?);
+        members.push(
+            crate::db::player::retrieve_profile(
+                player_model.find_related(User).one(db).await?.unwrap(),
+                player_model,
+                db,
+                pool,
+            )
+            .await?,
+        );
     }
 
     Ok(Some(TeamSummary {

@@ -37,7 +37,7 @@ pub async fn unlock_by_id(
     state: State<Arc<AppState>>,
     Path(id): Path<Uuid>,
 ) -> Result<Json<HintModel>> {
-    db::hint::unlock(id, claims.id, &state.db_conn)
+    db::hint::unlock(id, claims.id, &state.db_conn, &state.persistent_client)
         .await?
         .map_or_else(
             || Err(Error::NotFound("hint does not exists".to_owned())),

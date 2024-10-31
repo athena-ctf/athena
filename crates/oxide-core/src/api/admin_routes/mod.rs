@@ -14,7 +14,6 @@ mod flag;
 mod hint;
 mod instance;
 mod invite;
-mod leaderboard;
 mod notification;
 mod player;
 mod submission;
@@ -37,7 +36,6 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(hint::router())
             .merge(instance::router())
             .merge(invite::router())
-            .merge(leaderboard::router())
             .merge(admin::router())
             .merge(notification::router())
             .merge(player::router())
