@@ -15,9 +15,10 @@ import {
   ChartTooltipContent,
 } from "@repo/ui/components/chart";
 import type { components } from "@repo/api";
-type Data = {
-  data: components["schemas"]["PlayerProfile"]["tag_solves"];
-};
+
+interface ChallengeDiffProps {
+  solves: components["schemas"]["TagSolves"][];
+}
 
 const chartConfig = {
   solves: {
@@ -26,7 +27,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function TeamChallengeDiff({ data }: Data) {
+export function TeamChallengeDiff({ solves }: ChallengeDiffProps) {
   return (
     <Card>
       <CardHeader className="items-center">
@@ -37,7 +38,7 @@ export function TeamChallengeDiff({ data }: Data) {
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
         >
-          <RadarChart data={data}>
+          <RadarChart data={solves}>
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <PolarAngleAxis dataKey="tag" />
             <PolarGrid />

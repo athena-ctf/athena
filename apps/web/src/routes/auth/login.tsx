@@ -22,8 +22,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useQueryClient } from "@tanstack/react-query";
-import { apiQueryClient } from "@repo/api";
+import { fetchClient } from "@repo/api";
 
 const loginSearchSchema = z.object({
   next: z.string().url().catch(""),
@@ -47,28 +46,20 @@ export default function Index() {
 
   const navigate = useNavigate();
   const { next } = Route.useSearch();
-  const queryClient = useQueryClient();
 
   const [showPassword, setShowPassword] = useState(false);
 
-  function onSubmit(body: z.infer<typeof loginSchema>) {
-    const { data, error } = apiQueryClient.useQuery(
-      "post",
-      "/auth/player/login",
-      {
-        body,
-      },
-      {},
-      queryClient,
-    );
+  const onSubmit = async (body: z.infer<typeof loginSchema>) => {
+    const resp = await fetchClient.POST("/auth/player/login", { body });
 
-    if (data) {
-      toast.success("Logged in successfully.");
-      navigate({ to: next });
+    if (resp.error) {
+      toast.error("Could not login");
+      console.error(resp.error.message);
     } else {
-      toast.error(error?.message);
+      toast.success("Logged in successfully");
+      navigate({ to: next });
     }
-  }
+  };
 
   return (
     <Card className="m-auto max-w-sm">

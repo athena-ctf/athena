@@ -41,7 +41,7 @@ export function PlayerNotification({
               <AlertDescription>
                 <div className="text-ellipsis">{notification.content}</div>
                 <span className="text-xs text-muted-foreground">
-                  {formatDistance(notification.date, new Date(), {
+                  {formatDistance(notification.updated_at, new Date(), {
                     addSuffix: true,
                     includeSeconds: true,
                   })}

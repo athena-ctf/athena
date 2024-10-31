@@ -1,16 +1,13 @@
 import { Toaster } from "@repo/ui/components/sonner";
 import { ThemeProvider } from "@repo/ui/components/theme-provider-vite";
-import type { QueryClient } from "@tanstack/react-query";
-import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
-import { SiteHeader } from "../components/navbar/site-header";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { SiteHeader } from "@/components/navbar/site-header";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
-  {
-    component: Index,
-  },
-);
+export const Route = createRootRoute({
+  component: Index,
+});
 
 function Index() {
   useEffect(() => {

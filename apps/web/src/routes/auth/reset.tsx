@@ -7,9 +7,9 @@ import {
   CardTitle,
 } from "@repo/ui/components/card";
 import { defineStepper } from "@stepperize/react";
-import { EmailForm } from "../../components/auth/reset/email-form";
-import { VerifyCodeForm } from "../../components/auth/verify-code-form";
-import { NewPasswordForm } from "../../components/auth/reset/new-password";
+import { EmailForm } from "@/components/auth/reset/email-form";
+import { VerifyTokenForm } from "@/components/auth/register/verify-token-form";
+import { NewPasswordForm } from "@/components/auth/reset/new-password";
 
 export const Route = createFileRoute("/auth/reset")({
   component: Index,
@@ -23,8 +23,8 @@ const { useStepper } = defineStepper(
   },
   {
     id: "Step 2",
-    title: "Enter Code",
-    description: "Enter the reset code sent",
+    title: "Enter Token",
+    description: "Enter the reset token sent",
   },
   {
     id: "Step 3",
@@ -57,7 +57,7 @@ export default function Index() {
               <CardDescription>{step.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <VerifyCodeForm prev={() => stepper.prev()} />
+              <VerifyTokenForm prev={() => stepper.prev()} />
             </CardContent>
           </>
         ),

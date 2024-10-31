@@ -13,7 +13,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRegisterStore } from "../../../stores/register";
+import { useRegisterStore } from "@/stores/register";
 import { Link } from "@tanstack/react-router";
 
 const detailsSchema = z
@@ -24,13 +24,8 @@ const detailsSchema = z
     confirmPassword: z.string().min(8),
     email: z.string().email(),
   })
-  .superRefine(({ confirmPassword, password }, ctx) => {
-    if (confirmPassword !== password) {
-      ctx.addIssue({
-        code: "custom",
-        message: "The passwords did not match",
-      });
-    }
+  .refine(({ confirmPassword, password }) => confirmPassword !== password, {
+    message: "The passwords did not match",
   });
 
 export function DetailsForm({ next }: { next: () => void }) {

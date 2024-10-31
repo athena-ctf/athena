@@ -1,4 +1,6 @@
+import { useResetStore } from "@/stores/reset";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { fetchClient } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import {
   Form,
@@ -10,6 +12,7 @@ import {
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const schema = z.object({
@@ -21,11 +24,24 @@ export function EmailForm({ next }: { next: () => void }) {
     resolver: zodResolver(schema),
     mode: "onChange",
   });
+  const { setEmail } = useResetStore();
 
-  const onSubmit = () => {
-    // TODO: send code
-
-    next();
+  const onSubmit = async (values: z.infer<typeof schema>) => {
+    const resp = await fetchClient.POST(
+      "/auth/player/reset-password/send-token",
+      {
+        body: {
+          email: values.email,
+        },
+      },
+    );
+    if (resp.error) {
+      toast.error(resp.error.message);
+    } else {
+      setEmail(values.email);
+      toast.info("Sent token to email");
+      next();
+    }
   };
 
   return (
@@ -44,7 +60,7 @@ export function EmailForm({ next }: { next: () => void }) {
             </FormItem>
           )}
         />
-        <Button type="submit">Send Code</Button>
+        <Button type="submit">Send Token</Button>
       </form>
     </Form>
   );

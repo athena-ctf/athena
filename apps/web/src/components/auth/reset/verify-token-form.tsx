@@ -11,22 +11,26 @@ import {
 import { Input } from "@repo/ui/components/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRegisterStore } from "../../stores/register";
+import { useResetStore } from "@/stores/reset";
 
 const verifyEmailSchema = z.object({
-  code: z.string().length(8),
+  token: z.string().length(8),
 });
 
-export function VerifyCodeForm({ prev }: { prev: () => void }) {
+export function VerifyTokenForm({
+  prev,
+  next,
+}: { prev: () => void; next: () => void }) {
   const form = useForm<z.infer<typeof verifyEmailSchema>>({
     resolver: zodResolver(verifyEmailSchema),
     mode: "onChange",
   });
 
-  const { setCode } = useRegisterStore();
+  const { setToken } = useResetStore();
 
   function onSubmit(values: z.infer<typeof verifyEmailSchema>) {
-    setCode(values.code);
+    setToken(values.token);
+    next();
   }
 
   return (
@@ -34,10 +38,10 @@ export function VerifyCodeForm({ prev }: { prev: () => void }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         <FormField
           control={form.control}
-          name="code"
+          name="token"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Verification Code</FormLabel>
+              <FormLabel>Verification Token</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>

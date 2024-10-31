@@ -1649,6 +1649,8 @@ export interface components {
             /** Format: date-time */
             created_at: string;
             /** Format: uuid */
+            id: string;
+            /** Format: uuid */
             player_id: string;
             /** Format: int32 */
             prize: number;
@@ -1659,6 +1661,8 @@ export interface components {
         AdminModel: {
             /** Format: date-time */
             created_at: string;
+            /** Format: uuid */
+            id: string;
             role: components["schemas"]["RoleEnum"];
             /** Format: date-time */
             updated_at: string;
@@ -1670,6 +1674,8 @@ export interface components {
             created_at: string;
             /** Format: int32 */
             duration: number;
+            /** Format: uuid */
+            id: string;
             reason: string;
             /** Format: date-time */
             updated_at: string;
@@ -1684,6 +1690,8 @@ export interface components {
             description: string;
             difficulty: components["schemas"]["DifficultyEnum"];
             flag_type: components["schemas"]["FlagTypeEnum"];
+            /** Format: uuid */
+            id: string;
             /** Format: int32 */
             points: number;
             /** Format: int32 */
@@ -1701,8 +1709,12 @@ export interface components {
             tags: components["schemas"]["CreateTagSchema"][];
         };
         ChallengeTagModel: {
+            /** Format: uuid */
+            challenge_id: string;
             /** Format: date-time */
             created_at: string;
+            /** Format: uuid */
+            tag_id: string;
             /** Format: date-time */
             updated_at: string;
         };
@@ -1871,6 +1883,8 @@ export interface components {
             challenge_id: string;
             /** Format: date-time */
             created_at: string;
+            /** Format: uuid */
+            id: string;
             name: string;
             /** Format: date-time */
             updated_at: string;
@@ -1881,6 +1895,8 @@ export interface components {
             challenge_id: string;
             /** Format: date-time */
             created_at: string;
+            /** Format: uuid */
+            id: string;
             /** Format: uuid */
             player_id?: string | null;
             /** Format: date-time */
@@ -1899,6 +1915,8 @@ export interface components {
             /** Format: date-time */
             created_at: string;
             description: string;
+            /** Format: uuid */
+            id: string;
             /** Format: date-time */
             updated_at: string;
         };
@@ -1917,6 +1935,8 @@ export interface components {
             /** Format: date-time */
             expiry: string;
             /** Format: uuid */
+            id: string;
+            /** Format: uuid */
             player_id: string;
             /** Format: date-time */
             updated_at: string;
@@ -1924,6 +1944,8 @@ export interface components {
         InviteModel: {
             /** Format: date-time */
             created_at: string;
+            /** Format: uuid */
+            id: string;
             /** Format: int32 */
             remaining: number;
             /** Format: uuid */
@@ -1938,6 +1960,8 @@ export interface components {
             category: components["schemas"]["CategoryEnum"];
             /** Format: date-time */
             created_at: string;
+            /** Format: uuid */
+            id: string;
             rank0?: string | null;
             rank1?: string | null;
             rank2?: string | null;
@@ -1959,6 +1983,8 @@ export interface components {
             content: string;
             /** Format: date-time */
             created_at: string;
+            /** Format: uuid */
+            id: string;
             /** Format: uuid */
             player_id: string;
             title: string;
@@ -1986,6 +2012,8 @@ export interface components {
             created_at: string;
             discord_id?: string | null;
             display_name: string;
+            /** Format: uuid */
+            id: string;
             /** Format: int32 */
             score: number;
             /** Format: uuid */
@@ -2060,16 +2088,22 @@ export interface components {
             unlocks: number;
         };
         SubmissionModel: {
+            /** Format: uuid */
+            challenge_id: string;
             /** Format: date-time */
             created_at: string;
             flags: string[];
             is_correct: boolean;
+            /** Format: uuid */
+            player_id: string;
             /** Format: date-time */
             updated_at: string;
         };
         TagModel: {
             /** Format: date-time */
             created_at: string;
+            /** Format: uuid */
+            id: string;
             /** Format: date-time */
             updated_at: string;
             value: string;
@@ -2086,6 +2120,8 @@ export interface components {
             /** Format: date-time */
             created_at: string;
             email: string;
+            /** Format: uuid */
+            id: string;
             name: string;
             /** Format: int32 */
             score: number;
@@ -2111,6 +2147,8 @@ export interface components {
             assigned_to?: string | null;
             /** Format: date-time */
             created_at: string;
+            /** Format: uuid */
+            id: string;
             status: components["schemas"]["TicketStatusEnum"];
             title: string;
             /** Format: date-time */
@@ -2140,6 +2178,10 @@ export interface components {
         UnlockModel: {
             /** Format: date-time */
             created_at: string;
+            /** Format: uuid */
+            hint_id: string;
+            /** Format: uuid */
+            player_id: string;
             /** Format: date-time */
             updated_at: string;
         };
@@ -2154,6 +2196,8 @@ export interface components {
             created_at: string;
             email: string;
             group: components["schemas"]["GroupEnum"];
+            /** Format: uuid */
+            id: string;
             /** Format: date-time */
             updated_at: string;
             username: string;

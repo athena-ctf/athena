@@ -9,27 +9,13 @@ import {
   MainChallengesSearch,
   MobileChallengesSearch,
 } from "@/components/challenge/search";
-import { apiQueryClient } from "@repo/api";
-import { useQueryClient } from "@tanstack/react-query";
+import { fetchClient } from "@repo/api";
 
 export const Route = createLazyFileRoute("/challenges")({
   component: Index,
 });
 
 function Index() {
-  const queryClient = useQueryClient();
-  const { data, error, isLoading } = apiQueryClient.useQuery(
-    "get",
-    "/player/challenges",
-    {},
-    {},
-    queryClient,
-  );
-
-  if (error) {
-    // TODO
-  }
-
   return (
     <div className="m-2">
       <div className="mr-4 flex justify-between md:hidden">

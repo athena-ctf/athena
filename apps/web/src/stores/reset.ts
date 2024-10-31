@@ -1,17 +1,17 @@
 import { create } from "zustand";
 
 export interface ResetFormState {
-  new_password: string;
-  code: string;
+  email: string;
+  token: string;
 
-  setNewPassword: (new_password: string) => void;
-  setCode: (code: string) => void;
+  setEmail: (email: string) => void;
+  setToken: (token: string) => void;
 }
 
-export const useRegisterStore = create<ResetFormState>()((set) => ({
-  new_password: "",
-  code: "",
+export const useResetStore = create<ResetFormState>()((set) => ({
+  email: "",
+  token: "",
 
-  setNewPassword: (new_password: string) => set({ new_password }),
-  setCode: (code: string) => set({ code }),
+  setEmail: (email: string) => set({ email }),
+  setToken: (token: string) => set({ token }),
 }));

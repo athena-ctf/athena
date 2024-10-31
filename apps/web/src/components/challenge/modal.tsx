@@ -1,6 +1,4 @@
-"use client";
-
-import { apiQueryClient, type components } from "@repo/api";
+import { fetchClient, type components } from "@repo/api";
 import {
   Accordion,
   AccordionContent,
@@ -35,9 +33,8 @@ import {
 import { Circle, Download, Lightbulb, ScrollText, Server } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useQueryClient } from "@tanstack/react-query";
 
 const difficultyColors = {
   easy: "fill-green-400 text-green-400",
@@ -56,52 +53,43 @@ export function ChallengeModal({
   const [open, setOpen] = useState(false);
   const [flag, setFlag] = useState("");
 
-  const queryClient = useQueryClient();
-  const { data, error, isLoading } = apiQueryClient.useQuery(
-    "get",
-    "/player/challenge/details/{id}",
-    {
-      params: {
-        path: {
-          id: challengeSummary.challenge.id,
-        },
-      },
-    },
-    {},
-    queryClient,
-  );
-
-  const { mutate } = apiQueryClient.useMutation(
-    "post",
-    "/player/flag/verify",
-    {},
-    queryClient,
-  );
-
-  if (error) {
-    return <>{/* TODO */}</>;
-  }
-
   const handleVerify = () => {
-    mutate({
-      body: {
-        challenge_id: challengeSummary.challenge.id,
-        flag,
-      },
-    });
-    // verifyFlag(flag, id)
-    //   .then((res) => {
-    //     setOpen(false);
-    //     if (res.result === "pass") {
-    //       toast.success("Correct flag!");
-    //     } else {
-    //       toast.error("Invalid flag!");
-    //     }
-
-    //     setFlag("");
-    //   })
-    //   .catch((err) => toast.error(err));
+    fetchClient
+      .POST("/player/flag/verify", {
+        body: { challenge_id: challengeSummary.challenge.id, flag },
+      })
+      .then((res) => {
+        if (res.error) {
+          toast.error(res.error.message);
+        } else {
+          if (res.data.is_correct) {
+            toast.success("Correct flag!");
+            setFlag("");
+            setOpen(false);
+          } else {
+            toast.error("Wrong flag!");
+          }
+        }
+      });
   };
+
+  const [challengeDetails, setChallengeDetails] =
+    useState<components["schemas"]["DetailedChallenge"]>();
+
+  useEffect(() => {
+    fetchClient
+      .GET("/player/challenge/details/{id}", {
+        params: { path: { id: challengeSummary.challenge.id } },
+      })
+      .then((resp) => {
+        if (resp.error) {
+          toast.error("Could not load challenge details");
+          console.error(resp.error.message);
+        } else {
+          setChallengeDetails(resp.data);
+        }
+      });
+  }, [challengeSummary.challenge.id]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -155,7 +143,7 @@ export function ChallengeModal({
                 </TooltipProvider>
               </VerticalTabsTrigger>
             )}
-            {data?.files.length && (
+            {challengeDetails?.files.length && (
               <VerticalTabsTrigger value="files">
                 <TooltipProvider>
                   <Tooltip>
@@ -167,7 +155,7 @@ export function ChallengeModal({
                 </TooltipProvider>
               </VerticalTabsTrigger>
             )}
-            {data?.hints.length && (
+            {challengeDetails?.hints.length && (
               <VerticalTabsTrigger value="hints">
                 <TooltipProvider>
                   <Tooltip>
@@ -190,7 +178,7 @@ export function ChallengeModal({
           </VerticalTabsContent>
           <VerticalTabsContent value="files">
             <div className="flex flex-col justify-between space-y-2">
-              {data?.files.map((file) => (
+              {challengeDetails?.files.map((file) => (
                 <Button key={file.name} variant="default" asChild>
                   <Link href={file.url}>
                     <Download /> {file.name}
@@ -201,7 +189,7 @@ export function ChallengeModal({
           </VerticalTabsContent>
           <VerticalTabsContent value="hints">
             <Accordion type="single" collapsible className="w-full">
-              {data?.hints.map((hint, index) => (
+              {challengeDetails?.hints.map((hint, index) => (
                 <AccordionItem value={hint.id} key={hint.id}>
                   <AccordionTrigger>
                     Hint #{index} ({hint.cost} Points)

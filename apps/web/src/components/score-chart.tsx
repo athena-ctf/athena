@@ -13,22 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@repo/ui/components/chart";
-interface ScoreChartProps {
-  details: {
-    dates: string;
-    rank1: number;
-    rank2: number;
-    rank3: number;
-    rank4: number;
-    rank5: number;
-    rank6: number;
-    rank7: number;
-    rank8: number;
-    rank9: number;
-    rank10: number;
-  }[];
-  names: string[];
-}
+import { components } from "@repo/api";
 
 const colors = [
   "#a6bc07",
@@ -45,7 +30,10 @@ const colors = [
 
 const chartConfig = {} satisfies ChartConfig;
 
-export function ScoreChart({ details, names }: ScoreChartProps) {
+export function ScoreChart({
+  details,
+  names,
+}: components["schemas"]["LeaderboardModel"]) {
   return (
     <Card>
       <CardHeader>

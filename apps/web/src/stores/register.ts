@@ -1,42 +1,44 @@
 import { create } from "zustand";
 
+type Team =
+  | {
+      kind: "join";
+      teamName: string;
+      inviteId: string;
+    }
+  | {
+      kind: "create";
+      teamName: string;
+    };
+
 export interface RegisterFormState {
-  display_name: string;
+  displayName: string;
   username: string;
   password: string;
   email: string;
-  team_choice_kind: "join" | "create";
-  teamname: string;
-  inviteCode: string;
-  code: string;
+  team: Team;
 
   setDisplayName: (displayName: string) => void;
   setUsername: (username: string) => void;
   setPassword: (password: string) => void;
   setEmail: (email: string) => void;
-  setTeamChoiceKind: (teamChoiceKind: "join" | "create") => void;
-  setTeamname: (teamname: string) => void;
-  setInviteCode: (inviteCode: string) => void;
-  setCode: (code: string) => void;
+  setTeam: (team: Team) => void;
 }
 
 export const useRegisterStore = create<RegisterFormState>()((set) => ({
-  display_name: "",
+  displayName: "",
   username: "",
   password: "",
   email: "",
-  team_choice_kind: "join",
-  teamname: "",
-  inviteCode: "",
-  code: "",
+  team: {
+    kind: "create",
+    teamName: "",
+  },
+  token: "",
 
-  setDisplayName: (displayName: string) => set({ display_name: displayName }),
+  setDisplayName: (displayName: string) => set({ displayName: displayName }),
   setUsername: (username: string) => set({ username }),
   setPassword: (password: string) => set({ password }),
   setEmail: (email: string) => set({ email }),
-  setTeamChoiceKind: (teamChoiceKind: "join" | "create") =>
-    set({ team_choice_kind: teamChoiceKind }),
-  setTeamname: (teamname: string) => set({ teamname }),
-  setInviteCode: (inviteCode: string) => set({ inviteCode }),
-  setCode: (code: string) => set({ code }),
+  setTeam: (team: Team) => set({ team }),
 }));

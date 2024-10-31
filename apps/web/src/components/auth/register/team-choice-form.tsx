@@ -18,49 +18,84 @@ import {
 import { Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRegisterStore } from "../../../stores/register";
+import { useRegisterStore } from "@/stores/register";
+import { fetchClient } from "@repo/api";
+import { toast } from "sonner";
 
 const joinTeamSchema = z.object({
-  teamname: z.string(),
-  inviteCode: z.string().length(8),
+  teamName: z.string(),
+  inviteId: z.string().length(8),
 });
 
 const createTeamSchema = z.object({
-  teamname: z.string(),
+  teamName: z.string(),
 });
 
 export function ChooseTeamForm({
   next,
   prev,
-}: { next: () => void; prev: () => void }) {
+}: {
+  next: () => void;
+  prev: () => void;
+}) {
   const joinForm = useForm<z.infer<typeof joinTeamSchema>>({
     resolver: zodResolver(joinTeamSchema),
     mode: "onChange",
   });
 
-  const { setTeamname, setTeamChoiceKind, setInviteCode } = useRegisterStore();
+  const { setTeam, email } = useRegisterStore();
 
-  function onJoinFormSubmit(values: z.infer<typeof joinTeamSchema>) {
-    setTeamChoiceKind("join");
-    setTeamname(values.teamname);
-    setInviteCode(values.inviteCode);
+  const onJoinFormSubmit = async (values: z.infer<typeof joinTeamSchema>) => {
+    const resp = await fetchClient.POST("/player/invite/verify", {
+      body: { invite_id: values.inviteId, team_name: values.teamName },
+    });
 
-    // TODO: send code api call here
+    if (resp.error) {
+      toast.error("Invalid invite id");
+    } else {
+      setTeam({
+        kind: "join",
+        teamName: values.teamName,
+        inviteId: values.inviteId,
+      });
 
-    next();
-  }
+      const resp = await fetchClient.POST("/auth/player/register/send-token", {
+        body: { email },
+      });
+
+      if (resp.error) {
+        toast.error(resp.error.message);
+      } else {
+        toast.info("Sent token to email");
+        next();
+      }
+    }
+  };
 
   const createForm = useForm<z.infer<typeof createTeamSchema>>({
     resolver: zodResolver(createTeamSchema),
     mode: "onChange",
   });
 
-  function onCreateFormSubmit(values: z.infer<typeof createTeamSchema>) {
-    setTeamChoiceKind("create");
-    setTeamname(values.teamname);
+  const onCreateFormSubmit = async (
+    values: z.infer<typeof createTeamSchema>,
+  ) => {
+    setTeam({
+      kind: "create",
+      teamName: values.teamName,
+    });
 
-    next();
-  }
+    const resp = await fetchClient.POST("/auth/player/register/send-token", {
+      body: { email },
+    });
+
+    if (resp.error) {
+      toast.error(resp.error.message);
+    } else {
+      toast.info("Sent token to email");
+      next();
+    }
+  };
 
   return (
     <Tabs defaultValue="create">
@@ -76,7 +111,7 @@ export function ChooseTeamForm({
           >
             <FormField
               control={createForm.control}
-              name="teamname"
+              name="teamName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Team Name</FormLabel>
@@ -99,7 +134,7 @@ export function ChooseTeamForm({
             </div>
             <div className="flex flex-row w-full space-x-4">
               <Button onClick={prev}>Back</Button>
-              <Button type="submit">Send Code</Button>
+              <Button type="submit">Send Token</Button>
             </div>
           </form>
         </Form>
@@ -112,7 +147,7 @@ export function ChooseTeamForm({
           >
             <FormField
               control={joinForm.control}
-              name="teamname"
+              name="teamName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Team Name</FormLabel>
@@ -125,7 +160,7 @@ export function ChooseTeamForm({
             />
             <FormField
               control={joinForm.control}
-              name="inviteCode"
+              name="inviteId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Team Name</FormLabel>
@@ -144,7 +179,7 @@ export function ChooseTeamForm({
             </div>
             <div className="flex flex-row w-full space-x-4">
               <Button onClick={prev}>Back</Button>
-              <Button type="submit">Send Code</Button>
+              <Button type="submit">Send Token</Button>
             </div>
           </form>
         </Form>

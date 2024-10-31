@@ -1,4 +1,6 @@
+import { useResetStore } from "@/stores/reset";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { fetchClient } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import {
   Form,
@@ -10,8 +12,10 @@ import {
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const schema = z
@@ -19,25 +23,37 @@ const schema = z
     password: z.string().min(8),
     confirmPassword: z.string().min(8),
   })
-  .superRefine(({ confirmPassword, password }, ctx) => {
-    if (confirmPassword !== password) {
-      ctx.addIssue({
-        code: "custom",
-        message: "The passwords did not match",
-      });
-    }
+  .refine(({ confirmPassword, password }) => confirmPassword !== password, {
+    message: "The passwords did not match",
   });
 
 export function NewPasswordForm({
   prev,
-}: { next: () => void; prev: () => void }) {
+}: {
+  prev: () => void;
+}) {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onChange",
   });
+  const { token, email } = useResetStore();
+  const navigate = useNavigate();
 
-  const onFormSubmit = () => {
-    // TODO
+  const onFormSubmit = async (values: z.infer<typeof schema>) => {
+    const resp = await fetchClient.POST("/auth/player/reset-password", {
+      body: {
+        email,
+        token,
+        new_password: values.password,
+      },
+    });
+
+    if (resp.error) {
+      toast.error(resp.error.message);
+    } else {
+      toast.success("Successfully reset password");
+      navigate({ to: "/auth/login", search: { next: "/" } });
+    }
   };
 
   const [showPassword, setShowPassword] = useState(false);
