@@ -176,3 +176,9 @@ pub struct RankingQuery {
     pub offset: i64,
     pub count: i64,
 }
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct Ranking {
+    pub member: String,
+    pub score: f64,
+}

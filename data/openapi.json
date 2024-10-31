@@ -5531,387 +5531,6 @@
         }
       }
     },
-    "/admin/leaderboard": {
-      "get": {
-        "tags": [
-          "leaderboard"
-        ],
-        "summary": "List leaderboards",
-        "operationId": "list_leaderboards",
-        "responses": {
-          "200": {
-            "description": "Listed leaderboards successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LeaderboardModel"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "leaderboard"
-        ],
-        "summary": "Create Leaderboard",
-        "operationId": "create_leaderboard",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateLeaderboardSchema"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created leaderboard successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LeaderboardModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No leaderboard found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/leaderboard/{id}": {
-      "get": {
-        "tags": [
-          "leaderboard"
-        ],
-        "summary": "Retrieve leaderboard by id",
-        "operationId": "retrieve_leaderboard_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved leaderboard by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LeaderboardModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No leaderboard found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "leaderboard"
-        ],
-        "summary": "Delete leaderboard by id",
-        "operationId": "delete_leaderboard_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted leaderboard by id successfully"
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No leaderboard found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "leaderboard"
-        ],
-        "summary": "Update leaderboard by id",
-        "operationId": "update_leaderboard_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateLeaderboardSchema"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Updated leaderboard by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LeaderboardModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters/request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No leaderboard found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/admin/notification": {
       "get": {
         "tags": [
@@ -11010,6 +10629,153 @@
         }
       }
     },
+    "/player/leaderboard/rankings": {
+      "post": {
+        "tags": [
+          "leaderboard"
+        ],
+        "summary": "List leaderboard rankings with offset and count",
+        "operationId": "rankings",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset of the rankings",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of players to get",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listed leaderboard rankings with offset and count successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardRankings"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/player/leaderboard/top10": {
+      "post": {
+        "tags": [
+          "leaderboard"
+        ],
+        "summary": "List top 10 of leaderboard",
+        "operationId": "top_10",
+        "responses": {
+          "200": {
+            "description": "Listed top 10 rankings successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Ranking"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/player/summary": {
       "get": {
         "tags": [
@@ -12026,77 +11792,6 @@
           }
         }
       },
-      "CreateLeaderboardSchema": {
-        "type": "object",
-        "required": [
-          "category"
-        ],
-        "properties": {
-          "category": {
-            "$ref": "#/components/schemas/CategoryEnum"
-          },
-          "rank0": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank1": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank2": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank3": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank4": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank5": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank6": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank7": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank8": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank9": {
-            "type": [
-              "string",
-              "null"
-            ]
-          }
-        }
-      },
       "CreateNotificationSchema": {
         "type": "object",
         "required": [
@@ -12539,89 +12234,42 @@
           }
         }
       },
-      "LeaderboardModel": {
+      "LeaderboardRankings": {
         "type": "object",
         "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "category"
+          "total",
+          "offset",
+          "count",
+          "rankings"
         ],
         "properties": {
-          "category": {
-            "$ref": "#/components/schemas/CategoryEnum"
+          "count": {
+            "type": "integer",
+            "format": "int64"
           },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
+          "offset": {
+            "type": "integer",
+            "format": "int64"
           },
-          "id": {
-            "type": "string",
-            "format": "uuid"
+          "rankings": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": false,
+              "prefixItems": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number",
+                  "format": "double"
+                }
+              ]
+            }
           },
-          "rank0": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank1": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank2": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank3": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank4": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank5": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank6": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank7": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank8": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "rank9": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
+          "total": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -12779,12 +12427,18 @@
         "type": "object",
         "required": [
           "player",
+          "user",
           "solved_challenges",
-          "tag_solves"
+          "tag_solves",
+          "rank"
         ],
         "properties": {
           "player": {
             "$ref": "#/components/schemas/PlayerModel"
+          },
+          "rank": {
+            "type": "integer",
+            "format": "int64"
           },
           "solved_challenges": {
             "type": "array",
@@ -12797,18 +12451,19 @@
             "items": {
               "$ref": "#/components/schemas/TagSolves"
             }
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserModel"
           }
         }
       },
       "PlayerSummary": {
         "type": "object",
         "required": [
-          "player",
-          "user",
+          "profile",
           "submissions",
           "unlocks",
-          "achievements",
-          "tag_solves"
+          "achievements"
         ],
         "properties": {
           "achievements": {
@@ -12817,8 +12472,8 @@
               "$ref": "#/components/schemas/AchievementModel"
             }
           },
-          "player": {
-            "$ref": "#/components/schemas/PlayerModel"
+          "profile": {
+            "$ref": "#/components/schemas/PlayerProfile"
           },
           "submissions": {
             "type": "array",
@@ -12826,20 +12481,27 @@
               "$ref": "#/components/schemas/SubmissionModel"
             }
           },
-          "tag_solves": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TagSolves"
-            }
-          },
           "unlocks": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UnlockModel"
             }
+          }
+        }
+      },
+      "Ranking": {
+        "type": "object",
+        "required": [
+          "member",
+          "score"
+        ],
+        "properties": {
+          "member": {
+            "type": "string"
           },
-          "user": {
-            "$ref": "#/components/schemas/UserModel"
+          "score": {
+            "type": "number",
+            "format": "double"
           }
         }
       },

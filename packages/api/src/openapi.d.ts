@@ -714,43 +714,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/admin/leaderboard": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List leaderboards */
-        get: operations["list_leaderboards"];
-        put?: never;
-        /** Create Leaderboard */
-        post: operations["create_leaderboard"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/leaderboard/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Retrieve leaderboard by id */
-        get: operations["retrieve_leaderboard_by_id"];
-        put?: never;
-        post?: never;
-        /** Delete leaderboard by id */
-        delete: operations["delete_leaderboard_by_id"];
-        options?: never;
-        head?: never;
-        /** Update leaderboard by id */
-        patch: operations["update_leaderboard_by_id"];
-        trace?: never;
-    };
     "/admin/notification": {
         parameters: {
             query?: never;
@@ -1537,6 +1500,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/player/leaderboard/rankings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** List leaderboard rankings with offset and count */
+        post: operations["rankings"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/leaderboard/top10": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** List top 10 of leaderboard */
+        post: operations["top_10"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/player/summary": {
         parameters: {
             query?: never;
@@ -1804,19 +1801,6 @@ export interface components {
             /** Format: uuid */
             team_id: string;
         };
-        CreateLeaderboardSchema: {
-            category: components["schemas"]["CategoryEnum"];
-            rank0?: string | null;
-            rank1?: string | null;
-            rank2?: string | null;
-            rank3?: string | null;
-            rank4?: string | null;
-            rank5?: string | null;
-            rank6?: string | null;
-            rank7?: string | null;
-            rank8?: string | null;
-            rank9?: string | null;
-        };
         CreateNotificationSchema: {
             content: string;
             /** Format: uuid */
@@ -1956,24 +1940,17 @@ export interface components {
         JsonResponse: {
             message: string;
         };
-        LeaderboardModel: {
-            category: components["schemas"]["CategoryEnum"];
-            /** Format: date-time */
-            created_at: string;
-            /** Format: uuid */
-            id: string;
-            rank0?: string | null;
-            rank1?: string | null;
-            rank2?: string | null;
-            rank3?: string | null;
-            rank4?: string | null;
-            rank5?: string | null;
-            rank6?: string | null;
-            rank7?: string | null;
-            rank8?: string | null;
-            rank9?: string | null;
-            /** Format: date-time */
-            updated_at: string;
+        LeaderboardRankings: {
+            /** Format: int64 */
+            count: number;
+            /** Format: int64 */
+            offset: number;
+            rankings: [
+                string,
+                number
+            ][];
+            /** Format: int64 */
+            total: number;
         };
         LoginModel: {
             password: string;
@@ -2025,16 +2002,22 @@ export interface components {
         };
         PlayerProfile: {
             player: components["schemas"]["PlayerModel"];
+            /** Format: int64 */
+            rank: number;
             solved_challenges: components["schemas"]["ChallengeModel"][];
             tag_solves: components["schemas"]["TagSolves"][];
+            user: components["schemas"]["UserModel"];
         };
         PlayerSummary: {
             achievements: components["schemas"]["AchievementModel"][];
-            player: components["schemas"]["PlayerModel"];
+            profile: components["schemas"]["PlayerProfile"];
             submissions: components["schemas"]["SubmissionModel"][];
-            tag_solves: components["schemas"]["TagSolves"][];
             unlocks: components["schemas"]["UnlockModel"][];
-            user: components["schemas"]["UserModel"];
+        };
+        Ranking: {
+            member: string;
+            /** Format: double */
+            score: number;
         };
         RegisterPlayer: {
             display_name: string;
@@ -6801,328 +6784,6 @@ export interface operations {
             };
         };
     };
-    list_leaderboards: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed leaderboards successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LeaderboardModel"][];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    create_leaderboard: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateLeaderboardSchema"];
-            };
-        };
-        responses: {
-            /** @description Created leaderboard successfully */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LeaderboardModel"];
-                };
-            };
-            /** @description Invalid request body format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No leaderboard found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    retrieve_leaderboard_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Retrieved leaderboard by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LeaderboardModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No leaderboard found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    delete_leaderboard_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Deleted leaderboard by id successfully */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No leaderboard found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    update_leaderboard_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateLeaderboardSchema"];
-            };
-        };
-        responses: {
-            /** @description Updated leaderboard by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LeaderboardModel"];
-                };
-            };
-            /** @description Invalid parameters/request body format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No leaderboard found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
     list_notifications: {
         parameters: {
             query?: never;
@@ -11276,6 +10937,123 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["VerificationResult"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    rankings: {
+        parameters: {
+            query: {
+                /** @description Offset of the rankings */
+                offset: number;
+                /** @description Number of players to get */
+                count: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed leaderboard rankings with offset and count successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LeaderboardRankings"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    top_10: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed top 10 rankings successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Ranking"][];
                 };
             };
             /** @description Invalid request body format */

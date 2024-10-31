@@ -108,6 +108,8 @@ use crate::schemas::*;
         invite::delete_by_id,
         invite::retrieve_team_by_id,
         invite::verify,
+        leaderboard::top_10,
+        leaderboard::rankings,
         notification::list,
         notification::create,
         notification::retrieve_by_id,
@@ -234,7 +236,9 @@ use crate::schemas::*;
             DetailedChallenge,
             PlayerSummary,
             TeamProfile,
-            TeamSummary
+            TeamSummary,
+            LeaderboardRankings,
+            Ranking,
         )
     ),
     modifiers(&SecurityAddon),
