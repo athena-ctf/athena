@@ -2,7 +2,10 @@ use std::time::Duration;
 
 use bollard::Docker;
 use chrono::Utc;
-use sea_orm::{ActiveModelTrait, ColumnTrait, DbConn, EntityTrait, IntoActiveModel, QueryFilter};
+use fred::prelude::{RedisPool, SortedSetsInterface};
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, DbConn, EntityTrait, IntoActiveModel, QueryFilter, QuerySelect,
+};
 use tokio::task::AbortHandle;
 
 use crate::errors::{Error, Result};
@@ -18,6 +21,26 @@ pub async fn remove_instances(docker_conn: &Docker, db_conn: &DbConn) -> Result<
         crate::docker::delete_instance(docker_conn, instance.container_id.clone()).await?;
         instance.into_active_model().delete(db_conn).await?;
     }
+
+    Ok(())
+}
+
+pub async fn load_leaderboard(db: &DbConn, pool: &RedisPool) -> Result<()> {
+    let player_scores = entity::player::Entity::find()
+        .select_only()
+        .columns([
+            entity::player::Column::Score,
+            entity::player::Column::DisplayName,
+        ])
+        .into_tuple::<(i32, String)>()
+        .all(db)
+        .await?
+        .into_iter()
+        .map(|(score, disp_name)| (f64::from(score), disp_name))
+        .collect::<Vec<_>>();
+
+    pool.zadd::<(), _, _>("leaderboard", None, None, false, false, player_scores)
+        .await?;
 
     Ok(())
 }

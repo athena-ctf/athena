@@ -19,6 +19,7 @@ use utoipa::OpenApi;
 
 use crate::errors::{Error, Result};
 use crate::service::{AppState, Settings};
+use crate::token::TokenManager;
 use crate::{docker, middleware};
 
 mod admin_routes;
@@ -70,11 +71,20 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
     let docker_client = docker::connect()?;
     let handles = tasks::run(&docker_client, &db_conn);
 
+    tasks::load_leaderboard(&db_conn, &persistent_client).await?;
+
+    let token_manager = TokenManager {
+        redis: persistent_client.clone(),
+        max_retries: settings.token.max_retries,
+        expiration_duration: settings.token.token_expiry_in_secs,
+    };
+
     axum::serve(
         listener,
         app(Arc::new(AppState {
             db_conn,
             settings: RwLock::new(settings),
+            token_manager,
             cache_client,
             persistent_client,
             docker_client,

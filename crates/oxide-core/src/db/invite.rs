@@ -8,7 +8,7 @@ use crate::errors::{Error, Result};
 crud_interface_db!(Invite);
 single_relation_db!(Invite, Team);
 
-pub async fn verify(id: Uuid, team_name: String, db: &DbConn) -> Result<()> {
+pub async fn verify(id: Uuid, team_name: String, db: &DbConn) -> Result<Uuid> {
     let Some(team_model) = Team::find()
         .filter(entity::team::Column::Name.eq(&team_name))
         .one(db)
@@ -30,7 +30,7 @@ pub async fn verify(id: Uuid, team_name: String, db: &DbConn) -> Result<()> {
         return Err(Error::BadRequest("invite used up".to_owned()));
     }
 
-    Ok(())
+    Ok(team_model.id)
 }
 
 pub async fn accept(id: Uuid, db: &DbConn) -> Result<()> {

@@ -6,10 +6,10 @@ include!(concat!(env!("OUT_DIR"), "/permissions.rs"));
 #[derive(Clone, Copy)]
 #[repr(u8)]
 pub enum Action {
-    Create = 0,
-    Read = 1,
-    Update = 2,
-    Delete = 3,
+    Create,
+    Read,
+    Update,
+    Delete,
 }
 
 pub fn can_do_action(action: Action, object: &str, role: usize) -> bool {

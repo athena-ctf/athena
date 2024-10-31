@@ -11,3 +11,6 @@ oxide-core = { path = "../oxide-core" }
 tokio = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = "0.3.18"
+
+[features]
+file-transport = ["oxide-core/file-transport"]

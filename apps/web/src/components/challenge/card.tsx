@@ -15,7 +15,14 @@ const difficulty = {
   medium: "fill-yellow-300 text-yellow-300",
   hard: "fill-red-500 text-red-500",
   extreme: " fill-purple-900 text-purple-900",
-};
+} as const;
+
+// TODO: add proper colors
+const stateColor = {
+  solved: "",
+  unsolved: "",
+  challenge_limit_reached: "",
+} as const;
 
 export function ChallengeCard({
   challengeSummary,
@@ -25,7 +32,7 @@ export function ChallengeCard({
   return (
     <div className="mx-[7%] my-2 cursor-pointer">
       <ChallengeModal challengeSummary={challengeSummary}>
-        <Card className="shadow-2xl">
+        <Card className={`shadow-2xl ${stateColor[challengeSummary.state]}`}>
           <CardHeader>
             <div className="flex place-content-center justify-between">
               <div className="flex place-items-center space-x-4">

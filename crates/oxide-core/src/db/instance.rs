@@ -27,7 +27,9 @@ pub async fn destroy(
     docker::delete_instance(docker_client, instance_model.container_id).await?;
     let delete_result = Instance::delete_by_id(id).exec(db).await?;
 
-    redis_client.del::<(), _>(format!("instance:{id}")).await?;
+    redis_client
+        .del::<(), _>(format!("instance:{}", id.simple()))
+        .await?;
     Ok(delete_result.rows_affected == 1)
 }
 

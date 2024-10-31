@@ -1,10 +1,10 @@
 import type { components } from "@repo/api";
 import { Card, CardContent } from "@repo/ui/components/card";
 import UserUpdateDialog from "@/components/user/update-dialog";
-import { sha256 } from "js-sha256";
 import { Mail } from "lucide-react";
-import { default as NextImage } from "next/image";
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { hash } from "@/utils/hash";
 
 export function UserProfileCard({
   player,
@@ -13,14 +13,18 @@ export function UserProfileCard({
   player: components["schemas"]["PlayerModel"];
   user: components["schemas"]["UserModel"];
 }) {
+  const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    hash(user.email).then(setUrl);
+  });
+
   return (
     <Card className="h-full">
       <CardContent className="flex flex-col place-items-center justify-around space-y-10">
         <div className="flex w-full flex-col items-center space-y-10 py-8">
-          <NextImage
-            src={`https://gravatar.com/avatar/${sha256(
-              user.email,
-            )}?d=robohash&s=200`}
+          <img
+            src={`https://gravatar.com/avatar/${url}?d=robohash&s=200`}
             alt={user.username}
             className="rounded-full"
             width={200}

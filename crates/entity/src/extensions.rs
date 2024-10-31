@@ -99,6 +99,7 @@ pub struct PartialChallenge {
     pub difficulty: DifficultyEnum,
     pub author_name: String,
     pub solves: i32,
+    pub container_meta: Option<ContainerMeta>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, FromJsonQueryResult, ToSchema)]

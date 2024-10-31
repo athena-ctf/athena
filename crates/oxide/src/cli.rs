@@ -27,7 +27,7 @@ pub struct RunSubCommand {
 }
 
 #[derive(FromArgs)]
-/// Generate openapi specs.
+/// Generate artifacts.
 #[argh(subcommand, name = "generate")]
 pub struct GenerateSubCommand {
     #[argh(positional)]

@@ -15,6 +15,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRegisterStore } from "@/stores/register";
 import { Link } from "@tanstack/react-router";
+import { fetchClient } from "@repo/api";
+import { toast } from "sonner";
 
 const detailsSchema = z
   .object({
@@ -37,14 +39,22 @@ export function DetailsForm({ next }: { next: () => void }) {
   const { setDisplayName, setEmail, setPassword, setUsername } =
     useRegisterStore();
 
-  function onSubmit(values: z.infer<typeof detailsSchema>) {
-    setDisplayName(values.display_name);
-    setEmail(values.email);
-    setPassword(values.password);
-    setUsername(values.username);
+  const onSubmit = async (values: z.infer<typeof detailsSchema>) => {
+    const resp = await fetchClient.GET("/auth/player/register/exists", {
+      params: { query: { email: values.email, username: values.username } },
+    });
 
-    next();
-  }
+    if (resp.error) {
+      toast.error(resp.error.message);
+    } else {
+      setDisplayName(values.display_name);
+      setEmail(values.email);
+      setPassword(values.password);
+      setUsername(values.username);
+
+      next();
+    }
+  };
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);

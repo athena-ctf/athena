@@ -8,6 +8,7 @@ import { Button } from "@repo/ui/components/button";
 import { Link, useLocation } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { CtfTimer } from "./ctf-timer";
+import { useIsMobile } from "@ui/hooks/use-mobile";
 
 export function SiteHeader({
   notifications,
@@ -19,12 +20,12 @@ export function SiteHeader({
   logout?: ReactNode;
 }) {
   const location = useLocation({ select: (path) => path.pathname });
+  const isMobile = useIsMobile();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex justify-between h-14 max-w-screen-2xl items-center">
-        <MainNav />
-        <MobileNav />
+        {isMobile ? <MobileNav /> : <MainNav />}
         <nav className="flex items-center justify-end space-x-2">
           <CtfTimer />
           <ModeToggle />

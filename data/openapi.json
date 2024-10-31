@@ -9639,7 +9639,7 @@
         "operationId": "player_get_current_logged_in",
         "responses": {
           "200": {
-            "description": "Password reset email sent successful",
+            "description": "Retrieved current logged in user successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -9700,7 +9700,7 @@
         },
         "responses": {
           "200": {
-            "description": "user logged in successfully",
+            "description": "Player logged in successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -9764,7 +9764,72 @@
         },
         "responses": {
           "200": {
-            "description": "Password reset email sent successful",
+            "description": "Registered user successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {}
+        ]
+      }
+    },
+    "/auth/player/register/exists": {
+      "get": {
+        "tags": [
+          "auth::player"
+        ],
+        "summary": "Check user exists",
+        "operationId": "player_register_exists",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email of user to check",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User existence check successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -9892,7 +9957,7 @@
         },
         "responses": {
           "200": {
-            "description": "Password reset email sent successful",
+            "description": "Reset password successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -10010,7 +10075,7 @@
         },
         "responses": {
           "200": {
-            "description": "user logged in successfully",
+            "description": "Refreshed token successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -10427,7 +10492,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/VerificationResult"
+                  "$ref": "#/components/schemas/FlagVerificationResult"
                 }
               }
             }
@@ -10581,7 +10646,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/VerificationResult"
+                  "$ref": "#/components/schemas/InviteVerificationResult"
                 }
               }
             }
@@ -12085,10 +12150,21 @@
       "FlagTypeEnum": {
         "type": "string",
         "enum": [
-          "peruser",
+          "per_user",
           "regex",
           "static"
         ]
+      },
+      "FlagVerificationResult": {
+        "type": "object",
+        "required": [
+          "is_correct"
+        ],
+        "properties": {
+          "is_correct": {
+            "type": "boolean"
+          }
+        }
       },
       "GroupEnum": {
         "type": "string",
@@ -12223,6 +12299,18 @@
           }
         }
       },
+      "InviteVerificationResult": {
+        "type": "object",
+        "required": [
+          "team_id"
+        ],
+        "properties": {
+          "team_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "JsonResponse": {
         "type": "object",
         "required": [
@@ -12338,6 +12426,16 @@
           "author_name": {
             "type": "string"
           },
+          "container_meta": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/ContainerMeta"
+              }
+            ]
+          },
           "description": {
             "type": "string"
           },
@@ -12364,9 +12462,9 @@
       "PlayerChallengeState": {
         "type": "string",
         "enum": [
-          "Solved",
-          "Unsolved",
-          "ChallengeLimitReached"
+          "solved",
+          "unsolved",
+          "challenge_limit_reached"
         ]
       },
       "PlayerModel": {
@@ -12505,6 +12603,21 @@
           }
         }
       },
+      "RegisterExistsQuery": {
+        "type": "object",
+        "required": [
+          "email",
+          "username"
+        ],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
       "RegisterPlayer": {
         "type": "object",
         "required": [
@@ -12512,9 +12625,8 @@
           "email",
           "username",
           "password",
-          "team_id",
-          "invite_id",
-          "token"
+          "token",
+          "team"
         ],
         "properties": {
           "display_name": {
@@ -12523,16 +12635,11 @@
           "email": {
             "type": "string"
           },
-          "invite_id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "password": {
             "type": "string"
           },
-          "team_id": {
-            "type": "string",
-            "format": "uuid"
+          "team": {
+            "$ref": "#/components/schemas/TeamRegister"
           },
           "token": {
             "type": "string"
@@ -12832,6 +12939,52 @@
           }
         }
       },
+      "TeamRegister": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "team_id",
+              "invite_id",
+              "kind"
+            ],
+            "properties": {
+              "invite_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "join"
+                ]
+              },
+              "team_id": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "team_name",
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "create"
+                ]
+              },
+              "team_name": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
       "TeamSummary": {
         "type": "object",
         "required": [
@@ -12928,16 +13081,16 @@
           {
             "type": "string",
             "enum": [
-              "Player"
+              "player"
             ]
           },
           {
             "type": "object",
             "required": [
-              "Admin"
+              "admin"
             ],
             "properties": {
-              "Admin": {
+              "admin": {
                 "$ref": "#/components/schemas/RoleEnum"
               }
             }
@@ -12994,8 +13147,8 @@
       "TokenType": {
         "type": "string",
         "enum": [
-          "Access",
-          "Refresh"
+          "access",
+          "refresh"
         ]
       },
       "UnlockModel": {
@@ -13078,17 +13231,6 @@
           },
           "username": {
             "type": "string"
-          }
-        }
-      },
-      "VerificationResult": {
-        "type": "object",
-        "required": [
-          "is_correct"
-        ],
-        "properties": {
-          "is_correct": {
-            "type": "boolean"
           }
         }
       },

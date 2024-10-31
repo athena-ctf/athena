@@ -1,7 +1,6 @@
 use entity::extensions::{HintSummary, PartialChallenge};
 pub use entity::prelude::*;
 use serde::{Deserialize, Serialize};
-use strum::{Display, EnumString};
 use utoipa::ToSchema;
 use uuid::Uuid;
 
@@ -34,19 +33,26 @@ pub struct VerifyFlagSchema {
     pub challenge_id: Uuid,
     pub flag: String,
 }
+
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
-pub struct VerificationResult {
+pub struct FlagVerificationResult {
     pub is_correct: bool,
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
+pub struct InviteVerificationResult {
+    pub team_id: Uuid,
+}
+
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, ToSchema)]
+#[serde(rename_all = "lowercase")]
 pub enum TokenClaimKind {
     Player,
     Admin(RoleEnum),
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize, ToSchema, Display, EnumString)]
-#[strum(serialize_all = "lowercase")]
+#[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
+#[serde(rename_all = "lowercase")]
 pub enum TokenType {
     Access,
     Refresh,
@@ -72,9 +78,15 @@ pub struct RegisterPlayer {
     pub email: String,
     pub username: String,
     pub password: String,
-    pub team_id: Uuid,
-    pub invite_id: Uuid,
     pub token: String,
+    pub team: TeamRegister,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+#[serde(tag = "kind", rename_all = "lowercase")]
+pub enum TeamRegister {
+    Join { team_id: Uuid, invite_id: Uuid },
+    Create { team_name: String },
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -84,6 +96,7 @@ pub struct VerifyInviteSchema {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+#[serde(rename_all = "snake_case")]
 pub enum PlayerChallengeState {
     Solved,
     Unsolved,
@@ -181,4 +194,10 @@ pub struct RankingQuery {
 pub struct Ranking {
     pub member: String,
     pub score: f64,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct RegisterExistsQuery {
+    pub email: String,
+    pub username: String,
 }

@@ -28,13 +28,11 @@ lettre = { version = "0.11.9", default-features = false, features = [
     "serde",
 ] }
 oxide-macros = { path = "../oxide-macros" }
-phf = { version = "0.11.2", features = ["macros"] }
 regex = "1.10.6"
 ring = "0.17.8"
 sea-orm = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-strum = { version = "0.26.3", features = ["derive"] }
 thiserror = "1.0.64"
 tokio = { workspace = true }
 tower-http = { version = "0.6.1", features = ["full"] }
@@ -50,4 +48,3 @@ toml = "0.8.19"
 
 [features]
 file-transport = ["lettre/file-transport"]
-wrapped_router = []

@@ -27,7 +27,7 @@ pub async fn unlock(
 
     pool.zincrby::<(), _, _>(
         "leaderboard",
-        -hint_model.cost as f64,
+        f64::from(-hint_model.cost),
         &player_model.display_name,
     )
     .await?;

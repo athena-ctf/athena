@@ -2,8 +2,9 @@ use std::collections::BTreeMap;
 use std::path::Path;
 
 use quote::quote;
+use serde::Deserialize;
 
-#[derive(serde::Deserialize, Clone, Copy)]
+#[derive(Deserialize, Clone, Copy)]
 struct ObjectPerms {
     create: RoleEnum,
     read: RoleEnum,
@@ -11,7 +12,7 @@ struct ObjectPerms {
     delete: RoleEnum,
 }
 
-#[derive(serde::Deserialize, Clone, Copy)]
+#[derive(Deserialize, Clone, Copy)]
 #[serde(rename_all = "lowercase")]
 #[repr(u8)]
 pub enum RoleEnum {
@@ -22,7 +23,7 @@ pub enum RoleEnum {
     Moderator,
 }
 
-#[derive(serde::Deserialize)]
+#[derive(Deserialize)]
 struct PermissionsConfig(BTreeMap<String, ObjectPerms>);
 
 fn main() {

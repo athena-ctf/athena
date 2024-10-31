@@ -10,8 +10,8 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    ChallengeModel, CreateFlagSchema, CreateSubmissionSchema, FlagModel, JsonResponse, PlayerModel,
-    Submission, TokenClaims, VerificationResult, VerifyFlagSchema,
+    ChallengeModel, CreateFlagSchema, CreateSubmissionSchema, FlagModel, FlagVerificationResult,
+    JsonResponse, PlayerModel, Submission, TokenClaims, VerifyFlagSchema,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -26,7 +26,7 @@ single_relation_api!(Flag, Challenge);
     request_body = VerifyFlagSchema,
     operation_id = "verify_flag",
     responses(
-        (status = 200, description = "Verified flag successfully", body = VerificationResult),
+        (status = 200, description = "Verified flag successfully", body = FlagVerificationResult),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
@@ -38,7 +38,7 @@ pub async fn verify(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
     Json(body): Json<VerifyFlagSchema>,
-) -> Result<Json<VerificationResult>> {
+) -> Result<Json<FlagVerificationResult>> {
     let Some(player_model) = db::player::retrieve(claims.id, &state.db_conn).await? else {
         return Err(Error::NotFound("Player does not exist".to_owned()));
     };
@@ -81,7 +81,7 @@ pub async fn verify(
 
         state
             .persistent_client
-            .zincrby::<(), _, _>("leaderboard", points as f64, &player_model.display_name)
+            .zincrby::<(), _, _>("leaderboard", f64::from(points), &player_model.display_name)
             .await?;
 
         let active_model = player_model_cloned.into_active_model();
@@ -107,5 +107,5 @@ pub async fn verify(
         .await?;
     }
 
-    Ok(Json(VerificationResult { is_correct }))
+    Ok(Json(FlagVerificationResult { is_correct }))
 }

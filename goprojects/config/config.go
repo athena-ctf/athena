@@ -205,6 +205,9 @@ type Settings struct {
 
 	// Smtp corresponds to the JSON schema field "smtp".
 	Smtp Smtp `json:"smtp"`
+
+	// Token corresponds to the JSON schema field "token".
+	Token Token `json:"token"`
 }
 
 type Smtp struct {
@@ -241,4 +244,12 @@ type Time struct {
 
 	// Start corresponds to the JSON schema field "start".
 	Start time.Time `json:"start"`
+}
+
+type Token struct {
+	// MaxRetries corresponds to the JSON schema field "max_retries".
+	MaxRetries int `json:"max_retries"`
+
+	// TokenExpiryInSecs corresponds to the JSON schema field "token_expiry_in_secs".
+	TokenExpiryInSecs int `json:"token_expiry_in_secs"`
 }

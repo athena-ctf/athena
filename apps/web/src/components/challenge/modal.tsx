@@ -131,18 +131,19 @@ export function ChallengeModal({
                 </Tooltip>
               </TooltipProvider>
             </VerticalTabsTrigger>
-            {challengeSummary.challenge.container_details?.per_user && (
-              <VerticalTabsTrigger value="instance">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Server />
-                    </TooltipTrigger>
-                    <TooltipContent>Create Instance</TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </VerticalTabsTrigger>
-            )}
+            {challengeSummary.challenge.container_meta &&
+              !challengeSummary.challenge.container_meta.single_instance && (
+                <VerticalTabsTrigger value="instance">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Server />
+                      </TooltipTrigger>
+                      <TooltipContent>Create Instance</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </VerticalTabsTrigger>
+              )}
             {challengeDetails?.files.length && (
               <VerticalTabsTrigger value="files">
                 <TooltipProvider>

@@ -3,12 +3,12 @@ import { create } from "zustand";
 type Team =
   | {
       kind: "join";
-      teamName: string;
-      inviteId: string;
+      team_id: string;
+      invite_id: string;
     }
   | {
       kind: "create";
-      teamName: string;
+      team_name: string;
     };
 
 export interface RegisterFormState {
@@ -32,7 +32,7 @@ export const useRegisterStore = create<RegisterFormState>()((set) => ({
   email: "",
   team: {
     kind: "create",
-    teamName: "",
+    team_name: "",
   },
   token: "",
 

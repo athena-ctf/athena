@@ -12,6 +12,7 @@ use tokio::sync::RwLock;
 
 use crate::errors::Result;
 use crate::schemas::{TokenClaimKind, TokenClaims, TokenPair, TokenType};
+use crate::token::TokenManager;
 
 pub struct AppState {
     pub db_conn: sea_orm::DatabaseConnection,
@@ -20,6 +21,8 @@ pub struct AppState {
     pub cache_client: RedisPool,
     pub persistent_client: RedisPool,
     pub docker_client: Docker,
+
+    pub token_manager: TokenManager,
 
     #[cfg(feature = "file-transport")]
     pub mail_transport: lettre::FileTransport,

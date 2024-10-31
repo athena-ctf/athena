@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::iter::once_with;
 
 use bollard::container::{
     Config as ContainerConfig, CreateContainerOptions, RemoveContainerOptions,
@@ -22,6 +21,13 @@ pub async fn create_instance(
     docker: &Docker,
     details: ContainerMeta,
 ) -> Result<String> {
+    let mut env = details
+        .env
+        .iter()
+        .map(|(k, v)| format!("{k}={v}"))
+        .collect::<Vec<_>>();
+    env.push(format!("FLAG=\"{flag}\""));
+
     let resp = docker
         .create_container(
             Some(CreateContainerOptions {
@@ -31,14 +37,7 @@ pub async fn create_instance(
             ContainerConfig {
                 image: Some(details.image),
                 cmd: Some(vec![details.cmd]),
-                env: Some(
-                    details
-                        .env
-                        .iter()
-                        .map(|(k, v)| format!("{k}={v}"))
-                        .chain(once_with(|| format!("FLAG=\"{flag}\"")))
-                        .collect(),
-                ),
+                env: Some(env),
                 exposed_ports: Some(
                     details
                         .ports

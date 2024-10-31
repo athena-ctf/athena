@@ -2,7 +2,7 @@ use std::str::FromStr;
 use std::sync::Arc;
 
 use askama::Template;
-use axum::extract::State;
+use axum::extract::{Query, State};
 use axum::{Extension, Json};
 use entity::prelude::*;
 use fred::prelude::SortedSetsInterface;
@@ -11,15 +11,44 @@ use lettre::message::header::ContentType;
 use lettre::message::{Mailbox, MultiPart, SinglePart};
 use lettre::{Message, Transport};
 
+use crate::db;
 use crate::db::player;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    CreatePlayerSchema, JsonResponse, LoginModel, RegisterPlayer, ResetPasswordSchema,
-    SendTokenSchema, TokenClaims, TokenPair,
+    CreatePlayerSchema, JsonResponse, LoginModel, RegisterExistsQuery, RegisterPlayer,
+    ResetPasswordSchema, SendTokenSchema, TeamRegister, TokenClaims, TokenPair,
 };
 use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
-use crate::{db, token};
+
+#[utoipa::path(
+    get,
+    path = "/auth/player/register/exists",
+    params(
+        ("email" = String, Query, description = "Email of user to check")
+    ),
+    operation_id = "player_register_exists",
+    responses(
+        (status = 200, description = "User existence check successfully", body = JsonResponse),
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
+    ),
+    security(())
+)]
+/// Check user exists
+pub async fn register_exists(
+    state: State<Arc<AppState>>,
+    Query(query): Query<RegisterExistsQuery>,
+) -> Result<()> {
+    if db::user::exists(query.email, query.username, &state.db_conn).await? {
+        return Err(Error::BadRequest(
+            "User with username or email already exists".to_owned(),
+        ));
+    }
+
+    Ok(())
+}
 
 // TODO: add validation for invite usage and already registered user
 #[utoipa::path(
@@ -28,7 +57,7 @@ use crate::{db, token};
     request_body = RegisterPlayer,
     operation_id = "player_register",
     responses(
-        (status = 200, description = "Password reset email sent successful", body = JsonResponse),
+        (status = 200, description = "Registered user successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 404, description = "User not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
@@ -40,20 +69,20 @@ pub async fn register(
     state: State<Arc<AppState>>,
     Json(body): Json<RegisterPlayer>,
 ) -> Result<Json<JsonResponse>> {
-    if token::check(
-        &body.email,
-        &body.token,
-        "register",
-        state.persistent_client.clone(),
-    )
-    .await?
-    {
+    let verified = state
+        .token_manager
+        .verify("register", &body.email, &body.token)
+        .await?;
+
+    if verified.is_invalid() {
         return Err(Error::BadRequest("Incorrect token".to_owned()));
+    } else if verified.is_retries_exceeded() {
+        return Err(Error::BadRequest("Too many retries".to_owned()));
     }
 
     let user = db::user::create(
         CreateUserSchema {
-            email: body.email,
+            email: body.email.clone(),
             username: body.username,
             password: body.password,
             group: GroupEnum::Player,
@@ -74,11 +103,34 @@ pub async fn register(
         )
         .await?;
 
+    let team_id = match body.team {
+        TeamRegister::Join { team_id, invite_id } => {
+            db::invite::accept(invite_id, &state.db_conn).await?;
+
+            team_id
+        }
+
+        TeamRegister::Create { team_name } => {
+            let team_model = db::team::create(
+                CreateTeamSchema {
+                    email: body.email,
+                    name: team_name,
+                    ban_id: None,
+                    score: 0,
+                },
+                &state.db_conn,
+            )
+            .await?;
+
+            team_model.id
+        }
+    };
+
     db::player::create(
         CreatePlayerSchema {
             user_id: user.id,
             display_name: body.display_name,
-            team_id: body.team_id,
+            team_id,
             ban_id: None,
             discord_id: None,
             score: 0,
@@ -86,8 +138,6 @@ pub async fn register(
         &state.db_conn,
     )
     .await?;
-
-    db::invite::accept(body.invite_id, &state.db_conn).await?;
 
     Ok(Json(JsonResponse {
         message: "Successfully registered".to_string(),
@@ -112,14 +162,10 @@ pub async fn register_send_token(
     state: State<Arc<AppState>>,
     Json(body): Json<SendTokenSchema>,
 ) -> Result<Json<JsonResponse>> {
-    let token = token::create();
-    token::store(
-        &body.email,
-        &token,
-        "register",
-        state.persistent_client.clone(),
-    )
-    .await?;
+    let token = state
+        .token_manager
+        .generate("register", &body.email)
+        .await?;
 
     let email = Message::builder()
         .from(Mailbox::from_str(&state.settings.read().await.smtp.from).unwrap())
@@ -157,7 +203,7 @@ pub async fn register_send_token(
     request_body = ResetPasswordSchema,
     operation_id = "player_reset_password",
     responses(
-        (status = 200, description = "Password reset email sent successful", body = JsonResponse),
+        (status = 200, description = "Reset password successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
@@ -168,15 +214,15 @@ pub async fn reset_password(
     state: State<Arc<AppState>>,
     Json(body): Json<ResetPasswordSchema>,
 ) -> Result<Json<JsonResponse>> {
-    if token::check(
-        &body.email,
-        &body.token,
-        "register",
-        state.persistent_client.clone(),
-    )
-    .await?
-    {
+    let verified = state
+        .token_manager
+        .verify("reset", &body.email, &body.token)
+        .await?;
+
+    if verified.is_invalid() {
         return Err(Error::BadRequest("Incorrect token".to_owned()));
+    } else if verified.is_retries_exceeded() {
+        return Err(Error::BadRequest("Too many retries".to_owned()));
     }
 
     let Some(user_model) = player::retrieve_by_email(body.email, &state.db_conn).await? else {
@@ -208,20 +254,12 @@ pub async fn reset_password_send_token(
     state: State<Arc<AppState>>,
     Json(body): Json<SendTokenSchema>,
 ) -> Result<Json<JsonResponse>> {
-    let token = token::create();
-
-    token::store(
-        &body.email,
-        &token,
-        "register",
-        state.persistent_client.clone(),
-    )
-    .await?;
+    let token = state.token_manager.generate("reset", &body.email).await?;
 
     let email = Message::builder()
         .from(Mailbox::from_str(&state.settings.read().await.smtp.from).unwrap())
         .to(body.email.parse().unwrap())
-        .subject("Verification email for Athena CTF")
+        .subject("Reset email for Athena CTF")
         .multipart(
             MultiPart::alternative()
                 .singlepart(
@@ -254,7 +292,7 @@ pub async fn reset_password_send_token(
     request_body = LoginModel,
     operation_id = "player_login",
     responses(
-        (status = 200, description = "user logged in successfully", body = TokenPair),
+        (status = 200, description = "Player logged in successfully", body = TokenPair),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 404, description = "User not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
@@ -296,7 +334,7 @@ pub async fn login(
     request_body = TokenPair,
     operation_id = "player_refresh_token",
     responses(
-        (status = 200, description = "user logged in successfully", body = TokenPair),
+        (status = 200, description = "Refreshed token successfully", body = TokenPair),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 404, description = "User not found", body = JsonResponse),
@@ -332,7 +370,7 @@ pub async fn refresh_token(
     path = "/auth/player/current",
     operation_id = "player_get_current_logged_in",
     responses(
-        (status = 200, description = "Password reset email sent successful", body = PlayerModel),
+        (status = 200, description = "Retrieved current logged in user successfully", body = PlayerModel),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 404, description = "User not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)

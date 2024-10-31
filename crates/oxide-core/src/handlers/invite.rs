@@ -8,7 +8,7 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    CreateInviteSchema, InviteModel, JsonResponse, TeamModel, VerificationResult,
+    CreateInviteSchema, InviteModel, InviteVerificationResult, JsonResponse, TeamModel,
     VerifyInviteSchema,
 };
 use crate::service::{AppState, CachedJson};
@@ -23,7 +23,7 @@ single_relation_api!(Invite, Team);
     request_body = VerifyInviteSchema,
     operation_id = "verify_invite",
     responses(
-        (status = 200, description = "Verified invite successfully", body = VerificationResult),
+        (status = 200, description = "Verified invite successfully", body = InviteVerificationResult),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
@@ -34,7 +34,8 @@ single_relation_api!(Invite, Team);
 pub async fn verify(
     state: State<Arc<AppState>>,
     Json(body): Json<VerifyInviteSchema>,
-) -> Result<Json<VerificationResult>> {
-    db::invite::verify(body.invite_id, body.team_name, &state.db_conn).await?;
-    Ok(Json(VerificationResult { is_correct: true }))
+) -> Result<Json<InviteVerificationResult>> {
+    Ok(Json(InviteVerificationResult {
+        team_id: db::invite::verify(body.invite_id, body.team_name, &state.db_conn).await?,
+    }))
 }

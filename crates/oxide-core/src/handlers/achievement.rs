@@ -50,7 +50,11 @@ pub async fn create(
 
     state
         .persistent_client
-        .zincrby::<(), _, _>("leaderboard", body.prize as f64, &player_model.display_name)
+        .zincrby::<(), _, _>(
+            "leaderboard",
+            f64::from(body.prize),
+            &player_model.display_name,
+        )
         .await?;
 
     active_model.score = ActiveValue::Set(player_model.score + body.prize);
@@ -90,7 +94,7 @@ pub async fn delete_by_id(
             .persistent_client
             .zincrby::<(), _, _>(
                 "leaderboard",
-                -achievement_model.prize as f64,
+                f64::from(-achievement_model.prize),
                 &player_model.display_name,
             )
             .await?;

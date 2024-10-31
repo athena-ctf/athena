@@ -73,7 +73,7 @@ pub async fn retrieve_profile(
         .await?;
 
     for submitted_challenge in &solved_challenges {
-        let tags = crate::db::challenge::related_tags(&submitted_challenge, db).await?;
+        let tags = crate::db::challenge::related_tags(submitted_challenge, db).await?;
         for tag in tags {
             tags_map
                 .entry(tag.value)

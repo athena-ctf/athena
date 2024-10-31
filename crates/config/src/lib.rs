@@ -197,6 +197,12 @@ pub struct Discord {
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+pub struct Token {
+    pub max_retries: u8, // Max 256 retries
+    pub token_expiry_in_secs: i64,
+}
+
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Settings {
     pub ctf: Ctf,
     pub database: Database,
@@ -206,6 +212,7 @@ pub struct Settings {
     pub smtp: Smtp,
     pub docker: Docker,
     pub discord: Discord,
+    pub token: Token,
 }
 
 fn gen_random_password() -> String {
@@ -292,6 +299,10 @@ impl Default for Settings {
                 logs_channel_id: String::new(),
                 general_channel_id: String::new(),
                 bot_token: String::new(),
+            },
+            token: Token {
+                max_retries: 10,
+                token_expiry_in_secs: 3600,
             },
         }
     }

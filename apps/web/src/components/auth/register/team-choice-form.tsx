@@ -52,19 +52,23 @@ export function ChooseTeamForm({
 
     if (resp.error) {
       toast.error("Invalid invite id");
+      console.error(resp.error.message);
     } else {
       setTeam({
         kind: "join",
-        teamName: values.teamName,
-        inviteId: values.inviteId,
+        team_id: resp.data.team_id,
+        invite_id: values.inviteId,
       });
 
-      const resp = await fetchClient.POST("/auth/player/register/send-token", {
-        body: { email },
-      });
+      const respSendToken = await fetchClient.POST(
+        "/auth/player/register/send-token",
+        {
+          body: { email },
+        },
+      );
 
-      if (resp.error) {
-        toast.error(resp.error.message);
+      if (respSendToken.error) {
+        toast.error(respSendToken.error.message);
       } else {
         toast.info("Sent token to email");
         next();
@@ -82,7 +86,7 @@ export function ChooseTeamForm({
   ) => {
     setTeam({
       kind: "create",
-      teamName: values.teamName,
+      team_name: values.teamName,
     });
 
     const resp = await fetchClient.POST("/auth/player/register/send-token", {

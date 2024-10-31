@@ -1313,6 +1313,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/player/register/exists": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Check user exists */
+        get: operations["player_register_exists"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/player/register/send-token": {
         parameters: {
             query?: never;
@@ -1888,7 +1905,10 @@ export interface components {
             value: string;
         };
         /** @enum {string} */
-        FlagTypeEnum: "peruser" | "regex" | "static";
+        FlagTypeEnum: "per_user" | "regex" | "static";
+        FlagVerificationResult: {
+            is_correct: boolean;
+        };
         /** @enum {string} */
         GroupEnum: "admin" | "player";
         HintModel: {
@@ -1937,6 +1957,10 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
+        InviteVerificationResult: {
+            /** Format: uuid */
+            team_id: string;
+        };
         JsonResponse: {
             message: string;
         };
@@ -1970,6 +1994,7 @@ export interface components {
         };
         PartialChallenge: {
             author_name: string;
+            container_meta?: null | components["schemas"]["ContainerMeta"];
             description: string;
             difficulty: components["schemas"]["DifficultyEnum"];
             /** Format: uuid */
@@ -1981,7 +2006,7 @@ export interface components {
             title: string;
         };
         /** @enum {string} */
-        PlayerChallengeState: "Solved" | "Unsolved" | "ChallengeLimitReached";
+        PlayerChallengeState: "solved" | "unsolved" | "challenge_limit_reached";
         PlayerModel: {
             /** Format: uuid */
             ban_id?: string | null;
@@ -2019,14 +2044,15 @@ export interface components {
             /** Format: double */
             score: number;
         };
+        RegisterExistsQuery: {
+            email: string;
+            username: string;
+        };
         RegisterPlayer: {
             display_name: string;
             email: string;
-            /** Format: uuid */
-            invite_id: string;
             password: string;
-            /** Format: uuid */
-            team_id: string;
+            team: components["schemas"]["TeamRegister"];
             token: string;
             username: string;
         };
@@ -2117,6 +2143,18 @@ export interface components {
             tag_solves: components["schemas"]["TagSolves"][];
             team: components["schemas"]["TeamModel"];
         };
+        TeamRegister: {
+            /** Format: uuid */
+            invite_id: string;
+            /** @enum {string} */
+            kind: "join";
+            /** Format: uuid */
+            team_id: string;
+        } | {
+            /** @enum {string} */
+            kind: "create";
+            team_name: string;
+        };
         TeamSummary: {
             achievements: components["schemas"]["AchievementModel"][];
             members: components["schemas"]["PlayerProfile"][];
@@ -2139,8 +2177,8 @@ export interface components {
         };
         /** @enum {string} */
         TicketStatusEnum: "closed" | "open" | "resolved";
-        TokenClaimKind: "Player" | {
-            Admin: components["schemas"]["RoleEnum"];
+        TokenClaimKind: "player" | {
+            admin: components["schemas"]["RoleEnum"];
         };
         TokenClaims: {
             /** Format: int64 */
@@ -2157,7 +2195,7 @@ export interface components {
             refresh_token: string;
         };
         /** @enum {string} */
-        TokenType: "Access" | "Refresh";
+        TokenType: "access" | "refresh";
         UnlockModel: {
             /** Format: date-time */
             created_at: string;
@@ -2184,9 +2222,6 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
             username: string;
-        };
-        VerificationResult: {
-            is_correct: boolean;
         };
         VerifyFlagSchema: {
             /** Format: uuid */
@@ -10169,7 +10204,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Password reset email sent successful */
+            /** @description Retrieved current logged in user successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -10220,7 +10255,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description user logged in successfully */
+            /** @description Player logged in successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -10271,7 +10306,57 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Password reset email sent successful */
+            /** @description Registered user successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    player_register_exists: {
+        parameters: {
+            query: {
+                /** @description Email of user to check */
+                email: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User existence check successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -10373,7 +10458,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Password reset email sent successful */
+            /** @description Reset password successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -10466,7 +10551,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description user logged in successfully */
+            /** @description Refreshed token successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -10808,7 +10893,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["VerificationResult"];
+                    "application/json": components["schemas"]["FlagVerificationResult"];
                 };
             };
             /** @description Invalid request body format */
@@ -10936,7 +11021,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["VerificationResult"];
+                    "application/json": components["schemas"]["InviteVerificationResult"];
                 };
             };
             /** @description Invalid request body format */

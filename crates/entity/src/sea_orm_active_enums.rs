@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
     utoipa :: ToSchema,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "category_enum")]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum CategoryEnum {
     #[sea_orm(string_value = "player")]
     Player,
@@ -40,7 +40,7 @@ pub enum CategoryEnum {
     db_type = "Enum",
     enum_name = "challenge_status_enum"
 )]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum ChallengeStatusEnum {
     #[sea_orm(string_value = "active")]
     Active,
@@ -62,7 +62,7 @@ pub enum ChallengeStatusEnum {
     utoipa :: ToSchema,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "difficulty_enum")]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum DifficultyEnum {
     #[sea_orm(string_value = "easy")]
     Easy,
@@ -86,7 +86,7 @@ pub enum DifficultyEnum {
     utoipa :: ToSchema,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "flag_type_enum")]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum FlagTypeEnum {
     #[sea_orm(string_value = "per_user")]
     PerUser,
@@ -108,7 +108,7 @@ pub enum FlagTypeEnum {
     utoipa :: ToSchema,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "group_enum")]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum GroupEnum {
     #[sea_orm(string_value = "admin")]
     Admin,
@@ -128,7 +128,7 @@ pub enum GroupEnum {
     utoipa :: ToSchema,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "role_enum")]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum RoleEnum {
     #[sea_orm(string_value = "analyst")]
     Analyst,
@@ -154,7 +154,7 @@ pub enum RoleEnum {
     utoipa :: ToSchema,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "ticket_status_enum")]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum TicketStatusEnum {
     #[sea_orm(string_value = "closed")]
     Closed,

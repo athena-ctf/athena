@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::future::Future;
 use std::sync::LazyLock;
 
 use async_stream::stream;
@@ -22,15 +21,7 @@ use uuid::Uuid;
 static CONNECTED_CLIENTS: LazyLock<RwLock<HashMap<Uuid, Sender<entity::notification::Model>>>> =
     LazyLock::new(|| RwLock::new(HashMap::new()));
 
-pub async fn start_listening<F, Fut>(
-    channel_name: &str,
-    pool: &Pool<Postgres>,
-    call_back: F,
-) -> Result<(), SqlxError>
-where
-    F: Fn(entity::notification::Model) -> Fut + Send + Sync,
-    Fut: Future<Output = ()> + Send,
-{
+pub async fn start_listening(channel_name: &str, pool: &Pool<Postgres>) -> Result<(), SqlxError> {
     let mut listener = PgListener::connect_with(pool).await.unwrap();
     listener.listen(channel_name).await?;
     loop {
@@ -53,11 +44,11 @@ async fn main() {
     tracing_subscriber::registry()
         .with(tracing_subscriber::fmt::layer())
         .init();
-    let settings = config::Settings::new("").unwrap(); // TODO
+    let settings = config::Settings::new(&std::env::args().nth(1).unwrap()).unwrap();
 
     let pool = sqlx::PgPool::connect(&settings.db_url()).await.unwrap();
 
-    start_listening(&settings.database.listener_channel, &pool, call_back)
+    start_listening(&settings.database.listener_channel, &pool)
         .await
         .unwrap();
 

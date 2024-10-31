@@ -11,6 +11,7 @@ use imap_proto::NameAttribute;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
 pub enum MailboxKind {
     Junk,
     Trash,

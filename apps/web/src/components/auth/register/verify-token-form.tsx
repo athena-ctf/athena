@@ -34,10 +34,9 @@ export function VerifyTokenForm({ prev }: { prev: () => void }) {
       body: {
         display_name: store.displayName,
         email: store.email,
-        invite_id: string,
         password: store.password,
-        team_id: string,
         username: store.username,
+        team: store.team,
         token: values.token,
       },
     });

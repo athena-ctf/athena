@@ -10,7 +10,8 @@
     "file_storage",
     "jwt",
     "redis",
-    "smtp"
+    "smtp",
+    "token"
   ],
   "properties": {
     "ctf": {
@@ -36,6 +37,9 @@
     },
     "smtp": {
       "$ref": "#/definitions/Smtp"
+    },
+    "token": {
+      "$ref": "#/definitions/Token"
     }
   },
   "definitions": {
@@ -392,6 +396,24 @@
         "start": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "Token": {
+      "type": "object",
+      "required": [
+        "max_retries",
+        "token_expiry_in_secs"
+      ],
+      "properties": {
+        "max_retries": {
+          "type": "integer",
+          "format": "uint8",
+          "minimum": 0.0
+        },
+        "token_expiry_in_secs": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     }
