@@ -2,14 +2,15 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use axum::response::IntoResponse;
 use axum::Json;
-use bollard::Docker;
 pub use config::Settings;
 use entity::prelude::*;
 use fred::prelude::*;
 use jsonwebtoken::{EncodingKey, Header};
+use lettre::Tokio1Executor;
 use serde::Serialize;
 use tokio::sync::RwLock;
 
+use crate::docker::DockerManager;
 use crate::errors::Result;
 use crate::schemas::{TokenClaimKind, TokenClaims, TokenPair, TokenType};
 use crate::token::TokenManager;
@@ -20,15 +21,15 @@ pub struct AppState {
 
     pub cache_client: RedisPool,
     pub persistent_client: RedisPool,
-    pub docker_client: Docker,
+    pub docker_manager: DockerManager,
 
     pub token_manager: TokenManager,
 
     #[cfg(feature = "file-transport")]
-    pub mail_transport: lettre::FileTransport,
+    pub mail_transport: lettre::AsyncFileTransport<Tokio1Executor>,
 
     #[cfg(not(feature = "file-transport"))]
-    pub mail_transport: lettre::SmtpTransport,
+    pub mail_transport: lettre::AsyncSmtpTransport<Tokio1Executor>,
 }
 
 fn generate_token_pair<F>(token_claims_fn: F, settings: &config::Jwt) -> Result<TokenPair>

@@ -9,6 +9,7 @@ mod admin;
 mod ban;
 mod challenge;
 mod challenge_tag;
+mod container;
 mod file;
 mod flag;
 mod hint;
@@ -31,6 +32,7 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(ban::router())
             .merge(challenge::router())
             .merge(challenge_tag::router())
+            .merge(container::router())
             .merge(file::router())
             .merge(flag::router())
             .merge(hint::router())

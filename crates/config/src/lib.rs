@@ -38,8 +38,6 @@ pub struct Ctf {
     pub domain: String,
     pub description: String,
     pub time: Time,
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub challenge: Option<Challenge>,
     pub sponsors: IndexMap<String, Vec<Sponsor>>,
     pub prizes: IndexMap<String, Vec<String>>,
 }
@@ -174,7 +172,13 @@ pub struct Smtp {
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Challenge {
-    pub max_attempts: usize,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub max_attempts: Option<usize>,
+    pub container_registry: String,
+    pub registry_username: String,
+    pub registry_password: String,
+    pub container_timeout: i64,
+    pub user_flag_len: usize,
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
@@ -213,6 +217,7 @@ pub struct Settings {
     pub docker: Docker,
     pub discord: Discord,
     pub token: Token,
+    pub challenge: Challenge,
 }
 
 fn gen_random_password() -> String {
@@ -233,7 +238,6 @@ impl Default for Settings {
                     freeze: Duration::from_secs(24 * 60 * 60),
                     start: Utc::now(),
                 },
-                challenge: Some(Challenge { max_attempts: 10 }),
                 sponsors: IndexMap::new(),
                 prizes: IndexMap::new(),
             },
@@ -303,6 +307,14 @@ impl Default for Settings {
             token: Token {
                 max_retries: 10,
                 token_expiry_in_secs: 3600,
+            },
+            challenge: Challenge {
+                max_attempts: None,
+                container_registry: "registry.athena.io".to_owned(),
+                registry_username: "athena".to_owned(),
+                registry_password: gen_random_password(),
+                container_timeout: 900,
+                user_flag_len: 20,
             },
         }
     }

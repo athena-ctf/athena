@@ -9,7 +9,7 @@ use fred::prelude::SortedSetsInterface;
 use jsonwebtoken::{DecodingKey, Validation};
 use lettre::message::header::ContentType;
 use lettre::message::{Mailbox, MultiPart, SinglePart};
-use lettre::{Message, Transport};
+use lettre::{AsyncTransport, Message};
 
 use crate::db;
 use crate::db::player;
@@ -190,7 +190,11 @@ pub async fn register_send_token(
         )
         .unwrap();
 
-    state.mail_transport.send(&email).unwrap();
+    tokio::spawn(async move {
+        if let Err(err) = state.mail_transport.send(email).await {
+            tracing::error!("{err:?}");
+        }
+    });
 
     Ok(Json(JsonResponse {
         message: "Successfully sent mail".to_owned(),
@@ -279,7 +283,11 @@ pub async fn reset_password_send_token(
         )
         .unwrap();
 
-    state.mail_transport.send(&email).unwrap();
+    tokio::spawn(async move {
+        if let Err(err) = state.mail_transport.send(email).await {
+            tracing::error!("{err:?}");
+        }
+    });
 
     Ok(Json(JsonResponse {
         message: "Successfully sent mail".to_owned(),

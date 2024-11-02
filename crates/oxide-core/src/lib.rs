@@ -10,3 +10,9 @@ pub mod schemas;
 pub mod service;
 pub mod templates;
 pub mod token;
+
+pub fn gen_random(size: usize) -> String {
+    std::iter::repeat_with(fastrand::alphanumeric)
+        .take(size)
+        .collect()
+}

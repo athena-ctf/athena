@@ -54,10 +54,9 @@ pub async fn verify(
             .settings
             .read()
             .await
-            .ctf
             .challenge
-            .as_ref()
-            .is_some_and(|limit| submission_model.flags.len() == limit.max_attempts)
+            .max_attempts
+            .is_some_and(|max_attempts| submission_model.flags.len() == max_attempts)
         {
             return Err(Error::BadRequest("submission limit reached".to_string()));
         }

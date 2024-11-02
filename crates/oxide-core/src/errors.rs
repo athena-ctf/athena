@@ -43,8 +43,13 @@ pub enum Error {
     #[error("Redis client did not reply as intended: {0}")]
     Redis(#[from] fred::error::RedisError),
 
+    #[cfg(not(feature = "file-transport"))]
     #[error("Could not send mail: {0}")]
-    Smtp(#[from] lettre::transport::smtp::Error),
+    MailSmtp(#[from] lettre::transport::smtp::Error),
+
+    #[cfg(feature = "file-transport")]
+    #[error("Could not store mail: {0}")]
+    MailFile(#[from] lettre::transport::file::Error),
 
     #[error("Bad Request: {0}")]
     BadRequest(String),

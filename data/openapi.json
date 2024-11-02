@@ -2118,6 +2118,92 @@
         }
       }
     },
+    "/admin/challenge/{id}/containers": {
+      "get": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "List challenge container by id",
+        "operationId": "list_challenge_containers_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listed challengecontainers by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContainerModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/challenge/{id}/files": {
       "get": {
         "tags": [
@@ -2938,6 +3024,470 @@
           },
           "404": {
             "description": "No challenge_tag found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/container": {
+      "get": {
+        "tags": [
+          "container"
+        ],
+        "summary": "List containers",
+        "operationId": "list_containers",
+        "responses": {
+          "200": {
+            "description": "Listed containers successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContainerModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "container"
+        ],
+        "summary": "Create Container",
+        "operationId": "create_container",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContainerSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created container successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No container found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/container/{id}": {
+      "get": {
+        "tags": [
+          "container"
+        ],
+        "summary": "Retrieve container by id",
+        "operationId": "retrieve_container_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved container by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No container found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "container"
+        ],
+        "summary": "Delete container by id",
+        "operationId": "delete_container_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted container by id successfully"
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No container found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "container"
+        ],
+        "summary": "Update container by id",
+        "operationId": "update_container_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContainerSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated container by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No container found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/container/{id}/challenge": {
+      "get": {
+        "tags": [
+          "container"
+        ],
+        "summary": "List container challenge by id",
+        "operationId": "retrieve_container_challenge_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved containerchallenge by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No container found with specified id",
             "content": {
               "application/json": {
                 "schema": {
@@ -10324,6 +10874,7 @@
           {
             "name": "id",
             "in": "path",
+            "description": "The id of the challenge",
             "required": true,
             "schema": {
               "type": "string",
@@ -10341,6 +10892,165 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/player/challenge/start/{id}": {
+      "get": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "Start challenge containers by id",
+        "operationId": "start_challenge",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the challenge",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Started challenge containers successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeDeployment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/player/challenge/stop/{id}": {
+      "get": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "Stop challenge containers by id",
+        "operationId": "stop_challenge",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the challenge",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stopped challenge containers successfully"
           },
           "400": {
             "description": "Invalid parameters format",
@@ -11446,6 +12156,32 @@
           "team"
         ]
       },
+      "ChallengeDeployment": {
+        "type": "object",
+        "required": [
+          "expires_at",
+          "subdomain",
+          "port_bindings"
+        ],
+        "properties": {
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "port_bindings": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "propertyNames": {
+              "type": "string"
+            }
+          },
+          "subdomain": {
+            "type": "string"
+          }
+        }
+      },
       "ChallengeModel": {
         "type": "object",
         "required": [
@@ -11458,22 +12194,13 @@
           "difficulty",
           "flag_type",
           "status",
+          "ignore_case",
           "author_name",
           "solves"
         ],
         "properties": {
           "author_name": {
             "type": "string"
-          },
-          "container_meta": {
-            "oneOf": [
-              {
-                "type": "null"
-              },
-              {
-                "$ref": "#/components/schemas/ContainerMeta"
-              }
-            ]
           },
           "created_at": {
             "type": "string",
@@ -11491,6 +12218,9 @@
           "id": {
             "type": "string",
             "format": "uuid"
+          },
+          "ignore_case": {
+            "type": "boolean"
           },
           "points": {
             "type": "integer",
@@ -11569,58 +12299,83 @@
           }
         }
       },
-      "ContainerMeta": {
+      "ContainerModel": {
         "type": "object",
         "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "challenge_id",
+          "name",
           "image",
-          "cmd",
+          "internal",
+          "memory_limit",
+          "command",
+          "environment",
           "ports",
-          "env",
-          "volumes",
-          "sidecars",
-          "single_instance"
+          "networks",
+          "depends_on"
         ],
         "properties": {
-          "cmd": {
-            "type": "string"
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
           },
-          "env": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "propertyNames": {
+          "command": {
+            "type": "array",
+            "items": {
               "type": "string"
             }
           },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "environment": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "image": {
             "type": "string"
+          },
+          "internal": {
+            "type": "boolean"
+          },
+          "memory_limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "networks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "ports": {
             "type": "array",
             "items": {
               "type": "integer",
-              "format": "int32",
-              "minimum": 0
+              "format": "int32"
             }
           },
-          "sidecars": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "propertyNames": {
-              "type": "string"
-            }
-          },
-          "single_instance": {
-            "type": "boolean"
-          },
-          "volumes": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -11691,22 +12446,13 @@
           "difficulty",
           "flag_type",
           "status",
+          "ignore_case",
           "author_name",
           "solves"
         ],
         "properties": {
           "author_name": {
             "type": "string"
-          },
-          "container_meta": {
-            "oneOf": [
-              {
-                "type": "null"
-              },
-              {
-                "$ref": "#/components/schemas/ContainerMeta"
-              }
-            ]
           },
           "description": {
             "type": "string"
@@ -11716,6 +12462,9 @@
           },
           "flag_type": {
             "$ref": "#/components/schemas/FlagTypeEnum"
+          },
+          "ignore_case": {
+            "type": "boolean"
           },
           "points": {
             "type": "integer",
@@ -11747,6 +12496,71 @@
           "tag_id": {
             "type": "string",
             "format": "uuid"
+          }
+        }
+      },
+      "CreateContainerSchema": {
+        "type": "object",
+        "required": [
+          "challenge_id",
+          "name",
+          "image",
+          "internal",
+          "memory_limit",
+          "command",
+          "environment",
+          "ports",
+          "networks",
+          "depends_on"
+        ],
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "command": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "environment": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image": {
+            "type": "string"
+          },
+          "internal": {
+            "type": "boolean"
+          },
+          "memory_limit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "networks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ports": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
       },
@@ -12213,7 +13027,8 @@
         "type": "object",
         "required": [
           "id",
-          "cost"
+          "cost",
+          "status"
         ],
         "properties": {
           "cost": {
@@ -12223,6 +13038,9 @@
           "id": {
             "type": "string",
             "format": "uuid"
+          },
+          "status": {
+            "$ref": "#/components/schemas/UnlockStatus"
           }
         }
       },
@@ -12425,16 +13243,6 @@
         "properties": {
           "author_name": {
             "type": "string"
-          },
-          "container_meta": {
-            "oneOf": [
-              {
-                "type": "null"
-              },
-              {
-                "$ref": "#/components/schemas/ContainerMeta"
-              }
-            ]
           },
           "description": {
             "type": "string"
@@ -13177,6 +13985,42 @@
             "format": "date-time"
           }
         }
+      },
+      "UnlockStatus": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "locked"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "value",
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "unlocked"
+                ]
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          }
+        ]
       },
       "UpdateProfileSchema": {
         "type": "object",

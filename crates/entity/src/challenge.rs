@@ -4,7 +4,6 @@ use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use super::sea_orm_active_enums::{ChallengeStatusEnum, DifficultyEnum, FlagTypeEnum};
-use crate::extensions::ContainerMeta;
 
 #[derive(
     Clone,
@@ -31,7 +30,7 @@ pub struct Model {
     pub difficulty: DifficultyEnum,
     pub flag_type: FlagTypeEnum,
     pub status: ChallengeStatusEnum,
-    pub container_meta: Option<ContainerMeta>,
+    pub ignore_case: bool,
     pub author_name: String,
     pub solves: i32,
 }
@@ -42,6 +41,8 @@ pub enum Relation {
     Achievement,
     #[sea_orm(has_many = "super::challenge_tag::Entity")]
     ChallengeTag,
+    #[sea_orm(has_many = "super::container::Entity")]
+    Container,
     #[sea_orm(has_many = "super::file::Entity")]
     File,
     #[sea_orm(has_many = "super::flag::Entity")]
@@ -63,6 +64,12 @@ impl Related<super::achievement::Entity> for Entity {
 impl Related<super::challenge_tag::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::ChallengeTag.def()
+    }
+}
+
+impl Related<super::container::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Container.def()
     }
 }
 

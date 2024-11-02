@@ -271,6 +271,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/challenge/{id}/containers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenge container by id */
+        get: operations["list_challenge_containers_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/challenge/{id}/files": {
         parameters: {
             query?: never;
@@ -391,6 +408,60 @@ export interface paths {
         head?: never;
         /** Update challenge_tag by id */
         patch: operations["update_challenge_tag_by_id"];
+        trace?: never;
+    };
+    "/admin/container": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List containers */
+        get: operations["list_containers"];
+        put?: never;
+        /** Create Container */
+        post: operations["create_container"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/container/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve container by id */
+        get: operations["retrieve_container_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete container by id */
+        delete: operations["delete_container_by_id"];
+        options?: never;
+        head?: never;
+        /** Update container by id */
+        patch: operations["update_container_by_id"];
+        trace?: never;
+    };
+    "/admin/container/{id}/challenge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List container challenge by id */
+        get: operations["retrieve_container_challenge_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/admin/file": {
@@ -1449,6 +1520,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/player/challenge/start/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Start challenge containers by id */
+        get: operations["start_challenge"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/player/challenge/stop/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stop challenge containers by id */
+        get: operations["stop_challenge"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/player/challenges": {
         parameters: {
             query?: never;
@@ -1696,9 +1801,16 @@ export interface components {
         };
         /** @enum {string} */
         CategoryEnum: "player" | "team";
+        ChallengeDeployment: {
+            /** Format: date-time */
+            expires_at: string;
+            port_bindings: {
+                [key: string]: string;
+            };
+            subdomain: string;
+        };
         ChallengeModel: {
             author_name: string;
-            container_meta?: null | components["schemas"]["ContainerMeta"];
             /** Format: date-time */
             created_at: string;
             description: string;
@@ -1706,6 +1818,7 @@ export interface components {
             flag_type: components["schemas"]["FlagTypeEnum"];
             /** Format: uuid */
             id: string;
+            ignore_case: boolean;
             /** Format: int32 */
             points: number;
             /** Format: int32 */
@@ -1732,18 +1845,25 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
-        ContainerMeta: {
-            cmd: string;
-            env: {
-                [key: string]: string;
-            };
+        ContainerModel: {
+            /** Format: uuid */
+            challenge_id: string;
+            command: string[];
+            /** Format: date-time */
+            created_at: string;
+            depends_on: string[];
+            environment: string[];
+            /** Format: uuid */
+            id: string;
             image: string;
+            internal: boolean;
+            /** Format: int32 */
+            memory_limit: number;
+            name: string;
+            networks: string[];
             ports: number[];
-            sidecars: {
-                [key: string]: string;
-            };
-            single_instance: boolean;
-            volumes: string[];
+            /** Format: date-time */
+            updated_at: string;
         };
         CreateAchievementSchema: {
             /** Format: uuid */
@@ -1766,10 +1886,10 @@ export interface components {
         };
         CreateChallengeSchema: {
             author_name: string;
-            container_meta?: null | components["schemas"]["ContainerMeta"];
             description: string;
             difficulty: components["schemas"]["DifficultyEnum"];
             flag_type: components["schemas"]["FlagTypeEnum"];
+            ignore_case: boolean;
             /** Format: int32 */
             points: number;
             /** Format: int32 */
@@ -1782,6 +1902,20 @@ export interface components {
             challenge_id: string;
             /** Format: uuid */
             tag_id: string;
+        };
+        CreateContainerSchema: {
+            /** Format: uuid */
+            challenge_id: string;
+            command: string[];
+            depends_on: string[];
+            environment: string[];
+            image: string;
+            internal: boolean;
+            /** Format: int32 */
+            memory_limit: number;
+            name: string;
+            networks: string[];
+            ports: number[];
         };
         CreateFileSchema: {
             /** Format: uuid */
@@ -1929,6 +2063,7 @@ export interface components {
             cost: number;
             /** Format: uuid */
             id: string;
+            status: components["schemas"]["UnlockStatus"];
         };
         InstanceModel: {
             /** Format: uuid */
@@ -1994,7 +2129,6 @@ export interface components {
         };
         PartialChallenge: {
             author_name: string;
-            container_meta?: null | components["schemas"]["ContainerMeta"];
             description: string;
             difficulty: components["schemas"]["DifficultyEnum"];
             /** Format: uuid */
@@ -2205,6 +2339,14 @@ export interface components {
             player_id: string;
             /** Format: date-time */
             updated_at: string;
+        };
+        UnlockStatus: {
+            /** @enum {string} */
+            kind: "locked";
+        } | {
+            /** @enum {string} */
+            kind: "unlocked";
+            value: string;
         };
         UpdateProfileSchema: {
             discord_id?: string | null;
@@ -3997,6 +4139,74 @@ export interface operations {
             };
         };
     };
+    list_challenge_containers_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed challengecontainers by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContainerModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
     list_challenge_files_by_id: {
         parameters: {
             query?: never;
@@ -4646,6 +4856,396 @@ export interface operations {
                 };
             };
             /** @description No challenge_tag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    list_containers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed containers successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContainerModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    create_container: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateContainerSchema"];
+            };
+        };
+        responses: {
+            /** @description Created container successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContainerModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No container found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    retrieve_container_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved container by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContainerModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No container found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    delete_container_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted container by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No container found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    update_container_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateContainerSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated container by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContainerModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No container found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    retrieve_container_challenge_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved containerchallenge by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No container found with specified id */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -10747,6 +11347,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
+                /** @description The id of the challenge */
                 id: string;
             };
             cookie?: never;
@@ -10761,6 +11362,140 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["DetailedChallenge"];
                 };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    start_challenge: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The id of the challenge */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Started challenge containers successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeDeployment"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    stop_challenge: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The id of the challenge */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Stopped challenge containers successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Invalid parameters format */
             400: {

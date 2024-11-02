@@ -40,7 +40,11 @@ pub async fn verify(
                 return Err(Error::NotFound("Flag".to_owned()));
             };
 
-            flag_model.value == value
+            if challenge_model.ignore_case {
+                flag_model.value.to_lowercase() == value.to_lowercase()
+            } else {
+                flag_model.value == value
+            }
         }
 
         FlagTypeEnum::Regex => {
@@ -57,7 +61,12 @@ pub async fn verify(
             if let Some(regex) = regex {
                 regex.is_match(&value)
             } else {
-                let regex = Regex::new(&flag_model.value)?;
+                let regex = if challenge_model.ignore_case {
+                    Regex::new(&format!("(?i){}", flag_model.value))?
+                } else {
+                    Regex::new(&flag_model.value)?
+                };
+
                 let is_match = regex.is_match(&value);
                 REGEX_CACHE
                     .write()
@@ -78,7 +87,11 @@ pub async fn verify(
                 return Err(Error::NotFound("Flag is not generated".to_owned()));
             };
 
-            flag_model.value == value
+            if challenge_model.ignore_case {
+                flag_model.value.to_lowercase() == value.to_lowercase()
+            } else {
+                flag_model.value == value
+            }
         }
     };
 

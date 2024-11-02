@@ -34,4 +34,8 @@ pub fn router() -> Router<Arc<AppState>> {
             "/challenge/:id/submissions",
             get(challenge::list_submissions_by_id),
         )
+        .route(
+            "/challenge/:id/containers",
+            get(challenge::list_containers_by_id),
+        )
 }

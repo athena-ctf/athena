@@ -1,14 +1,17 @@
-use entity::extensions::{HintSummary, PartialChallenge};
+use entity::extensions::PartialChallenge;
 use entity::prelude::*;
 use oxide_macros::{crud_interface_db, multiple_relation_with_model_db};
 use sea_orm::prelude::*;
-use sea_orm::{ActiveValue, IntoActiveModel, QueryOrder, QuerySelect};
+use sea_orm::{ActiveValue, IntoActiveModel, Iterable, QueryOrder, QuerySelect};
 
 use crate::errors::Result;
-use crate::schemas::{ChallengeSummary, DetailedChallenge, PlayerChallengeState};
+use crate::schemas::{
+    ChallengeSummary, DetailedChallenge, HintSummary, PlayerChallengeState, UnlockStatus,
+};
 
 crud_interface_db!(Challenge);
 
+multiple_relation_with_model_db!(Challenge, Container);
 multiple_relation_with_model_db!(Challenge, Tag);
 multiple_relation_with_model_db!(Challenge, File);
 multiple_relation_with_model_db!(Challenge, Hint);
@@ -74,17 +77,41 @@ pub async fn list_summaries(
     Ok(summaries)
 }
 
-pub async fn detailed_challenge(challenge_id: Uuid, db: &DbConn) -> Result<DetailedChallenge> {
+pub async fn detailed_challenge(
+    player_id: Uuid,
+    challenge_id: Uuid,
+    db: &DbConn,
+) -> Result<DetailedChallenge> {
+    let hints = Hint::find()
+        .find_also_related(Unlock)
+        .select_only()
+        .columns(entity::hint::Column::iter())
+        .columns(entity::unlock::Column::iter())
+        .filter(entity::hint::Column::ChallengeId.eq(challenge_id))
+        .filter(entity::unlock::Column::PlayerId.eq(player_id))
+        .into_model::<HintModel, UnlockModel>()
+        .all(db)
+        .await?
+        .into_iter()
+        .map(|(hint, unlock)| HintSummary {
+            id: hint.id,
+            cost: hint.cost,
+            status: if unlock.is_some() {
+                UnlockStatus::Unlocked {
+                    value: hint.description,
+                }
+            } else {
+                UnlockStatus::Locked
+            },
+        })
+        .collect();
+
     Ok(DetailedChallenge {
         files: File::find()
             .filter(entity::file::Column::ChallengeId.eq(challenge_id))
             .into_partial_model::<CreateFileSchema>()
             .all(db)
             .await?,
-        hints: Hint::find()
-            .filter(entity::hint::Column::ChallengeId.eq(challenge_id))
-            .into_partial_model::<HintSummary>()
-            .all(db)
-            .await?,
+        hints,
     })
 }

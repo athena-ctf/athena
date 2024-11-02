@@ -1,4 +1,4 @@
-use entity::extensions::{ContainerMeta, HintSummary, PartialChallenge, UpdateProfileSchema};
+use entity::extensions::{PartialChallenge, UpdateProfileSchema};
 use utoipa::openapi::security::{Http, HttpAuthScheme, SecurityScheme};
 use utoipa::{Modify, OpenApi};
 
@@ -71,8 +71,17 @@ use crate::schemas::*;
         challenge::list_achievements_by_id,
         challenge::list_challenge_tags_by_id,
         challenge::list_submissions_by_id,
+        challenge::list_containers_by_id,
         challenge::player_challenges,
         challenge::detailed_challenge,
+        challenge::start_challenge,
+        challenge::stop_challenge,
+        container::list,
+        container::create,
+        container::retrieve_by_id,
+        container::update_by_id,
+        container::delete_by_id,
+        container::retrieve_challenge_by_id,
         file::list,
         file::create,
         file::retrieve_by_id,
@@ -179,6 +188,8 @@ use crate::schemas::*;
             CreateChallengeTagSchema,
             ChallengeModel,
             CreateChallengeSchema,
+            ContainerModel,
+            CreateContainerSchema,
             FileModel,
             CreateFileSchema,
             FlagModel,
@@ -206,8 +217,6 @@ use crate::schemas::*;
             UserModel,
             CreateUserSchema,
             UpdateProfileSchema,
-            HintSummary,
-            ContainerMeta,
             CategoryEnum,
             ChallengeStatusEnum,
             DifficultyEnum,
@@ -242,6 +251,9 @@ use crate::schemas::*;
             Ranking,
             RegisterExistsQuery,
             InviteVerificationResult,
+            HintSummary,
+            UnlockStatus,
+            ChallengeDeployment,
         )
     ),
     modifiers(&SecurityAddon),

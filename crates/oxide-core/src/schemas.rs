@@ -1,4 +1,7 @@
-use entity::extensions::{HintSummary, PartialChallenge};
+use std::collections::HashMap;
+
+use chrono::{DateTime, Utc};
+use entity::extensions::PartialChallenge;
 pub use entity::prelude::*;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -200,4 +203,25 @@ pub struct Ranking {
 pub struct RegisterExistsQuery {
     pub email: String,
     pub username: String,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum UnlockStatus {
+    Locked,
+    Unlocked { value: String },
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct HintSummary {
+    pub id: Uuid,
+    pub cost: i32,
+    pub status: UnlockStatus,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct ChallengeDeployment {
+    pub expires_at: DateTime<Utc>,
+    pub subdomain: String,
+    pub port_bindings: HashMap<String, String>,
 }

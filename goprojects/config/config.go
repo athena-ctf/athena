@@ -15,8 +15,23 @@ type Azure struct {
 }
 
 type Challenge struct {
+	// ContainerRegistry corresponds to the JSON schema field "container_registry".
+	ContainerRegistry string `json:"container_registry"`
+
+	// ContainerTimeout corresponds to the JSON schema field "container_timeout".
+	ContainerTimeout int `json:"container_timeout"`
+
 	// MaxAttempts corresponds to the JSON schema field "max_attempts".
-	MaxAttempts int `json:"max_attempts"`
+	MaxAttempts *int `json:"max_attempts,omitempty"`
+
+	// RegistryPassword corresponds to the JSON schema field "registry_password".
+	RegistryPassword string `json:"registry_password"`
+
+	// RegistryUsername corresponds to the JSON schema field "registry_username".
+	RegistryUsername string `json:"registry_username"`
+
+	// UserFlagLen corresponds to the JSON schema field "user_flag_len".
+	UserFlagLen int `json:"user_flag_len"`
 }
 
 type CompressionKind string
@@ -26,9 +41,6 @@ const CompressionKindGzip CompressionKind = "gzip"
 const CompressionKindZstd CompressionKind = "zstd"
 
 type Ctf struct {
-	// Challenge corresponds to the JSON schema field "challenge".
-	Challenge *Challenge `json:"challenge,omitempty"`
-
 	// Description corresponds to the JSON schema field "description".
 	Description string `json:"description"`
 
@@ -182,6 +194,9 @@ type RemoteStorageOptions struct {
 }
 
 type Settings struct {
+	// Challenge corresponds to the JSON schema field "challenge".
+	Challenge Challenge `json:"challenge"`
+
 	// Ctf corresponds to the JSON schema field "ctf".
 	Ctf Ctf `json:"ctf"`
 

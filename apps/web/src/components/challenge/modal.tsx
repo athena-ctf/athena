@@ -30,7 +30,15 @@ import {
   VerticalTabsList,
   VerticalTabsTrigger,
 } from "./vertical-tabs";
-import { Circle, Download, Lightbulb, ScrollText, Server } from "lucide-react";
+import {
+  Circle,
+  Download,
+  Lightbulb,
+  Lock,
+  LockOpen,
+  ScrollText,
+  Server,
+} from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import type React from "react";
 import { useEffect, useState } from "react";
@@ -71,6 +79,29 @@ export function ChallengeModal({
           }
         }
       });
+  };
+
+  const unlockHint = (id: string, index: number) => {
+    fetchClient
+      .GET("/player/hint/unlock/{id}", { params: { path: { id } } })
+      .then((resp) => {
+        if (resp.error) {
+          toast.error("Could not unlock hint");
+          console.error(resp.error.message);
+        } else {
+          setChallengeDetails((details) => {
+            if (details) {
+              details.hints[index].status = {
+                kind: "unlocked",
+                value: resp.data.description,
+              };
+            }
+
+            return details;
+          });
+        }
+      });
+    return "Loading ...";
   };
 
   const [challengeDetails, setChallengeDetails] =
@@ -193,10 +224,13 @@ export function ChallengeModal({
               {challengeDetails?.hints.map((hint, index) => (
                 <AccordionItem value={hint.id} key={hint.id}>
                   <AccordionTrigger>
+                    {hint.status.kind === "unlocked" ? <LockOpen /> : <Lock />}{" "}
                     Hint #{index} ({hint.cost} Points)
                   </AccordionTrigger>
                   <AccordionContent>
-                    {/* TODO: add unlock function */}
+                    {hint.status.kind === "unlocked"
+                      ? hint.status.value
+                      : unlockHint(hint.id, index)}
                   </AccordionContent>
                 </AccordionItem>
               ))}

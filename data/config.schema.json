@@ -3,6 +3,7 @@
   "title": "Settings",
   "type": "object",
   "required": [
+    "challenge",
     "ctf",
     "database",
     "discord",
@@ -14,6 +15,9 @@
     "token"
   ],
   "properties": {
+    "challenge": {
+      "$ref": "#/definitions/Challenge"
+    },
     "ctf": {
       "$ref": "#/definitions/Ctf"
     },
@@ -64,10 +68,32 @@
     "Challenge": {
       "type": "object",
       "required": [
-        "max_attempts"
+        "container_registry",
+        "container_timeout",
+        "registry_password",
+        "registry_username",
+        "user_flag_len"
       ],
       "properties": {
+        "container_registry": {
+          "type": "string"
+        },
+        "container_timeout": {
+          "type": "integer",
+          "format": "int64"
+        },
         "max_attempts": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "registry_password": {
+          "type": "string"
+        },
+        "registry_username": {
+          "type": "string"
+        },
+        "user_flag_len": {
           "type": "integer",
           "format": "uint",
           "minimum": 0.0
@@ -93,9 +119,6 @@
         "time"
       ],
       "properties": {
-        "challenge": {
-          "$ref": "#/definitions/Challenge"
-        },
         "description": {
           "type": "string"
         },

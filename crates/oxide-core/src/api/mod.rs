@@ -8,6 +8,7 @@ use axum::routing::get;
 use axum::Router;
 use fred::prelude::*;
 use fred::types::RespVersion;
+use lettre::Tokio1Executor;
 use sea_orm::{Database, DatabaseConnection};
 use tokio::signal;
 use tokio::sync::RwLock;
@@ -17,10 +18,11 @@ use tower_http::trace::TraceLayer;
 use tracing::info_span;
 use utoipa::OpenApi;
 
+use crate::docker::DockerManager;
 use crate::errors::{Error, Result};
+use crate::middleware;
 use crate::service::{AppState, Settings};
 use crate::token::TokenManager;
-use crate::{docker, middleware};
 
 mod admin_routes;
 mod auth;
@@ -42,13 +44,13 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
             settings.smtp.password.clone(),
         );
 
-        lettre::SmtpTransport::starttls_relay(&settings.smtp.server_url)?
+        lettre::AsyncSmtpTransport::<Tokio1Executor>::starttls_relay(&settings.smtp.server_url)?
             .credentials(credentials)
             .build()
     };
 
     #[cfg(feature = "file-transport")]
-    let mail_transport = lettre::FileTransport::new("./emails");
+    let mail_transport = lettre::AsyncFileTransport::<Tokio1Executor>::new("./emails");
 
     let cache_config = RedisConfig::from_url("redis://foo:bar@127.0.0.1:6379")?;
     let cache_client = Builder::from_config(cache_config)
@@ -68,8 +70,16 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
         .build_pool(8)?;
     persistent_client.init().await?;
 
-    let docker_client = docker::connect()?;
-    let handles = tasks::run(&docker_client, &db_conn);
+    let docker_client = DockerManager::new(
+        db_conn.clone(),
+        settings.challenge.container_registry.clone(),
+        settings.challenge.registry_username.clone(),
+        settings.challenge.registry_password.clone(),
+        settings.challenge.user_flag_len,
+        settings.challenge.container_timeout,
+    )?;
+
+    // let handles = tasks::run(&docker_client, &db_conn);
 
     tasks::load_leaderboard(&db_conn, &persistent_client).await?;
 
@@ -87,7 +97,7 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
             token_manager,
             cache_client,
             persistent_client,
-            docker_client,
+            docker_manager: docker_client,
             mail_transport,
         })),
     )
@@ -95,7 +105,7 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
     .await
     .map_err(Error::Serve)?;
 
-    tasks::stop(handles);
+    // tasks::stop(handles);
 
     Ok(())
 }
