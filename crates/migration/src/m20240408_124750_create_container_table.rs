@@ -21,7 +21,8 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Container::MemoryLimit).integer().not_null())
                     .col(
                         ColumnDef::new(Container::Command)
-                            .array(ColumnType::String(StringLen::None)),
+                            .array(ColumnType::String(StringLen::None))
+                            .not_null(),
                     )
                     .col(
                         ColumnDef::new(Container::Environment)
@@ -48,7 +49,8 @@ impl MigrationTrait for Migration {
                             .name("fk-container-challenge_id")
                             .from(Container::Table, Container::ChallengeId)
                             .to(Challenge::Table, Challenge::Id)
-                            .on_delete(ForeignKeyAction::Cascade),
+                            .on_delete(ForeignKeyAction::Cascade)
+                            .on_update(ForeignKeyAction::Cascade),
                     )
                     .to_owned(),
             )

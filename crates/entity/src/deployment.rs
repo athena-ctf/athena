@@ -22,10 +22,10 @@ pub struct Model {
     pub id: Uuid,
     pub created_at: DateTime,
     pub updated_at: DateTime,
-    #[sea_orm(unique)]
-    pub hostname: String,
     pub expiry: DateTime,
     pub challenge_id: Uuid,
+    #[sea_orm(unique)]
+    pub hostname: String,
     pub player_id: Uuid,
 }
 
@@ -39,6 +39,8 @@ pub enum Relation {
         on_delete = "Cascade"
     )]
     Challenge,
+    #[sea_orm(has_many = "super::instance::Entity")]
+    Instance,
     #[sea_orm(
         belongs_to = "super::player::Entity",
         from = "Column::PlayerId",
@@ -47,8 +49,6 @@ pub enum Relation {
         on_delete = "Cascade"
     )]
     Player,
-    #[sea_orm(has_many = "super::instance::Entity")]
-    Instance,
 }
 
 impl Related<super::challenge::Entity> for Entity {
@@ -57,15 +57,15 @@ impl Related<super::challenge::Entity> for Entity {
     }
 }
 
-impl Related<super::player::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Player.def()
-    }
-}
-
 impl Related<super::instance::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Instance.def()
+    }
+}
+
+impl Related<super::player::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Player.def()
     }
 }
 

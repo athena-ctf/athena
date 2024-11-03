@@ -44,10 +44,10 @@ pub enum Relation {
         on_delete = "Cascade"
     )]
     Ban,
-    #[sea_orm(has_many = "super::flag::Entity")]
-    Flag,
     #[sea_orm(has_many = "super::deployment::Entity")]
     Deployment,
+    #[sea_orm(has_many = "super::flag::Entity")]
+    Flag,
     #[sea_orm(has_many = "super::notification::Entity")]
     Notification,
     #[sea_orm(has_many = "super::submission::Entity")]
@@ -84,15 +84,15 @@ impl Related<super::ban::Entity> for Entity {
     }
 }
 
-impl Related<super::flag::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Flag.def()
-    }
-}
-
 impl Related<super::deployment::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Deployment.def()
+    }
+}
+
+impl Related<super::flag::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Flag.def()
     }
 }
 

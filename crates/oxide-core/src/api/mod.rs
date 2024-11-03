@@ -72,11 +72,7 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
 
     let docker_client = Manager::new(
         db_conn.clone(),
-        settings.challenge.container_registry.clone(),
-        settings.challenge.registry_username.clone(),
-        settings.challenge.registry_password.clone(),
-        settings.challenge.user_flag_len,
-        settings.challenge.container_timeout,
+        settings.challenge.clone(),
         "caddy:2019".to_owned(),
         settings.ctf.domain.clone(),
     )?;

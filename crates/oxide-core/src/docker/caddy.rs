@@ -5,7 +5,7 @@ use crate::errors::Result;
 
 pub struct CaddyApi {
     client: HttpClient,
-    caddy_api_url: String,
+    api_url: String,
     base_url: String,
 }
 
@@ -13,7 +13,7 @@ impl CaddyApi {
     pub fn new(caddy_api_url: String, base_url: String) -> Self {
         Self {
             client: reqwest::Client::new(),
-            caddy_api_url,
+            api_url: caddy_api_url,
             base_url,
         }
     }
@@ -49,7 +49,7 @@ impl CaddyApi {
         self.client
             .put(format!(
                 "{}/config/apps/http/servers/{host_name}_{container_name}",
-                self.caddy_api_url
+                self.api_url
             ))
             .json(&route_config)
             .send()
@@ -62,7 +62,7 @@ impl CaddyApi {
         self.client
             .delete(format!(
                 "{}/config/apps/http/servers/{hostname}_{container_name}",
-                self.caddy_api_url
+                self.api_url
             ))
             .send()
             .await?;

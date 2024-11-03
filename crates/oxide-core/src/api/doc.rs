@@ -226,7 +226,6 @@ use crate::schemas::*;
             DeploymentModel,
             CreateDeploymentSchema,
             UpdateProfileSchema,
-            CategoryEnum,
             ChallengeStatusEnum,
             DifficultyEnum,
             FlagTypeEnum,

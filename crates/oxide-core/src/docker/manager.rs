@@ -29,18 +29,14 @@ pub struct Manager {
 impl Manager {
     pub fn new(
         db: DbConn,
-        registry: String,
-        username: String,
-        password: String,
-        flag_len: usize,
-        container_timeout: i64,
+        challenge_settings: config::Challenge,
         caddy_api_url: String,
         base_url: String,
     ) -> Result<Self> {
         let docker = Docker::connect_with_local_defaults()?;
         let credentials = DockerCredentials {
-            username: Some(username),
-            password: Some(password),
+            username: Some(challenge_settings.registry_username),
+            password: Some(challenge_settings.registry_password),
             ..Default::default()
         };
 
@@ -50,10 +46,10 @@ impl Manager {
             docker,
             caddy_api,
             db,
-            registry,
+            registry: challenge_settings.container_registry.clone(),
             credentials,
-            flag_len,
-            container_timeout,
+            flag_len: challenge_settings.user_flag_len,
+            container_timeout: challenge_settings.container_timeout,
         })
     }
 

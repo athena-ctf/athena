@@ -7,12 +7,6 @@ use utoipa::ToSchema;
 use super::challenge::Entity as Challenge;
 use super::sea_orm_active_enums::*;
 
-impl IntoActiveValue<Self> for CategoryEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
-    }
-}
-
 impl IntoActiveValue<Self> for ChallengeStatusEnum {
     fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
         sea_orm::ActiveValue::Set(self)

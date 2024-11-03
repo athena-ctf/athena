@@ -15,26 +15,6 @@ use serde::{Deserialize, Serialize};
     Deserialize,
     utoipa :: ToSchema,
 )]
-#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "category_enum")]
-#[serde(rename_all = "snake_case")]
-pub enum CategoryEnum {
-    #[sea_orm(string_value = "player")]
-    Player,
-    #[sea_orm(string_value = "team")]
-    Team,
-}
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    Eq,
-    EnumIter,
-    DeriveActiveEnum,
-    Copy,
-    Serialize,
-    Deserialize,
-    utoipa :: ToSchema,
-)]
 #[sea_orm(
     rs_type = "String",
     db_type = "Enum",

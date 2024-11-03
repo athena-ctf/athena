@@ -9,8 +9,8 @@ use super::sea_orm_active_enums::{ChallengeStatusEnum, DifficultyEnum, FlagTypeE
     Clone,
     Debug,
     PartialEq,
-    Eq,
     DeriveEntityModel,
+    Eq,
     Serialize,
     Deserialize,
     utoipa :: ToSchema,
@@ -30,9 +30,9 @@ pub struct Model {
     pub difficulty: DifficultyEnum,
     pub flag_type: FlagTypeEnum,
     pub status: ChallengeStatusEnum,
-    pub ignore_case: bool,
     pub author_name: String,
     pub solves: i32,
+    pub ignore_case: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
@@ -43,14 +43,14 @@ pub enum Relation {
     ChallengeTag,
     #[sea_orm(has_many = "super::container::Entity")]
     Container,
+    #[sea_orm(has_many = "super::deployment::Entity")]
+    Deployment,
     #[sea_orm(has_many = "super::file::Entity")]
     File,
     #[sea_orm(has_many = "super::flag::Entity")]
     Flag,
     #[sea_orm(has_many = "super::hint::Entity")]
     Hint,
-    #[sea_orm(has_many = "super::deployment::Entity")]
-    Deployment,
     #[sea_orm(has_many = "super::submission::Entity")]
     Submission,
 }
@@ -73,6 +73,12 @@ impl Related<super::container::Entity> for Entity {
     }
 }
 
+impl Related<super::deployment::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Deployment.def()
+    }
+}
+
 impl Related<super::file::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::File.def()
@@ -88,12 +94,6 @@ impl Related<super::flag::Entity> for Entity {
 impl Related<super::hint::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Hint.def()
-    }
-}
-
-impl Related<super::deployment::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Deployment.def()
     }
 }
 

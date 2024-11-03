@@ -10,7 +10,7 @@ impl MigrationTrait for Migration {
 
         db.execute_unprepared(
             "CREATE TRIGGER notification_insert
-AFTER INSERT ON notifications FOR EACH ROW EXECUTE PROCEDURE table_update_notify();",
+AFTER INSERT ON notification FOR EACH ROW EXECUTE PROCEDURE table_update_notify();",
         )
         .await?;
 
