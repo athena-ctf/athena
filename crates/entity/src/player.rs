@@ -46,8 +46,8 @@ pub enum Relation {
     Ban,
     #[sea_orm(has_many = "super::flag::Entity")]
     Flag,
-    #[sea_orm(has_many = "super::instance::Entity")]
-    Instance,
+    #[sea_orm(has_many = "super::deployment::Entity")]
+    Deployment,
     #[sea_orm(has_many = "super::notification::Entity")]
     Notification,
     #[sea_orm(has_many = "super::submission::Entity")]
@@ -90,9 +90,9 @@ impl Related<super::flag::Entity> for Entity {
     }
 }
 
-impl Related<super::instance::Entity> for Entity {
+impl Related<super::deployment::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Instance.def()
+        Relation::Deployment.def()
     }
 }
 

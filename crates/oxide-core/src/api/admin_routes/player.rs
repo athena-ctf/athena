@@ -16,7 +16,10 @@ pub fn router() -> Router<Arc<AppState>> {
                 .patch(player::update_by_id),
         )
         .route("/player/:id/flags", get(player::list_flags_by_id))
-        .route("/player/:id/instance", get(player::retrieve_instance_by_id))
+        .route(
+            "/player/:id/deployment",
+            get(player::retrieve_deployment_by_id),
+        )
         .route("/player/:id/team", get(player::retrieve_team_by_id))
         .route(
             "/player/:id/achievements",

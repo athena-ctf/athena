@@ -5,6 +5,7 @@ pub mod ban;
 pub mod challenge;
 pub mod challenge_tag;
 pub mod container;
+pub mod deployment;
 pub mod file;
 pub mod flag;
 pub mod hint;

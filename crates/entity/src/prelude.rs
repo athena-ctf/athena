@@ -10,6 +10,9 @@ pub use super::challenge_tag::{
     CreateChallengeTagSchema, Entity as ChallengeTag, Model as ChallengeTagModel,
 };
 pub use super::container::{CreateContainerSchema, Entity as Container, Model as ContainerModel};
+pub use super::deployment::{
+    CreateDeploymentSchema, Entity as Deployment, Model as DeploymentModel,
+};
 pub use super::file::{CreateFileSchema, Entity as File, Model as FileModel};
 pub use super::flag::{CreateFlagSchema, Entity as Flag, Model as FlagModel};
 pub use super::hint::{CreateHintSchema, Entity as Hint, Model as HintModel};

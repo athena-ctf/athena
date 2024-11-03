@@ -20,22 +20,13 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .unique_key(),
                     )
-                    .col(ColumnDef::new(Instance::Expiry).date_time().not_null())
-                    .col(ColumnDef::new(Instance::ChallengeId).uuid().not_null())
-                    .col(ColumnDef::new(Instance::PlayerId).uuid().not_null())
+                    .col(ColumnDef::new(Instance::ContainerName).string().not_null())
+                    .col(ColumnDef::new(Instance::DeploymentId).uuid().not_null())
                     .foreign_key(
                         ForeignKey::create()
-                            .name("fk-instance-challenge_id")
-                            .from(Instance::Table, Instance::ChallengeId)
-                            .to(Challenge::Table, Challenge::Id)
-                            .on_delete(ForeignKeyAction::Cascade)
-                            .on_update(ForeignKeyAction::Cascade),
-                    )
-                    .foreign_key(
-                        ForeignKey::create()
-                            .name("fk-instance-player_id")
-                            .from(Instance::Table, Instance::PlayerId)
-                            .to(Player::Table, Player::Id)
+                            .name("fk-instance-deployment_id")
+                            .from(Instance::Table, Instance::DeploymentId)
+                            .to(Deployment::Table, Deployment::Id)
                             .on_delete(ForeignKeyAction::Cascade)
                             .on_update(ForeignKeyAction::Cascade),
                     )
@@ -61,20 +52,13 @@ enum Instance {
     Id,
     CreatedAt,
     UpdatedAt,
-    ChallengeId,
-    PlayerId,
+    DeploymentId,
     ContainerId,
-    Expiry,
+    ContainerName,
 }
 
 #[derive(DeriveIden)]
-enum Challenge {
-    Table,
-    Id,
-}
-
-#[derive(DeriveIden)]
-enum Player {
+enum Deployment {
     Table,
     Id,
 }

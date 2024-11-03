@@ -19,7 +19,7 @@ crud_interface_db!(Player);
 
 single_relation_db!(Player, Team);
 
-optional_relation_db!(Player, Instance);
+optional_relation_db!(Player, Deployment);
 optional_relation_db!(Player, Ban);
 
 multiple_relation_db!(Player, Flag);

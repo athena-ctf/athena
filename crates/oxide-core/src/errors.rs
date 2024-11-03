@@ -51,6 +51,9 @@ pub enum Error {
     #[error("Could not store mail: {0}")]
     MailFile(#[from] lettre::transport::file::Error),
 
+    #[error("Could not send request: {0:?}")]
+    Http(#[from] reqwest::Error),
+
     #[error("Bad Request: {0}")]
     BadRequest(String),
 

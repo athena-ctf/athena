@@ -15,7 +15,7 @@ multiple_relation_with_model_db!(Challenge, Container);
 multiple_relation_with_model_db!(Challenge, Tag);
 multiple_relation_with_model_db!(Challenge, File);
 multiple_relation_with_model_db!(Challenge, Hint);
-multiple_relation_with_model_db!(Challenge, Instance);
+multiple_relation_with_model_db!(Challenge, Deployment);
 multiple_relation_with_model_db!(Challenge, Achievement);
 multiple_relation_with_model_db!(Challenge, Submission);
 multiple_relation_with_model_db!(Challenge, ChallengeTag);

@@ -24,40 +24,25 @@ pub struct Model {
     pub updated_at: DateTime,
     #[sea_orm(unique)]
     pub container_id: String,
-    pub expiry: DateTime,
-    pub challenge_id: Uuid,
-    pub player_id: Uuid,
+    pub container_name: String,
+    pub deployment_id: Uuid,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
     #[sea_orm(
-        belongs_to = "super::challenge::Entity",
-        from = "Column::ChallengeId",
-        to = "super::challenge::Column::Id",
+        belongs_to = "super::deployment::Entity",
+        from = "Column::DeploymentId",
+        to = "super::deployment::Column::Id",
         on_update = "Cascade",
         on_delete = "Cascade"
     )]
-    Challenge,
-    #[sea_orm(
-        belongs_to = "super::player::Entity",
-        from = "Column::PlayerId",
-        to = "super::player::Column::Id",
-        on_update = "Cascade",
-        on_delete = "Cascade"
-    )]
-    Player,
+    Deployment,
 }
 
-impl Related<super::challenge::Entity> for Entity {
+impl Related<super::deployment::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Challenge.def()
-    }
-}
-
-impl Related<super::player::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Player.def()
+        Relation::Deployment.def()
     }
 }
 

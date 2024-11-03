@@ -11,8 +11,8 @@ use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
     AchievementModel, ChallengeDeployment, ChallengeModel, ChallengeSummary, ChallengeTagModel,
-    ContainerModel, CreateChallengeSchema, DetailedChallenge, FileModel, HintModel, InstanceModel,
-    JsonResponse, SubmissionModel, TagModel, TokenClaims,
+    ContainerModel, CreateChallengeSchema, DeploymentModel, DetailedChallenge, FileModel,
+    HintModel, JsonResponse, SubmissionModel, TagModel, TokenClaims,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -22,7 +22,7 @@ multiple_relation_with_model_api!(Challenge, Achievement);
 multiple_relation_with_model_api!(Challenge, Container);
 multiple_relation_with_model_api!(Challenge, File);
 multiple_relation_with_model_api!(Challenge, Hint);
-multiple_relation_with_model_api!(Challenge, Instance);
+multiple_relation_with_model_api!(Challenge, Deployment);
 multiple_relation_with_model_api!(Challenge, Tag);
 multiple_relation_with_model_api!(Challenge, Submission);
 multiple_relation_with_model_api!(Challenge, ChallengeTag);

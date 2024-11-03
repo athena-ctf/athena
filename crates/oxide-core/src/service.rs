@@ -10,7 +10,7 @@ use lettre::Tokio1Executor;
 use serde::Serialize;
 use tokio::sync::RwLock;
 
-use crate::docker::DockerManager;
+use crate::docker::Manager;
 use crate::errors::Result;
 use crate::schemas::{TokenClaimKind, TokenClaims, TokenPair, TokenType};
 use crate::token::TokenManager;
@@ -21,7 +21,7 @@ pub struct AppState {
 
     pub cache_client: RedisPool,
     pub persistent_client: RedisPool,
-    pub docker_manager: DockerManager,
+    pub docker_manager: Manager,
 
     pub token_manager: TokenManager,
 

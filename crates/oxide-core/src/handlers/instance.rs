@@ -7,14 +7,9 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
-use crate::schemas::{
-    ChallengeModel, CreateInstanceSchema, InstanceModel, JsonResponse, PlayerModel,
-};
+use crate::schemas::{CreateInstanceSchema, DeploymentModel, InstanceModel, JsonResponse};
 use crate::service::{AppState, CachedJson};
 
 crud_interface_api!(Instance);
 
-single_relation_api!(Instance, Challenge);
-single_relation_api!(Instance, Player);
-
-// TODO: add '/challenge/start' and '/challenge/end' for players
+single_relation_api!(Instance, Deployment);

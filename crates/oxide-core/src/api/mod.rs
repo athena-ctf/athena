@@ -18,7 +18,7 @@ use tower_http::trace::TraceLayer;
 use tracing::info_span;
 use utoipa::OpenApi;
 
-use crate::docker::DockerManager;
+use crate::docker::Manager;
 use crate::errors::{Error, Result};
 use crate::middleware;
 use crate::service::{AppState, Settings};
@@ -70,13 +70,15 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
         .build_pool(8)?;
     persistent_client.init().await?;
 
-    let docker_client = DockerManager::new(
+    let docker_client = Manager::new(
         db_conn.clone(),
         settings.challenge.container_registry.clone(),
         settings.challenge.registry_username.clone(),
         settings.challenge.registry_password.clone(),
         settings.challenge.user_flag_len,
         settings.challenge.container_timeout,
+        "caddy:2019".to_owned(),
+        settings.ctf.domain.clone(),
     )?;
 
     // let handles = tasks::run(&docker_client, &db_conn);

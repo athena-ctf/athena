@@ -16,8 +16,7 @@ pub fn router() -> Router<Arc<AppState>> {
                 .patch(instance::update_by_id),
         )
         .route(
-            "/instance/:id/challenge",
-            get(instance::retrieve_challenge_by_id),
+            "/instance/:id/deployment",
+            get(instance::retrieve_deployment_by_id),
         )
-        .route("/instance/:id/player", get(instance::retrieve_player_by_id))
 }

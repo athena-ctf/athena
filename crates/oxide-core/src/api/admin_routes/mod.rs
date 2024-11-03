@@ -10,6 +10,7 @@ mod ban;
 mod challenge;
 mod challenge_tag;
 mod container;
+mod deployment;
 mod file;
 mod flag;
 mod hint;
@@ -46,6 +47,7 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(team::router())
             .merge(ticket::router())
             .merge(unlock::router())
-            .merge(utils::router()),
+            .merge(utils::router())
+            .merge(deployment::router()),
     )
 }

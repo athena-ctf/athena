@@ -12,7 +12,7 @@ use uuid::Uuid;
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    AchievementModel, BanModel, CreatePlayerSchema, FlagModel, InstanceModel, JsonResponse,
+    AchievementModel, BanModel, CreatePlayerSchema, DeploymentModel, FlagModel, JsonResponse,
     NotificationModel, PlayerModel, PlayerProfile, PlayerSummary, SubmissionModel, TeamModel,
     TokenClaims, UnlockModel,
 };
@@ -22,7 +22,7 @@ crud_interface_api!(Player);
 
 single_relation_api!(Player, Team);
 
-optional_relation_api!(Player, Instance);
+optional_relation_api!(Player, Deployment);
 optional_relation_api!(Player, Ban);
 
 multiple_relation_api!(Player, Flag);

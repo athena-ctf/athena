@@ -7,8 +7,7 @@ use crate::errors::{Error, Result};
 
 crud_interface_db!(Instance);
 
-single_relation_db!(Instance, Player);
-single_relation_db!(Instance, Challenge);
+single_relation_db!(Instance, Deployment);
 
 // pub async fn destroy(
 //     id: Uuid,

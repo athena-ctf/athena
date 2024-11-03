@@ -18,8 +18,8 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/challenge/:id/files", get(challenge::list_files_by_id))
         .route("/challenge/:id/hints", get(challenge::list_hints_by_id))
         .route(
-            "/challenge/:id/instances",
-            get(challenge::list_instances_by_id),
+            "/challenge/:id/deployments",
+            get(challenge::list_deployments_by_id),
         )
         .route("/challenge/:id/tags", get(challenge::list_tags_by_id))
         .route(
