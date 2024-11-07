@@ -16,5 +16,4 @@ pub fn router() -> Router<Arc<AppState>> {
                 .patch(ban::update_by_id),
         )
         .route("/ban/:id/player", get(ban::retrieve_player_by_id))
-        .route("/ban/:id/team", get(ban::retrieve_team_by_id))
 }

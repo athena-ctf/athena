@@ -91,7 +91,7 @@ pub struct RedisInner {
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Redis {
     pub cache: RedisInner,
-    pub token: RedisInner,
+    pub persistent: RedisInner,
 }
 
 fn default_region() -> String {
@@ -178,7 +178,7 @@ pub struct Challenge {
     pub registry_username: String,
     pub registry_password: String,
     pub container_timeout: i64,
-    pub user_flag_len: usize,
+    pub player_flag_len: usize,
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
@@ -256,7 +256,7 @@ impl Default for Settings {
                     username: "redis_cache".to_owned(),
                     password: gen_random_password(),
                 },
-                token: RedisInner {
+                persistent: RedisInner {
                     host: "redis_token".to_owned(),
                     port: 6379,
                     username: "redis_token".to_owned(),
@@ -314,7 +314,7 @@ impl Default for Settings {
                 registry_username: "athena".to_owned(),
                 registry_password: gen_random_password(),
                 container_timeout: 900,
-                user_flag_len: 20,
+                player_flag_len: 20,
             },
         }
     }
@@ -331,17 +331,6 @@ impl Settings {
         Ok(settings)
     }
 
-    pub fn db_url(&self) -> String {
-        format!(
-            "postgres://{}:{}@{}:{}/{}",
-            self.database.username,
-            self.database.password,
-            self.database.host,
-            self.database.port,
-            self.database.database_name
-        )
-    }
-
     pub fn default_json(&self) -> Result<String, serde_json::Error> {
         serde_json::to_string_pretty(self)
     }
@@ -352,5 +341,23 @@ impl Settings {
             .into_generator()
             .into_root_schema_for::<Self>();
         serde_json::to_string_pretty(&schema)
+    }
+}
+
+impl Database {
+    pub fn url(&self) -> String {
+        format!(
+            "postgres://{}:{}@{}:{}/{}",
+            self.username, self.password, self.host, self.port, self.database_name
+        )
+    }
+}
+
+impl RedisInner {
+    pub fn url(&self) -> String {
+        format!(
+            "redis://{}:{}@{}:{}",
+            self.username, self.password, self.host, self.port
+        )
     }
 }

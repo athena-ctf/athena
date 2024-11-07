@@ -30,8 +30,8 @@ type Challenge struct {
 	// RegistryUsername corresponds to the JSON schema field "registry_username".
 	RegistryUsername string `json:"registry_username"`
 
-	// UserFlagLen corresponds to the JSON schema field "user_flag_len".
-	UserFlagLen int `json:"user_flag_len"`
+	// PlayerFlagLen corresponds to the JSON schema field "player_flag_len".
+	PlayerFlagLen int `json:"player_flag_len"`
 }
 
 type CompressionKind string

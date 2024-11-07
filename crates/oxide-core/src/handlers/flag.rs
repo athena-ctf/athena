@@ -1,24 +1,31 @@
-use std::sync::Arc;
+use std::collections::HashMap;
+use std::sync::{Arc, LazyLock};
 
 use axum::extract::{Json, Path, State};
 use axum::Extension;
 use fred::prelude::*;
-use oxide_macros::{crud_interface_api, optional_relation_api, single_relation_api};
-use sea_orm::{ActiveModelTrait, EntityTrait, IntoActiveModel};
+use oxide_macros::{crud_interface_api, single_relation_api};
+use regex::Regex;
+use sea_orm::prelude::*;
+use sea_orm::{ActiveValue, IntoActiveModel, TransactionTrait};
+use tokio::sync::RwLock;
 use uuid::Uuid;
 
-use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    ChallengeModel, CreateFlagSchema, CreateSubmissionSchema, FlagModel, FlagVerificationResult,
-    JsonResponse, PlayerModel, Submission, TokenClaims, VerifyFlagSchema,
+    Challenge, ChallengeModel, CreateFlagSchema, Flag, FlagModel, FlagTypeEnum,
+    FlagVerificationResult, JsonResponse, Player, PlayerModel, Submission, SubmissionModel,
+    TokenClaims, VerifyFlagSchema,
 };
 use crate::service::{AppState, CachedJson};
 
 crud_interface_api!(Flag);
 
-optional_relation_api!(Flag, Player);
+single_relation_api!(Flag, Player);
 single_relation_api!(Flag, Challenge);
+
+static REGEX_CACHE: LazyLock<RwLock<HashMap<Uuid, Arc<Regex>>>> =
+    LazyLock::new(|| RwLock::new(HashMap::new()));
 
 #[utoipa::path(
     post,
@@ -39,12 +46,14 @@ pub async fn verify(
     state: State<Arc<AppState>>,
     Json(body): Json<VerifyFlagSchema>,
 ) -> Result<Json<FlagVerificationResult>> {
-    let Some(player_model) = db::player::retrieve(claims.id, &state.db_conn).await? else {
+    let txn = state.db_conn.begin().await?;
+
+    let Some(player_model) = Player::find_by_id(claims.id).one(&state.db_conn).await? else {
         return Err(Error::NotFound("Player does not exist".to_owned()));
     };
 
     let prev_model = if let Some(submission_model) =
-        Submission::find_by_id((body.challenge_id, player_model.id))
+        Submission::find_by_id((body.challenge_id, claims.id))
             .one(&state.db_conn)
             .await?
     {
@@ -66,15 +75,84 @@ pub async fn verify(
         None
     };
 
-    let (is_correct, points) = db::flag::verify(
-        player_model.id,
-        body.challenge_id,
-        body.flag.clone(),
-        &state.db_conn,
-    )
-    .await?;
+    let Some(mut challenge_model) = Challenge::find_by_id(body.challenge_id)
+        .one(&state.db_conn)
+        .await?
+    else {
+        return Err(Error::NotFound("Challenge".to_owned()));
+    };
+
+    let points = challenge_model.points;
+
+    let is_correct = match challenge_model.flag_type {
+        FlagTypeEnum::Static => {
+            let Some(flag_model) = Flag::find()
+                .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
+                .one(&state.db_conn)
+                .await?
+            else {
+                return Err(Error::NotFound("Flag".to_owned()));
+            };
+
+            if challenge_model.ignore_case {
+                flag_model.value.to_lowercase() == body.flag.to_lowercase()
+            } else {
+                flag_model.value == body.flag
+            }
+        }
+
+        FlagTypeEnum::Regex => {
+            let Some(flag_model) = Flag::find()
+                .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
+                .one(&state.db_conn)
+                .await?
+            else {
+                return Err(Error::NotFound("Flag".to_owned()));
+            };
+
+            let regex = REGEX_CACHE.read().await.get(&flag_model.id).cloned();
+
+            if let Some(regex) = regex {
+                regex.is_match(&body.flag)
+            } else {
+                let regex = if challenge_model.ignore_case {
+                    Regex::new(&format!("(?i){}", flag_model.value))?
+                } else {
+                    Regex::new(&flag_model.value)?
+                };
+
+                let is_match = regex.is_match(&body.flag);
+                REGEX_CACHE
+                    .write()
+                    .await
+                    .insert(flag_model.id, Arc::new(regex));
+
+                is_match
+            }
+        }
+
+        FlagTypeEnum::PerUser => {
+            let Some(flag_model) = Flag::find()
+                .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
+                .filter(entity::flag::Column::PlayerId.eq(claims.id))
+                .one(&state.db_conn)
+                .await?
+            else {
+                return Err(Error::NotFound("Flag is not generated".to_owned()));
+            };
+
+            if challenge_model.ignore_case {
+                flag_model.value.to_lowercase() == body.flag.to_lowercase()
+            } else {
+                flag_model.value == body.flag
+            }
+        }
+    };
 
     if is_correct {
+        challenge_model.solves += 1;
+        challenge_model.into_active_model().save(&txn).await?;
+
         let mut player_model_cloned = player_model.clone();
         player_model_cloned.score += points;
 
@@ -84,27 +162,20 @@ pub async fn verify(
             .await?;
 
         let active_model = player_model_cloned.into_active_model();
-        active_model.update(&state.db_conn).await?;
+        active_model.update(&txn).await?;
     }
 
     if let Some(mut submission_model) = prev_model {
         submission_model.flags.push(body.flag);
-        submission_model
-            .into_active_model()
-            .update(&state.db_conn)
-            .await?;
+        submission_model.into_active_model().update(&txn).await?;
     } else {
-        db::submission::create(
-            CreateSubmissionSchema {
-                player_id: player_model.id,
-                challenge_id: body.challenge_id,
-                is_correct,
-                flags: vec![body.flag],
-            },
-            &state.db_conn,
-        )
-        .await?;
+        SubmissionModel::new(is_correct, claims.id, body.challenge_id, vec![body.flag])
+            .into_active_model()
+            .insert(&txn)
+            .await?;
     }
+
+    txn.commit().await?;
 
     Ok(Json(FlagVerificationResult { is_correct }))
 }

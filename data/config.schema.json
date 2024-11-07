@@ -72,7 +72,7 @@
         "container_timeout",
         "registry_password",
         "registry_username",
-        "user_flag_len"
+        "player_flag_len"
       ],
       "properties": {
         "container_registry": {
@@ -93,7 +93,7 @@
         "registry_username": {
           "type": "string"
         },
-        "user_flag_len": {
+        "player_flag_len": {
           "type": "integer",
           "format": "uint",
           "minimum": 0.0

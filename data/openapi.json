@@ -2204,6 +2204,92 @@
         }
       }
     },
+    "/admin/challenge/{id}/deployments": {
+      "get": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "List challenge deployment by id",
+        "operationId": "list_challenge_deployments_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listed challengedeployments by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeploymentModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/challenge/{id}/files": {
       "get": {
         "tags": [
@@ -2318,92 +2404,6 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/HintModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge/{id}/instances": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "List challenge instance by id",
-        "operationId": "list_challenge_instances_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed challengeinstances by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/InstanceModel"
                   }
                 }
               }
@@ -3488,6 +3488,639 @@
           },
           "404": {
             "description": "No container found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deployment": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "summary": "List deployments",
+        "operationId": "list_deployments",
+        "responses": {
+          "200": {
+            "description": "Listed deployments successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeploymentModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "deployment"
+        ],
+        "summary": "Create Deployment",
+        "operationId": "create_deployment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDeploymentSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created deployment successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeploymentModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No deployment found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deployment/{id}": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "summary": "Retrieve deployment by id",
+        "operationId": "retrieve_deployment_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved deployment by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeploymentModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No deployment found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "deployment"
+        ],
+        "summary": "Delete deployment by id",
+        "operationId": "delete_deployment_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted deployment by id successfully"
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No deployment found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "deployment"
+        ],
+        "summary": "Update deployment by id",
+        "operationId": "update_deployment_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDeploymentSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated deployment by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeploymentModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No deployment found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deployment/{id}/challenge": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "summary": "List deployment challenge by id",
+        "operationId": "retrieve_deployment_challenge_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved deploymentchallenge by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No deployment found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deployment/{id}/instances": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "summary": "List deployment instance by id",
+        "operationId": "list_deployment_instances_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listed deploymentinstances by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InstanceModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No deployment found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deployment/{id}/player": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "summary": "List deployment player by id",
+        "operationId": "retrieve_deployment_player_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved deploymentplayer by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No deployment found with specified id",
             "content": {
               "application/json": {
                 "schema": {
@@ -5451,13 +6084,13 @@
         }
       }
     },
-    "/admin/instance/{id}/challenge": {
+    "/admin/instance/{id}/deployment": {
       "get": {
         "tags": [
           "instance"
         ],
-        "summary": "List instance challenge by id",
-        "operationId": "retrieve_instance_challenge_by_id",
+        "summary": "List instance deployment by id",
+        "operationId": "retrieve_instance_deployment_by_id",
         "parameters": [
           {
             "name": "id",
@@ -5472,94 +6105,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved instancechallenge by id successfully",
+            "description": "Retrieved instancedeployment by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChallengeModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No instance found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/instance/{id}/player": {
-      "get": {
-        "tags": [
-          "instance"
-        ],
-        "summary": "List instance player by id",
-        "operationId": "retrieve_instance_player_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved instanceplayer by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlayerModel"
+                  "$ref": "#/components/schemas/DeploymentModel"
                 }
               }
             }
@@ -7095,13 +7645,13 @@
         }
       }
     },
-    "/admin/player/{id}/flags": {
+    "/admin/player/{id}/deployment": {
       "get": {
         "tags": [
           "player"
         ],
-        "summary": "List player flag by id",
-        "operationId": "list_player_flags_by_id",
+        "summary": "Retrieve player deployment by id",
+        "operationId": "retrieve_player_deployment_by_id",
         "parameters": [
           {
             "name": "id",
@@ -7116,14 +7666,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Listed playerflags by id successfully",
+            "description": "Retrieved playerdeployment by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FlagModel"
-                  }
+                  "$ref": "#/components/schemas/DeploymentModel"
                 }
               }
             }
@@ -7181,13 +7728,13 @@
         }
       }
     },
-    "/admin/player/{id}/instance": {
+    "/admin/player/{id}/flags": {
       "get": {
         "tags": [
           "player"
         ],
-        "summary": "Retrieve player instance by id",
-        "operationId": "retrieve_player_instance_by_id",
+        "summary": "List player flag by id",
+        "operationId": "list_player_flags_by_id",
         "parameters": [
           {
             "name": "id",
@@ -7202,11 +7749,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved playerinstance by id successfully",
+            "description": "Listed playerflags by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InstanceModel"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FlagModel"
+                  }
                 }
               }
             }
@@ -12149,13 +12699,6 @@
           }
         }
       },
-      "CategoryEnum": {
-        "type": "string",
-        "enum": [
-          "player",
-          "team"
-        ]
-      },
       "ChallengeDeployment": {
         "type": "object",
         "required": [
@@ -12194,9 +12737,9 @@
           "difficulty",
           "flag_type",
           "status",
-          "ignore_case",
           "author_name",
-          "solves"
+          "solves",
+          "ignore_case"
         ],
         "properties": {
           "author_name": {
@@ -12446,9 +12989,9 @@
           "difficulty",
           "flag_type",
           "status",
-          "ignore_case",
           "author_name",
-          "solves"
+          "solves",
+          "ignore_case"
         ],
         "properties": {
           "author_name": {
@@ -12564,6 +13107,32 @@
           }
         }
       },
+      "CreateDeploymentSchema": {
+        "type": "object",
+        "required": [
+          "expiry",
+          "challenge_id",
+          "hostname",
+          "player_id"
+        ],
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expiry": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "hostname": {
+            "type": "string"
+          },
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "CreateFileSchema": {
         "type": "object",
         "required": [
@@ -12632,23 +13201,17 @@
         "type": "object",
         "required": [
           "container_id",
-          "expiry",
-          "challenge_id",
-          "player_id"
+          "container_name",
+          "deployment_id"
         ],
         "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "container_id": {
             "type": "string"
           },
-          "expiry": {
-            "type": "string",
-            "format": "date-time"
+          "container_name": {
+            "type": "string"
           },
-          "player_id": {
+          "deployment_id": {
             "type": "string",
             "format": "uuid"
           }
@@ -12858,6 +13421,47 @@
           }
         }
       },
+      "DeploymentModel": {
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "expiry",
+          "challenge_id",
+          "hostname",
+          "player_id"
+        ],
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiry": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "hostname": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "DetailedChallenge": {
         "type": "object",
         "required": [
@@ -13051,31 +13655,25 @@
           "created_at",
           "updated_at",
           "container_id",
-          "expiry",
-          "challenge_id",
-          "player_id"
+          "container_name",
+          "deployment_id"
         ],
         "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "container_id": {
+            "type": "string"
+          },
+          "container_name": {
             "type": "string"
           },
           "created_at": {
             "type": "string",
             "format": "date-time"
           },
-          "expiry": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "id": {
+          "deployment_id": {
             "type": "string",
             "format": "uuid"
           },
-          "player_id": {
+          "id": {
             "type": "string",
             "format": "uuid"
           },

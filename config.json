@@ -5,11 +5,8 @@
     "description": "Athena is a hosted platform for CTFs",
     "time": {
       "span": "2days",
-      "start": "2024-10-26T02:31:08.924579568Z",
+      "start": "2024-11-03T11:38:47.895665507Z",
       "freeze": "1day"
-    },
-    "challenge": {
-      "max_attempts": 10
     },
     "sponsors": {},
     "prizes": {}
@@ -18,20 +15,22 @@
     "host": "postgres",
     "port": 5432,
     "username": "postgres",
-    "password": "yZbkfx8xauCc"
+    "password": "A3rztf9ww0lB",
+    "listener_channel": "notification_insert",
+    "database_name": "athena_db"
   },
   "redis": {
     "cache": {
-      "host": "redis",
+      "host": "redis_cache",
       "port": 6379,
       "username": "redis_cache",
-      "password": "JSsgclhS3jRw"
+      "password": "7pHVH8OsJTv2"
     },
-    "token": {
-      "host": "redis",
+    "persistent": {
+      "host": "redis_token",
       "port": 6379,
       "username": "redis_token",
-      "password": "5Mk4BqYejSBw"
+      "password": "tMtXIdQRwiEX"
     }
   },
   "file_storage": {
@@ -41,22 +40,22 @@
     }
   },
   "jwt": {
-    "secret": "zgjzda7tbv3jAl1gxS9GuxZvs2xdVHS1JTw0+LjwruA=",
+    "secret": "iaVxrN4uxPsS0s89FhlrsKP6MHQCmTKDZ7OYFCxEEqI=",
     "access_token_timeout": 600,
     "refresh_token_timeout": 86400
   },
   "smtp": {
     "from": "noreply@athena.io",
-    "reply_to": "Admin <admin@athena.io>",
+    "reply_to": "admin@athena.io",
     "username": "athena_smtp",
-    "password": "ZTdWXLh77g89",
+    "password": "8dplTDUeaOKO",
     "server_url": "smtp.athena.io"
   },
   "docker": {
     "single_instance_duration": 15,
     "registry_url": "registry.athena.io",
     "registry_username": "athena",
-    "registry_password": "XivtO5dQiCe0"
+    "registry_password": "p2K5ggfUTj2l"
   },
   "discord": {
     "welcome_channel_id": "",
@@ -66,5 +65,16 @@
     "logs_channel_id": "",
     "general_channel_id": "",
     "bot_token": ""
+  },
+  "token": {
+    "max_retries": 10,
+    "token_expiry_in_secs": 3600
+  },
+  "challenge": {
+    "container_registry": "registry.athena.io",
+    "registry_username": "athena",
+    "registry_password": "a7OwcCj2ERWq",
+    "container_timeout": 900,
+    "player_flag_len": 20
   }
 }

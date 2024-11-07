@@ -1,22 +1,8 @@
-pub mod achievement;
 pub mod admin;
-pub mod ban;
-pub mod challenge;
-pub mod challenge_tag;
-pub mod container;
-pub mod deployment;
-pub mod file;
-pub mod flag;
-pub mod hint;
-pub mod instance;
 pub mod invite;
-pub mod notification;
 pub mod player;
-pub mod submission;
 pub mod tag;
 pub mod team;
-pub mod ticket;
-pub mod unlock;
 pub mod user;
 
 use sea_orm::prelude::*;

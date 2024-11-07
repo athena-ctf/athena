@@ -3,13 +3,15 @@ use std::sync::Arc;
 use axum::extract::{Json, Path, State};
 use fred::prelude::*;
 use oxide_macros::{crud_interface_api, single_relation_api};
+use sea_orm::prelude::*;
+use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    CreateInviteSchema, InviteModel, InviteVerificationResult, JsonResponse, TeamModel,
-    VerifyInviteSchema,
+    CreateInviteSchema, Invite, InviteModel, InviteVerificationResult, JsonResponse, Team,
+    TeamModel, VerifyInviteSchema,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -35,7 +37,7 @@ pub async fn verify(
     state: State<Arc<AppState>>,
     Json(body): Json<VerifyInviteSchema>,
 ) -> Result<Json<InviteVerificationResult>> {
-    Ok(Json(InviteVerificationResult {
-        team_id: db::invite::verify(body.invite_id, body.team_name, &state.db_conn).await?,
-    }))
+    db::invite::verify(body.invite_id, body.team_name, &state.db_conn)
+        .await
+        .map(Json)
 }

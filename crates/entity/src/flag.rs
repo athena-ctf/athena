@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 )]
 #[sea_orm(table_name = "flag")]
 #[schema(as = FlagModel)]
-#[oxide(table(name = "Flag"))]
+#[oxide(table(name = "Flag", impl_new))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,

@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 )]
 #[sea_orm(table_name = "submission")]
 #[schema(as = SubmissionModel)]
-#[oxide(table(name = "Submission", join))]
+#[oxide(table(name = "Submission", join, impl_new))]
 pub struct Model {
     pub created_at: DateTime,
     pub updated_at: DateTime,

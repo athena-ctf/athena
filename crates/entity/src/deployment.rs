@@ -22,7 +22,7 @@ pub struct Model {
     pub id: Uuid,
     pub created_at: DateTime,
     pub updated_at: DateTime,
-    pub expiry: DateTime,
+    pub expires_at: DateTime,
     pub challenge_id: Uuid,
     #[sea_orm(unique)]
     pub hostname: String,

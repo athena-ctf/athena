@@ -3,20 +3,20 @@ use std::sync::Arc;
 use axum::extract::{Json, Path, State};
 use axum::Extension;
 use fred::prelude::*;
-use oxide_macros::{crud_interface_api, multiple_relation_api, optional_relation_api};
+use oxide_macros::{crud_interface_api, multiple_relation_api};
+use sea_orm::prelude::*;
+use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    BanModel, CreateTeamSchema, InviteModel, JsonResponse, PlayerModel, TeamModel, TeamProfile,
-    TeamSummary, TokenClaims,
+    CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Team, TeamModel,
+    TeamProfile, TeamSummary, TokenClaims,
 };
 use crate::service::{AppState, CachedJson};
 
 crud_interface_api!(Team);
-
-optional_relation_api!(Team, Ban);
 
 multiple_relation_api!(Team, Invite);
 multiple_relation_api!(Team, Player);
@@ -67,7 +67,10 @@ pub async fn update_details(
     Path(id): Path<Uuid>,
     Json(details): Json<CreateTeamSchema>,
 ) -> Result<Json<TeamModel>> {
-    Ok(Json(db::team::update(id, details, &state.db_conn).await?))
+    let mut model = details.into_active_model();
+    model.id = ActiveValue::Set(id);
+
+    Ok(model.update(&state.db_conn).await.map(Json)?)
 }
 
 #[utoipa::path(

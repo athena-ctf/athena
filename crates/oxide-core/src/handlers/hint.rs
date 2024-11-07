@@ -4,12 +4,14 @@ use axum::extract::{Json, Path, State};
 use axum::Extension;
 use fred::prelude::*;
 use oxide_macros::{crud_interface_api, multiple_relation_api, single_relation_api};
+use sea_orm::prelude::*;
+use sea_orm::{ActiveValue, IntoActiveModel, TransactionTrait};
 use uuid::Uuid;
 
-use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    ChallengeModel, CreateHintSchema, HintModel, JsonResponse, TokenClaims, UnlockModel,
+    Challenge, ChallengeModel, CreateHintSchema, Hint, HintModel, JsonResponse, Player,
+    TokenClaims, Unlock, UnlockModel,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -37,10 +39,41 @@ pub async fn unlock_by_id(
     state: State<Arc<AppState>>,
     Path(id): Path<Uuid>,
 ) -> Result<Json<HintModel>> {
-    db::hint::unlock(id, claims.id, &state.db_conn, &state.persistent_client)
+    let txn = state.db_conn.begin().await?;
+
+    if let Some((_, Some(hint_model))) = Unlock::find_by_id((claims.id, id))
+        .find_also_related(Hint)
+        .one(&txn)
         .await?
-        .map_or_else(
-            || Err(Error::NotFound("hint does not exists".to_owned())),
-            |hint_model| Ok(Json(hint_model)),
+    {
+        return Ok(Json(hint_model));
+    }
+
+    UnlockModel::new(claims.id, id)
+        .into_active_model()
+        .insert(&txn)
+        .await?;
+
+    let Some(hint_model) = Hint::find_by_id(id).one(&txn).await? else {
+        return Err(Error::NotFound("Hint not found".to_owned()));
+    };
+
+    let player_model = Player::find_by_id(claims.id).one(&txn).await?.unwrap();
+    let score = player_model.score;
+
+    state
+        .persistent_client
+        .zincrby::<(), _, _>(
+            "leaderboard",
+            f64::from(-hint_model.cost),
+            &player_model.display_name,
         )
+        .await?;
+
+    let mut active_model = player_model.into_active_model();
+    active_model.score = ActiveValue::Set(score - hint_model.cost);
+
+    active_model.update(&txn).await?;
+
+    Ok(Json(hint_model))
 }

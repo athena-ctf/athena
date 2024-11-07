@@ -17,5 +17,4 @@ pub fn router() -> Router<Arc<AppState>> {
         )
         .route("/team/:id/invites", get(team::list_invites_by_id))
         .route("/team/:id/players", get(team::list_players_by_id))
-        .route("/team/:id/ban", get(team::retrieve_ban_by_id))
 }

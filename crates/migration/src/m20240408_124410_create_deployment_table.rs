@@ -19,7 +19,7 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(Deployment::CreatedAt).date_time().not_null())
                     .col(ColumnDef::new(Deployment::UpdatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Deployment::Expiry).date_time().not_null())
+                    .col(ColumnDef::new(Deployment::ExpiresAt).date_time().not_null())
                     .col(ColumnDef::new(Deployment::ChallengeId).uuid().not_null())
                     .col(
                         ColumnDef::new(Deployment::Hostname)
@@ -69,7 +69,7 @@ enum Deployment {
     ChallengeId,
     PlayerId,
     Hostname,
-    Expiry,
+    ExpiresAt,
 }
 
 #[derive(DeriveIden)]

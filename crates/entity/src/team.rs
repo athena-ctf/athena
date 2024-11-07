@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 )]
 #[sea_orm(table_name = "team")]
 #[schema(as = TeamModel)]
-#[oxide(table(name = "Team"))]
+#[oxide(table(name = "Team", impl_new))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
@@ -24,30 +24,15 @@ pub struct Model {
     pub updated_at: DateTime,
     pub email: String,
     pub name: String,
-    pub ban_id: Option<Uuid>,
     pub score: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(
-        belongs_to = "super::ban::Entity",
-        from = "Column::BanId",
-        to = "super::ban::Column::Id",
-        on_update = "Cascade",
-        on_delete = "Cascade"
-    )]
-    Ban,
     #[sea_orm(has_many = "super::invite::Entity")]
     Invite,
     #[sea_orm(has_many = "super::player::Entity")]
     Player,
-}
-
-impl Related<super::ban::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Ban.def()
-    }
 }
 
 impl Related<super::invite::Entity> for Entity {

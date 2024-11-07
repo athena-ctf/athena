@@ -46,7 +46,9 @@ async fn main() {
         .init();
     let settings = config::Settings::new(&std::env::args().nth(1).unwrap()).unwrap();
 
-    let pool = sqlx::PgPool::connect(&settings.db_url()).await.unwrap();
+    let pool = sqlx::PgPool::connect(&settings.database.url())
+        .await
+        .unwrap();
 
     start_listening(&settings.database.listener_channel, &pool)
         .await

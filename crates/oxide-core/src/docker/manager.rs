@@ -9,11 +9,10 @@ use chrono::{Duration, Utc};
 use entity::prelude::*;
 use futures::StreamExt;
 use sea_orm::prelude::*;
-use sea_orm::DbConn;
+use sea_orm::{DbConn, IntoActiveModel, TransactionTrait};
 use uuid::Uuid;
 
 use super::caddy::CaddyApi;
-use crate::db;
 use crate::errors::{Error, Result};
 
 pub struct Manager {
@@ -48,7 +47,7 @@ impl Manager {
             db,
             registry: challenge_settings.container_registry.clone(),
             credentials,
-            flag_len: challenge_settings.user_flag_len,
+            flag_len: challenge_settings.player_flag_len,
             container_timeout: challenge_settings.container_timeout,
         })
     }
@@ -74,24 +73,33 @@ impl Manager {
 
     pub async fn deploy_challenge(
         &self,
-        challenge_model: ChallengeModel,
-        container_models: Vec<ContainerModel>,
+        challenge_id: Uuid,
         player_id: Uuid,
-    ) -> Result<(String, HashMap<String, String>)> {
-        let mut port_mappings = HashMap::new();
+    ) -> Result<DeploymentModel> {
+        let txn = self.db.begin().await?;
 
-        let expiry = Utc::now().naive_utc() + Duration::seconds(self.container_timeout);
+        let Some(challenge_model) = Challenge::find_by_id(challenge_id).one(&txn).await? else {
+            return Err(Error::NotFound("Challenge".to_owned()));
+        };
+
+        let container_models = challenge_model.find_related(Container).all(&txn).await?;
+
+        let expires_at = Utc::now().naive_utc() + Duration::seconds(self.container_timeout);
         let subdomain = crate::gen_random(10);
 
-        let deployment_model = db::deployment::create(
-            CreateDeploymentSchema {
-                hostname: subdomain.clone(),
-                expiry,
-                challenge_id: challenge_model.id,
-                player_id,
-            },
-            &self.db,
-        )
+        let txn = self.db.begin().await?;
+
+        let deployment_model = DeploymentModel {
+            id: Uuid::now_v7(),
+            created_at: Utc::now().naive_utc(),
+            updated_at: Utc::now().naive_utc(),
+            hostname: subdomain.clone(),
+            expires_at,
+            challenge_id: challenge_model.id,
+            player_id,
+        }
+        .into_active_model()
+        .insert(&txn)
         .await?;
 
         for container_model in &container_models {
@@ -108,21 +116,24 @@ impl Manager {
 
         let flag = if challenge_model.flag_type == FlagTypeEnum::PerUser {
             let flag = crate::gen_random(self.flag_len);
-            crate::db::flag::create(
-                CreateFlagSchema {
-                    value: flag.clone(),
-                    challenge_id: challenge_model.id,
-                    player_id: Some(player_id),
-                },
-                &self.db,
-            )
+
+            FlagModel {
+                id: Uuid::now_v7(),
+                created_at: Utc::now().naive_utc(),
+                updated_at: Utc::now().naive_utc(),
+                value: flag.clone(),
+                challenge_id: challenge_model.id,
+                player_id: Some(player_id),
+            }
+            .into_active_model()
+            .insert(&txn)
             .await?;
 
             flag
         } else {
             let Some(flag) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(challenge_model.id))
-                .one(&self.db)
+                .one(&txn)
                 .await?
             else {
                 return Err(Error::NotFound("Flag not found".to_owned()));
@@ -148,6 +159,7 @@ impl Manager {
 
                 self.ensure_image(&container.image).await?;
 
+                let mut port_mapping = Vec::new();
                 let mut port_bindings = HashMap::new();
                 let mut exposed_ports = HashMap::new();
 
@@ -231,10 +243,7 @@ impl Manager {
                                             )
                                             .await?;
 
-                                        port_mappings.insert(
-                                            format!("{}_{}", container.name, container_port),
-                                            host_port,
-                                        );
+                                        port_mapping.push(format!("{container_port}:{host_port}"));
                                     }
                                 }
                             }
@@ -242,33 +251,38 @@ impl Manager {
                     }
                 }
 
-                crate::db::instance::create(
-                    CreateInstanceSchema {
-                        container_id: container_info.id,
-                        deployment_id: deployment_model.id,
-                        container_name: container.name.clone(),
-                    },
-                    &self.db,
-                )
+                InstanceModel {
+                    id: Uuid::now_v7(),
+                    created_at: Utc::now().naive_utc(),
+                    updated_at: Utc::now().naive_utc(),
+                    container_id: container_info.id,
+                    deployment_id: deployment_model.id,
+                    container_name: container.name.clone(),
+                    port_mapping,
+                }
+                .into_active_model()
+                .insert(&txn)
                 .await?;
 
                 deployed.push(container.name.clone());
             }
         }
 
-        Ok((subdomain, port_mappings))
+        txn.commit().await?;
+
+        Ok(deployment_model)
     }
 
     pub async fn cleanup_expired_deployments(&self) -> Result<()> {
+        let txn = self.db.begin().await?;
+
         let expired_deployments = Deployment::find()
-            .filter(entity::deployment::Column::Expiry.lt(Utc::now()))
-            .all(&self.db)
+            .filter(entity::deployment::Column::ExpiresAt.lt(Utc::now()))
+            .all(&txn)
             .await?;
 
         for deployment in expired_deployments {
-            let instances = db::deployment::related_instances(deployment.id, &self.db)
-                .await?
-                .unwrap();
+            let instances = deployment.find_related(Instance).all(&txn).await?;
 
             for instance in instances {
                 self.docker
@@ -285,27 +299,28 @@ impl Manager {
                     )
                     .await?;
 
-                Instance::delete_by_id(instance.id).exec(&self.db).await?;
+                Instance::delete_by_id(instance.id).exec(&txn).await?;
             }
         }
+
+        txn.commit().await?;
 
         Ok(())
     }
 
     pub async fn cleanup_challenge(&self, challenge_id: Uuid, player_id: Uuid) -> Result<()> {
+        let txn = self.db.begin().await?;
+
         let Some(deployment) = Deployment::find()
             .filter(entity::deployment::Column::ChallengeId.eq(challenge_id))
             .filter(entity::deployment::Column::PlayerId.eq(player_id))
-            .one(&self.db)
+            .one(&txn)
             .await?
         else {
             return Err(Error::NotFound("Deployment not found".to_owned()));
         };
 
-        let instances = db::deployment::related_instances(deployment.id, &self.db)
-            .await?
-            .unwrap();
-
+        let instances = deployment.find_related(Instance).all(&txn).await?;
         for instance in instances {
             self.docker
                 .stop_container(&instance.container_id, None)
@@ -321,7 +336,7 @@ impl Manager {
                 )
                 .await?;
 
-            crate::db::instance::delete(instance.id, &self.db).await?;
+            Instance::delete_by_id(instance.id).exec(&txn).await?;
 
             self.caddy_api
                 .remove(&deployment.hostname, &instance.container_name)
@@ -340,6 +355,8 @@ impl Manager {
                 self.docker.remove_network(&id).await?;
             }
         }
+
+        txn.commit().await?;
 
         Ok(())
     }

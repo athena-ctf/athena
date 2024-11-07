@@ -21,6 +21,11 @@ impl MigrationTrait for Migration {
                             .unique_key(),
                     )
                     .col(ColumnDef::new(Instance::ContainerName).string().not_null())
+                    .col(
+                        ColumnDef::new(Instance::PortMapping)
+                            .array(ColumnType::String(StringLen::None))
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Instance::DeploymentId).uuid().not_null())
                     .foreign_key(
                         ForeignKey::create()
@@ -55,6 +60,7 @@ enum Instance {
     DeploymentId,
     ContainerId,
     ContainerName,
+    PortMapping,
 }
 
 #[derive(DeriveIden)]

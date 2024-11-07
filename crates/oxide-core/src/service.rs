@@ -7,6 +7,7 @@ use entity::prelude::*;
 use fred::prelude::*;
 use jsonwebtoken::{EncodingKey, Header};
 use lettre::Tokio1Executor;
+use sea_orm::DbConn;
 use serde::Serialize;
 use tokio::sync::RwLock;
 
@@ -16,7 +17,7 @@ use crate::schemas::{TokenClaimKind, TokenClaims, TokenPair, TokenType};
 use crate::token::TokenManager;
 
 pub struct AppState {
-    pub db_conn: sea_orm::DatabaseConnection,
+    pub db_conn: DbConn,
     pub settings: RwLock<Settings>,
 
     pub cache_client: RedisPool,

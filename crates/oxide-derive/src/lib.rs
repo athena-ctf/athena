@@ -13,6 +13,7 @@ struct TableField {
 #[darling(default)]
 struct Table {
     join: bool,
+    impl_new: bool,
     name: String,
 }
 
@@ -40,9 +41,8 @@ pub fn derive_details(input: TokenStream) -> TokenStream {
             .is_some_and(|ident| ident != "id" && ident != "created_at" && ident != "updated_at")
     });
 
-    let field_names = detail_fields.clone().map(|f| &f.ident);
-    let field_names_cloned = field_names.clone();
-    let field_types = detail_fields.clone().map(|f| &f.ty);
+    let field_names = &detail_fields.clone().map(|f| &f.ident).collect::<Vec<_>>();
+    let field_types = &detail_fields.clone().map(|f| &f.ty).collect::<Vec<_>>();
 
     let into_active_model = if input.table.join {
         quote! {
@@ -67,16 +67,56 @@ pub fn derive_details(input: TokenStream) -> TokenStream {
         }
     };
 
+    let impl_new = input.table.impl_new.then(|| {
+        if input.table.join {
+            quote! {
+                impl Model {
+                    pub fn new(#(#field_names: #field_types,)*) -> Self {
+                        let now = chrono::Utc::now().naive_utc();
+
+                        Self {
+                            created_at: now,
+                            updated_at: now,
+                            #(#field_names,)*
+                        }
+                    }
+                }
+            }
+        } else {
+            quote! {
+                impl Model {
+                    pub fn new(#(#field_names: #field_types,)*) -> Self {
+                        let now = chrono::Utc::now().naive_utc();
+
+                        Self {
+                            id: Uuid::now_v7(),
+                            created_at: now,
+                            updated_at: now,
+                            #(#field_names,)*
+                        }
+                    }
+                }
+            }
+        }
+    });
+
     quote! {
         #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, utoipa::ToSchema, sea_orm::FromQueryResult, sea_orm::DerivePartialModel)]
         #[sea_orm(entity = "Entity")]
         pub struct #details_name {
-            #(pub #field_names_cloned: #field_types,)*
+            #(pub #field_names: #field_types,)*
         }
 
         impl sea_orm::IntoActiveModel<ActiveModel> for #details_name {
             #into_active_model
         }
+
+        #impl_new
     }
     .into()
+}
+
+#[proc_macro]
+pub fn ident2str(input: TokenStream) -> TokenStream {
+    format!("\"{input}\"").parse().unwrap()
 }

@@ -2,30 +2,33 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::Extension;
-use chrono::{Duration, Utc};
+use entity::extensions::PartialChallenge;
 use fred::prelude::*;
-use oxide_macros::{crud_interface_api, multiple_relation_with_model_api};
+use oxide_macros::{crud_interface_api, multiple_relation_api};
+use sea_orm::prelude::*;
+use sea_orm::{ActiveValue, IntoActiveModel, Iterable, QueryOrder, QuerySelect};
 use uuid::Uuid;
 
-use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    AchievementModel, ChallengeDeployment, ChallengeModel, ChallengeSummary, ChallengeTagModel,
-    ContainerModel, CreateChallengeSchema, DeploymentModel, DetailedChallenge, FileModel,
-    HintModel, JsonResponse, SubmissionModel, TagModel, TokenClaims,
+    Achievement, AchievementModel, Challenge, ChallengeModel, ChallengeSummary, ChallengeTag,
+    ChallengeTagModel, Container, ContainerModel, CreateChallengeSchema, CreateTagSchema,
+    Deployment, DeploymentModel, DetailedChallenge, File, FileModel, Hint, HintModel, HintSummary,
+    JsonResponse, PlayerChallengeState, Submission, SubmissionModel, Tag, TagModel, TokenClaims,
+    Unlock, UnlockModel, UnlockStatus,
 };
 use crate::service::{AppState, CachedJson};
 
 crud_interface_api!(Challenge);
 
-multiple_relation_with_model_api!(Challenge, Achievement);
-multiple_relation_with_model_api!(Challenge, Container);
-multiple_relation_with_model_api!(Challenge, File);
-multiple_relation_with_model_api!(Challenge, Hint);
-multiple_relation_with_model_api!(Challenge, Deployment);
-multiple_relation_with_model_api!(Challenge, Tag);
-multiple_relation_with_model_api!(Challenge, Submission);
-multiple_relation_with_model_api!(Challenge, ChallengeTag);
+multiple_relation_api!(Challenge, Achievement);
+multiple_relation_api!(Challenge, Container);
+multiple_relation_api!(Challenge, File);
+multiple_relation_api!(Challenge, Hint);
+multiple_relation_api!(Challenge, Deployment);
+multiple_relation_api!(Challenge, Tag);
+multiple_relation_api!(Challenge, Submission);
+multiple_relation_api!(Challenge, ChallengeTag);
 
 #[utoipa::path(
     get,
@@ -44,13 +47,56 @@ pub async fn player_challenges(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<Vec<ChallengeSummary>>> {
-    db::challenge::list_summaries(
-        claims.id,
-        state.settings.read().await.challenge.max_attempts,
-        &state.db_conn,
-    )
-    .await
-    .map(Json)
+    let challenges = Challenge::find()
+        .into_partial_model::<PartialChallenge>()
+        .all(&state.db_conn)
+        .await?;
+    let submissions = Submission::find()
+        .select_only()
+        .columns([
+            entity::submission::Column::ChallengeId,
+            entity::submission::Column::Flags,
+            entity::submission::Column::IsCorrect,
+        ])
+        .filter(entity::submission::Column::PlayerId.eq(claims.id))
+        .order_by_asc(entity::submission::Column::ChallengeId)
+        .into_tuple::<(Uuid, Vec<String>, bool)>()
+        .all(&state.db_conn)
+        .await?;
+
+    let mut summaries = Vec::with_capacity(challenges.len());
+
+    for challenge in challenges {
+        let tags = Tag::find()
+            .into_partial_model::<CreateTagSchema>()
+            .all(&state.db_conn)
+            .await?;
+
+        let max_attempts = state.settings.read().await.challenge.max_attempts;
+
+        let state = submissions
+            .binary_search_by_key(&challenge.id, |(id, ..)| *id)
+            .ok()
+            .map_or(PlayerChallengeState::ChallengeLimitReached, |idx: usize| {
+                let (_, flags, is_correct) = &submissions[idx];
+
+                if *is_correct {
+                    PlayerChallengeState::Solved
+                } else if max_attempts.is_some_and(|max_attempts| flags.len() == max_attempts) {
+                    PlayerChallengeState::ChallengeLimitReached
+                } else {
+                    PlayerChallengeState::Unsolved
+                }
+            });
+
+        summaries.push(ChallengeSummary {
+            challenge,
+            tags,
+            state,
+        });
+    }
+
+    Ok(Json(summaries))
 }
 
 #[utoipa::path(
@@ -74,9 +120,37 @@ pub async fn detailed_challenge(
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<DetailedChallenge>> {
-    Ok(Json(
-        db::challenge::detailed_challenge(claims.id, id, &state.db_conn).await?,
-    ))
+    let hints = Hint::find()
+        .find_also_related(Unlock)
+        .select_only()
+        .columns(entity::hint::Column::iter())
+        .columns(entity::unlock::Column::iter())
+        .filter(entity::hint::Column::ChallengeId.eq(id))
+        .filter(entity::unlock::Column::PlayerId.eq(claims.id))
+        .into_model::<HintModel, UnlockModel>()
+        .all(&state.db_conn)
+        .await?
+        .into_iter()
+        .map(|(hint, unlock)| HintSummary {
+            id: hint.id,
+            cost: hint.cost,
+            status: if unlock.is_some() {
+                UnlockStatus::Unlocked {
+                    value: hint.description,
+                }
+            } else {
+                UnlockStatus::Locked
+            },
+        })
+        .collect();
+
+    Ok(Json(DetailedChallenge {
+        files: File::find()
+            .filter(entity::file::Column::ChallengeId.eq(id))
+            .all(&state.db_conn)
+            .await?,
+        hints,
+    }))
 }
 
 #[utoipa::path(
@@ -86,7 +160,7 @@ pub async fn detailed_challenge(
         ("id" = Uuid, Path, description = "The id of the challenge")
     ),
     responses(
-        (status = 200, description = "Started challenge containers successfully", body = ChallengeDeployment),
+        (status = 200, description = "Started challenge containers successfully", body = DeploymentModel),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
@@ -99,23 +173,12 @@ pub async fn start_challenge(
     Extension(claims): Extension<TokenClaims>,
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
-) -> Result<Json<ChallengeDeployment>> {
-    let Some(challenge_model) = crate::db::challenge::retrieve(id, &state.db_conn).await? else {
-        return Err(Error::NotFound("Challenge not found".to_owned()));
-    };
-    let container_models =
-        crate::db::challenge::related_containers(&challenge_model, &state.db_conn).await?;
-
-    let (subdomain, port_bindings) = state
+) -> Result<Json<DeploymentModel>> {
+    state
         .docker_manager
-        .deploy_challenge(challenge_model, container_models, claims.id)
-        .await?;
-
-    Ok(Json(ChallengeDeployment {
-        expires_at: Utc::now() + Duration::seconds(state.docker_manager.container_timeout),
-        subdomain,
-        port_bindings,
-    }))
+        .deploy_challenge(id, claims.id)
+        .await
+        .map(Json)
 }
 
 #[utoipa::path(
@@ -139,10 +202,5 @@ pub async fn stop_challenge(
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
 ) -> Result<()> {
-    state
-        .docker_manager
-        .cleanup_challenge(id, claims.id)
-        .await?;
-
-    Ok(())
+    state.docker_manager.cleanup_challenge(id, claims.id).await
 }

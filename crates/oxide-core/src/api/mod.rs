@@ -9,7 +9,7 @@ use axum::Router;
 use fred::prelude::*;
 use fred::types::RespVersion;
 use lettre::Tokio1Executor;
-use sea_orm::{Database, DatabaseConnection};
+use sea_orm::{Database, TransactionTrait};
 use tokio::signal;
 use tokio::sync::RwLock;
 use tower_http::cors::{Any, CorsLayer};
@@ -30,7 +30,9 @@ mod doc;
 mod player_routes;
 mod tasks;
 
-pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection) -> Result<()> {
+pub async fn start(settings: Settings) -> Result<()> {
+    let db_conn = Database::connect(settings.database.url()).await?;
+
     let listener = tokio::net::TcpListener::bind(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 7000))
         .await
         .map_err(Error::Bind)?;
@@ -52,7 +54,7 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
     #[cfg(feature = "file-transport")]
     let mail_transport = lettre::AsyncFileTransport::<Tokio1Executor>::new("./emails");
 
-    let cache_config = RedisConfig::from_url("redis://foo:bar@127.0.0.1:6379")?;
+    let cache_config = RedisConfig::from_url(&settings.redis.cache.url())?;
     let cache_client = Builder::from_config(cache_config)
         .with_config(|config| {
             config.version = RespVersion::RESP3;
@@ -61,7 +63,7 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
         .build_pool(8)?;
     cache_client.init().await?;
 
-    let persistent_config = RedisConfig::from_url("redis://foo:bar@127.0.0.1:6379")?;
+    let persistent_config = RedisConfig::from_url(&settings.redis.persistent.url())?;
     let persistent_client = Builder::from_config(persistent_config)
         .with_config(|config| {
             config.version = RespVersion::RESP3;
@@ -79,7 +81,9 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
 
     // let handles = tasks::run(&docker_client, &db_conn);
 
-    tasks::load_leaderboard(&db_conn, &persistent_client).await?;
+    let txn = db_conn.begin().await?;
+    tasks::load_leaderboard(&txn, &persistent_client).await?;
+    txn.commit().await?;
 
     let token_manager = TokenManager {
         redis: persistent_client.clone(),
@@ -106,12 +110,6 @@ pub async fn start_with_db_conn(settings: Settings, db_conn: DatabaseConnection)
     // tasks::stop(handles);
 
     Ok(())
-}
-
-pub async fn start(settings: Settings) -> Result<()> {
-    let db_conn = Database::connect(settings.db_url()).await?;
-
-    start_with_db_conn(settings, db_conn).await
 }
 
 pub fn app(state: Arc<AppState>) -> axum::Router {

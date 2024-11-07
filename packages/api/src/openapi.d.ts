@@ -288,6 +288,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/challenge/{id}/deployments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List challenge deployment by id */
+        get: operations["list_challenge_deployments_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/challenge/{id}/files": {
         parameters: {
             query?: never;
@@ -314,23 +331,6 @@ export interface paths {
         };
         /** List challenge hint by id */
         get: operations["list_challenge_hints_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/challenge/{id}/instances": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List challenge instance by id */
-        get: operations["list_challenge_instances_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -456,6 +456,94 @@ export interface paths {
         };
         /** List container challenge by id */
         get: operations["retrieve_container_challenge_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/deployment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List deployments */
+        get: operations["list_deployments"];
+        put?: never;
+        /** Create Deployment */
+        post: operations["create_deployment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/deployment/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve deployment by id */
+        get: operations["retrieve_deployment_by_id"];
+        put?: never;
+        post?: never;
+        /** Delete deployment by id */
+        delete: operations["delete_deployment_by_id"];
+        options?: never;
+        head?: never;
+        /** Update deployment by id */
+        patch: operations["update_deployment_by_id"];
+        trace?: never;
+    };
+    "/admin/deployment/{id}/challenge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List deployment challenge by id */
+        get: operations["retrieve_deployment_challenge_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/deployment/{id}/instances": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List deployment instance by id */
+        get: operations["list_deployment_instances_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/deployment/{id}/player": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List deployment player by id */
+        get: operations["retrieve_deployment_player_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -697,32 +785,15 @@ export interface paths {
         patch: operations["update_instance_by_id"];
         trace?: never;
     };
-    "/admin/instance/{id}/challenge": {
+    "/admin/instance/{id}/deployment": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List instance challenge by id */
-        get: operations["retrieve_instance_challenge_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/instance/{id}/player": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List instance player by id */
-        get: operations["retrieve_instance_player_by_id"];
+        /** List instance deployment by id */
+        get: operations["retrieve_instance_deployment_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -910,6 +981,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/player/{id}/deployment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve player deployment by id */
+        get: operations["retrieve_player_deployment_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/player/{id}/flags": {
         parameters: {
             query?: never;
@@ -919,23 +1007,6 @@ export interface paths {
         };
         /** List player flag by id */
         get: operations["list_player_flags_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/player/{id}/instance": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Retrieve player instance by id */
-        get: operations["retrieve_player_instance_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1799,8 +1870,6 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
-        /** @enum {string} */
-        CategoryEnum: "player" | "team";
         ChallengeDeployment: {
             /** Format: date-time */
             expires_at: string;
@@ -1917,6 +1986,15 @@ export interface components {
             networks: string[];
             ports: number[];
         };
+        CreateDeploymentSchema: {
+            /** Format: uuid */
+            challenge_id: string;
+            /** Format: date-time */
+            expiry: string;
+            hostname: string;
+            /** Format: uuid */
+            player_id: string;
+        };
         CreateFileSchema: {
             /** Format: uuid */
             challenge_id: string;
@@ -1938,13 +2016,10 @@ export interface components {
             description: string;
         };
         CreateInstanceSchema: {
-            /** Format: uuid */
-            challenge_id: string;
             container_id: string;
-            /** Format: date-time */
-            expiry: string;
+            container_name: string;
             /** Format: uuid */
-            player_id: string;
+            deployment_id: string;
         };
         CreateInviteSchema: {
             /** Format: int32 */
@@ -2007,6 +2082,21 @@ export interface components {
             password: string;
             username: string;
         };
+        DeploymentModel: {
+            /** Format: uuid */
+            challenge_id: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            expiry: string;
+            hostname: string;
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            player_id: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
         DetailedChallenge: {
             files: components["schemas"]["CreateFileSchema"][];
             hints: components["schemas"]["HintSummary"][];
@@ -2066,17 +2156,14 @@ export interface components {
             status: components["schemas"]["UnlockStatus"];
         };
         InstanceModel: {
-            /** Format: uuid */
-            challenge_id: string;
             container_id: string;
+            container_name: string;
             /** Format: date-time */
             created_at: string;
-            /** Format: date-time */
-            expiry: string;
+            /** Format: uuid */
+            deployment_id: string;
             /** Format: uuid */
             id: string;
-            /** Format: uuid */
-            player_id: string;
             /** Format: date-time */
             updated_at: string;
         };
@@ -4207,6 +4294,74 @@ export interface operations {
             };
         };
     };
+    list_challenge_deployments_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed challengedeployments by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeploymentModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No challenge found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
     list_challenge_files_by_id: {
         parameters: {
             query?: never;
@@ -4294,74 +4449,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HintModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No challenge found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_challenge_instances_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed challengeinstances by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["InstanceModel"][];
                 };
             };
             /** @description Invalid parameters format */
@@ -5246,6 +5333,532 @@ export interface operations {
                 };
             };
             /** @description No container found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    list_deployments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed deployments successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeploymentModel"][];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    create_deployment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateDeploymentSchema"];
+            };
+        };
+        responses: {
+            /** @description Created deployment successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeploymentModel"];
+                };
+            };
+            /** @description Invalid request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No deployment found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    retrieve_deployment_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved deployment by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeploymentModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No deployment found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    delete_deployment_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted deployment by id successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No deployment found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    update_deployment_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateDeploymentSchema"];
+            };
+        };
+        responses: {
+            /** @description Updated deployment by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeploymentModel"];
+                };
+            };
+            /** @description Invalid parameters/request body format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No deployment found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    retrieve_deployment_challenge_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved deploymentchallenge by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No deployment found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    list_deployment_instances_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Listed deploymentinstances by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstanceModel"][];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No deployment found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    retrieve_deployment_player_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved deploymentplayer by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlayerModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No deployment found with specified id */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -6893,7 +7506,7 @@ export interface operations {
             };
         };
     };
-    retrieve_instance_challenge_by_id: {
+    retrieve_instance_deployment_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -6905,81 +7518,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved instancechallenge by id successfully */
+            /** @description Retrieved instancedeployment by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No instance found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    retrieve_instance_player_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Retrieved instanceplayer by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PlayerModel"];
+                    "application/json": components["schemas"]["DeploymentModel"];
                 };
             };
             /** @description Invalid parameters format */
@@ -8267,7 +8812,7 @@ export interface operations {
             };
         };
     };
-    list_player_flags_by_id: {
+    retrieve_player_deployment_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -8279,13 +8824,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Listed playerflags by id successfully */
+            /** @description Retrieved playerdeployment by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FlagModel"][];
+                    "application/json": components["schemas"]["DeploymentModel"];
                 };
             };
             /** @description Invalid parameters format */
@@ -8335,7 +8880,7 @@ export interface operations {
             };
         };
     };
-    retrieve_player_instance_by_id: {
+    list_player_flags_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -8347,13 +8892,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved playerinstance by id successfully */
+            /** @description Listed playerflags by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["InstanceModel"];
+                    "application/json": components["schemas"]["FlagModel"][];
                 };
             };
             /** @description Invalid parameters format */

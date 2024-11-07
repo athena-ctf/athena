@@ -6,27 +6,11 @@ use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use entity::extensions::UpdateProfileSchema;
 use entity::prelude::*;
 use fred::prelude::{RedisPool, SortedSetsInterface};
-use oxide_macros::{
-    crud_interface_db, multiple_relation_db, optional_relation_db, single_relation_db,
-};
 use sea_orm::prelude::*;
-use sea_orm::{ActiveValue, IntoActiveModel};
+use sea_orm::{ActiveValue, DatabaseTransaction, IntoActiveModel};
 
 use crate::errors::{Error, Result};
 use crate::schemas::{PlayerProfile, PlayerSummary, TagSolves};
-
-crud_interface_db!(Player);
-
-single_relation_db!(Player, Team);
-
-optional_relation_db!(Player, Deployment);
-optional_relation_db!(Player, Ban);
-
-multiple_relation_db!(Player, Flag);
-multiple_relation_db!(Player, Notification);
-multiple_relation_db!(Player, Achievement);
-multiple_relation_db!(Player, Submission);
-multiple_relation_db!(Player, Unlock);
 
 pub async fn retrieve_by_email(email: String, db: &DbConn) -> Result<Option<UserModel>> {
     let Some((user_model, Some(_))) = User::find()
@@ -73,7 +57,7 @@ pub async fn retrieve_profile(
         .await?;
 
     for submitted_challenge in &solved_challenges {
-        let tags = crate::db::challenge::related_tags(submitted_challenge, db).await?;
+        let tags = submitted_challenge.find_related(Tag).all(db).await?;
         for tag in tags {
             tags_map
                 .entry(tag.value)
@@ -94,45 +78,43 @@ pub async fn retrieve_profile_by_username(
     username: String,
     db: &DbConn,
     pool: &RedisPool,
-) -> Result<Option<PlayerProfile>> {
+) -> Result<PlayerProfile> {
     let Some((user_model, Some(player_model))) = User::find()
         .find_also_related(Player)
         .filter(entity::user::Column::Username.eq(&username))
         .one(db)
         .await?
     else {
-        return Ok(None);
+        return Err(Error::NotFound("Player not found".to_owned()));
     };
 
-    retrieve_profile(user_model, player_model, db, pool)
-        .await
-        .map(Some)
+    retrieve_profile(user_model, player_model, db, pool).await
 }
 
 pub async fn retrieve_player_summary_by_id(
     id: Uuid,
     db: &DbConn,
     pool: &RedisPool,
-) -> Result<Option<PlayerSummary>> {
+) -> Result<PlayerSummary> {
     let Some((user_model, Some(player_model))) = User::find_by_id(id)
         .find_also_related(Player)
         .one(db)
         .await?
     else {
-        return Ok(None);
+        return Err(Error::NotFound("Player not found".to_owned()));
     };
 
-    Ok(Some(PlayerSummary {
+    Ok(PlayerSummary {
         submissions: player_model.find_related(Submission).all(db).await?,
         unlocks: player_model.find_related(Unlock).all(db).await?,
         achievements: player_model.find_related(Achievement).all(db).await?,
         profile: retrieve_profile(user_model, player_model, db, pool).await?,
-    }))
+    })
 }
 
 pub async fn ban(id: Uuid, details: CreateBanSchema, db: &DbConn) -> Result<Option<BanModel>> {
     if let Some(player) = Player::find_by_id(id).one(db).await? {
-        let ban_model = crate::db::ban::create(details, db).await?;
+        let ban_model = details.into_active_model().insert(db).await?;
         let mut active_player = player.into_active_model();
         active_player.ban_id = ActiveValue::Set(Some(ban_model.id));
 
@@ -177,7 +159,11 @@ pub async fn verify(
     Ok(Some(player))
 }
 
-pub async fn reset(player_model: UserModel, password: String, db: &DbConn) -> Result<UserModel> {
+pub async fn reset(
+    player_model: UserModel,
+    password: String,
+    db: &DatabaseTransaction,
+) -> Result<UserModel> {
     let mut active_user = player_model.into_active_model();
     let salt = SaltString::generate(&mut OsRng);
 

@@ -4,19 +4,20 @@ use std::sync::Arc;
 use askama::Template;
 use axum::extract::{Query, State};
 use axum::{Extension, Json};
-use entity::prelude::*;
 use fred::prelude::SortedSetsInterface;
 use jsonwebtoken::{DecodingKey, Validation};
 use lettre::message::header::ContentType;
 use lettre::message::{Mailbox, MultiPart, SinglePart};
 use lettre::{AsyncTransport, Message};
+use sea_orm::{ActiveModelTrait, EntityTrait, IntoActiveModel, TransactionTrait};
 
 use crate::db;
 use crate::db::player;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    CreatePlayerSchema, JsonResponse, LoginModel, RegisterExistsQuery, RegisterPlayer,
-    ResetPasswordSchema, SendTokenSchema, TeamRegister, TokenClaims, TokenPair,
+    CreateUserSchema, GroupEnum, JsonResponse, LoginModel, Player, PlayerModel,
+    RegisterExistsQuery, RegisterPlayer, ResetPasswordSchema, SendTokenSchema, TeamModel,
+    TeamRegister, TokenClaims, TokenPair,
 };
 use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
@@ -69,6 +70,8 @@ pub async fn register(
     state: State<Arc<AppState>>,
     Json(body): Json<RegisterPlayer>,
 ) -> Result<Json<JsonResponse>> {
+    let txn = state.db_conn.begin().await?;
+
     let verified = state
         .token_manager
         .verify("register", &body.email, &body.token)
@@ -80,15 +83,14 @@ pub async fn register(
         return Err(Error::BadRequest("Too many retries".to_owned()));
     }
 
-    let user = db::user::create(
-        CreateUserSchema {
-            email: body.email.clone(),
-            username: body.username,
-            password: body.password,
-            group: GroupEnum::Player,
-        },
-        &state.db_conn,
-    )
+    let user = CreateUserSchema {
+        email: body.email.clone(),
+        username: body.username,
+        password: body.password,
+        group: GroupEnum::Player,
+    }
+    .into_active_model()
+    .insert(&txn)
     .await?;
 
     state
@@ -105,39 +107,27 @@ pub async fn register(
 
     let team_id = match body.team {
         TeamRegister::Join { team_id, invite_id } => {
-            db::invite::accept(invite_id, &state.db_conn).await?;
+            db::invite::accept(invite_id, &txn).await?;
 
             team_id
         }
 
         TeamRegister::Create { team_name } => {
-            let team_model = db::team::create(
-                CreateTeamSchema {
-                    email: body.email,
-                    name: team_name,
-                    ban_id: None,
-                    score: 0,
-                },
-                &state.db_conn,
-            )
-            .await?;
+            let team_model = TeamModel::new(body.email, team_name, 0)
+                .into_active_model()
+                .insert(&txn)
+                .await?;
 
             team_model.id
         }
     };
 
-    db::player::create(
-        CreatePlayerSchema {
-            user_id: user.id,
-            display_name: body.display_name,
-            team_id,
-            ban_id: None,
-            discord_id: None,
-            score: 0,
-        },
-        &state.db_conn,
-    )
-    .await?;
+    PlayerModel::new(body.display_name, team_id, None, None, user.id, 0)
+        .into_active_model()
+        .insert(&txn)
+        .await?;
+
+    txn.commit().await?;
 
     Ok(Json(JsonResponse {
         message: "Successfully registered".to_string(),
@@ -229,11 +219,15 @@ pub async fn reset_password(
         return Err(Error::BadRequest("Too many retries".to_owned()));
     }
 
+    let txn = state.db_conn.begin().await?;
+
     let Some(user_model) = player::retrieve_by_email(body.email, &state.db_conn).await? else {
         return Err(Error::NotFound("User does not exist".to_owned()));
     };
 
-    player::reset(user_model, body.new_password, &state.db_conn).await?;
+    player::reset(user_model, body.new_password, &txn).await?;
+
+    txn.commit().await?;
 
     Ok(Json(JsonResponse {
         message: "Successfully reset password".to_owned(),
@@ -322,13 +316,6 @@ pub async fn login(
         return Err(Error::BadRequest("Player is banned".to_owned()));
     }
 
-    if db::player::related_team(player_model.id, &state.db_conn)
-        .await?
-        .is_some_and(|(_, team_model)| team_model.ban_id.is_some())
-    {
-        return Err(Error::BadRequest("Player team is banned".to_owned()));
-    }
-
     let token_pair = crate::service::generate_player_token_pair(
         &player_model,
         &state.settings.read().await.jwt,
@@ -361,7 +348,7 @@ pub async fn refresh_token(
     )?
     .claims;
 
-    let Some(player_model) = db::player::retrieve(claims.id, &state.db_conn).await? else {
+    let Some(player_model) = Player::find_by_id(claims.id).one(&state.db_conn).await? else {
         return Err(Error::NotFound("User does not exist".to_owned()));
     };
 
@@ -389,7 +376,8 @@ pub async fn get_current_logged_in(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<PlayerModel>> {
-    db::player::retrieve(claims.id, &state.db_conn)
+    Player::find_by_id(claims.id)
+        .one(&state.db_conn)
         .await?
         .map_or_else(
             || Err(Error::NotFound("User does not exist".to_owned())),

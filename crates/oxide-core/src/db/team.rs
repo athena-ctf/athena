@@ -3,39 +3,16 @@ use std::collections::HashMap;
 use entity::links::{TeamToAchievement, TeamToChallenge, TeamToSubmission, TeamToUnlock};
 use entity::prelude::*;
 use fred::prelude::RedisPool;
-use oxide_macros::{crud_interface_db, multiple_relation_db, optional_relation_db};
 use sea_orm::prelude::*;
-use sea_orm::{ActiveValue, IntoActiveModel};
 
 use crate::errors::Result;
 use crate::schemas::{TagSolves, TeamProfile, TeamSummary};
-
-crud_interface_db!(Team);
-
-optional_relation_db!(Team, Ban);
-
-multiple_relation_db!(Team, Player);
-multiple_relation_db!(Team, Invite);
 
 pub async fn retrieve_by_name(name: &str, db: &DbConn) -> Result<Option<TeamModel>> {
     Ok(Team::find()
         .filter(entity::team::Column::Name.eq(name))
         .one(db)
         .await?)
-}
-
-pub async fn ban(id: Uuid, details: CreateBanSchema, db: &DbConn) -> Result<Option<BanModel>> {
-    if let Some(team) = Team::find_by_id(id).one(db).await? {
-        let ban_model = crate::db::ban::create(details, db).await?;
-        let mut active_team = team.into_active_model();
-        active_team.ban_id = ActiveValue::Set(Some(ban_model.id));
-
-        active_team.update(db).await?;
-
-        Ok(Some(ban_model))
-    } else {
-        Ok(None)
-    }
 }
 
 pub async fn retrieve_team_by_teamname(
@@ -79,7 +56,7 @@ pub async fn retrieve_team_by_teamname(
         .all(db)
         .await?
     {
-        let tags = crate::db::challenge::related_tags(&submitted_challenge, db).await?;
+        let tags = submitted_challenge.find_related(Tag).all(db).await?;
         for tag in tags {
             tags_map
                 .entry(tag.value)
@@ -102,7 +79,12 @@ pub async fn retrieve_team_summary_by_id(
     db: &DbConn,
     pool: &RedisPool,
 ) -> Result<Option<TeamSummary>> {
-    let Some((_, team_model)) = crate::db::player::related_team(id, db).await? else {
+    let Some(team_model) = Team::find()
+        .left_join(Player)
+        .filter(entity::player::Column::Id.eq(id))
+        .one(db)
+        .await?
+    else {
         return Ok(None);
     };
 
@@ -128,7 +110,7 @@ pub async fn retrieve_team_summary_by_id(
         .all(db)
         .await?
     {
-        let tags = crate::db::challenge::related_tags(&submitted_challenge, db).await?;
+        let tags = submitted_challenge.find_related(Tag).all(db).await?;
         for tag in tags {
             tags_map
                 .entry(tag.value)

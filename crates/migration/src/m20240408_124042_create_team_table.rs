@@ -16,16 +16,7 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Team::UpdatedAt).date_time().not_null())
                     .col(ColumnDef::new(Team::Email).string().not_null())
                     .col(ColumnDef::new(Team::Name).string().not_null())
-                    .col(ColumnDef::new(Team::BanId).uuid())
                     .col(ColumnDef::new(Team::Score).integer().not_null().default(0))
-                    .foreign_key(
-                        ForeignKey::create()
-                            .name("fk-team-ban_id")
-                            .from(Team::Table, Team::BanId)
-                            .to(Ban::Table, Ban::Id)
-                            .on_delete(ForeignKeyAction::Cascade)
-                            .on_update(ForeignKeyAction::Cascade),
-                    )
                     .to_owned(),
             )
             .await?;
@@ -50,12 +41,5 @@ enum Team {
     UpdatedAt,
     Email,
     Name,
-    BanId,
     Score,
-}
-
-#[derive(DeriveIden)]
-enum Ban {
-    Table,
-    Id,
 }

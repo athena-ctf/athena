@@ -2,19 +2,19 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::Extension;
-use entity::extensions::UpdateProfileSchema;
 use fred::prelude::*;
-use oxide_macros::{
-    crud_interface_api, multiple_relation_api, optional_relation_api, single_relation_api,
-};
+use oxide_macros::{crud_interface_api, multiple_relation_api, single_relation_api};
+use sea_orm::prelude::*;
+use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
 
 use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    AchievementModel, BanModel, CreatePlayerSchema, DeploymentModel, FlagModel, JsonResponse,
-    NotificationModel, PlayerModel, PlayerProfile, PlayerSummary, SubmissionModel, TeamModel,
-    TokenClaims, UnlockModel,
+    Achievement, AchievementModel, Ban, BanModel, CreatePlayerSchema, Deployment, DeploymentModel,
+    Flag, FlagModel, JsonResponse, Notification, NotificationModel, Player, PlayerModel,
+    PlayerProfile, PlayerSummary, Submission, SubmissionModel, Team, TeamModel, TokenClaims,
+    Unlock, UnlockModel, UpdateProfileSchema,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -22,8 +22,8 @@ crud_interface_api!(Player);
 
 single_relation_api!(Player, Team);
 
-optional_relation_api!(Player, Deployment);
-optional_relation_api!(Player, Ban);
+single_relation_api!(Player, Deployment);
+single_relation_api!(Player, Ban);
 
 multiple_relation_api!(Player, Flag);
 multiple_relation_api!(Player, Achievement);
@@ -49,17 +49,9 @@ pub async fn retrieve_profile_by_username(
     state: State<Arc<AppState>>,
     Path(username): Path<String>,
 ) -> Result<Json<PlayerProfile>> {
-    let Some(player_profile) = db::player::retrieve_profile_by_username(
-        username,
-        &state.db_conn,
-        &state.persistent_client,
-    )
-    .await?
-    else {
-        return Err(Error::NotFound("Player does not exist".to_owned()));
-    };
-
-    Ok(Json(player_profile))
+    db::player::retrieve_profile_by_username(username, &state.db_conn, &state.persistent_client)
+        .await
+        .map(Json)
 }
 
 #[utoipa::path(
@@ -106,15 +98,7 @@ pub async fn retrieve_summary(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<PlayerSummary>> {
-    let Some(summary) = db::player::retrieve_player_summary_by_id(
-        claims.id,
-        &state.db_conn,
-        &state.persistent_client,
-    )
-    .await?
-    else {
-        return Err(Error::NotFound("Player does not exist".to_owned()));
-    };
-
-    Ok(Json(summary))
+    db::player::retrieve_player_summary_by_id(claims.id, &state.db_conn, &state.persistent_client)
+        .await
+        .map(Json)
 }
