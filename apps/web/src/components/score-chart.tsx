@@ -13,7 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@repo/ui/components/chart";
-import { components } from "@repo/api";
+import type { components } from "@repo/api";
 
 const colors = [
   "#a6bc07",

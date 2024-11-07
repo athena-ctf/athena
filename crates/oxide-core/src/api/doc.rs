@@ -147,6 +147,7 @@ use crate::schemas::*;
         player::list_unlocks_by_id,
         player::retrieve_ban_by_id,
         player::retrieve_summary,
+        stats::retrieve,
         submission::list,
         submission::create,
         submission::retrieve_by_id,

@@ -1,6 +1,9 @@
 use std::str::FromStr;
 use std::sync::Arc;
 
+use argon2::password_hash::rand_core::OsRng;
+use argon2::password_hash::SaltString;
+use argon2::{Argon2, PasswordHasher};
 use askama::Template;
 use axum::extract::{Query, State};
 use axum::{Extension, Json};
@@ -9,15 +12,14 @@ use jsonwebtoken::{DecodingKey, Validation};
 use lettre::message::header::ContentType;
 use lettre::message::{Mailbox, MultiPart, SinglePart};
 use lettre::{AsyncTransport, Message};
-use sea_orm::{ActiveModelTrait, EntityTrait, IntoActiveModel, TransactionTrait};
+use sea_orm::prelude::*;
+use sea_orm::{ActiveValue, Condition, IntoActiveModel, TransactionTrait};
 
-use crate::db;
-use crate::db::player;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    CreateUserSchema, GroupEnum, JsonResponse, LoginModel, Player, PlayerModel,
+    CreateUserSchema, GroupEnum, Invite, JsonResponse, LoginModel, Player, PlayerModel,
     RegisterExistsQuery, RegisterPlayer, ResetPasswordSchema, SendTokenSchema, TeamModel,
-    TeamRegister, TokenClaims, TokenPair,
+    TeamRegister, TokenClaims, TokenPair, User,
 };
 use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
@@ -42,7 +44,16 @@ pub async fn register_exists(
     state: State<Arc<AppState>>,
     Query(query): Query<RegisterExistsQuery>,
 ) -> Result<()> {
-    if db::user::exists(query.email, query.username, &state.db_conn).await? {
+    if User::find()
+        .filter(
+            Condition::any()
+                .add(entity::user::Column::Email.eq(query.email))
+                .add(entity::user::Column::Username.eq(query.username)),
+        )
+        .one(&state.db_conn)
+        .await?
+        .is_some()
+    {
         return Err(Error::BadRequest(
             "User with username or email already exists".to_owned(),
         ));
@@ -51,7 +62,6 @@ pub async fn register_exists(
     Ok(())
 }
 
-// TODO: add validation for invite usage and already registered user
 #[utoipa::path(
     post,
     path = "/auth/player/register",
@@ -107,7 +117,14 @@ pub async fn register(
 
     let team_id = match body.team {
         TeamRegister::Join { team_id, invite_id } => {
-            db::invite::accept(invite_id, &txn).await?;
+            Invite::update_many()
+                .col_expr(
+                    entity::invite::Column::Remaining,
+                    Expr::col(entity::invite::Column::Remaining).sub(1),
+                )
+                .filter(entity::invite::Column::Id.eq(invite_id))
+                .exec(&txn)
+                .await?;
 
             team_id
         }
@@ -122,7 +139,7 @@ pub async fn register(
         }
     };
 
-    PlayerModel::new(body.display_name, team_id, None, None, user.id, 0)
+    PlayerModel::new(team_id, None, None, user.id, 0)
         .into_active_model()
         .insert(&txn)
         .await?;
@@ -221,11 +238,25 @@ pub async fn reset_password(
 
     let txn = state.db_conn.begin().await?;
 
-    let Some(user_model) = player::retrieve_by_email(body.email, &state.db_conn).await? else {
+    let Some((user_model, Some(_))) = User::find()
+        .find_also_related(Player)
+        .filter(entity::user::Column::Email.eq(&body.email))
+        .one(&state.db_conn)
+        .await?
+    else {
         return Err(Error::NotFound("User does not exist".to_owned()));
     };
 
-    player::reset(user_model, body.new_password, &txn).await?;
+    let mut active_user = user_model.into_active_model();
+    let salt = SaltString::generate(&mut OsRng);
+
+    active_user.password = ActiveValue::Set(
+        Argon2::default()
+            .hash_password(body.new_password.as_bytes(), &salt)?
+            .to_string(),
+    );
+
+    active_user.update(&txn).await?;
 
     txn.commit().await?;
 
@@ -306,10 +337,13 @@ pub async fn login(
     state: State<Arc<AppState>>,
     Json(body): Json<LoginModel>,
 ) -> Result<Json<TokenPair>> {
-    let Some(player_model) =
-        db::player::verify(body.username, body.password, &state.db_conn).await?
+    let Some(user_model) = super::verify(body.username, body.password, &state.db_conn).await?
     else {
         return Err(Error::BadRequest("Username invalid".to_owned()));
+    };
+
+    let Some(player_model) = user_model.find_related(Player).one(&state.db_conn).await? else {
+        return Err(Error::NotFound("User is not admin".to_owned()));
     };
 
     if player_model.ban_id.is_some() {

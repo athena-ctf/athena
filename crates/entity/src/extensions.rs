@@ -39,8 +39,7 @@ impl IntoActiveValue<Self> for TicketStatusEnum {
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 pub struct UpdateProfileSchema {
-    pub display_name: String,
-    pub team_id: Uuid,
+    pub team_id: Option<Uuid>,
     pub discord_id: Option<String>,
 }
 
@@ -49,12 +48,15 @@ impl IntoActiveModel<super::player::ActiveModel> for UpdateProfileSchema {
         super::player::ActiveModel {
             id: ActiveValue::NotSet,
             user_id: ActiveValue::NotSet,
-            display_name: ActiveValue::Set(self.display_name),
             created_at: ActiveValue::NotSet,
             updated_at: ActiveValue::Set(Utc::now().naive_utc()),
-            team_id: ActiveValue::Set(self.team_id),
+            team_id: self
+                .team_id
+                .map_or(ActiveValue::NotSet, |team_id| ActiveValue::Set(team_id)),
             ban_id: ActiveValue::NotSet,
-            discord_id: ActiveValue::Set(self.discord_id),
+            discord_id: self.discord_id.map_or(ActiveValue::NotSet, |discord_id| {
+                ActiveValue::Set(Some(discord_id))
+            }),
             score: ActiveValue::NotSet,
         }
     }

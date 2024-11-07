@@ -92,7 +92,7 @@ macro_rules! crud_interface_api {
                 Ok(Json($entity::find().all(&state.db_conn).await?))
             }
 
-            #[doc = "Create " $entity]
+            #[doc = "Create " $entity:snake]
             #[utoipa::path(
                 post,
                 path = concat!("/admin/",stringify!([<$entity:snake>])),
@@ -209,7 +209,6 @@ macro_rules! crud_interface_api {
     };
 }
 
-// TODO: append `_id` at end
 #[macro_export]
 macro_rules! join_crud_interface_api {
     ($entity:ident, $related_from:ident, $related_from_id:literal, $related_to:ident, $related_to_id:literal) => {

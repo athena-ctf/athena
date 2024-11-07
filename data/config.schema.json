@@ -70,9 +70,9 @@
       "required": [
         "container_registry",
         "container_timeout",
+        "player_flag_len",
         "registry_password",
-        "registry_username",
-        "player_flag_len"
+        "registry_username"
       ],
       "properties": {
         "container_registry": {
@@ -87,16 +87,16 @@
           "format": "uint",
           "minimum": 0.0
         },
+        "player_flag_len": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        },
         "registry_password": {
           "type": "string"
         },
         "registry_username": {
           "type": "string"
-        },
-        "player_flag_len": {
-          "type": "integer",
-          "format": "uint",
-          "minimum": 0.0
         }
       }
     },
@@ -308,13 +308,13 @@
       "type": "object",
       "required": [
         "cache",
-        "token"
+        "persistent"
       ],
       "properties": {
         "cache": {
           "$ref": "#/definitions/RedisInner"
         },
-        "token": {
+        "persistent": {
           "$ref": "#/definitions/RedisInner"
         }
       }

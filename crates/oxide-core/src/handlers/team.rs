@@ -1,18 +1,19 @@
+use std::collections::HashMap;
 use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::Extension;
+use entity::links::{TeamToAchievement, TeamToChallenge, TeamToSubmission, TeamToUnlock};
 use fred::prelude::*;
 use oxide_macros::{crud_interface_api, multiple_relation_api};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
 
-use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Team, TeamModel,
-    TeamProfile, TeamSummary, TokenClaims,
+    CreatePlayerSchema, CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel,
+    Tag, TagSolves, Team, TeamModel, TeamProfile, TeamSummary, TokenClaims, User,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -23,8 +24,8 @@ multiple_relation_api!(Team, Player);
 
 #[utoipa::path(
     get,
-    path = "/player/team/{teamname}/profile",
-    params(("teamname" = String, Path, description = "Team name of team")),
+    path = "/player/team/{team_name}/profile",
+    params(("team_name" = String, Path, description = "Team name of team")),
     responses(
         (status = 200, description = "Retrieved team details by id successfully", body = TeamProfile),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
@@ -37,14 +38,64 @@ multiple_relation_api!(Team, Player);
 /// Retrieve team details by teamname
 pub async fn retrieve_team_by_teamname(
     state: State<Arc<AppState>>,
-    Path(teamname): Path<String>,
+    Path(team_name): Path<String>,
 ) -> Result<Json<TeamProfile>> {
-    let Some(team_profile) = db::team::retrieve_team_by_teamname(teamname, &state.db_conn).await?
+    let Some(team_model) = Team::find()
+        .filter(entity::team::Column::Name.eq(&team_name))
+        .one(&state.db_conn)
+        .await?
     else {
-        return Err(Error::NotFound("Team does not exist".to_owned()));
+        return Err(Error::NotFound("Team not found".to_owned()));
     };
 
-    Ok(Json(team_profile))
+    let players = team_model
+        .find_related(Player)
+        .into_partial_model::<CreatePlayerSchema>()
+        .all(&state.db_conn)
+        .await?;
+    let mut tags_map = Tag::find()
+        .all(&state.db_conn)
+        .await?
+        .into_iter()
+        .map(|tag| {
+            (
+                tag.value.clone(),
+                TagSolves {
+                    tag_id: tag.id,
+                    tag_value: tag.value,
+                    solves: 0,
+                },
+            )
+        })
+        .collect::<HashMap<String, TagSolves>>();
+
+    let mut challenges = Vec::new();
+
+    for submitted_challenge in team_model
+        .find_linked(TeamToChallenge)
+        .filter(entity::submission::Column::IsCorrect.eq(true))
+        .all(&state.db_conn)
+        .await?
+    {
+        let tags = submitted_challenge
+            .find_related(Tag)
+            .all(&state.db_conn)
+            .await?;
+        for tag in tags {
+            tags_map
+                .entry(tag.value)
+                .and_modify(|tag_solves| tag_solves.solves += 1);
+        }
+
+        challenges.push(submitted_challenge);
+    }
+
+    Ok(Json(TeamProfile {
+        team: team_model,
+        solved_challenges: challenges,
+        tag_solves: tags_map.values().cloned().collect(),
+        members: players,
+    }))
 }
 
 #[utoipa::path(
@@ -91,12 +142,82 @@ pub async fn retrieve_summary(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<TeamSummary>> {
-    let Some(summary) =
-        db::team::retrieve_team_summary_by_id(claims.id, &state.db_conn, &state.persistent_client)
-            .await?
+    let Some(team_model) = Team::find()
+        .left_join(Player)
+        .filter(entity::player::Column::Id.eq(claims.id))
+        .one(&state.db_conn)
+        .await?
     else {
-        return Err(Error::NotFound("Player does not exist".to_owned()));
+        return Err(Error::NotFound("Player team not found".to_owned()));
     };
 
-    Ok(Json(summary))
+    let mut tags_map = Tag::find()
+        .all(&state.db_conn)
+        .await?
+        .into_iter()
+        .map(|tag| {
+            (
+                tag.value.clone(),
+                TagSolves {
+                    tag_id: tag.id,
+                    tag_value: tag.value,
+                    solves: 0,
+                },
+            )
+        })
+        .collect::<HashMap<String, TagSolves>>();
+
+    for submitted_challenge in team_model
+        .find_linked(TeamToChallenge)
+        .filter(entity::submission::Column::IsCorrect.eq(true))
+        .all(&state.db_conn)
+        .await?
+    {
+        let tags = submitted_challenge
+            .find_related(Tag)
+            .all(&state.db_conn)
+            .await?;
+        for tag in tags {
+            tags_map
+                .entry(tag.value)
+                .and_modify(|tag_solves| tag_solves.solves += 1);
+        }
+    }
+
+    let players = team_model.find_related(Player).all(&state.db_conn).await?;
+    let mut members = Vec::with_capacity(players.len());
+
+    for player_model in players {
+        members.push(
+            crate::db::player::retrieve_profile(
+                player_model
+                    .find_related(User)
+                    .one(&state.db_conn)
+                    .await?
+                    .unwrap(),
+                player_model,
+                &state.db_conn,
+                &state.persistent_client,
+            )
+            .await?,
+        );
+    }
+
+    Ok(Json(TeamSummary {
+        members,
+        submissions: team_model
+            .find_linked(TeamToSubmission)
+            .all(&state.db_conn)
+            .await?,
+        unlocks: team_model
+            .find_linked(TeamToUnlock)
+            .all(&state.db_conn)
+            .await?,
+        achievements: team_model
+            .find_linked(TeamToAchievement)
+            .all(&state.db_conn)
+            .await?,
+        team: team_model,
+        tag_solves: tags_map.values().cloned().collect(),
+    }))
 }

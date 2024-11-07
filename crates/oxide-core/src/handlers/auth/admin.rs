@@ -3,9 +3,9 @@ use std::sync::Arc;
 use axum::extract::State;
 use axum::{Extension, Json};
 use jsonwebtoken::{DecodingKey, Validation};
+use sea_orm::prelude::*;
 use sea_orm::{EntityTrait, TransactionTrait};
 
-use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{Admin, AdminModel, JsonResponse, LoginModel, TokenClaims, TokenPair};
 use crate::service::AppState;
@@ -29,8 +29,12 @@ pub async fn login(
     Json(body): Json<LoginModel>,
 ) -> Result<Json<TokenPair>> {
     let txn = state.db_conn.begin().await?;
-    let Some(admin_model) = db::admin::verify(body.username, body.password, &txn).await? else {
+    let Some(user_model) = super::verify(body.username, body.password, &txn).await? else {
         return Err(Error::BadRequest("Username invalid".to_owned()));
+    };
+
+    let Some(admin_model) = user_model.find_related(Admin).one(&txn).await? else {
+        return Err(Error::NotFound("User is not admin".to_owned()));
     };
 
     let token_pair =

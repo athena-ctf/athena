@@ -24,7 +24,6 @@ pub struct Model {
     pub id: Uuid,
     pub created_at: DateTime,
     pub updated_at: DateTime,
-    #[sea_orm(unique)]
     pub username: String,
     #[sea_orm(unique)]
     pub email: String,

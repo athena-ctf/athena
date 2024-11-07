@@ -124,6 +124,16 @@
               }
             }
           },
+          "404": {
+            "description": "No achievement found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Unexpected error",
             "content": {
@@ -224,7 +234,7 @@
           "achievement"
         ],
         "summary": "Delete achievement by id",
-        "operationId": "delete_achievement",
+        "operationId": "delete_achievement_by_id",
         "parameters": [
           {
             "name": "id",
@@ -608,7 +618,7 @@
         "tags": [
           "admin"
         ],
-        "summary": "Create Admin",
+        "summary": "Create admin",
         "operationId": "create_admin",
         "requestBody": {
           "content": {
@@ -1075,7 +1085,7 @@
         "tags": [
           "ban"
         ],
-        "summary": "Create Ban",
+        "summary": "Create ban",
         "operationId": "create_ban",
         "requestBody": {
           "content": {
@@ -1100,6 +1110,99 @@
           },
           "400": {
             "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No ban found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/ban/player/{id}": {
+      "post": {
+        "tags": [
+          "ban"
+        ],
+        "summary": "Ban player by id",
+        "operationId": "add_player_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBanSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Banned player by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BanModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -1404,7 +1507,7 @@
         "tags": [
           "ban"
         ],
-        "summary": "Retrieve ban player by id",
+        "summary": "List ban player by id",
         "operationId": "retrieve_ban_player_by_id",
         "parameters": [
           {
@@ -1425,89 +1528,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PlayerModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No ban found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/ban/{id}/team": {
-      "get": {
-        "tags": [
-          "ban"
-        ],
-        "summary": "Retrieve ban team by id",
-        "operationId": "retrieve_ban_team_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved banteam by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TeamModel"
                 }
               }
             }
@@ -1622,7 +1642,7 @@
         "tags": [
           "challenge"
         ],
-        "summary": "Create Challenge",
+        "summary": "Create challenge",
         "operationId": "create_challenge",
         "requestBody": {
           "content": {
@@ -2767,7 +2787,7 @@
         }
       }
     },
-    "/admin/challenge_tag/{challenge_id}-{tag_id}": {
+    "/admin/challenge_tag/{Challenge}-{Tag}": {
       "get": {
         "tags": [
           "challenge_tag"
@@ -3102,7 +3122,7 @@
         "tags": [
           "container"
         ],
-        "summary": "Create Container",
+        "summary": "Create container",
         "operationId": "create_container",
         "requestBody": {
           "content": {
@@ -3566,7 +3586,7 @@
         "tags": [
           "deployment"
         ],
-        "summary": "Create Deployment",
+        "summary": "Create deployment",
         "operationId": "create_deployment",
         "requestBody": {
           "content": {
@@ -4199,7 +4219,7 @@
         "tags": [
           "file"
         ],
-        "summary": "Create File",
+        "summary": "Create file",
         "operationId": "create_file",
         "requestBody": {
           "content": {
@@ -4663,7 +4683,7 @@
         "tags": [
           "flag"
         ],
-        "summary": "Create Flag",
+        "summary": "Create flag",
         "operationId": "create_flag",
         "requestBody": {
           "content": {
@@ -5075,7 +5095,7 @@
         "tags": [
           "flag"
         ],
-        "summary": "Retrieve flag player by id",
+        "summary": "List flag player by id",
         "operationId": "retrieve_flag_player_by_id",
         "parameters": [
           {
@@ -5210,7 +5230,7 @@
         "tags": [
           "hint"
         ],
-        "summary": "Create Hint",
+        "summary": "Create hint",
         "operationId": "create_hint",
         "requestBody": {
           "content": {
@@ -5760,7 +5780,7 @@
         "tags": [
           "instance"
         ],
-        "summary": "Create Instance",
+        "summary": "Create instance",
         "operationId": "create_instance",
         "requestBody": {
           "content": {
@@ -6224,7 +6244,7 @@
         "tags": [
           "invite"
         ],
-        "summary": "Create Invite",
+        "summary": "Create invite",
         "operationId": "create_invite",
         "requestBody": {
           "content": {
@@ -6688,7 +6708,7 @@
         "tags": [
           "notification"
         ],
-        "summary": "Create Notification",
+        "summary": "Create notification",
         "operationId": "create_notification",
         "requestBody": {
           "content": {
@@ -7152,7 +7172,7 @@
         "tags": [
           "player"
         ],
-        "summary": "Create Player",
+        "summary": "Create player",
         "operationId": "create_player",
         "requestBody": {
           "content": {
@@ -7567,7 +7587,7 @@
         "tags": [
           "player"
         ],
-        "summary": "Retrieve player ban by id",
+        "summary": "List player ban by id",
         "operationId": "retrieve_player_ban_by_id",
         "parameters": [
           {
@@ -7650,7 +7670,7 @@
         "tags": [
           "player"
         ],
-        "summary": "Retrieve player deployment by id",
+        "summary": "List player deployment by id",
         "operationId": "retrieve_player_deployment_by_id",
         "parameters": [
           {
@@ -8155,6 +8175,57 @@
         }
       }
     },
+    "/admin/stats": {
+      "get": {
+        "tags": [
+          "stats"
+        ],
+        "summary": "Retrieve stats of all tables",
+        "operationId": "retrieve",
+        "responses": {
+          "200": {
+            "description": "Retrieved stats successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatSchema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/submission": {
       "get": {
         "tags": [
@@ -8288,7 +8359,7 @@
         }
       }
     },
-    "/admin/submission/{challenge_id}-{player_id}": {
+    "/admin/submission/{Challenge}-{Player}": {
       "get": {
         "tags": [
           "submission"
@@ -8623,7 +8694,7 @@
         "tags": [
           "tag"
         ],
-        "summary": "Create Tag",
+        "summary": "Create tag",
         "operationId": "create_tag",
         "requestBody": {
           "content": {
@@ -9090,7 +9161,7 @@
         "tags": [
           "team"
         ],
-        "summary": "Create Team",
+        "summary": "Create team",
         "operationId": "create_team",
         "requestBody": {
           "content": {
@@ -9414,89 +9485,6 @@
         }
       }
     },
-    "/admin/team/{id}/ban": {
-      "get": {
-        "tags": [
-          "team"
-        ],
-        "summary": "Retrieve team ban by id",
-        "operationId": "retrieve_team_ban_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved teamban by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BanModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No team found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/admin/team/{id}/invites": {
       "get": {
         "tags": [
@@ -9726,7 +9714,7 @@
         "tags": [
           "ticket"
         ],
-        "summary": "Create Ticket",
+        "summary": "Create ticket",
         "operationId": "create_ticket",
         "requestBody": {
           "content": {
@@ -10055,7 +10043,7 @@
         "tags": [
           "ticket"
         ],
-        "summary": "Retrieve ticket admin by id",
+        "summary": "List ticket admin by id",
         "operationId": "retrieve_ticket_admin_by_id",
         "parameters": [
           {
@@ -10266,7 +10254,7 @@
         }
       }
     },
-    "/admin/unlock/{player_id}-{hint_id}": {
+    "/admin/unlock/{Player}-{Hint}": {
       "get": {
         "tags": [
           "unlock"
@@ -11227,192 +11215,6 @@
         }
       }
     },
-    "/ban/player/{id}": {
-      "post": {
-        "tags": [
-          "ban"
-        ],
-        "summary": "Ban player by id",
-        "operationId": "add_player_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateBanSchema"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Banned player by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BanModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No ban found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ban/team/{id}": {
-      "post": {
-        "tags": [
-          "ban"
-        ],
-        "summary": "Ban team by id",
-        "operationId": "add_team_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateBanSchema"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Banned team by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BanModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No ban found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/player/challenge/details/{id}": {
       "get": {
         "tags": [
@@ -11521,7 +11323,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChallengeDeployment"
+                  "$ref": "#/components/schemas/DeploymentModel"
                 }
               }
             }
@@ -12336,7 +12138,7 @@
         }
       }
     },
-    "/player/team/{teamname}/profile": {
+    "/player/team/{team_name}/profile": {
       "get": {
         "tags": [
           "team"
@@ -12345,7 +12147,7 @@
         "operationId": "retrieve_team_by_teamname",
         "parameters": [
           {
-            "name": "teamname",
+            "name": "team_name",
             "in": "path",
             "description": "Team name of team",
             "required": true,
@@ -12696,32 +12498,6 @@
           "updated_at": {
             "type": "string",
             "format": "date-time"
-          }
-        }
-      },
-      "ChallengeDeployment": {
-        "type": "object",
-        "required": [
-          "expires_at",
-          "subdomain",
-          "port_bindings"
-        ],
-        "properties": {
-          "expires_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "port_bindings": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "propertyNames": {
-              "type": "string"
-            }
-          },
-          "subdomain": {
-            "type": "string"
           }
         }
       },
@@ -13110,7 +12886,7 @@
       "CreateDeploymentSchema": {
         "type": "object",
         "required": [
-          "expiry",
+          "expires_at",
           "challenge_id",
           "hostname",
           "player_id"
@@ -13120,7 +12896,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "expiry": {
+          "expires_at": {
             "type": "string",
             "format": "date-time"
           },
@@ -13202,7 +12978,8 @@
         "required": [
           "container_id",
           "container_name",
-          "deployment_id"
+          "deployment_id",
+          "port_mapping"
         ],
         "properties": {
           "container_id": {
@@ -13214,6 +12991,12 @@
           "deployment_id": {
             "type": "string",
             "format": "uuid"
+          },
+          "port_mapping": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -13257,7 +13040,6 @@
       "CreatePlayerSchema": {
         "type": "object",
         "required": [
-          "display_name",
           "team_id",
           "user_id",
           "score"
@@ -13275,9 +13057,6 @@
               "string",
               "null"
             ]
-          },
-          "display_name": {
-            "type": "string"
           },
           "score": {
             "type": "integer",
@@ -13340,13 +13119,6 @@
           "score"
         ],
         "properties": {
-          "ban_id": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "uuid"
-          },
           "email": {
             "type": "string"
           },
@@ -13427,7 +13199,7 @@
           "id",
           "created_at",
           "updated_at",
-          "expiry",
+          "expires_at",
           "challenge_id",
           "hostname",
           "player_id"
@@ -13441,7 +13213,7 @@
             "type": "string",
             "format": "date-time"
           },
-          "expiry": {
+          "expires_at": {
             "type": "string",
             "format": "date-time"
           },
@@ -13472,7 +13244,7 @@
           "files": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreateFileSchema"
+              "$ref": "#/components/schemas/FileModel"
             }
           },
           "hints": {
@@ -13656,7 +13428,8 @@
           "updated_at",
           "container_id",
           "container_name",
-          "deployment_id"
+          "deployment_id",
+          "port_mapping"
         ],
         "properties": {
           "container_id": {
@@ -13676,6 +13449,12 @@
           "id": {
             "type": "string",
             "format": "uuid"
+          },
+          "port_mapping": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "updated_at": {
             "type": "string",
@@ -13879,7 +13658,6 @@
           "id",
           "created_at",
           "updated_at",
-          "display_name",
           "team_id",
           "user_id",
           "score"
@@ -13901,9 +13679,6 @@
               "string",
               "null"
             ]
-          },
-          "display_name": {
-            "type": "string"
           },
           "id": {
             "type": "string",
@@ -14099,8 +13874,12 @@
         "type": "object",
         "required": [
           "achievement",
+          "admin",
           "ban",
+          "challenge_tag",
           "challenge",
+          "container",
+          "deployment",
           "file",
           "flag",
           "hint",
@@ -14111,10 +13890,17 @@
           "submission",
           "tag",
           "team",
-          "unlocks"
+          "ticket",
+          "unlocks",
+          "user"
         ],
         "properties": {
           "achievement": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "admin": {
             "type": "integer",
             "format": "int64",
             "minimum": 0
@@ -14125,6 +13911,21 @@
             "minimum": 0
           },
           "challenge": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "challenge_tag": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "container": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "deployment": {
             "type": "integer",
             "format": "int64",
             "minimum": 0
@@ -14179,7 +13980,17 @@
             "format": "int64",
             "minimum": 0
           },
+          "ticket": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
           "unlocks": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "user": {
             "type": "integer",
             "format": "int64",
             "minimum": 0
@@ -14282,13 +14093,6 @@
           "score"
         ],
         "properties": {
-          "ban_id": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "uuid"
-          },
           "created_at": {
             "type": "string",
             "format": "date-time"
@@ -14622,10 +14426,6 @@
       },
       "UpdateProfileSchema": {
         "type": "object",
-        "required": [
-          "display_name",
-          "team_id"
-        ],
         "properties": {
           "discord_id": {
             "type": [
@@ -14633,11 +14433,11 @@
               "null"
             ]
           },
-          "display_name": {
-            "type": "string"
-          },
           "team_id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uuid"
           }
         }

@@ -24,14 +24,14 @@ type Challenge struct {
 	// MaxAttempts corresponds to the JSON schema field "max_attempts".
 	MaxAttempts *int `json:"max_attempts,omitempty"`
 
+	// PlayerFlagLen corresponds to the JSON schema field "player_flag_len".
+	PlayerFlagLen int `json:"player_flag_len"`
+
 	// RegistryPassword corresponds to the JSON schema field "registry_password".
 	RegistryPassword string `json:"registry_password"`
 
 	// RegistryUsername corresponds to the JSON schema field "registry_username".
 	RegistryUsername string `json:"registry_username"`
-
-	// PlayerFlagLen corresponds to the JSON schema field "player_flag_len".
-	PlayerFlagLen int `json:"player_flag_len"`
 }
 
 type CompressionKind string
@@ -167,8 +167,8 @@ type Redis struct {
 	// Cache corresponds to the JSON schema field "cache".
 	Cache RedisInner `json:"cache"`
 
-	// Token corresponds to the JSON schema field "token".
-	Token RedisInner `json:"token"`
+	// Persistent corresponds to the JSON schema field "persistent".
+	Persistent RedisInner `json:"persistent"`
 }
 
 type RedisInner struct {

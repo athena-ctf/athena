@@ -8,13 +8,18 @@ import {
   FormControl,
   FormMessage,
 } from "@repo/ui/components/form";
-import { Input } from "@repo/ui/components/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRegisterStore } from "@/stores/register";
 import { fetchClient } from "@repo/api";
 import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@ui/components/ui/input-otp";
 
 const verifyEmailSchema = z.object({
   token: z.string().length(8),
@@ -59,7 +64,21 @@ export function VerifyTokenForm({ prev }: { prev: () => void }) {
             <FormItem>
               <FormLabel>Verification Token</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <InputOTP maxLength={8} {...field}>
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                    <InputOTPSlot index={6} />
+                    <InputOTPSlot index={7} />
+                  </InputOTPGroup>
+                </InputOTP>
               </FormControl>
               <FormMessage />
             </FormItem>

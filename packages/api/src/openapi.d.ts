@@ -34,7 +34,7 @@ export interface paths {
         put?: never;
         post?: never;
         /** Delete achievement by id */
-        delete: operations["delete_achievement"];
+        delete: operations["delete_achievement_by_id"];
         options?: never;
         head?: never;
         /** Update achievement by id */
@@ -85,7 +85,7 @@ export interface paths {
         /** List admins */
         get: operations["list_admins"];
         put?: never;
-        /** Create Admin */
+        /** Create admin */
         post: operations["create_admin"];
         delete?: never;
         options?: never;
@@ -139,8 +139,25 @@ export interface paths {
         /** List bans */
         get: operations["list_bans"];
         put?: never;
-        /** Create Ban */
+        /** Create ban */
         post: operations["create_ban"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/admin/ban/player/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ban player by id */
+        post: operations["add_player_by_id"];
         delete?: never;
         options?: never;
         head?: never;
@@ -173,25 +190,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Retrieve ban player by id */
+        /** List ban player by id */
         get: operations["retrieve_ban_player_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/ban/{id}/team": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Retrieve ban team by id */
-        get: operations["retrieve_ban_team_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -210,7 +210,7 @@ export interface paths {
         /** List challenges */
         get: operations["list_challenges"];
         put?: never;
-        /** Create Challenge */
+        /** Create challenge */
         post: operations["create_challenge"];
         delete?: never;
         options?: never;
@@ -391,7 +391,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/admin/challenge_tag/{challenge_id}-{tag_id}": {
+    "/admin/challenge_tag/{Challenge}-{Tag}": {
         parameters: {
             query?: never;
             header?: never;
@@ -420,7 +420,7 @@ export interface paths {
         /** List containers */
         get: operations["list_containers"];
         put?: never;
-        /** Create Container */
+        /** Create container */
         post: operations["create_container"];
         delete?: never;
         options?: never;
@@ -474,7 +474,7 @@ export interface paths {
         /** List deployments */
         get: operations["list_deployments"];
         put?: never;
-        /** Create Deployment */
+        /** Create deployment */
         post: operations["create_deployment"];
         delete?: never;
         options?: never;
@@ -562,7 +562,7 @@ export interface paths {
         /** List files */
         get: operations["list_files"];
         put?: never;
-        /** Create File */
+        /** Create file */
         post: operations["create_file"];
         delete?: never;
         options?: never;
@@ -616,7 +616,7 @@ export interface paths {
         /** List flags */
         get: operations["list_flags"];
         put?: never;
-        /** Create Flag */
+        /** Create flag */
         post: operations["create_flag"];
         delete?: never;
         options?: never;
@@ -667,7 +667,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Retrieve flag player by id */
+        /** List flag player by id */
         get: operations["retrieve_flag_player_by_id"];
         put?: never;
         post?: never;
@@ -687,7 +687,7 @@ export interface paths {
         /** List hints */
         get: operations["list_hints"];
         put?: never;
-        /** Create Hint */
+        /** Create hint */
         post: operations["create_hint"];
         delete?: never;
         options?: never;
@@ -758,7 +758,7 @@ export interface paths {
         /** List instances */
         get: operations["list_instances"];
         put?: never;
-        /** Create Instance */
+        /** Create instance */
         post: operations["create_instance"];
         delete?: never;
         options?: never;
@@ -812,7 +812,7 @@ export interface paths {
         /** List invites */
         get: operations["list_invites"];
         put?: never;
-        /** Create Invite */
+        /** Create invite */
         post: operations["create_invite"];
         delete?: never;
         options?: never;
@@ -866,7 +866,7 @@ export interface paths {
         /** List notifications */
         get: operations["list_notifications"];
         put?: never;
-        /** Create Notification */
+        /** Create notification */
         post: operations["create_notification"];
         delete?: never;
         options?: never;
@@ -920,7 +920,7 @@ export interface paths {
         /** List players */
         get: operations["list_players"];
         put?: never;
-        /** Create Player */
+        /** Create player */
         post: operations["create_player"];
         delete?: never;
         options?: never;
@@ -971,7 +971,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Retrieve player ban by id */
+        /** List player ban by id */
         get: operations["retrieve_player_ban_by_id"];
         put?: never;
         post?: never;
@@ -988,7 +988,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Retrieve player deployment by id */
+        /** List player deployment by id */
         get: operations["retrieve_player_deployment_by_id"];
         put?: never;
         post?: never;
@@ -1083,6 +1083,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve stats of all tables */
+        get: operations["retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/submission": {
         parameters: {
             query?: never;
@@ -1101,7 +1118,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/admin/submission/{challenge_id}-{player_id}": {
+    "/admin/submission/{Challenge}-{Player}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1130,7 +1147,7 @@ export interface paths {
         /** List tags */
         get: operations["list_tags"];
         put?: never;
-        /** Create Tag */
+        /** Create tag */
         post: operations["create_tag"];
         delete?: never;
         options?: never;
@@ -1184,7 +1201,7 @@ export interface paths {
         /** List teams */
         get: operations["list_teams"];
         put?: never;
-        /** Create Team */
+        /** Create team */
         post: operations["create_team"];
         delete?: never;
         options?: never;
@@ -1209,23 +1226,6 @@ export interface paths {
         head?: never;
         /** Update team by id */
         patch: operations["update_team_by_id"];
-        trace?: never;
-    };
-    "/admin/team/{id}/ban": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Retrieve team ban by id */
-        get: operations["retrieve_team_ban_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
         trace?: never;
     };
     "/admin/team/{id}/invites": {
@@ -1272,7 +1272,7 @@ export interface paths {
         /** List tickets */
         get: operations["list_tickets"];
         put?: never;
-        /** Create Ticket */
+        /** Create ticket */
         post: operations["create_ticket"];
         delete?: never;
         options?: never;
@@ -1306,7 +1306,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Retrieve ticket admin by id */
+        /** List ticket admin by id */
         get: operations["retrieve_ticket_admin_by_id"];
         put?: never;
         post?: never;
@@ -1334,7 +1334,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/admin/unlock/{player_id}-{hint_id}": {
+    "/admin/unlock/{Player}-{Hint}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1534,40 +1534,6 @@ export interface paths {
         put?: never;
         /** Refresh auth token */
         post: operations["player_refresh_token"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ban/player/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Ban player by id */
-        post: operations["add_player_by_id"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ban/team/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Ban team by id */
-        post: operations["add_team_by_id"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1778,7 +1744,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/player/team/{teamname}/profile": {
+    "/player/team/{team_name}/profile": {
         parameters: {
             query?: never;
             header?: never;
@@ -1869,14 +1835,6 @@ export interface components {
             reason: string;
             /** Format: date-time */
             updated_at: string;
-        };
-        ChallengeDeployment: {
-            /** Format: date-time */
-            expires_at: string;
-            port_bindings: {
-                [key: string]: string;
-            };
-            subdomain: string;
         };
         ChallengeModel: {
             author_name: string;
@@ -1990,7 +1948,7 @@ export interface components {
             /** Format: uuid */
             challenge_id: string;
             /** Format: date-time */
-            expiry: string;
+            expires_at: string;
             hostname: string;
             /** Format: uuid */
             player_id: string;
@@ -2020,6 +1978,7 @@ export interface components {
             container_name: string;
             /** Format: uuid */
             deployment_id: string;
+            port_mapping: string[];
         };
         CreateInviteSchema: {
             /** Format: int32 */
@@ -2037,7 +1996,6 @@ export interface components {
             /** Format: uuid */
             ban_id?: string | null;
             discord_id?: string | null;
-            display_name: string;
             /** Format: int32 */
             score: number;
             /** Format: uuid */
@@ -2057,8 +2015,6 @@ export interface components {
             value: string;
         };
         CreateTeamSchema: {
-            /** Format: uuid */
-            ban_id?: string | null;
             email: string;
             name: string;
             /** Format: int32 */
@@ -2088,7 +2044,7 @@ export interface components {
             /** Format: date-time */
             created_at: string;
             /** Format: date-time */
-            expiry: string;
+            expires_at: string;
             hostname: string;
             /** Format: uuid */
             id: string;
@@ -2098,7 +2054,7 @@ export interface components {
             updated_at: string;
         };
         DetailedChallenge: {
-            files: components["schemas"]["CreateFileSchema"][];
+            files: components["schemas"]["FileModel"][];
             hints: components["schemas"]["HintSummary"][];
         };
         /** @enum {string} */
@@ -2164,6 +2120,7 @@ export interface components {
             deployment_id: string;
             /** Format: uuid */
             id: string;
+            port_mapping: string[];
             /** Format: date-time */
             updated_at: string;
         };
@@ -2234,7 +2191,6 @@ export interface components {
             /** Format: date-time */
             created_at: string;
             discord_id?: string | null;
-            display_name: string;
             /** Format: uuid */
             id: string;
             /** Format: int32 */
@@ -2291,9 +2247,17 @@ export interface components {
             /** Format: int64 */
             achievement: number;
             /** Format: int64 */
+            admin: number;
+            /** Format: int64 */
             ban: number;
             /** Format: int64 */
             challenge: number;
+            /** Format: int64 */
+            challenge_tag: number;
+            /** Format: int64 */
+            container: number;
+            /** Format: int64 */
+            deployment: number;
             /** Format: int64 */
             file: number;
             /** Format: int64 */
@@ -2315,7 +2279,11 @@ export interface components {
             /** Format: int64 */
             team: number;
             /** Format: int64 */
+            ticket: number;
+            /** Format: int64 */
             unlocks: number;
+            /** Format: int64 */
+            user: number;
         };
         SubmissionModel: {
             /** Format: uuid */
@@ -2345,8 +2313,6 @@ export interface components {
             tag_value: string;
         };
         TeamModel: {
-            /** Format: uuid */
-            ban_id?: string | null;
             /** Format: date-time */
             created_at: string;
             email: string;
@@ -2437,9 +2403,8 @@ export interface components {
         };
         UpdateProfileSchema: {
             discord_id?: string | null;
-            display_name: string;
             /** Format: uuid */
-            team_id: string;
+            team_id?: string | null;
         };
         UserModel: {
             /** Format: date-time */
@@ -2567,6 +2532,15 @@ export interface operations {
                     "application/json": components["schemas"]["JsonResponse"];
                 };
             };
+            /** @description No achievement found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
             /** @description Unexpected error */
             500: {
                 headers: {
@@ -2646,7 +2620,7 @@ export interface operations {
             };
         };
     };
-    delete_achievement: {
+    delete_achievement_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -3426,6 +3400,78 @@ export interface operations {
             };
         };
     };
+    add_player_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateBanSchema"];
+            };
+        };
+        responses: {
+            /** @description Banned player by id successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BanModel"];
+                };
+            };
+            /** @description Invalid parameters format */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No ban found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
     retrieve_ban_by_id: {
         parameters: {
             query?: never;
@@ -3651,74 +3697,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PlayerModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No ban found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    retrieve_ban_team_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Retrieved banteam by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TeamModel"];
                 };
             };
             /** @description Invalid parameters format */
@@ -9220,6 +9198,53 @@ export interface operations {
             };
         };
     };
+    retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved stats successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatSchema"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
     list_submissions: {
         parameters: {
             query?: never;
@@ -10214,74 +10239,6 @@ export interface operations {
                 };
             };
             /** @description Invalid parameters/request body format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No team found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    retrieve_team_ban_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Retrieved teamban by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BanModel"];
-                };
-            };
-            /** @description Invalid parameters format */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -11743,150 +11700,6 @@ export interface operations {
             };
         };
     };
-    add_player_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateBanSchema"];
-            };
-        };
-        responses: {
-            /** @description Banned player by id successfully */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BanModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No ban found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    add_team_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateBanSchema"];
-            };
-        };
-        responses: {
-            /** @description Banned team by id successfully */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BanModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No ban found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
     detailed_challenge: {
         parameters: {
             query?: never;
@@ -11973,7 +11786,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeDeployment"];
+                    "application/json": components["schemas"]["DeploymentModel"];
                 };
             };
             /** @description Invalid parameters format */
@@ -12667,7 +12480,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description Team name of team */
-                teamname: string;
+                team_name: string;
             };
             cookie?: never;
         };

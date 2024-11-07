@@ -7,7 +7,6 @@ use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
 
-use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
     CreateInviteSchema, Invite, InviteModel, InviteVerificationResult, JsonResponse, Team,
@@ -37,7 +36,28 @@ pub async fn verify(
     state: State<Arc<AppState>>,
     Json(body): Json<VerifyInviteSchema>,
 ) -> Result<Json<InviteVerificationResult>> {
-    db::invite::verify(body.invite_id, body.team_name, &state.db_conn)
-        .await
-        .map(Json)
+    let Some(team_model) = Team::find()
+        .filter(entity::team::Column::Name.eq(body.team_name))
+        .one(&state.db_conn)
+        .await?
+    else {
+        return Err(Error::NotFound("Team not found".to_owned()));
+    };
+
+    let Some(invite_model) = team_model
+        .find_related(Invite)
+        .filter(entity::invite::Column::Id.eq(body.invite_id))
+        .one(&state.db_conn)
+        .await?
+    else {
+        return Err(Error::NotFound("invalid invite code".to_owned()));
+    };
+
+    if invite_model.remaining == 0 {
+        return Err(Error::BadRequest("invite used up".to_owned()));
+    }
+
+    Ok(Json(InviteVerificationResult {
+        team_id: team_model.id,
+    }))
 }

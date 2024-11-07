@@ -66,7 +66,7 @@ pub async fn unlock_by_id(
         .zincrby::<(), _, _>(
             "leaderboard",
             f64::from(-hint_model.cost),
-            &player_model.display_name,
+            &player_model.id.simple().to_string(),
         )
         .await?;
 

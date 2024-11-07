@@ -158,7 +158,11 @@ pub async fn verify(
 
         state
             .persistent_client
-            .zincrby::<(), _, _>("leaderboard", f64::from(points), &player_model.display_name)
+            .zincrby::<(), _, _>(
+                "leaderboard",
+                f64::from(points),
+                &player_model.id.simple().to_string(),
+            )
             .await?;
 
         let active_model = player_model_cloned.into_active_model();

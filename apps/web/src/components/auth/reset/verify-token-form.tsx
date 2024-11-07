@@ -8,7 +8,13 @@ import {
   FormControl,
   FormMessage,
 } from "@repo/ui/components/form";
-import { Input } from "@repo/ui/components/input";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@ui/components/ui/input-otp";
+
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useResetStore } from "@/stores/reset";
@@ -43,7 +49,21 @@ export function VerifyTokenForm({
             <FormItem>
               <FormLabel>Verification Token</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <InputOTP maxLength={8} {...field}>
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                    <InputOTPSlot index={6} />
+                    <InputOTPSlot index={7} />
+                  </InputOTPGroup>
+                </InputOTP>
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -14,8 +14,7 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Player::Id).uuid().primary_key().not_null())
                     .col(ColumnDef::new(Player::CreatedAt).date_time().not_null())
                     .col(ColumnDef::new(Player::UpdatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Player::DisplayName).string().not_null())
-                    .col(ColumnDef::new(Player::TeamId).uuid().not_null()) // TODO: make it optional again to support player only mode
+                    .col(ColumnDef::new(Player::TeamId).uuid().not_null())
                     .col(ColumnDef::new(Player::BanId).uuid())
                     .col(ColumnDef::new(Player::DiscordId).string().unique_key())
                     .col(
@@ -77,7 +76,6 @@ enum Player {
     CreatedAt,
     UpdatedAt,
     UserId,
-    DisplayName,
     BanId,
     TeamId,
     DiscordId,

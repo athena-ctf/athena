@@ -14,7 +14,7 @@ use crate::schemas::{
     Achievement, AchievementModel, Ban, BanModel, CreatePlayerSchema, Deployment, DeploymentModel,
     Flag, FlagModel, JsonResponse, Notification, NotificationModel, Player, PlayerModel,
     PlayerProfile, PlayerSummary, Submission, SubmissionModel, Team, TeamModel, TokenClaims,
-    Unlock, UnlockModel, UpdateProfileSchema,
+    Unlock, UnlockModel, UpdateProfileSchema, User,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -75,9 +75,10 @@ pub async fn update_profile_by_id(
     Path(id): Path<Uuid>,
     Json(body): Json<UpdateProfileSchema>,
 ) -> Result<Json<PlayerModel>> {
-    Ok(Json(
-        db::player::update_profile(id, body, &state.db_conn).await?,
-    ))
+    let mut player = body.into_active_model();
+    player.id = ActiveValue::Set(id);
+
+    Ok(Json(player.update(&state.db_conn).await?))
 }
 
 #[utoipa::path(
@@ -98,7 +99,33 @@ pub async fn retrieve_summary(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<PlayerSummary>> {
-    db::player::retrieve_player_summary_by_id(claims.id, &state.db_conn, &state.persistent_client)
-        .await
-        .map(Json)
+    let Some((user_model, Some(player_model))) = User::find_by_id(claims.id)
+        .find_also_related(Player)
+        .one(&state.db_conn)
+        .await?
+    else {
+        return Err(Error::NotFound("Player not found".to_owned()));
+    };
+
+    Ok(Json(PlayerSummary {
+        submissions: player_model
+            .find_related(Submission)
+            .all(&state.db_conn)
+            .await?,
+        unlocks: player_model
+            .find_related(Unlock)
+            .all(&state.db_conn)
+            .await?,
+        achievements: player_model
+            .find_related(Achievement)
+            .all(&state.db_conn)
+            .await?,
+        profile: db::player::retrieve_profile(
+            user_model,
+            player_model,
+            &state.db_conn,
+            &state.persistent_client,
+        )
+        .await?,
+    }))
 }

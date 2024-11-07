@@ -119,8 +119,12 @@ pub struct DetailedChallenge {
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct StatSchema {
     pub achievement: u64,
+    pub admin: u64,
     pub ban: u64,
+    pub challenge_tag: u64,
     pub challenge: u64,
+    pub container: u64,
+    pub deployment: u64,
     pub file: u64,
     pub flag: u64,
     pub hint: u64,
@@ -131,7 +135,9 @@ pub struct StatSchema {
     pub submission: u64,
     pub tag: u64,
     pub team: u64,
+    pub ticket: u64,
     pub unlocks: u64,
+    pub user: u64,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

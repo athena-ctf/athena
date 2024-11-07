@@ -7,7 +7,6 @@ use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
 
-use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{Ban, BanModel, CreateBanSchema, JsonResponse, Player, PlayerModel};
 use crate::service::{AppState, CachedJson};
@@ -18,7 +17,7 @@ single_relation_api!(Ban, Player);
 
 #[utoipa::path(
     post,
-    path = "/ban/player/{id}",
+    path = "/admin/ban/player/{id}",
     request_body = CreateBanSchema,
     params(("id" = Uuid, Path, description = "Id of entity")),
     responses(
@@ -36,10 +35,19 @@ pub async fn add_player_by_id(
     Path(id): Path<Uuid>,
     Json(body): Json<CreateBanSchema>,
 ) -> Result<Json<BanModel>> {
-    db::player::ban(id, body, &state.db_conn)
-        .await?
-        .map_or_else(
-            || Err(Error::NotFound("Ban does not exist".to_owned())),
-            |ban| Ok(Json(ban)),
-        )
+    if let Some(player) = Player::find_by_id(id).one(&state.db_conn).await? {
+        if player.ban_id.is_some() {
+            return Err(Error::BadRequest("Player is already banned".to_owned()));
+        }
+
+        let ban_model = body.into_active_model().insert(&state.db_conn).await?;
+        let mut active_player = player.into_active_model();
+        active_player.ban_id = ActiveValue::Set(Some(ban_model.id));
+
+        active_player.update(&state.db_conn).await?;
+
+        Ok(Json(ban_model))
+    } else {
+        Err(Error::NotFound("Player does not exist".to_owned()))
+    }
 }
