@@ -97,7 +97,7 @@ pub async fn retrieve_team_by_teamname(
 }
 
 #[utoipa::path(
-    put,
+    patch,
     path = "/player/team/{id}/profile",
     params(("id" = Uuid, Path, description = "Id of entity")),
     operation_id = "update_team_profile",

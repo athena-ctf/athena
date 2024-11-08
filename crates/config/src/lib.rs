@@ -1,36 +1,13 @@
 use std::error::Error;
 use std::iter::repeat_with;
-use std::time::Duration;
 
 use base64ct::{Base64, Encoding};
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, Days, Utc};
 use config_rs::{Config, File};
 use indexmap::IndexMap;
 use schemars::gen::SchemaSettings;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-mod human_duration {
-    use std::time::Duration;
-
-    use serde::{self, Deserialize, Deserializer, Serializer};
-
-    pub fn serialize<S>(duration: &Duration, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        let s = humantime::format_duration(*duration).to_string();
-        serializer.serialize_str(&s)
-    }
-
-    pub fn deserialize<'de, D>(deserializer: D) -> Result<Duration, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        let s = String::deserialize(deserializer)?;
-        humantime::parse_duration(&s).map_err(serde::de::Error::custom)
-    }
-}
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Ctf {
@@ -50,19 +27,9 @@ pub struct Sponsor {
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Time {
-    #[serde(
-        serialize_with = "human_duration::serialize",
-        deserialize_with = "human_duration::deserialize"
-    )]
-    #[schemars(with = "String")]
-    pub span: Duration,
+    pub end: DateTime<Utc>,
     pub start: DateTime<Utc>,
-    #[serde(
-        serialize_with = "human_duration::serialize",
-        deserialize_with = "human_duration::deserialize"
-    )]
-    #[schemars(with = "String")]
-    pub freeze: Duration,
+    pub freeze: DateTime<Utc>,
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
@@ -234,8 +201,8 @@ impl Default for Settings {
                 domain: "athena.io".to_owned(),
                 description: "Athena is a hosted platform for CTFs".to_owned(),
                 time: Time {
-                    span: Duration::from_secs(2 * 24 * 60 * 60),
-                    freeze: Duration::from_secs(24 * 60 * 60),
+                    end: Utc::now().checked_add_days(Days::new(2)).unwrap(),
+                    freeze: Utc::now().checked_add_days(Days::new(3)).unwrap(),
                     start: Utc::now(),
                 },
                 sponsors: IndexMap::new(),

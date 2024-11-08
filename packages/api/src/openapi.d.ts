@@ -1166,15 +1166,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/auth/player/register/exists": {
+    "/auth/player/register/invite/verify": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Check user exists */
-        get: operations["player_register_exists"];
+        /** Verify invite */
+        get: operations["player_register_verify_invite"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1353,23 +1353,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/player/invite/verify": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Verify invite */
-        post: operations["verify_invite"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/player/leaderboard/rankings": {
         parameters: {
             query?: never;
@@ -1446,13 +1429,13 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /** Retrieve team details by teamname */
-        put: operations["update_team_profile"];
+        put?: never;
         post?: never;
         delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        /** Retrieve team details by teamname */
+        patch: operations["update_team_profile"];
         trace?: never;
     };
     "/player/team/{team_name}/profile": {
@@ -1480,13 +1463,13 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /** Update player profile by id */
-        put: operations["update_player_profile"];
+        put?: never;
         post?: never;
         delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        /** Update player profile by id */
+        patch: operations["update_player_profile"];
         trace?: never;
     };
     "/player/{username}/profile": {
@@ -2191,11 +2174,6 @@ export interface components {
             /** Format: uuid */
             challenge_id: string;
             flag: string;
-        };
-        VerifyInviteSchema: {
-            /** Format: uuid */
-            invite_id: string;
-            team_name: string;
         };
     };
     responses: never;
@@ -9895,25 +9873,22 @@ export interface operations {
             };
         };
     };
-    player_register_exists: {
+    player_register_verify_invite: {
         parameters: {
-            query: {
-                /** @description Email of user to check */
-                email: string;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description User existence check successfully */
+            /** @description Verified invite successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["InviteVerificationResult"];
                 };
             };
             /** @description Invalid request body format */
@@ -9925,8 +9900,17 @@ export interface operations {
                     "application/json": components["schemas"]["JsonResponse"];
                 };
             };
-            /** @description User not found */
-            404: {
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -10526,66 +10510,6 @@ export interface operations {
             };
             /** @description No hint found with specified id */
             404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    verify_invite: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["VerifyInviteSchema"];
-            };
-        };
-        responses: {
-            /** @description Verified invite successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["InviteVerificationResult"];
-                };
-            };
-            /** @description Invalid request body format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };

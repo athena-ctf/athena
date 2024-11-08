@@ -1,4 +1,4 @@
-[user]
+[achievement]
 create = "analyst"
 update = "analyst"
 delete = "analyst"
@@ -16,13 +16,7 @@ update = "moderator"
 delete = "analyst"
 read = "analyst"
 
-[team]
-create = "analyst"
-update = "analyst"
-delete = "analyst"
-read = "analyst"
-
-[player]
+[challenge_tag]
 create = "analyst"
 update = "analyst"
 delete = "analyst"
@@ -34,7 +28,13 @@ update = "analyst"
 delete = "analyst"
 read = "analyst"
 
-[achievement]
+[container]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[deployment]
 create = "analyst"
 update = "analyst"
 delete = "analyst"
@@ -52,7 +52,7 @@ update = "analyst"
 delete = "analyst"
 read = "analyst"
 
-[tag]
+[hint]
 create = "analyst"
 update = "analyst"
 delete = "analyst"
@@ -64,13 +64,7 @@ update = "analyst"
 delete = "analyst"
 read = "analyst"
 
-[hint]
-create = "analyst"
-update = "analyst"
-delete = "analyst"
-read = "analyst"
-
-[unlock]
+[invite]
 create = "analyst"
 update = "analyst"
 delete = "analyst"
@@ -82,7 +76,7 @@ update = "analyst"
 delete = "analyst"
 read = "analyst"
 
-[invite]
+[player]
 create = "analyst"
 update = "analyst"
 delete = "analyst"
@@ -94,19 +88,31 @@ update = "analyst"
 delete = "analyst"
 read = "analyst"
 
-[challenge_tag]
+[tag]
 create = "analyst"
 update = "analyst"
 delete = "analyst"
 read = "analyst"
 
-[leaderboard]
+[team]
 create = "analyst"
 update = "analyst"
 delete = "analyst"
 read = "analyst"
 
 [ticket]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[unlock]
+create = "analyst"
+update = "analyst"
+delete = "analyst"
+read = "analyst"
+
+[user]
 create = "analyst"
 update = "analyst"
 delete = "analyst"

@@ -405,16 +405,18 @@
     "Time": {
       "type": "object",
       "required": [
+        "end",
         "freeze",
-        "span",
         "start"
       ],
       "properties": {
-        "freeze": {
-          "type": "string"
+        "end": {
+          "type": "string",
+          "format": "date-time"
         },
-        "span": {
-          "type": "string"
+        "freeze": {
+          "type": "string",
+          "format": "date-time"
         },
         "start": {
           "type": "string",

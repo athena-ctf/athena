@@ -90,12 +90,6 @@ pub enum TeamRegister {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct VerifyInviteSchema {
-    pub team_name: String,
-    pub invite_id: Uuid,
-}
-
-#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum PlayerChallengeState {
     Solved,
@@ -203,9 +197,14 @@ pub struct Ranking {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct RegisterExistsQuery {
+pub struct RegisterVerifyEmailQuery {
     pub email: String,
-    pub username: String,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct RegisterVerifyInviteQuery {
+    pub team_name: String,
+    pub invite_id: Uuid,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

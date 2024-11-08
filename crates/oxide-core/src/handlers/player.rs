@@ -60,7 +60,7 @@ pub async fn retrieve_profile_by_username(
 }
 
 #[utoipa::path(
-    put,
+    patch,
     path = "/player/{id}/update-profile",
     request_body = UpdateProfileSchema,
     params(("id" = Uuid, Path, description = "Id of entity")),

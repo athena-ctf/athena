@@ -251,11 +251,11 @@ type Sponsor struct {
 }
 
 type Time struct {
-	// Freeze corresponds to the JSON schema field "freeze".
-	Freeze string `json:"freeze"`
+	// End corresponds to the JSON schema field "end".
+	End time.Time `json:"end"`
 
-	// Span corresponds to the JSON schema field "span".
-	Span string `json:"span"`
+	// Freeze corresponds to the JSON schema field "freeze".
+	Freeze time.Time `json:"freeze"`
 
 	// Start corresponds to the JSON schema field "start".
 	Start time.Time `json:"start"`

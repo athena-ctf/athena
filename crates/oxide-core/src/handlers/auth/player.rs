@@ -17,20 +17,20 @@ use sea_orm::{ActiveValue, Condition, IntoActiveModel, TransactionTrait};
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    GroupEnum, Invite, JsonResponse, LoginModel, Player, PlayerModel, RegisterExistsQuery,
-    RegisterPlayer, ResetPasswordSchema, SendTokenSchema, TeamModel, TeamRegister, TokenClaims,
-    TokenPair, User, UserModel,
+    GroupEnum, Invite, InviteVerificationResult, JsonResponse, LoginModel, Player, PlayerModel,
+    RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery, ResetPasswordSchema,
+    SendTokenSchema, Team, TeamModel, TeamRegister, TokenClaims, TokenPair, User, UserModel,
 };
 use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
 
 #[utoipa::path(
     get,
-    path = "/auth/player/register/exists",
+    path = "/auth/player/register/verify/email",
     params(
         ("email" = String, Query, description = "Email of user to check")
     ),
-    operation_id = "player_register_exists",
+    operation_id = "player_register_verify_email",
     responses(
         (status = 200, description = "User existence check successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
@@ -39,17 +39,13 @@ use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, V
     ),
     security(())
 )]
-/// Check user exists
-pub async fn register_exists(
+/// Verify user exists
+pub async fn register_verify_email(
     state: State<Arc<AppState>>,
-    Query(query): Query<RegisterExistsQuery>,
+    Query(query): Query<RegisterVerifyEmailQuery>,
 ) -> Result<()> {
     if User::find()
-        .filter(
-            Condition::any()
-                .add(entity::user::Column::Email.eq(query.email))
-                .add(entity::user::Column::Username.eq(query.username)),
-        )
+        .filter(Condition::any().add(entity::user::Column::Email.eq(query.email)))
         .one(&state.db_conn)
         .await?
         .is_some()
@@ -210,6 +206,49 @@ pub async fn register_send_token(
 
     Ok(Json(JsonResponse {
         message: "Successfully sent mail".to_owned(),
+    }))
+}
+
+#[utoipa::path(
+    get,
+    path = "/auth/player/register/invite/verify",
+    operation_id = "player_register_verify_invite",
+    responses(
+        (status = 200, description = "Verified invite successfully", body = InviteVerificationResult),
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
+    )
+)]
+/// Verify invite
+pub async fn register_verify_invite(
+    state: State<Arc<AppState>>,
+    Query(body): Query<RegisterVerifyInviteQuery>,
+) -> Result<Json<InviteVerificationResult>> {
+    let Some(team_model) = Team::find()
+        .filter(entity::team::Column::Name.eq(body.team_name))
+        .one(&state.db_conn)
+        .await?
+    else {
+        return Err(Error::NotFound("Team not found".to_owned()));
+    };
+
+    let Some(invite_model) = team_model
+        .find_related(Invite)
+        .filter(entity::invite::Column::Id.eq(body.invite_id))
+        .one(&state.db_conn)
+        .await?
+    else {
+        return Err(Error::NotFound("invalid invite code".to_owned()));
+    };
+
+    if invite_model.remaining == 0 {
+        return Err(Error::BadRequest("invite used up".to_owned()));
+    }
+
+    Ok(Json(InviteVerificationResult {
+        team_id: team_model.id,
     }))
 }
 

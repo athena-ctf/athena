@@ -9269,31 +9269,20 @@
         ]
       }
     },
-    "/auth/player/register/exists": {
+    "/auth/player/register/invite/verify": {
       "get": {
         "tags": [
           "auth::player"
         ],
-        "summary": "Check user exists",
-        "operationId": "player_register_exists",
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
-            "description": "Email of user to check",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "summary": "Verify invite",
+        "operationId": "player_register_verify_invite",
         "responses": {
           "200": {
-            "description": "User existence check successfully",
+            "description": "Verified invite successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/InviteVerificationResult"
                 }
               }
             }
@@ -9308,8 +9297,18 @@
               }
             }
           },
-          "404": {
-            "description": "User not found",
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
             "content": {
               "application/json": {
                 "schema": {
@@ -9328,10 +9327,7 @@
               }
             }
           }
-        },
-        "security": [
-          {}
-        ]
+        }
       }
     },
     "/auth/player/register/send-token": {
@@ -10057,77 +10053,6 @@
         }
       }
     },
-    "/player/invite/verify": {
-      "post": {
-        "tags": [
-          "invite"
-        ],
-        "summary": "Verify invite",
-        "operationId": "verify_invite",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VerifyInviteSchema"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Verified invite successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InviteVerificationResult"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/player/leaderboard/rankings": {
       "post": {
         "tags": [
@@ -10418,7 +10343,7 @@
       }
     },
     "/player/team/{id}/profile": {
-      "put": {
+      "patch": {
         "tags": [
           "team"
         ],
@@ -10593,7 +10518,7 @@
       }
     },
     "/player/{id}/update-profile": {
-      "put": {
+      "patch": {
         "tags": [
           "player"
         ],
@@ -13172,22 +13097,6 @@
             "format": "uuid"
           },
           "flag": {
-            "type": "string"
-          }
-        }
-      },
-      "VerifyInviteSchema": {
-        "type": "object",
-        "required": [
-          "team_name",
-          "invite_id"
-        ],
-        "properties": {
-          "invite_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "team_name": {
             "type": "string"
           }
         }

@@ -23,6 +23,14 @@ pub fn router() -> Router<Arc<AppState>> {
         )
         .route("/auth/player/register", post(auth::player::register))
         .route(
+            "/auth/player/register/verify/invite",
+            get(auth::player::register_verify_invite),
+        )
+        .route(
+            "/auth/player/register/verify/email",
+            get(auth::player::register_verify_email),
+        )
+        .route(
             "/auth/player/register/send-token",
             post(auth::player::register_send_token),
         )

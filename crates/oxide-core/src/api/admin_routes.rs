@@ -1,11 +1,16 @@
 use std::sync::Arc;
 
+use axum::routing::{get, post};
 use axum::Router;
 
 use crate::handlers;
 use crate::service::AppState;
 
-mod utils;
+pub fn utils_router() -> Router<Arc<AppState>> {
+    Router::new() // TODO: add settings update and retrieve routes
+        .route("/ban/player/:id", post(handlers::ban::add_player_by_id))
+        .route("/stats", get(handlers::stats::retrieve))
+}
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new().nest(
@@ -29,7 +34,7 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(handlers::team::router())
             .merge(handlers::ticket::router())
             .merge(handlers::unlock::router())
-            .merge(utils::router())
+            .merge(utils_router())
             .merge(handlers::deployment::router()),
     )
 }

@@ -28,7 +28,7 @@ pub fn has_permission(method: &Method, url: &str, role: RoleEnum) -> bool {
                 can_do_action(Action::Create, base, role as usize)
             }
         }
-        [base, _] if matches!(*method, Method::GET | Method::DELETE | Method::PUT) => {
+        [base, _] if matches!(*method, Method::GET | Method::DELETE | Method::PATCH) => {
             if method == Method::GET {
                 can_do_action(Action::Read, base, role as usize)
             } else if method == Method::DELETE {
