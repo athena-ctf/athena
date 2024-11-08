@@ -9,5 +9,3 @@ sea-orm = { workspace = true }
 serde = { workspace = true }
 utoipa = { workspace = true }
 oxide-macros = { path = "../oxide-macros" }
-axum = { workspace = true }
-serde_json = { workspace = true }

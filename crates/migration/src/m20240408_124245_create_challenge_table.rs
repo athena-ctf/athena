@@ -20,15 +20,6 @@ impl MigrationTrait for Migration {
         manager
             .create_type(
                 Type::create()
-                    .as_enum(ChallengeStatusEnum)
-                    .values(ChallengeStatusVariants::iter())
-                    .to_owned(),
-            )
-            .await?;
-
-        manager
-            .create_type(
-                Type::create()
                     .as_enum(FlagTypeEnum)
                     .values(FlagTypeVariants::iter())
                     .to_owned(),
@@ -61,14 +52,8 @@ impl MigrationTrait for Migration {
                             .enumeration(FlagTypeEnum, FlagTypeVariants::iter())
                             .not_null(),
                     )
-                    .col(
-                        ColumnDef::new(Challenge::Status)
-                            .enumeration(ChallengeStatusEnum, ChallengeStatusVariants::iter())
-                            .not_null(),
-                    )
                     .col(ColumnDef::new(Challenge::AuthorName).string().not_null())
                     .col(ColumnDef::new(Challenge::Solves).integer().not_null())
-                    .col(ColumnDef::new(Challenge::IgnoreCase).boolean().not_null())
                     .to_owned(),
             )
             .await?;
@@ -83,15 +68,6 @@ impl MigrationTrait for Migration {
 
         manager
             .drop_type(Type::drop().if_exists().name(DifficultyEnum).to_owned())
-            .await?;
-
-        manager
-            .drop_type(
-                Type::drop()
-                    .if_exists()
-                    .name(ChallengeStatusEnum)
-                    .to_owned(),
-            )
             .await?;
 
         manager
@@ -112,11 +88,9 @@ enum Challenge {
     Description,
     Points,
     AuthorName,
-    Status,
     Difficulty,
     FlagType,
     Solves,
-    IgnoreCase,
 }
 
 #[derive(DeriveIden)]
@@ -128,16 +102,6 @@ enum DifficultyVariants {
     Medium,
     Hard,
     Extreme,
-}
-
-#[derive(DeriveIden)]
-struct ChallengeStatusEnum;
-
-#[derive(DeriveIden, EnumIter)]
-enum ChallengeStatusVariants {
-    Scheduled,
-    Active,
-    Maintenance,
 }
 
 #[derive(DeriveIden)]

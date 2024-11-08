@@ -11,8 +11,8 @@ use serde::{Deserialize, Serialize};
     Eq,
     Serialize,
     Deserialize,
-    utoipa :: ToSchema,
-    oxide_macros :: derive :: Details,
+    utoipa::ToSchema,
+    oxide_macros::derive::Details,
 )]
 #[sea_orm(table_name = "flag")]
 #[schema(as = FlagModel)]
@@ -25,6 +25,7 @@ pub struct Model {
     pub value: String,
     pub challenge_id: Uuid,
     pub player_id: Option<Uuid>,
+    pub ignore_case: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

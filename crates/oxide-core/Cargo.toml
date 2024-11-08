@@ -13,7 +13,7 @@ bollard = { version = "0.17.1", features = ["chrono"] }
 config = { path = "../config" }
 chrono = { workspace = true }
 entity = { path = "../entity" }
-fastrand = "2.1.1"
+fastrand = { workspace = true }
 fred = { version = "9.3.0", features = ["partial-tracing"] }
 imap = "3.0.0-alpha.14"
 imap-proto = "0.16.5"
@@ -34,11 +34,11 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 thiserror = "2.0.0"
 tokio = { workspace = true }
-tower-http = { version = "0.6.1", features = ["full"] }
+tower-http = { workspace = true }
 tracing = { workspace = true }
 utoipa = { workspace = true }
-uuid = { version = "1.11.0", features = ["serde", "v7", "fast-rng"] }
-futures = "0.3.31"
+uuid = { workspace = true }
+futures = { workspace = true }
 reqwest = { version = "0.12.9", features = ["json"] }
 
 [build-dependencies]

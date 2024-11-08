@@ -11,9 +11,8 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Challenge, ChallengeModel, CreateDeploymentSchema, Deployment, DeploymentModel, Instance,
-    InstanceModel, JsonResponse, Player, PlayerModel,
+    Admin, AdminModel, CreateUserSchema, JsonResponse, Player, PlayerModel, User, UserModel,
 };
 use crate::service::{AppState, CachedJson};
 
-table_api!(Deployment, single: [Challenge, Player], optional: [], multiple: [Instance]);
+table_api!(User, single: [], optional: [Admin, Player], multiple: []);

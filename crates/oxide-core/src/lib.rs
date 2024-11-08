@@ -1,5 +1,4 @@
 pub mod api;
-pub mod db;
 pub mod docker;
 pub mod errors;
 pub mod handlers;

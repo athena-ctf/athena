@@ -13,33 +13,7 @@ use serde::{Deserialize, Serialize};
     Copy,
     Serialize,
     Deserialize,
-    utoipa :: ToSchema,
-)]
-#[sea_orm(
-    rs_type = "String",
-    db_type = "Enum",
-    enum_name = "challenge_status_enum"
-)]
-#[serde(rename_all = "snake_case")]
-pub enum ChallengeStatusEnum {
-    #[sea_orm(string_value = "active")]
-    Active,
-    #[sea_orm(string_value = "maintenance")]
-    Maintenance,
-    #[sea_orm(string_value = "scheduled")]
-    Scheduled,
-}
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    Eq,
-    EnumIter,
-    DeriveActiveEnum,
-    Copy,
-    Serialize,
-    Deserialize,
-    utoipa :: ToSchema,
+    utoipa::ToSchema,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "difficulty_enum")]
 #[serde(rename_all = "snake_case")]
@@ -63,7 +37,7 @@ pub enum DifficultyEnum {
     Copy,
     Serialize,
     Deserialize,
-    utoipa :: ToSchema,
+    utoipa::ToSchema,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "flag_type_enum")]
 #[serde(rename_all = "snake_case")]
@@ -85,7 +59,7 @@ pub enum FlagTypeEnum {
     Copy,
     Serialize,
     Deserialize,
-    utoipa :: ToSchema,
+    utoipa::ToSchema,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "group_enum")]
 #[serde(rename_all = "snake_case")]
@@ -105,7 +79,7 @@ pub enum GroupEnum {
     Copy,
     Serialize,
     Deserialize,
-    utoipa :: ToSchema,
+    utoipa::ToSchema,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "role_enum")]
 #[serde(rename_all = "snake_case")]
@@ -131,7 +105,7 @@ pub enum RoleEnum {
     Copy,
     Serialize,
     Deserialize,
-    utoipa :: ToSchema,
+    utoipa::ToSchema,
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "ticket_status_enum")]
 #[serde(rename_all = "snake_case")]

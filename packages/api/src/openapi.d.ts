@@ -41,32 +41,15 @@ export interface paths {
         patch: operations["update_achievement_by_id"];
         trace?: never;
     };
-    "/admin/achievement/{id}/challenge": {
+    "/admin/achievement/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List achievement challenge by id */
-        get: operations["retrieve_achievement_challenge_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/achievement/{id}/player": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List achievement player by id */
-        get: operations["retrieve_achievement_player_by_id"];
+        /** Retrieve achievement relations by id */
+        get: operations["retrieve_achievement_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -112,15 +95,15 @@ export interface paths {
         patch: operations["update_admin_by_id"];
         trace?: never;
     };
-    "/admin/admin/{id}/tickets": {
+    "/admin/admin/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List admin ticket by id */
-        get: operations["list_admin_tickets_by_id"];
+        /** Retrieve admin relations by id */
+        get: operations["retrieve_admin_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -183,15 +166,15 @@ export interface paths {
         patch: operations["update_ban_by_id"];
         trace?: never;
     };
-    "/admin/ban/{id}/player": {
+    "/admin/ban/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List ban player by id */
-        get: operations["retrieve_ban_player_by_id"];
+        /** Retrieve ban relations by id */
+        get: operations["retrieve_ban_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -237,134 +220,15 @@ export interface paths {
         patch: operations["update_challenge_by_id"];
         trace?: never;
     };
-    "/admin/challenge/{id}/achievements": {
+    "/admin/challenge/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List challenge achievement by id */
-        get: operations["list_challenge_achievements_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/challenge/{id}/challenge_tags": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List challenge challenge_tag by id */
-        get: operations["list_challenge_challenge_tags_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/challenge/{id}/containers": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List challenge container by id */
-        get: operations["list_challenge_containers_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/challenge/{id}/deployments": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List challenge deployment by id */
-        get: operations["list_challenge_deployments_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/challenge/{id}/files": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List challenge file by id */
-        get: operations["list_challenge_files_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/challenge/{id}/hints": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List challenge hint by id */
-        get: operations["list_challenge_hints_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/challenge/{id}/submissions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List challenge submission by id */
-        get: operations["list_challenge_submissions_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/challenge/{id}/tags": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List challenge tag by id */
-        get: operations["list_challenge_tags_by_id"];
+        /** Retrieve challenge relations by id */
+        get: operations["retrieve_challenge_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -391,7 +255,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/admin/challenge_tag/{Challenge}-{Tag}": {
+    "/admin/challenge_tag/{challenge_id}-{tag_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -408,6 +272,23 @@ export interface paths {
         head?: never;
         /** Update challenge_tag by id */
         patch: operations["update_challenge_tag_by_id"];
+        trace?: never;
+    };
+    "/admin/challenge_tag/{challenge_id}-{tag_id}/relations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve challenge_tag relations by id */
+        get: operations["retrieve_challenge_tag_relations_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/admin/container": {
@@ -447,15 +328,15 @@ export interface paths {
         patch: operations["update_container_by_id"];
         trace?: never;
     };
-    "/admin/container/{id}/challenge": {
+    "/admin/container/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List container challenge by id */
-        get: operations["retrieve_container_challenge_by_id"];
+        /** Retrieve container relations by id */
+        get: operations["retrieve_container_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -501,49 +382,15 @@ export interface paths {
         patch: operations["update_deployment_by_id"];
         trace?: never;
     };
-    "/admin/deployment/{id}/challenge": {
+    "/admin/deployment/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List deployment challenge by id */
-        get: operations["retrieve_deployment_challenge_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/deployment/{id}/instances": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List deployment instance by id */
-        get: operations["list_deployment_instances_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/deployment/{id}/player": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List deployment player by id */
-        get: operations["retrieve_deployment_player_by_id"];
+        /** Retrieve deployment relations by id */
+        get: operations["retrieve_deployment_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -589,15 +436,15 @@ export interface paths {
         patch: operations["update_file_by_id"];
         trace?: never;
     };
-    "/admin/file/{id}/challenge": {
+    "/admin/file/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List file challenge by id */
-        get: operations["retrieve_file_challenge_by_id"];
+        /** Retrieve file relations by id */
+        get: operations["retrieve_file_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -643,32 +490,15 @@ export interface paths {
         patch: operations["update_flag_by_id"];
         trace?: never;
     };
-    "/admin/flag/{id}/challenge": {
+    "/admin/flag/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List flag challenge by id */
-        get: operations["retrieve_flag_challenge_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/flag/{id}/player": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List flag player by id */
-        get: operations["retrieve_flag_player_by_id"];
+        /** Retrieve flag relations by id */
+        get: operations["retrieve_flag_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -714,32 +544,15 @@ export interface paths {
         patch: operations["update_hint_by_id"];
         trace?: never;
     };
-    "/admin/hint/{id}/challenge": {
+    "/admin/hint/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List hint challenge by id */
-        get: operations["retrieve_hint_challenge_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/hint/{id}/unlocks": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List hint unlock by id */
-        get: operations["list_hint_unlocks_by_id"];
+        /** Retrieve hint relations by id */
+        get: operations["retrieve_hint_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -785,15 +598,15 @@ export interface paths {
         patch: operations["update_instance_by_id"];
         trace?: never;
     };
-    "/admin/instance/{id}/deployment": {
+    "/admin/instance/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List instance deployment by id */
-        get: operations["retrieve_instance_deployment_by_id"];
+        /** Retrieve instance relations by id */
+        get: operations["retrieve_instance_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -839,15 +652,15 @@ export interface paths {
         patch: operations["update_invite_by_id"];
         trace?: never;
     };
-    "/admin/invite/{id}/team": {
+    "/admin/invite/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List invite team by id */
-        get: operations["retrieve_invite_team_by_id"];
+        /** Retrieve invite relations by id */
+        get: operations["retrieve_invite_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -893,15 +706,15 @@ export interface paths {
         patch: operations["update_notification_by_id"];
         trace?: never;
     };
-    "/admin/notification/{id}/player": {
+    "/admin/notification/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List notification player by id */
-        get: operations["retrieve_notification_player_by_id"];
+        /** Retrieve notification relations by id */
+        get: operations["retrieve_notification_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -947,134 +760,15 @@ export interface paths {
         patch: operations["update_player_by_id"];
         trace?: never;
     };
-    "/admin/player/{id}/achievements": {
+    "/admin/player/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List player achievement by id */
-        get: operations["list_player_achievements_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/player/{id}/ban": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List player ban by id */
-        get: operations["retrieve_player_ban_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/player/{id}/deployment": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List player deployment by id */
-        get: operations["retrieve_player_deployment_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/player/{id}/flags": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List player flag by id */
-        get: operations["list_player_flags_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/player/{id}/notifications": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List player notification by id */
-        get: operations["list_player_notifications_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/player/{id}/submissions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List player submission by id */
-        get: operations["list_player_submissions_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/player/{id}/team": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List player team by id */
-        get: operations["retrieve_player_team_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/player/{id}/unlocks": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List player unlock by id */
-        get: operations["list_player_unlocks_by_id"];
+        /** Retrieve player relations by id */
+        get: operations["retrieve_player_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1118,7 +812,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/admin/submission/{Challenge}-{Player}": {
+    "/admin/submission/{challenge_id}-{player_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1135,6 +829,23 @@ export interface paths {
         head?: never;
         /** Update submission by id */
         patch: operations["update_submission_by_id"];
+        trace?: never;
+    };
+    "/admin/submission/{challenge_id}-{player_id}/relations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve submission relations by id */
+        get: operations["retrieve_submission_relations_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/admin/tag": {
@@ -1174,15 +885,15 @@ export interface paths {
         patch: operations["update_tag_by_id"];
         trace?: never;
     };
-    "/admin/tag/{id}/challenges": {
+    "/admin/tag/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List tag challenge by id */
-        get: operations["list_tag_challenges_by_id"];
+        /** Retrieve tag relations by id */
+        get: operations["retrieve_tag_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1228,32 +939,15 @@ export interface paths {
         patch: operations["update_team_by_id"];
         trace?: never;
     };
-    "/admin/team/{id}/invites": {
+    "/admin/team/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List team invite by id */
-        get: operations["list_team_invites_by_id"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/admin/team/{id}/players": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List team player by id */
-        get: operations["list_team_players_by_id"];
+        /** Retrieve team relations by id */
+        get: operations["retrieve_team_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1299,15 +993,15 @@ export interface paths {
         patch: operations["update_ticket_by_id"];
         trace?: never;
     };
-    "/admin/ticket/{id}/admin": {
+    "/admin/ticket/{id}/relations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List ticket admin by id */
-        get: operations["retrieve_ticket_admin_by_id"];
+        /** Retrieve ticket relations by id */
+        get: operations["retrieve_ticket_relations_by_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1334,7 +1028,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/admin/unlock/{Player}-{Hint}": {
+    "/admin/unlock/{player_id}-{hint_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1351,6 +1045,23 @@ export interface paths {
         head?: never;
         /** Update unlock by id */
         patch: operations["update_unlock_by_id"];
+        trace?: never;
+    };
+    "/admin/unlock/{player_id}-{hint_id}/relations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Retrieve unlock relations by id */
+        get: operations["retrieve_unlock_relations_by_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/auth/admin/current": {
@@ -1814,6 +1525,10 @@ export interface components {
             updated_at: string;
             value: string;
         };
+        AchievementRelations: {
+            challenge: components["schemas"]["ChallengeModel"];
+            player: components["schemas"]["PlayerModel"];
+        };
         AdminModel: {
             /** Format: date-time */
             created_at: string;
@@ -1824,6 +1539,10 @@ export interface components {
             updated_at: string;
             /** Format: uuid */
             user_id: string;
+        };
+        AdminRelations: {
+            tickets: components["schemas"]["TicketModel"][];
+            user: components["schemas"]["UserModel"];
         };
         BanModel: {
             /** Format: date-time */
@@ -1836,6 +1555,9 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
+        BanRelations: {
+            player: components["schemas"]["PlayerModel"];
+        };
         ChallengeModel: {
             author_name: string;
             /** Format: date-time */
@@ -1845,18 +1567,26 @@ export interface components {
             flag_type: components["schemas"]["FlagTypeEnum"];
             /** Format: uuid */
             id: string;
-            ignore_case: boolean;
             /** Format: int32 */
             points: number;
             /** Format: int32 */
             solves: number;
-            status: components["schemas"]["ChallengeStatusEnum"];
             title: string;
             /** Format: date-time */
             updated_at: string;
         };
-        /** @enum {string} */
-        ChallengeStatusEnum: "active" | "maintenance" | "scheduled";
+        ChallengeRelations: {
+            achievements: components["schemas"]["AchievementModel"][];
+            challenge_tags: components["schemas"]["ChallengeTagModel"][];
+            containers: components["schemas"]["ContainerModel"][];
+            deployments: components["schemas"]["DeploymentModel"][];
+            files: components["schemas"]["FileModel"][];
+            flags: components["schemas"]["FlagModel"][];
+            hints: components["schemas"]["HintModel"][];
+            players: components["schemas"]["PlayerModel"][];
+            submissions: components["schemas"]["SubmissionModel"][];
+            tags: components["schemas"]["TagModel"][];
+        };
         ChallengeSummary: {
             challenge: components["schemas"]["PartialChallenge"];
             state: components["schemas"]["PlayerChallengeState"];
@@ -1871,6 +1601,10 @@ export interface components {
             tag_id: string;
             /** Format: date-time */
             updated_at: string;
+        };
+        ChallengeTagRelations: {
+            challenge: components["schemas"]["ChallengeModel"];
+            tag: components["schemas"]["TagModel"];
         };
         ContainerModel: {
             /** Format: uuid */
@@ -1891,6 +1625,9 @@ export interface components {
             ports: number[];
             /** Format: date-time */
             updated_at: string;
+        };
+        ContainerRelations: {
+            challenge: components["schemas"]["ChallengeModel"];
         };
         CreateAchievementSchema: {
             /** Format: uuid */
@@ -1916,12 +1653,10 @@ export interface components {
             description: string;
             difficulty: components["schemas"]["DifficultyEnum"];
             flag_type: components["schemas"]["FlagTypeEnum"];
-            ignore_case: boolean;
             /** Format: int32 */
             points: number;
             /** Format: int32 */
             solves: number;
-            status: components["schemas"]["ChallengeStatusEnum"];
             title: string;
         };
         CreateChallengeTagSchema: {
@@ -1962,6 +1697,7 @@ export interface components {
         CreateFlagSchema: {
             /** Format: uuid */
             challenge_id: string;
+            ignore_case: boolean;
             /** Format: uuid */
             player_id?: string | null;
             value: string;
@@ -2032,12 +1768,6 @@ export interface components {
             /** Format: uuid */
             player_id: string;
         };
-        CreateUserSchema: {
-            email: string;
-            group: components["schemas"]["GroupEnum"];
-            password: string;
-            username: string;
-        };
         DeploymentModel: {
             /** Format: uuid */
             challenge_id: string;
@@ -2052,6 +1782,11 @@ export interface components {
             player_id: string;
             /** Format: date-time */
             updated_at: string;
+        };
+        DeploymentRelations: {
+            challenge: components["schemas"]["ChallengeModel"];
+            instances: components["schemas"]["InstanceModel"][];
+            player: components["schemas"]["PlayerModel"];
         };
         DetailedChallenge: {
             files: components["schemas"]["FileModel"][];
@@ -2071,6 +1806,9 @@ export interface components {
             updated_at: string;
             url: string;
         };
+        FileRelations: {
+            challenge: components["schemas"]["ChallengeModel"];
+        };
         FlagModel: {
             /** Format: uuid */
             challenge_id: string;
@@ -2078,11 +1816,16 @@ export interface components {
             created_at: string;
             /** Format: uuid */
             id: string;
+            ignore_case: boolean;
             /** Format: uuid */
             player_id?: string | null;
             /** Format: date-time */
             updated_at: string;
             value: string;
+        };
+        FlagRelations: {
+            challenge: components["schemas"]["ChallengeModel"];
+            player?: null | components["schemas"]["PlayerModel"];
         };
         /** @enum {string} */
         FlagTypeEnum: "per_user" | "regex" | "static";
@@ -2104,6 +1847,11 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
+        HintRelations: {
+            challenge: components["schemas"]["ChallengeModel"];
+            players: components["schemas"]["PlayerModel"][];
+            unlocks: components["schemas"]["UnlockModel"][];
+        };
         HintSummary: {
             /** Format: int32 */
             cost: number;
@@ -2124,6 +1872,9 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
+        InstanceRelations: {
+            deployment: components["schemas"]["DeploymentModel"];
+        };
         InviteModel: {
             /** Format: date-time */
             created_at: string;
@@ -2135,6 +1886,9 @@ export interface components {
             team_id: string;
             /** Format: date-time */
             updated_at: string;
+        };
+        InviteRelations: {
+            team: components["schemas"]["TeamModel"];
         };
         InviteVerificationResult: {
             /** Format: uuid */
@@ -2170,6 +1924,9 @@ export interface components {
             title: string;
             /** Format: date-time */
             updated_at: string;
+        };
+        NotificationRelations: {
+            player: components["schemas"]["PlayerModel"];
         };
         PartialChallenge: {
             author_name: string;
@@ -2210,6 +1967,19 @@ export interface components {
             tag_solves: components["schemas"]["TagSolves"][];
             user: components["schemas"]["UserModel"];
         };
+        PlayerRelations: {
+            achievements: components["schemas"]["AchievementModel"][];
+            ban?: null | components["schemas"]["BanModel"];
+            challenges: components["schemas"]["ChallengeModel"][];
+            deployment?: null | components["schemas"]["DeploymentModel"];
+            flags: components["schemas"]["FlagModel"][];
+            hints: components["schemas"]["HintModel"][];
+            notifications: components["schemas"]["NotificationModel"][];
+            submissions: components["schemas"]["SubmissionModel"][];
+            team: components["schemas"]["TeamModel"];
+            unlocks: components["schemas"]["UnlockModel"][];
+            user: components["schemas"]["UserModel"];
+        };
         PlayerSummary: {
             achievements: components["schemas"]["AchievementModel"][];
             profile: components["schemas"]["PlayerProfile"];
@@ -2220,10 +1990,6 @@ export interface components {
             member: string;
             /** Format: double */
             score: number;
-        };
-        RegisterExistsQuery: {
-            email: string;
-            username: string;
         };
         RegisterPlayer: {
             display_name: string;
@@ -2297,6 +2063,10 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
+        SubmissionRelations: {
+            challenge: components["schemas"]["ChallengeModel"];
+            player: components["schemas"]["PlayerModel"];
+        };
         TagModel: {
             /** Format: date-time */
             created_at: string;
@@ -2305,6 +2075,10 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
             value: string;
+        };
+        TagRelations: {
+            challenge_tags: components["schemas"]["ChallengeTagModel"][];
+            challenges: components["schemas"]["ChallengeModel"][];
         };
         TagSolves: {
             solves: number;
@@ -2342,6 +2116,10 @@ export interface components {
             kind: "create";
             team_name: string;
         };
+        TeamRelations: {
+            invites: components["schemas"]["InviteModel"][];
+            players: components["schemas"]["PlayerModel"][];
+        };
         TeamSummary: {
             achievements: components["schemas"]["AchievementModel"][];
             members: components["schemas"]["PlayerProfile"][];
@@ -2362,27 +2140,15 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
+        TicketRelations: {
+            admin: components["schemas"]["AdminModel"];
+        };
         /** @enum {string} */
         TicketStatusEnum: "closed" | "open" | "resolved";
-        TokenClaimKind: "player" | {
-            admin: components["schemas"]["RoleEnum"];
-        };
-        TokenClaims: {
-            /** Format: int64 */
-            exp: number;
-            /** Format: int64 */
-            iat: number;
-            /** Format: uuid */
-            id: string;
-            kind: components["schemas"]["TokenClaimKind"];
-            token_type: components["schemas"]["TokenType"];
-        };
         TokenPair: {
             access_token: string;
             refresh_token: string;
         };
-        /** @enum {string} */
-        TokenType: "access" | "refresh";
         UnlockModel: {
             /** Format: date-time */
             created_at: string;
@@ -2392,6 +2158,10 @@ export interface components {
             player_id: string;
             /** Format: date-time */
             updated_at: string;
+        };
+        UnlockRelations: {
+            hint: components["schemas"]["HintModel"];
+            player: components["schemas"]["PlayerModel"];
         };
         UnlockStatus: {
             /** @enum {string} */
@@ -2758,7 +2528,7 @@ export interface operations {
             };
         };
     };
-    retrieve_achievement_challenge_by_id: {
+    retrieve_achievement_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -2770,90 +2540,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved achievementchallenge by id successfully */
+            /** @description Retrieved achievement relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No achievement found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    retrieve_achievement_player_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Retrieved achievementplayer by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PlayerModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["AchievementRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3216,7 +2909,7 @@ export interface operations {
             };
         };
     };
-    list_admin_tickets_by_id: {
+    retrieve_admin_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -3228,22 +2921,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Listed admintickets by id successfully */
+            /** @description Retrieved admin relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TicketModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["AdminRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -3678,7 +3362,7 @@ export interface operations {
             };
         };
     };
-    retrieve_ban_player_by_id: {
+    retrieve_ban_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -3690,22 +3374,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved banplayer by id successfully */
+            /** @description Retrieved ban relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PlayerModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["BanRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4068,7 +3743,7 @@ export interface operations {
             };
         };
     };
-    list_challenge_achievements_by_id: {
+    retrieve_challenge_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -4080,498 +3755,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Listed challengeachievements by id successfully */
+            /** @description Retrieved challenge relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AchievementModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No challenge found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_challenge_challenge_tags_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed challengechallenge_tags by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ChallengeTagModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No challenge found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_challenge_containers_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed challengecontainers by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ContainerModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No challenge found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_challenge_deployments_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed challengedeployments by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DeploymentModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No challenge found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_challenge_files_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed challengefiles by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FileModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No challenge found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_challenge_hints_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed challengehints by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HintModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No challenge found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_challenge_submissions_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed challengesubmissions by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SubmissionModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No challenge found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_challenge_tags_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed challengetags by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TagModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["ChallengeRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -4940,6 +4130,67 @@ export interface operations {
             };
         };
     };
+    retrieve_challenge_tag_relations_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                challenge_id: string;
+                /** @description Id of entity */
+                tag_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved challenge_tag relations by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeTagRelations"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No challenge_tag found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
     list_containers: {
         parameters: {
             query?: never;
@@ -5262,7 +4513,7 @@ export interface operations {
             };
         };
     };
-    retrieve_container_challenge_by_id: {
+    retrieve_container_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -5274,22 +4525,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved containerchallenge by id successfully */
+            /** @description Retrieved container relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["ContainerRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -5652,7 +4894,7 @@ export interface operations {
             };
         };
     };
-    retrieve_deployment_challenge_by_id: {
+    retrieve_deployment_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -5664,158 +4906,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved deploymentchallenge by id successfully */
+            /** @description Retrieved deployment relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No deployment found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_deployment_instances_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed deploymentinstances by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["InstanceModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No deployment found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    retrieve_deployment_player_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Retrieved deploymentplayer by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PlayerModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["DeploymentRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6178,7 +5275,7 @@ export interface operations {
             };
         };
     };
-    retrieve_file_challenge_by_id: {
+    retrieve_file_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -6190,22 +5287,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved filechallenge by id successfully */
+            /** @description Retrieved file relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["FileRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -6568,7 +5656,7 @@ export interface operations {
             };
         };
     };
-    retrieve_flag_challenge_by_id: {
+    retrieve_flag_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -6580,90 +5668,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved flagchallenge by id successfully */
+            /** @description Retrieved flag relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No flag found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    retrieve_flag_player_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Retrieved flagplayer by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PlayerModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["FlagRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7026,7 +6037,7 @@ export interface operations {
             };
         };
     };
-    retrieve_hint_challenge_by_id: {
+    retrieve_hint_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -7038,90 +6049,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved hintchallenge by id successfully */
+            /** @description Retrieved hint relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No hint found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_hint_unlocks_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed hintunlocks by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UnlockModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["HintRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7484,7 +6418,7 @@ export interface operations {
             };
         };
     };
-    retrieve_instance_deployment_by_id: {
+    retrieve_instance_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -7496,22 +6430,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved instancedeployment by id successfully */
+            /** @description Retrieved instance relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeploymentModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["InstanceRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -7874,7 +6799,7 @@ export interface operations {
             };
         };
     };
-    retrieve_invite_team_by_id: {
+    retrieve_invite_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -7886,22 +6811,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved inviteteam by id successfully */
+            /** @description Retrieved invite relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TeamModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["InviteRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8264,7 +7180,7 @@ export interface operations {
             };
         };
     };
-    retrieve_notification_player_by_id: {
+    retrieve_notification_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -8276,22 +7192,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved notificationplayer by id successfully */
+            /** @description Retrieved notification relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PlayerModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["NotificationRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -8654,7 +7561,7 @@ export interface operations {
             };
         };
     };
-    list_player_achievements_by_id: {
+    retrieve_player_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -8666,498 +7573,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Listed playerachievements by id successfully */
+            /** @description Retrieved player relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AchievementModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No player found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    retrieve_player_ban_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Retrieved playerban by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BanModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No player found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    retrieve_player_deployment_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Retrieved playerdeployment by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DeploymentModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No player found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_player_flags_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed playerflags by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FlagModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No player found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_player_notifications_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed playernotifications by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["NotificationModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No player found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_player_submissions_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed playersubmissions by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SubmissionModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No player found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    retrieve_player_team_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Retrieved playerteam by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TeamModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No player found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_player_unlocks_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed playerunlocks by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UnlockModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["PlayerRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -9573,6 +7995,67 @@ export interface operations {
             };
         };
     };
+    retrieve_submission_relations_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                challenge_id: string;
+                /** @description Id of entity */
+                player_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved submission relations by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubmissionRelations"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No submission found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
     list_tags: {
         parameters: {
             query?: never;
@@ -9895,7 +8378,7 @@ export interface operations {
             };
         };
     };
-    list_tag_challenges_by_id: {
+    retrieve_tag_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -9907,22 +8390,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Listed tagchallenges by id successfully */
+            /** @description Retrieved tag relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["TagRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -10285,7 +8759,7 @@ export interface operations {
             };
         };
     };
-    list_team_invites_by_id: {
+    retrieve_team_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -10297,90 +8771,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Listed teaminvites by id successfully */
+            /** @description Retrieved team relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["InviteModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Action is permissible after login */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description User does not have sufficient permissions */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description No team found with specified id */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-            /** @description Unexpected error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
-                };
-            };
-        };
-    };
-    list_team_players_by_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of entity */
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Listed teamplayers by id successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PlayerModel"][];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["TeamRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -10743,7 +9140,7 @@ export interface operations {
             };
         };
     };
-    retrieve_ticket_admin_by_id: {
+    retrieve_ticket_relations_by_id: {
         parameters: {
             query?: never;
             header?: never;
@@ -10755,22 +9152,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Retrieved ticketadmin by id successfully */
+            /** @description Retrieved ticket relations by id successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AdminModel"];
-                };
-            };
-            /** @description Invalid parameters format */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonResponse"];
+                    "application/json": components["schemas"]["TicketRelations"];
                 };
             };
             /** @description Action is permissible after login */
@@ -11099,6 +9487,67 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Action is permissible after login */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description User does not have sufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description No unlock found with specified id */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+            /** @description Unexpected error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JsonResponse"];
+                };
+            };
+        };
+    };
+    retrieve_unlock_relations_by_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of entity */
+                player_id: string;
+                /** @description Id of entity */
+                hint_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Retrieved unlock relations by id successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnlockRelations"];
                 };
             };
             /** @description Action is permissible after login */

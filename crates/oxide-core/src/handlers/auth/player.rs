@@ -17,9 +17,9 @@ use sea_orm::{ActiveValue, Condition, IntoActiveModel, TransactionTrait};
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    CreateUserSchema, GroupEnum, Invite, JsonResponse, LoginModel, Player, PlayerModel,
-    RegisterExistsQuery, RegisterPlayer, ResetPasswordSchema, SendTokenSchema, TeamModel,
-    TeamRegister, TokenClaims, TokenPair, User,
+    GroupEnum, Invite, JsonResponse, LoginModel, Player, PlayerModel, RegisterExistsQuery,
+    RegisterPlayer, ResetPasswordSchema, SendTokenSchema, TeamModel, TeamRegister, TokenClaims,
+    TokenPair, User, UserModel,
 };
 use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
@@ -93,12 +93,17 @@ pub async fn register(
         return Err(Error::BadRequest("Too many retries".to_owned()));
     }
 
-    let user = CreateUserSchema {
-        email: body.email.clone(),
-        username: body.username,
-        password: body.password,
-        group: GroupEnum::Player,
-    }
+    let salt = SaltString::generate(&mut OsRng);
+    let password = Argon2::default()
+        .hash_password(body.password.as_bytes(), &salt)?
+        .to_string();
+
+    let user = UserModel::new(
+        body.username,
+        body.email.clone(),
+        password,
+        GroupEnum::Player,
+    )
     .into_active_model()
     .insert(&txn)
     .await?;

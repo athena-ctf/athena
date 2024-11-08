@@ -11,12 +11,12 @@ use serde::{Deserialize, Serialize};
     Eq,
     Serialize,
     Deserialize,
-    utoipa :: ToSchema,
-    oxide_macros :: derive :: Details,
+    utoipa::ToSchema,
+    oxide_macros::derive::Details,
 )]
 #[sea_orm(table_name = "deployment")]
 #[schema(as = DeploymentModel)]
-#[oxide(table(name = "Deployment"))]
+#[oxide(table(name = "Deployment", impl_new))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,

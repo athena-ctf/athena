@@ -3,7 +3,7 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use super::sea_orm_active_enums::{ChallengeStatusEnum, DifficultyEnum, FlagTypeEnum};
+use super::sea_orm_active_enums::{DifficultyEnum, FlagTypeEnum};
 
 #[derive(
     Clone,
@@ -13,8 +13,8 @@ use super::sea_orm_active_enums::{ChallengeStatusEnum, DifficultyEnum, FlagTypeE
     Eq,
     Serialize,
     Deserialize,
-    utoipa :: ToSchema,
-    oxide_macros :: derive :: Details,
+    utoipa::ToSchema,
+    oxide_macros::derive::Details,
 )]
 #[sea_orm(table_name = "challenge")]
 #[schema(as = ChallengeModel)]
@@ -29,10 +29,8 @@ pub struct Model {
     pub points: i32,
     pub difficulty: DifficultyEnum,
     pub flag_type: FlagTypeEnum,
-    pub status: ChallengeStatusEnum,
     pub author_name: String,
     pub solves: i32,
-    pub ignore_case: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

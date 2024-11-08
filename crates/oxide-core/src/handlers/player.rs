@@ -1,35 +1,25 @@
 use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
-use axum::Extension;
+use axum::routing::get;
+use axum::{Extension, Router};
 use fred::prelude::*;
-use oxide_macros::{crud_interface_api, multiple_relation_api, single_relation_api};
+use oxide_macros::table_api;
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
 
-use crate::db;
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Achievement, AchievementModel, Ban, BanModel, CreatePlayerSchema, Deployment, DeploymentModel,
-    Flag, FlagModel, JsonResponse, Notification, NotificationModel, Player, PlayerModel,
-    PlayerProfile, PlayerSummary, Submission, SubmissionModel, Team, TeamModel, TokenClaims,
-    Unlock, UnlockModel, UpdateProfileSchema, User,
+    Achievement, AchievementModel, Ban, BanModel, Challenge, ChallengeModel, CreatePlayerSchema,
+    Deployment, DeploymentModel, Flag, FlagModel, Hint, HintModel, JsonResponse, Notification,
+    NotificationModel, Player, PlayerModel, PlayerProfile, PlayerSummary, Submission,
+    SubmissionModel, Team, TeamModel, TokenClaims, Unlock, UnlockModel, UpdateProfileSchema, User,
+    UserModel,
 };
 use crate::service::{AppState, CachedJson};
 
-crud_interface_api!(Player);
-
-single_relation_api!(Player, Team);
-
-single_relation_api!(Player, Deployment);
-single_relation_api!(Player, Ban);
-
-multiple_relation_api!(Player, Flag);
-multiple_relation_api!(Player, Achievement);
-multiple_relation_api!(Player, Notification);
-multiple_relation_api!(Player, Submission);
-multiple_relation_api!(Player, Unlock);
+table_api!(Player, single: [Team, User], optional: [Deployment, Ban], multiple: [Flag, Achievement, Notification, Submission, Unlock, Challenge, Hint]);
 
 #[utoipa::path(
     get,
@@ -49,9 +39,24 @@ pub async fn retrieve_profile_by_username(
     state: State<Arc<AppState>>,
     Path(username): Path<String>,
 ) -> Result<Json<PlayerProfile>> {
-    db::player::retrieve_profile_by_username(username, &state.db_conn, &state.persistent_client)
-        .await
-        .map(Json)
+    let Some((user_model, Some(player_model))) = User::find()
+        .find_also_related(Player)
+        .filter(entity::user::Column::Username.eq(&username))
+        .one(&state.db_conn)
+        .await?
+    else {
+        return Err(Error::NotFound("Player not found".to_owned()));
+    };
+
+    Ok(Json(
+        super::retrieve_profile(
+            user_model,
+            player_model,
+            &state.db_conn,
+            &state.persistent_client,
+        )
+        .await?,
+    ))
 }
 
 #[utoipa::path(
@@ -120,7 +125,7 @@ pub async fn retrieve_summary(
             .find_related(Achievement)
             .all(&state.db_conn)
             .await?,
-        profile: db::player::retrieve_profile(
+        profile: super::retrieve_profile(
             user_model,
             player_model,
             &state.db_conn,

@@ -2,10 +2,11 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
-use axum::Extension;
+use axum::routing::get;
+use axum::{Extension, Router};
 use entity::links::{TeamToAchievement, TeamToChallenge, TeamToSubmission, TeamToUnlock};
 use fred::prelude::*;
-use oxide_macros::{crud_interface_api, multiple_relation_api};
+use oxide_macros::table_api;
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
@@ -17,10 +18,7 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-crud_interface_api!(Team);
-
-multiple_relation_api!(Team, Invite);
-multiple_relation_api!(Team, Player);
+table_api!(Team, single: [], optional: [], multiple: [Invite, Player]);
 
 #[utoipa::path(
     get,
@@ -189,7 +187,7 @@ pub async fn retrieve_summary(
 
     for player_model in players {
         members.push(
-            crate::db::player::retrieve_profile(
+            super::retrieve_profile(
                 player_model
                     .find_related(User)
                     .one(&state.db_conn)

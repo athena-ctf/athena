@@ -395,13 +395,13 @@
         }
       }
     },
-    "/admin/achievement/{id}/challenge": {
+    "/admin/achievement/{id}/relations": {
       "get": {
         "tags": [
           "achievement"
         ],
-        "summary": "List achievement challenge by id",
-        "operationId": "retrieve_achievement_challenge_by_id",
+        "summary": "Retrieve achievement relations by id",
+        "operationId": "retrieve_achievement_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -416,104 +416,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved achievementchallenge by id successfully",
+            "description": "Retrieved achievement relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChallengeModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No achievement found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/achievement/{id}/player": {
-      "get": {
-        "tags": [
-          "achievement"
-        ],
-        "summary": "List achievement player by id",
-        "operationId": "retrieve_achievement_player_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved achievementplayer by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlayerModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/AchievementRelations"
                 }
               }
             }
@@ -942,13 +849,13 @@
         }
       }
     },
-    "/admin/admin/{id}/tickets": {
+    "/admin/admin/{id}/relations": {
       "get": {
         "tags": [
           "admin"
         ],
-        "summary": "List admin ticket by id",
-        "operationId": "list_admin_tickets_by_id",
+        "summary": "Retrieve admin relations by id",
+        "operationId": "retrieve_admin_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -963,24 +870,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Listed admintickets by id successfully",
+            "description": "Retrieved admin relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TicketModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/AdminRelations"
                 }
               }
             }
@@ -1502,13 +1396,13 @@
         }
       }
     },
-    "/admin/ban/{id}/player": {
+    "/admin/ban/{id}/relations": {
       "get": {
         "tags": [
           "ban"
         ],
-        "summary": "List ban player by id",
-        "operationId": "retrieve_ban_player_by_id",
+        "summary": "Retrieve ban relations by id",
+        "operationId": "retrieve_ban_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -1523,21 +1417,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved banplayer by id successfully",
+            "description": "Retrieved ban relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/BanRelations"
                 }
               }
             }
@@ -1966,13 +1850,13 @@
         }
       }
     },
-    "/admin/challenge/{id}/achievements": {
+    "/admin/challenge/{id}/relations": {
       "get": {
         "tags": [
           "challenge"
         ],
-        "summary": "List challenge achievement by id",
-        "operationId": "list_challenge_achievements_by_id",
+        "summary": "Retrieve challenge relations by id",
+        "operationId": "retrieve_challenge_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -1987,626 +1871,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Listed challengeachievements by id successfully",
+            "description": "Retrieved challenge relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AchievementModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge/{id}/challenge_tags": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "List challenge challenge_tag by id",
-        "operationId": "list_challenge_challenge_tags_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed challengechallenge_tags by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChallengeTagModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge/{id}/containers": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "List challenge container by id",
-        "operationId": "list_challenge_containers_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed challengecontainers by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ContainerModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge/{id}/deployments": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "List challenge deployment by id",
-        "operationId": "list_challenge_deployments_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed challengedeployments by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DeploymentModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge/{id}/files": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "List challenge file by id",
-        "operationId": "list_challenge_files_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed challengefiles by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FileModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge/{id}/hints": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "List challenge hint by id",
-        "operationId": "list_challenge_hints_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed challengehints by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HintModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge/{id}/submissions": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "List challenge submission by id",
-        "operationId": "list_challenge_submissions_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed challengesubmissions by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SubmissionModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge/{id}/tags": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "List challenge tag by id",
-        "operationId": "list_challenge_tags_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed challengetags by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TagModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/ChallengeRelations"
                 }
               }
             }
@@ -2787,7 +2056,7 @@
         }
       }
     },
-    "/admin/challenge_tag/{Challenge}-{Tag}": {
+    "/admin/challenge_tag/{challenge_id}-{tag_id}": {
       "get": {
         "tags": [
           "challenge_tag"
@@ -3018,6 +2287,89 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge_tag found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/challenge_tag/{challenge_id}-{tag_id}/relations": {
+      "get": {
+        "tags": [
+          "challenge_tag"
+        ],
+        "summary": "Retrieve challenge_tag relations by id",
+        "operationId": "retrieve_challenge_tag_relations_by_id",
+        "parameters": [
+          {
+            "name": "challenge_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "tag_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved challenge_tag relations by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeTagRelations"
                 }
               }
             }
@@ -3446,13 +2798,13 @@
         }
       }
     },
-    "/admin/container/{id}/challenge": {
+    "/admin/container/{id}/relations": {
       "get": {
         "tags": [
           "container"
         ],
-        "summary": "List container challenge by id",
-        "operationId": "retrieve_container_challenge_by_id",
+        "summary": "Retrieve container relations by id",
+        "operationId": "retrieve_container_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -3467,21 +2819,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved containerchallenge by id successfully",
+            "description": "Retrieved container relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChallengeModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/ContainerRelations"
                 }
               }
             }
@@ -3910,13 +3252,13 @@
         }
       }
     },
-    "/admin/deployment/{id}/challenge": {
+    "/admin/deployment/{id}/relations": {
       "get": {
         "tags": [
           "deployment"
         ],
-        "summary": "List deployment challenge by id",
-        "operationId": "retrieve_deployment_challenge_by_id",
+        "summary": "Retrieve deployment relations by id",
+        "operationId": "retrieve_deployment_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -3931,190 +3273,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved deploymentchallenge by id successfully",
+            "description": "Retrieved deployment relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChallengeModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No deployment found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/deployment/{id}/instances": {
-      "get": {
-        "tags": [
-          "deployment"
-        ],
-        "summary": "List deployment instance by id",
-        "operationId": "list_deployment_instances_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed deploymentinstances by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/InstanceModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No deployment found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/deployment/{id}/player": {
-      "get": {
-        "tags": [
-          "deployment"
-        ],
-        "summary": "List deployment player by id",
-        "operationId": "retrieve_deployment_player_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved deploymentplayer by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlayerModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/DeploymentRelations"
                 }
               }
             }
@@ -4543,13 +3706,13 @@
         }
       }
     },
-    "/admin/file/{id}/challenge": {
+    "/admin/file/{id}/relations": {
       "get": {
         "tags": [
           "file"
         ],
-        "summary": "List file challenge by id",
-        "operationId": "retrieve_file_challenge_by_id",
+        "summary": "Retrieve file relations by id",
+        "operationId": "retrieve_file_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -4564,21 +3727,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved filechallenge by id successfully",
+            "description": "Retrieved file relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChallengeModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/FileRelations"
                 }
               }
             }
@@ -5007,13 +4160,13 @@
         }
       }
     },
-    "/admin/flag/{id}/challenge": {
+    "/admin/flag/{id}/relations": {
       "get": {
         "tags": [
           "flag"
         ],
-        "summary": "List flag challenge by id",
-        "operationId": "retrieve_flag_challenge_by_id",
+        "summary": "Retrieve flag relations by id",
+        "operationId": "retrieve_flag_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -5028,104 +4181,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved flagchallenge by id successfully",
+            "description": "Retrieved flag relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChallengeModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No flag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/flag/{id}/player": {
-      "get": {
-        "tags": [
-          "flag"
-        ],
-        "summary": "List flag player by id",
-        "operationId": "retrieve_flag_player_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved flagplayer by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlayerModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/FlagRelations"
                 }
               }
             }
@@ -5554,13 +4614,13 @@
         }
       }
     },
-    "/admin/hint/{id}/challenge": {
+    "/admin/hint/{id}/relations": {
       "get": {
         "tags": [
           "hint"
         ],
-        "summary": "List hint challenge by id",
-        "operationId": "retrieve_hint_challenge_by_id",
+        "summary": "Retrieve hint relations by id",
+        "operationId": "retrieve_hint_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -5575,107 +4635,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved hintchallenge by id successfully",
+            "description": "Retrieved hint relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChallengeModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No hint found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/hint/{id}/unlocks": {
-      "get": {
-        "tags": [
-          "hint"
-        ],
-        "summary": "List hint unlock by id",
-        "operationId": "list_hint_unlocks_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed hintunlocks by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UnlockModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/HintRelations"
                 }
               }
             }
@@ -6104,13 +5068,13 @@
         }
       }
     },
-    "/admin/instance/{id}/deployment": {
+    "/admin/instance/{id}/relations": {
       "get": {
         "tags": [
           "instance"
         ],
-        "summary": "List instance deployment by id",
-        "operationId": "retrieve_instance_deployment_by_id",
+        "summary": "Retrieve instance relations by id",
+        "operationId": "retrieve_instance_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -6125,21 +5089,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved instancedeployment by id successfully",
+            "description": "Retrieved instance relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeploymentModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/InstanceRelations"
                 }
               }
             }
@@ -6568,13 +5522,13 @@
         }
       }
     },
-    "/admin/invite/{id}/team": {
+    "/admin/invite/{id}/relations": {
       "get": {
         "tags": [
           "invite"
         ],
-        "summary": "List invite team by id",
-        "operationId": "retrieve_invite_team_by_id",
+        "summary": "Retrieve invite relations by id",
+        "operationId": "retrieve_invite_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -6589,21 +5543,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved inviteteam by id successfully",
+            "description": "Retrieved invite relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeamModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/InviteRelations"
                 }
               }
             }
@@ -7032,13 +5976,13 @@
         }
       }
     },
-    "/admin/notification/{id}/player": {
+    "/admin/notification/{id}/relations": {
       "get": {
         "tags": [
           "notification"
         ],
-        "summary": "List notification player by id",
-        "operationId": "retrieve_notification_player_by_id",
+        "summary": "Retrieve notification relations by id",
+        "operationId": "retrieve_notification_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -7053,21 +5997,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved notificationplayer by id successfully",
+            "description": "Retrieved notification relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/NotificationRelations"
                 }
               }
             }
@@ -7496,13 +6430,13 @@
         }
       }
     },
-    "/admin/player/{id}/achievements": {
+    "/admin/player/{id}/relations": {
       "get": {
         "tags": [
           "player"
         ],
-        "summary": "List player achievement by id",
-        "operationId": "list_player_achievements_by_id",
+        "summary": "Retrieve player relations by id",
+        "operationId": "retrieve_player_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -7517,617 +6451,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Listed playerachievements by id successfully",
+            "description": "Retrieved player relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AchievementModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No player found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/player/{id}/ban": {
-      "get": {
-        "tags": [
-          "player"
-        ],
-        "summary": "List player ban by id",
-        "operationId": "retrieve_player_ban_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved playerban by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BanModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No player found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/player/{id}/deployment": {
-      "get": {
-        "tags": [
-          "player"
-        ],
-        "summary": "List player deployment by id",
-        "operationId": "retrieve_player_deployment_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved playerdeployment by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DeploymentModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No player found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/player/{id}/flags": {
-      "get": {
-        "tags": [
-          "player"
-        ],
-        "summary": "List player flag by id",
-        "operationId": "list_player_flags_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed playerflags by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FlagModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No player found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/player/{id}/notifications": {
-      "get": {
-        "tags": [
-          "player"
-        ],
-        "summary": "List player notification by id",
-        "operationId": "list_player_notifications_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed playernotifications by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NotificationModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No player found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/player/{id}/submissions": {
-      "get": {
-        "tags": [
-          "player"
-        ],
-        "summary": "List player submission by id",
-        "operationId": "list_player_submissions_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed playersubmissions by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SubmissionModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No player found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/player/{id}/team": {
-      "get": {
-        "tags": [
-          "player"
-        ],
-        "summary": "List player team by id",
-        "operationId": "retrieve_player_team_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved playerteam by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TeamModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No player found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/player/{id}/unlocks": {
-      "get": {
-        "tags": [
-          "player"
-        ],
-        "summary": "List player unlock by id",
-        "operationId": "list_player_unlocks_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed playerunlocks by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UnlockModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/PlayerRelations"
                 }
               }
             }
@@ -8359,7 +6687,7 @@
         }
       }
     },
-    "/admin/submission/{Challenge}-{Player}": {
+    "/admin/submission/{challenge_id}-{player_id}": {
       "get": {
         "tags": [
           "submission"
@@ -8590,6 +6918,89 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No submission found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/submission/{challenge_id}-{player_id}/relations": {
+      "get": {
+        "tags": [
+          "submission"
+        ],
+        "summary": "Retrieve submission relations by id",
+        "operationId": "retrieve_submission_relations_by_id",
+        "parameters": [
+          {
+            "name": "challenge_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "player_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved submission relations by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmissionRelations"
                 }
               }
             }
@@ -9018,13 +7429,13 @@
         }
       }
     },
-    "/admin/tag/{id}/challenges": {
+    "/admin/tag/{id}/relations": {
       "get": {
         "tags": [
           "tag"
         ],
-        "summary": "List tag challenge by id",
-        "operationId": "list_tag_challenges_by_id",
+        "summary": "Retrieve tag relations by id",
+        "operationId": "retrieve_tag_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -9039,24 +7450,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Listed tagchallenges by id successfully",
+            "description": "Retrieved tag relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChallengeModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/TagRelations"
                 }
               }
             }
@@ -9485,13 +7883,13 @@
         }
       }
     },
-    "/admin/team/{id}/invites": {
+    "/admin/team/{id}/relations": {
       "get": {
         "tags": [
           "team"
         ],
-        "summary": "List team invite by id",
-        "operationId": "list_team_invites_by_id",
+        "summary": "Retrieve team relations by id",
+        "operationId": "retrieve_team_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -9506,110 +7904,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Listed teaminvites by id successfully",
+            "description": "Retrieved team relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/InviteModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No team found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/team/{id}/players": {
-      "get": {
-        "tags": [
-          "team"
-        ],
-        "summary": "List team player by id",
-        "operationId": "list_team_players_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Listed teamplayers by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PlayerModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/TeamRelations"
                 }
               }
             }
@@ -10038,13 +8337,13 @@
         }
       }
     },
-    "/admin/ticket/{id}/admin": {
+    "/admin/ticket/{id}/relations": {
       "get": {
         "tags": [
           "ticket"
         ],
-        "summary": "List ticket admin by id",
-        "operationId": "retrieve_ticket_admin_by_id",
+        "summary": "Retrieve ticket relations by id",
+        "operationId": "retrieve_ticket_relations_by_id",
         "parameters": [
           {
             "name": "id",
@@ -10059,21 +8358,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved ticketadmin by id successfully",
+            "description": "Retrieved ticket relations by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdminModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "$ref": "#/components/schemas/TicketRelations"
                 }
               }
             }
@@ -10254,7 +8543,7 @@
         }
       }
     },
-    "/admin/unlock/{Player}-{Hint}": {
+    "/admin/unlock/{player_id}-{hint_id}": {
       "get": {
         "tags": [
           "unlock"
@@ -10485,6 +8774,89 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No unlock found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/unlock/{player_id}-{hint_id}/relations": {
+      "get": {
+        "tags": [
+          "unlock"
+        ],
+        "summary": "Retrieve unlock relations by id",
+        "operationId": "retrieve_unlock_relations_by_id",
+        "parameters": [
+          {
+            "name": "player_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "hint_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved unlock relations by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnlockRelations"
                 }
               }
             }
@@ -12439,6 +10811,21 @@
           }
         }
       },
+      "AchievementRelations": {
+        "type": "object",
+        "required": [
+          "player",
+          "challenge"
+        ],
+        "properties": {
+          "challenge": {
+            "$ref": "#/components/schemas/ChallengeModel"
+          },
+          "player": {
+            "$ref": "#/components/schemas/PlayerModel"
+          }
+        }
+      },
       "AdminModel": {
         "type": "object",
         "required": [
@@ -12467,6 +10854,24 @@
           "user_id": {
             "type": "string",
             "format": "uuid"
+          }
+        }
+      },
+      "AdminRelations": {
+        "type": "object",
+        "required": [
+          "user",
+          "tickets"
+        ],
+        "properties": {
+          "tickets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketModel"
+            }
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserModel"
           }
         }
       },
@@ -12501,6 +10906,17 @@
           }
         }
       },
+      "BanRelations": {
+        "type": "object",
+        "required": [
+          "player"
+        ],
+        "properties": {
+          "player": {
+            "$ref": "#/components/schemas/PlayerModel"
+          }
+        }
+      },
       "ChallengeModel": {
         "type": "object",
         "required": [
@@ -12512,10 +10928,8 @@
           "points",
           "difficulty",
           "flag_type",
-          "status",
           "author_name",
-          "solves",
-          "ignore_case"
+          "solves"
         ],
         "properties": {
           "author_name": {
@@ -12538,9 +10952,6 @@
             "type": "string",
             "format": "uuid"
           },
-          "ignore_case": {
-            "type": "boolean"
-          },
           "points": {
             "type": "integer",
             "format": "int32"
@@ -12548,9 +10959,6 @@
           "solves": {
             "type": "integer",
             "format": "int32"
-          },
-          "status": {
-            "$ref": "#/components/schemas/ChallengeStatusEnum"
           },
           "title": {
             "type": "string"
@@ -12561,13 +10969,82 @@
           }
         }
       },
-      "ChallengeStatusEnum": {
-        "type": "string",
-        "enum": [
-          "active",
-          "maintenance",
-          "scheduled"
-        ]
+      "ChallengeRelations": {
+        "type": "object",
+        "required": [
+          "achievements",
+          "containers",
+          "files",
+          "hints",
+          "deployments",
+          "tags",
+          "submissions",
+          "challenge_tags",
+          "flags",
+          "players"
+        ],
+        "properties": {
+          "achievements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AchievementModel"
+            }
+          },
+          "challenge_tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChallengeTagModel"
+            }
+          },
+          "containers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContainerModel"
+            }
+          },
+          "deployments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeploymentModel"
+            }
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileModel"
+            }
+          },
+          "flags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlagModel"
+            }
+          },
+          "hints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HintModel"
+            }
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayerModel"
+            }
+          },
+          "submissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubmissionModel"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagModel"
+            }
+          }
+        }
       },
       "ChallengeSummary": {
         "type": "object",
@@ -12615,6 +11092,21 @@
           "updated_at": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "ChallengeTagRelations": {
+        "type": "object",
+        "required": [
+          "challenge",
+          "tag"
+        ],
+        "properties": {
+          "challenge": {
+            "$ref": "#/components/schemas/ChallengeModel"
+          },
+          "tag": {
+            "$ref": "#/components/schemas/TagModel"
           }
         }
       },
@@ -12698,6 +11190,17 @@
           }
         }
       },
+      "ContainerRelations": {
+        "type": "object",
+        "required": [
+          "challenge"
+        ],
+        "properties": {
+          "challenge": {
+            "$ref": "#/components/schemas/ChallengeModel"
+          }
+        }
+      },
       "CreateAchievementSchema": {
         "type": "object",
         "required": [
@@ -12764,10 +11267,8 @@
           "points",
           "difficulty",
           "flag_type",
-          "status",
           "author_name",
-          "solves",
-          "ignore_case"
+          "solves"
         ],
         "properties": {
           "author_name": {
@@ -12782,9 +11283,6 @@
           "flag_type": {
             "$ref": "#/components/schemas/FlagTypeEnum"
           },
-          "ignore_case": {
-            "type": "boolean"
-          },
           "points": {
             "type": "integer",
             "format": "int32"
@@ -12792,9 +11290,6 @@
           "solves": {
             "type": "integer",
             "format": "int32"
-          },
-          "status": {
-            "$ref": "#/components/schemas/ChallengeStatusEnum"
           },
           "title": {
             "type": "string"
@@ -12933,12 +11428,16 @@
         "type": "object",
         "required": [
           "value",
-          "challenge_id"
+          "challenge_id",
+          "ignore_case"
         ],
         "properties": {
           "challenge_id": {
             "type": "string",
             "format": "uuid"
+          },
+          "ignore_case": {
+            "type": "boolean"
           },
           "player_id": {
             "type": [
@@ -13170,29 +11669,6 @@
           }
         }
       },
-      "CreateUserSchema": {
-        "type": "object",
-        "required": [
-          "username",
-          "email",
-          "password",
-          "group"
-        ],
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "group": {
-            "$ref": "#/components/schemas/GroupEnum"
-          },
-          "password": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          }
-        }
-      },
       "DeploymentModel": {
         "type": "object",
         "required": [
@@ -13231,6 +11707,28 @@
           "updated_at": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "DeploymentRelations": {
+        "type": "object",
+        "required": [
+          "challenge",
+          "player",
+          "instances"
+        ],
+        "properties": {
+          "challenge": {
+            "$ref": "#/components/schemas/ChallengeModel"
+          },
+          "instances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InstanceModel"
+            }
+          },
+          "player": {
+            "$ref": "#/components/schemas/PlayerModel"
           }
         }
       },
@@ -13299,6 +11797,17 @@
           }
         }
       },
+      "FileRelations": {
+        "type": "object",
+        "required": [
+          "challenge"
+        ],
+        "properties": {
+          "challenge": {
+            "$ref": "#/components/schemas/ChallengeModel"
+          }
+        }
+      },
       "FlagModel": {
         "type": "object",
         "required": [
@@ -13306,7 +11815,8 @@
           "created_at",
           "updated_at",
           "value",
-          "challenge_id"
+          "challenge_id",
+          "ignore_case"
         ],
         "properties": {
           "challenge_id": {
@@ -13321,6 +11831,9 @@
             "type": "string",
             "format": "uuid"
           },
+          "ignore_case": {
+            "type": "boolean"
+          },
           "player_id": {
             "type": [
               "string",
@@ -13334,6 +11847,27 @@
           },
           "value": {
             "type": "string"
+          }
+        }
+      },
+      "FlagRelations": {
+        "type": "object",
+        "required": [
+          "challenge"
+        ],
+        "properties": {
+          "challenge": {
+            "$ref": "#/components/schemas/ChallengeModel"
+          },
+          "player": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/PlayerModel"
+              }
+            ]
           }
         }
       },
@@ -13396,6 +11930,31 @@
           "updated_at": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "HintRelations": {
+        "type": "object",
+        "required": [
+          "challenge",
+          "unlocks",
+          "players"
+        ],
+        "properties": {
+          "challenge": {
+            "$ref": "#/components/schemas/ChallengeModel"
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayerModel"
+            }
+          },
+          "unlocks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnlockModel"
+            }
           }
         }
       },
@@ -13462,6 +12021,17 @@
           }
         }
       },
+      "InstanceRelations": {
+        "type": "object",
+        "required": [
+          "deployment"
+        ],
+        "properties": {
+          "deployment": {
+            "$ref": "#/components/schemas/DeploymentModel"
+          }
+        }
+      },
       "InviteModel": {
         "type": "object",
         "required": [
@@ -13491,6 +12061,17 @@
           "updated_at": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "InviteRelations": {
+        "type": "object",
+        "required": [
+          "team"
+        ],
+        "properties": {
+          "team": {
+            "$ref": "#/components/schemas/TeamModel"
           }
         }
       },
@@ -13603,6 +12184,17 @@
           "updated_at": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "NotificationRelations": {
+        "type": "object",
+        "required": [
+          "player"
+        ],
+        "properties": {
+          "player": {
+            "$ref": "#/components/schemas/PlayerModel"
           }
         }
       },
@@ -13736,6 +12328,90 @@
           }
         }
       },
+      "PlayerRelations": {
+        "type": "object",
+        "required": [
+          "team",
+          "user",
+          "flags",
+          "achievements",
+          "notifications",
+          "submissions",
+          "unlocks",
+          "challenges",
+          "hints"
+        ],
+        "properties": {
+          "achievements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AchievementModel"
+            }
+          },
+          "ban": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/BanModel"
+              }
+            ]
+          },
+          "challenges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChallengeModel"
+            }
+          },
+          "deployment": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/DeploymentModel"
+              }
+            ]
+          },
+          "flags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlagModel"
+            }
+          },
+          "hints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HintModel"
+            }
+          },
+          "notifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotificationModel"
+            }
+          },
+          "submissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubmissionModel"
+            }
+          },
+          "team": {
+            "$ref": "#/components/schemas/TeamModel"
+          },
+          "unlocks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnlockModel"
+            }
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserModel"
+          }
+        }
+      },
       "PlayerSummary": {
         "type": "object",
         "required": [
@@ -13781,21 +12457,6 @@
           "score": {
             "type": "number",
             "format": "double"
-          }
-        }
-      },
-      "RegisterExistsQuery": {
-        "type": "object",
-        "required": [
-          "email",
-          "username"
-        ],
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
           }
         }
       },
@@ -14035,6 +12696,21 @@
           }
         }
       },
+      "SubmissionRelations": {
+        "type": "object",
+        "required": [
+          "challenge",
+          "player"
+        ],
+        "properties": {
+          "challenge": {
+            "$ref": "#/components/schemas/ChallengeModel"
+          },
+          "player": {
+            "$ref": "#/components/schemas/PlayerModel"
+          }
+        }
+      },
       "TagModel": {
         "type": "object",
         "required": [
@@ -14058,6 +12734,27 @@
           },
           "value": {
             "type": "string"
+          }
+        }
+      },
+      "TagRelations": {
+        "type": "object",
+        "required": [
+          "challenge_tags",
+          "challenges"
+        ],
+        "properties": {
+          "challenge_tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChallengeTagModel"
+            }
+          },
+          "challenges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChallengeModel"
+            }
           }
         }
       },
@@ -14195,6 +12892,27 @@
           }
         ]
       },
+      "TeamRelations": {
+        "type": "object",
+        "required": [
+          "invites",
+          "players"
+        ],
+        "properties": {
+          "invites": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InviteModel"
+            }
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayerModel"
+            }
+          }
+        }
+      },
       "TeamSummary": {
         "type": "object",
         "required": [
@@ -14278,6 +12996,17 @@
           }
         }
       },
+      "TicketRelations": {
+        "type": "object",
+        "required": [
+          "admin"
+        ],
+        "properties": {
+          "admin": {
+            "$ref": "#/components/schemas/AdminModel"
+          }
+        }
+      },
       "TicketStatusEnum": {
         "type": "string",
         "enum": [
@@ -14285,59 +13014,6 @@
           "open",
           "resolved"
         ]
-      },
-      "TokenClaimKind": {
-        "oneOf": [
-          {
-            "type": "string",
-            "enum": [
-              "player"
-            ]
-          },
-          {
-            "type": "object",
-            "required": [
-              "admin"
-            ],
-            "properties": {
-              "admin": {
-                "$ref": "#/components/schemas/RoleEnum"
-              }
-            }
-          }
-        ]
-      },
-      "TokenClaims": {
-        "type": "object",
-        "required": [
-          "id",
-          "exp",
-          "iat",
-          "token_type",
-          "kind"
-        ],
-        "properties": {
-          "exp": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "iat": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "kind": {
-            "$ref": "#/components/schemas/TokenClaimKind"
-          },
-          "token_type": {
-            "$ref": "#/components/schemas/TokenType"
-          }
-        }
       },
       "TokenPair": {
         "type": "object",
@@ -14353,13 +13029,6 @@
             "type": "string"
           }
         }
-      },
-      "TokenType": {
-        "type": "string",
-        "enum": [
-          "access",
-          "refresh"
-        ]
       },
       "UnlockModel": {
         "type": "object",
@@ -14385,6 +13054,21 @@
           "updated_at": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "UnlockRelations": {
+        "type": "object",
+        "required": [
+          "player",
+          "hint"
+        ],
+        "properties": {
+          "hint": {
+            "$ref": "#/components/schemas/HintModel"
+          },
+          "player": {
+            "$ref": "#/components/schemas/PlayerModel"
           }
         }
       },

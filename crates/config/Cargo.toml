@@ -11,7 +11,7 @@ config_rs = { package = "config", version = "0.14.1", default-features = false, 
     "convert-case",
     "json",
 ] }
-fastrand = "2.1.1"
+fastrand = { workspace = true }
 humantime = "2.1.0"
 indexmap = { version = "2.6.0", features = ["serde"] }
 schemars = { version = "0.8.21", features = ["uuid1", "indexmap2", "chrono"] }

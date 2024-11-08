@@ -1,9 +1,10 @@
 use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
-use axum::Extension;
+use axum::routing::get;
+use axum::{Extension, Router};
 use fred::prelude::*;
-use oxide_macros::{crud_interface_api, multiple_relation_api, single_relation_api};
+use oxide_macros::table_api;
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel, TransactionTrait};
 use uuid::Uuid;
@@ -11,14 +12,11 @@ use uuid::Uuid;
 use crate::errors::{Error, Result};
 use crate::schemas::{
     Challenge, ChallengeModel, CreateHintSchema, Hint, HintModel, JsonResponse, Player,
-    TokenClaims, Unlock, UnlockModel,
+    PlayerModel, TokenClaims, Unlock, UnlockModel,
 };
 use crate::service::{AppState, CachedJson};
 
-crud_interface_api!(Hint);
-
-single_relation_api!(Hint, Challenge);
-multiple_relation_api!(Hint, Unlock);
+table_api!(Hint, single: [Challenge], optional: [], multiple: [Unlock, Player]);
 
 #[utoipa::path(
     get,

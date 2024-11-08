@@ -1,8 +1,10 @@
 use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
+use axum::routing::get;
+use axum::Router;
 use fred::prelude::*;
-use oxide_macros::{crud_interface_api, single_relation_api};
+use oxide_macros::table_api;
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
@@ -14,9 +16,7 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-crud_interface_api!(Invite);
-
-single_relation_api!(Invite, Team);
+table_api!(Invite, single: [Team], optional: [], multiple: []);
 
 #[utoipa::path(
     post,

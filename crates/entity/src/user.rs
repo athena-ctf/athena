@@ -13,12 +13,12 @@ use super::sea_orm_active_enums::GroupEnum;
     Eq,
     Serialize,
     Deserialize,
-    utoipa :: ToSchema,
-    oxide_macros :: derive :: Details,
+    utoipa::ToSchema,
+    oxide_macros::derive::Details,
 )]
 #[sea_orm(table_name = "user")]
 #[schema(as = UserModel)]
-#[oxide(table(name = "User"))]
+#[oxide(table(name = "User", impl_new))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,

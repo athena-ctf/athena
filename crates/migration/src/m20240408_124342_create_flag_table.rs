@@ -17,6 +17,7 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Flag::Value).string().not_null())
                     .col(ColumnDef::new(Flag::ChallengeId).uuid().not_null())
                     .col(ColumnDef::new(Flag::PlayerId).uuid())
+                    .col(ColumnDef::new(Flag::IgnoreCase).boolean().not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-flag-challenge_id")
@@ -58,6 +59,7 @@ enum Flag {
     Value,
     ChallengeId,
     PlayerId,
+    IgnoreCase,
 }
 
 #[derive(DeriveIden)]

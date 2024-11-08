@@ -85,22 +85,15 @@ impl Manager {
         let container_models = challenge_model.find_related(Container).all(&txn).await?;
 
         let expires_at = Utc::now().naive_utc() + Duration::seconds(self.container_timeout);
-        let subdomain = crate::gen_random(10);
+        let hostname = crate::gen_random(10);
 
         let txn = self.db.begin().await?;
 
-        let deployment_model = DeploymentModel {
-            id: Uuid::now_v7(),
-            created_at: Utc::now().naive_utc(),
-            updated_at: Utc::now().naive_utc(),
-            hostname: subdomain.clone(),
-            expires_at,
-            challenge_id: challenge_model.id,
-            player_id,
-        }
-        .into_active_model()
-        .insert(&txn)
-        .await?;
+        let deployment_model =
+            DeploymentModel::new(expires_at, challenge_id, hostname.clone(), player_id)
+                .into_active_model()
+                .insert(&txn)
+                .await?;
 
         for container_model in &container_models {
             for network in &container_model.networks {
@@ -117,17 +110,10 @@ impl Manager {
         let flag = if challenge_model.flag_type == FlagTypeEnum::PerUser {
             let flag = crate::gen_random(self.flag_len);
 
-            FlagModel {
-                id: Uuid::now_v7(),
-                created_at: Utc::now().naive_utc(),
-                updated_at: Utc::now().naive_utc(),
-                value: flag.clone(),
-                challenge_id: challenge_model.id,
-                player_id: Some(player_id),
-            }
-            .into_active_model()
-            .insert(&txn)
-            .await?;
+            FlagModel::new(flag.clone(), challenge_id, Some(player_id), false)
+                .into_active_model()
+                .insert(&txn)
+                .await?;
 
             flag
         } else {
@@ -193,7 +179,7 @@ impl Manager {
                             cmd: Some(container.command.clone()),
                             labels: Some(HashMap::from([(
                                 "caddy".to_owned(),
-                                format!("{subdomain}.{}", ""),
+                                format!("{hostname}.{}", ""),
                             )])),
                             host_config: Some(bollard::models::HostConfig {
                                 port_bindings: Some(port_bindings),
@@ -236,7 +222,7 @@ impl Manager {
 
                                         self.caddy_api
                                             .register(
-                                                &subdomain,
+                                                &hostname,
                                                 &host_port,
                                                 &container.name,
                                                 &container_port,
@@ -251,15 +237,12 @@ impl Manager {
                     }
                 }
 
-                InstanceModel {
-                    id: Uuid::now_v7(),
-                    created_at: Utc::now().naive_utc(),
-                    updated_at: Utc::now().naive_utc(),
-                    container_id: container_info.id,
-                    deployment_id: deployment_model.id,
-                    container_name: container.name.clone(),
+                InstanceModel::new(
+                    container_info.id,
+                    container.name.clone(),
+                    deployment_model.id,
                     port_mapping,
-                }
+                )
                 .into_active_model()
                 .insert(&txn)
                 .await?;

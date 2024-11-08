@@ -2,9 +2,10 @@ use std::collections::HashMap;
 use std::sync::{Arc, LazyLock};
 
 use axum::extract::{Json, Path, State};
-use axum::Extension;
+use axum::routing::get;
+use axum::{Extension, Router};
 use fred::prelude::*;
-use oxide_macros::{crud_interface_api, single_relation_api};
+use oxide_macros::table_api;
 use regex::Regex;
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel, TransactionTrait};
@@ -19,10 +20,7 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-crud_interface_api!(Flag);
-
-single_relation_api!(Flag, Player);
-single_relation_api!(Flag, Challenge);
+table_api!(Flag, single: [Challenge], optional: [Player], multiple: []);
 
 static REGEX_CACHE: LazyLock<RwLock<HashMap<Uuid, Arc<Regex>>>> =
     LazyLock::new(|| RwLock::new(HashMap::new()));
@@ -94,7 +92,7 @@ pub async fn verify(
                 return Err(Error::NotFound("Flag".to_owned()));
             };
 
-            if challenge_model.ignore_case {
+            if flag_model.ignore_case {
                 flag_model.value.to_lowercase() == body.flag.to_lowercase()
             } else {
                 flag_model.value == body.flag
@@ -115,7 +113,7 @@ pub async fn verify(
             if let Some(regex) = regex {
                 regex.is_match(&body.flag)
             } else {
-                let regex = if challenge_model.ignore_case {
+                let regex = if flag_model.ignore_case {
                     Regex::new(&format!("(?i){}", flag_model.value))?
                 } else {
                     Regex::new(&flag_model.value)?
@@ -141,7 +139,7 @@ pub async fn verify(
                 return Err(Error::NotFound("Flag is not generated".to_owned()));
             };
 
-            if challenge_model.ignore_case {
+            if flag_model.ignore_case {
                 flag_model.value.to_lowercase() == body.flag.to_lowercase()
             } else {
                 flag_model.value == body.flag
