@@ -20,8 +20,8 @@ impl MigrationTrait for Migration {
         manager
             .create_type(
                 Type::create()
-                    .as_enum(FlagTypeEnum)
-                    .values(FlagTypeVariants::iter())
+                    .as_enum(ChallengeTypeEnum)
+                    .values(ChallengeTypeVariants::iter())
                     .to_owned(),
             )
             .await?;
@@ -48,8 +48,8 @@ impl MigrationTrait for Migration {
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(Challenge::FlagType)
-                            .enumeration(FlagTypeEnum, FlagTypeVariants::iter())
+                        ColumnDef::new(Challenge::ChallengeType)
+                            .enumeration(ChallengeTypeEnum, ChallengeTypeVariants::iter())
                             .not_null(),
                     )
                     .col(ColumnDef::new(Challenge::AuthorName).string().not_null())
@@ -71,7 +71,7 @@ impl MigrationTrait for Migration {
             .await?;
 
         manager
-            .drop_type(Type::drop().if_exists().name(FlagTypeEnum).to_owned())
+            .drop_type(Type::drop().if_exists().name(ChallengeTypeEnum).to_owned())
             .await?;
 
         Ok(())
@@ -89,7 +89,7 @@ enum Challenge {
     Points,
     AuthorName,
     Difficulty,
-    FlagType,
+    ChallengeType,
     Solves,
 }
 
@@ -105,11 +105,11 @@ enum DifficultyVariants {
 }
 
 #[derive(DeriveIden)]
-struct FlagTypeEnum;
+struct ChallengeTypeEnum;
 
 #[derive(DeriveIden, EnumIter)]
-enum FlagTypeVariants {
-    Static,
-    Regex,
-    PerUser,
+enum ChallengeTypeVariants {
+    StaticFlag,
+    RegexFlag,
+    Containerized,
 }

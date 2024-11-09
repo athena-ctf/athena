@@ -3,7 +3,7 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use super::sea_orm_active_enums::{DifficultyEnum, FlagTypeEnum};
+use super::sea_orm_active_enums::{ChallengeTypeEnum, DifficultyEnum};
 
 #[derive(
     Clone,
@@ -28,7 +28,7 @@ pub struct Model {
     pub description: String,
     pub points: i32,
     pub difficulty: DifficultyEnum,
-    pub flag_type: FlagTypeEnum,
+    pub challenge_type: ChallengeTypeEnum,
     pub author_name: String,
     pub solves: i32,
 }

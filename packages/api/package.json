@@ -6,7 +6,7 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "generate": "openapi-typescript -o ./src/openapi.d.ts",
+    "generate": "openapi-typescript -o ./src/openapi.d.ts && biome check . --write",
     "check": "tsc --noEmit"
   },
   "devDependencies": {

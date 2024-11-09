@@ -1,23 +1,9 @@
-FROM rust:slim-bookworm AS chef
+FROM rust:slim-bookworm AS builder
 RUN apt-get -y update
 
-RUN cargo install cargo-chef
-
-WORKDIR /app
-
-FROM chef AS planner
-
-COPY ./crates/notifier .
-RUN cargo chef prepare --recipe-path recipe.json
-
-FROM chef AS builder
-
-COPY --from=planner /app/recipe.json recipe.json
-RUN cargo chef cook --release --recipe-path recipe.json
-
-COPY ./crates/notifier .
-RUN cargo build -r
-RUN cp ./target/release/notifier /
+COPY . .
+RUN cargo build --bin notifier --release
+RUN cp ./target/release/oxide /
 
 FROM debian:bookworm-slim AS final
 
@@ -31,9 +17,9 @@ RUN adduser \
     --uid "10001" \
     appuser
 
-COPY --from=builder /notifier /usr/local/bin
+COPY --from=builder /oxide /usr/local/bin
 
-RUN chown appuser /usr/local/bin/notifier
+RUN chown appuser /usr/local/bin/oxide
 USER appuser
 
-ENTRYPOINT notifier /data/config.json
+ENTRYPOINT oxide run /data/config.json

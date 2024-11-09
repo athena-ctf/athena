@@ -3,7 +3,6 @@ use std::sync::Arc;
 use axum::extract::{Json, Path, State};
 use axum::routing::get;
 use axum::{Extension, Router};
-use entity::extensions::PartialChallenge;
 use fred::prelude::*;
 use oxide_macros::table_api;
 use sea_orm::prelude::*;
@@ -13,9 +12,9 @@ use uuid::Uuid;
 use crate::errors::{Error, Result};
 use crate::schemas::{
     Achievement, AchievementModel, Challenge, ChallengeModel, ChallengeSummary, ChallengeTag,
-    ChallengeTagModel, Container, ContainerModel, CreateChallengeSchema, CreateTagSchema,
-    Deployment, DeploymentModel, DetailedChallenge, File, FileModel, Flag, FlagModel, Hint,
-    HintModel, HintSummary, JsonResponse, Player, PlayerChallengeState, PlayerModel, Submission,
+    ChallengeTagModel, Container, ContainerModel, CreateChallengeSchema, Deployment,
+    DeploymentModel, DetailedChallenge, File, FileModel, Flag, FlagModel, Hint, HintModel,
+    HintSummary, JsonResponse, Player, PlayerChallengeState, PlayerModel, Submission,
     SubmissionModel, Tag, TagModel, TokenClaims, Unlock, UnlockModel, UnlockStatus,
 };
 use crate::service::{AppState, CachedJson};
@@ -39,10 +38,7 @@ pub async fn player_challenges(
     Extension(claims): Extension<TokenClaims>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<Vec<ChallengeSummary>>> {
-    let challenges = Challenge::find()
-        .into_partial_model::<PartialChallenge>()
-        .all(&state.db_conn)
-        .await?;
+    let challenges = Challenge::find().all(&state.db_conn).await?;
     let submissions = Submission::find()
         .select_only()
         .columns([
@@ -57,13 +53,8 @@ pub async fn player_challenges(
         .await?;
 
     let mut summaries = Vec::with_capacity(challenges.len());
-
     for challenge in challenges {
-        let tags = Tag::find()
-            .into_partial_model::<CreateTagSchema>()
-            .all(&state.db_conn)
-            .await?;
-
+        let tags = challenge.find_related(Tag).all(&state.db_conn).await?;
         let max_attempts = state.settings.read().await.challenge.max_attempts;
 
         let state = submissions

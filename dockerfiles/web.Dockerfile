@@ -17,7 +17,7 @@ RUN rm -rf ./*
 
 COPY --from=builder /app/apps/web/dist .
 
-COPY dockerfiles/web-nginx.conf /etc/nginx/conf.d/default.conf
+COPY data/web-nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

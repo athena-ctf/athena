@@ -14,8 +14,10 @@ config = { path = "../config" }
 chrono = { workspace = true }
 entity = { path = "../entity" }
 fastrand = { workspace = true }
-fred = { version = "9.3.0", features = ["partial-tracing"] }
-imap = "3.0.0-alpha.14"
+fred = { version = "9.4.0", features = ["partial-tracing"] }
+imap = { version = "3.0.0-alpha.14", default-features = false, features = [
+    "rustls-tls",
+] }
 imap-proto = "0.16.5"
 jsonwebtoken = "9.3.0"
 lettre = { version = "0.11.10", default-features = false, features = [
@@ -39,7 +41,13 @@ tracing = { workspace = true }
 utoipa = { workspace = true }
 uuid = { workspace = true }
 futures = { workspace = true }
-reqwest = { version = "0.12.9", features = ["json"] }
+reqwest = { version = "0.12.9", default-features = false, features = [
+    "json",
+    "rustls-tls",
+] }
+tower-sessions = "0.13.0"
+tower-sessions-redis-store = "0.14.0"
+dashmap = { workspace = true }
 
 [build-dependencies]
 heck = "0.5.0"

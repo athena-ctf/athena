@@ -1,20 +1,19 @@
-use std::collections::HashMap;
 use std::sync::{Arc, LazyLock};
 
 use axum::extract::{Json, Path, State};
 use axum::routing::get;
 use axum::{Extension, Router};
+use dashmap::DashMap;
 use fred::prelude::*;
 use oxide_macros::table_api;
 use regex::Regex;
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel, TransactionTrait};
-use tokio::sync::RwLock;
 use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Challenge, ChallengeModel, CreateFlagSchema, Flag, FlagModel, FlagTypeEnum,
+    Challenge, ChallengeModel, ChallengeTypeEnum, CreateFlagSchema, Flag, FlagModel,
     FlagVerificationResult, JsonResponse, Player, PlayerModel, Submission, SubmissionModel,
     TokenClaims, VerifyFlagSchema,
 };
@@ -22,8 +21,7 @@ use crate::service::{AppState, CachedJson};
 
 table_api!(Flag, single: [Challenge], optional: [Player], multiple: []);
 
-static REGEX_CACHE: LazyLock<RwLock<HashMap<Uuid, Arc<Regex>>>> =
-    LazyLock::new(|| RwLock::new(HashMap::new()));
+static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(|| DashMap::new());
 
 #[utoipa::path(
     post,
@@ -82,8 +80,8 @@ pub async fn verify(
 
     let points = challenge_model.points;
 
-    let is_correct = match challenge_model.flag_type {
-        FlagTypeEnum::Static => {
+    let is_correct = match challenge_model.challenge_type {
+        ChallengeTypeEnum::StaticFlag => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
                 .one(&state.db_conn)
@@ -99,7 +97,7 @@ pub async fn verify(
             }
         }
 
-        FlagTypeEnum::Regex => {
+        ChallengeTypeEnum::RegexFlag => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
                 .one(&state.db_conn)
@@ -108,7 +106,7 @@ pub async fn verify(
                 return Err(Error::NotFound("Flag".to_owned()));
             };
 
-            let regex = REGEX_CACHE.read().await.get(&flag_model.id).cloned();
+            let regex = REGEX_CACHE.get(&flag_model.id);
 
             if let Some(regex) = regex {
                 regex.is_match(&body.flag)
@@ -120,16 +118,13 @@ pub async fn verify(
                 };
 
                 let is_match = regex.is_match(&body.flag);
-                REGEX_CACHE
-                    .write()
-                    .await
-                    .insert(flag_model.id, Arc::new(regex));
+                REGEX_CACHE.insert(flag_model.id, Arc::new(regex));
 
                 is_match
             }
         }
 
-        FlagTypeEnum::PerUser => {
+        ChallengeTypeEnum::Containerized => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
                 .filter(entity::flag::Column::PlayerId.eq(claims.id))

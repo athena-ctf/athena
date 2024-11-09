@@ -41,13 +41,13 @@ pub enum DifficultyEnum {
 )]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "flag_type_enum")]
 #[serde(rename_all = "snake_case")]
-pub enum FlagTypeEnum {
-    #[sea_orm(string_value = "per_user")]
-    PerUser,
-    #[sea_orm(string_value = "regex")]
-    Regex,
-    #[sea_orm(string_value = "static")]
-    Static,
+pub enum ChallengeTypeEnum {
+    #[sea_orm(string_value = "containerized")]
+    Containerized,
+    #[sea_orm(string_value = "regex_flag")]
+    RegexFlag,
+    #[sea_orm(string_value = "static_flag")]
+    StaticFlag,
 }
 #[derive(
     Debug,

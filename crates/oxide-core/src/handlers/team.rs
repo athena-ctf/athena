@@ -13,8 +13,8 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    CreatePlayerSchema, CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel,
-    Tag, TagSolves, Team, TeamModel, TeamProfile, TeamSummary, TokenClaims, User,
+    CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Tag, TagSolves, Team,
+    TeamModel, TeamProfile, TeamSummary, TokenClaims, User,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -46,11 +46,7 @@ pub async fn retrieve_team_by_teamname(
         return Err(Error::NotFound("Team not found".to_owned()));
     };
 
-    let players = team_model
-        .find_related(Player)
-        .into_partial_model::<CreatePlayerSchema>()
-        .all(&state.db_conn)
-        .await?;
+    let players = team_model.find_related(Player).all(&state.db_conn).await?;
     let mut tags_map = Tag::find()
         .all(&state.db_conn)
         .await?

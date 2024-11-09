@@ -99,8 +99,8 @@ pub enum PlayerChallengeState {
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct ChallengeSummary {
-    pub challenge: PartialChallenge,
-    pub tags: Vec<CreateTagSchema>,
+    pub challenge: ChallengeModel,
+    pub tags: Vec<TagModel>,
     pub state: PlayerChallengeState,
 }
 
@@ -163,7 +163,7 @@ pub struct TeamProfile {
     pub team: TeamModel,
     pub solved_challenges: Vec<ChallengeModel>,
     pub tag_solves: Vec<TagSolves>,
-    pub members: Vec<CreatePlayerSchema>,
+    pub members: Vec<PlayerModel>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

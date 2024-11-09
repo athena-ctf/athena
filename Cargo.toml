@@ -11,15 +11,15 @@ strip = true
 [workspace.dependencies]
 axum = { version = "0.7.7", features = ["macros", "multipart"] }
 chrono = { version = "0.4.38", features = ["serde"] }
-fastrand = "2.1.1"
+fastrand = "2.2.0"
 futures = "0.3.31"
-sea-orm = { version = "1.1.0", features = [
+sea-orm = { version = "1.1.1", features = [
     "runtime-tokio-rustls",
     "sqlx-postgres",
 ] }
 serde = { version = "1.0.214", features = ["derive"] }
 serde_json = "1.0.132"
-tokio = { version = "1.41.0", features = [
+tokio = { version = "1.41.1", features = [
     "macros",
     "rt-multi-thread",
     "signal",
@@ -34,3 +34,4 @@ utoipa = { version = "5.2.0", features = [
     "url",
 ] }
 uuid = { version = "1.11.0", features = ["serde", "v7", "fast-rng"] }
+dashmap = { version = "6.1.0", features = ["inline"] }

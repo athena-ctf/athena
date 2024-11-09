@@ -79,8 +79,14 @@ impl Manager {
         let txn = self.db.begin().await?;
 
         let Some(challenge_model) = Challenge::find_by_id(challenge_id).one(&txn).await? else {
-            return Err(Error::NotFound("Challenge".to_owned()));
+            return Err(Error::NotFound("Challenge not found".to_owned()));
         };
+
+        if challenge_model.challenge_type != ChallengeTypeEnum::Containerized {
+            return Err(Error::BadRequest(
+                "Challenge cannot be instanciated".to_owned(),
+            ));
+        }
 
         let container_models = challenge_model.find_related(Container).all(&txn).await?;
 
@@ -107,26 +113,12 @@ impl Manager {
             }
         }
 
-        let flag = if challenge_model.flag_type == FlagTypeEnum::PerUser {
-            let flag = crate::gen_random(self.flag_len);
+        let flag = crate::gen_random(self.flag_len);
 
-            FlagModel::new(flag.clone(), challenge_id, Some(player_id), false)
-                .into_active_model()
-                .insert(&txn)
-                .await?;
-
-            flag
-        } else {
-            let Some(flag) = Flag::find()
-                .filter(entity::flag::Column::ChallengeId.eq(challenge_model.id))
-                .one(&txn)
-                .await?
-            else {
-                return Err(Error::NotFound("Flag not found".to_owned()));
-            };
-
-            flag.value
-        };
+        FlagModel::new(flag.clone(), challenge_id, Some(player_id), false)
+            .into_active_model()
+            .insert(&txn)
+            .await?;
 
         let mut deployed = Vec::new();
         while deployed.len() < container_models.len() {

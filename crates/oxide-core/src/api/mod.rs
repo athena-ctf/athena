@@ -61,7 +61,7 @@ pub async fn start(settings: Settings) -> Result<()> {
         })
         .set_policy(ReconnectPolicy::new_exponential(0, 100, 30_000, 2))
         .build_pool(8)?;
-    cache_client.init().await?;
+    let cache_conn = cache_client.init().await?;
 
     let persistent_config = RedisConfig::from_url(&settings.redis.persistent.url())?;
     let persistent_client = Builder::from_config(persistent_config)
@@ -70,7 +70,7 @@ pub async fn start(settings: Settings) -> Result<()> {
         })
         .set_policy(ReconnectPolicy::new_exponential(0, 100, 30_000, 2))
         .build_pool(8)?;
-    persistent_client.init().await?;
+    let persistent_conn = persistent_client.init().await?;
 
     let docker_client = Manager::new(
         db_conn.clone(),
@@ -78,8 +78,6 @@ pub async fn start(settings: Settings) -> Result<()> {
         "caddy:2019".to_owned(),
         settings.ctf.domain.clone(),
     )?;
-
-    // let handles = tasks::run(&docker_client, &db_conn);
 
     let txn = db_conn.begin().await?;
     tasks::load_leaderboard(&txn, &persistent_client).await?;
@@ -97,8 +95,8 @@ pub async fn start(settings: Settings) -> Result<()> {
             db_conn,
             settings: RwLock::new(settings),
             token_manager,
-            cache_client,
-            persistent_client,
+            cache_client: cache_client.clone(),
+            persistent_client: persistent_client.clone(),
             docker_manager: docker_client,
             mail_transport,
         })),
@@ -107,7 +105,11 @@ pub async fn start(settings: Settings) -> Result<()> {
     .await
     .map_err(Error::Serve)?;
 
-    // tasks::stop(handles);
+    cache_client.quit().await?;
+    cache_conn.await.unwrap()?;
+
+    persistent_client.quit().await?;
+    persistent_conn.await.unwrap()?;
 
     Ok(())
 }
@@ -120,7 +122,7 @@ pub fn app(state: Arc<AppState>) -> axum::Router {
         .route("/stats", get(crate::handlers::stats::retrieve))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
-            middleware::ctf_timer,
+            middleware::ctf,
         ))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),

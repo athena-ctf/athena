@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use std::sync::LazyLock;
 
 use async_stream::stream;
@@ -6,20 +5,20 @@ use axum::response::sse::{Event, KeepAlive};
 use axum::response::Sse;
 use axum::routing::get;
 use axum::{Error, Extension, Router};
+use dashmap::DashMap;
 use futures::Stream;
 use sqlx::error::Error as SqlxError;
 use sqlx::postgres::PgListener;
 use sqlx::{Pool, Postgres};
 use tokio::net::TcpListener;
 use tokio::sync::mpsc::{self, Sender};
-use tokio::sync::RwLock;
 use tower_http::trace::TraceLayer;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 use uuid::Uuid;
 
-static CONNECTED_CLIENTS: LazyLock<RwLock<HashMap<Uuid, Sender<entity::notification::Model>>>> =
-    LazyLock::new(|| RwLock::new(HashMap::new()));
+static CONNECTED_CLIENTS: LazyLock<DashMap<Uuid, Sender<entity::notification::Model>>> =
+    LazyLock::new(|| DashMap::new());
 
 pub async fn start_listening(channel_name: &str, pool: &Pool<Postgres>) -> Result<(), SqlxError> {
     let mut listener = PgListener::connect_with(pool).await.unwrap();
@@ -65,11 +64,7 @@ async fn main() {
 }
 
 async fn call_back(model: entity::notification::Model) {
-    let value = CONNECTED_CLIENTS
-        .read()
-        .await
-        .get(&model.player_id)
-        .cloned();
+    let value = CONNECTED_CLIENTS.get(&model.player_id);
     if let Some(tx) = value {
         tx.send(model).await.unwrap();
     }
@@ -79,8 +74,7 @@ async fn sse_handler(
     Extension(id): Extension<Uuid>,
 ) -> Sse<impl Stream<Item = Result<Event, Error>>> {
     let (tx, mut rx) = mpsc::channel::<entity::notification::Model>(100);
-
-    CONNECTED_CLIENTS.write().await.insert(id, tx);
+    CONNECTED_CLIENTS.insert(id, tx);
 
     let stream = stream! {
         while let Some(notification) = rx.recv().await {
