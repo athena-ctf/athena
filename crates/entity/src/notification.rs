@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 )]
 #[sea_orm(table_name = "notification")]
 #[schema(as = NotificationModel)]
-#[oxide(table(name = "Notification"))]
+#[oxide(table(name = "Notification", impl_new))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
@@ -24,7 +24,7 @@ pub struct Model {
     pub updated_at: DateTime,
     pub title: String,
     pub content: String,
-    pub player_id: Uuid,
+    pub player_id: Option<Uuid>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

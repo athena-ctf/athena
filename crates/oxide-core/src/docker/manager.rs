@@ -84,7 +84,7 @@ impl Manager {
 
         if challenge_model.challenge_type != ChallengeTypeEnum::Containerized {
             return Err(Error::BadRequest(
-                "Challenge cannot be instanciated".to_owned(),
+                "Challenge cannot be instantiated".to_owned(),
             ));
         }
 
@@ -95,11 +95,10 @@ impl Manager {
 
         let txn = self.db.begin().await?;
 
-        let deployment_model =
-            DeploymentModel::new(expires_at, challenge_id, hostname.clone(), player_id)
-                .into_active_model()
-                .insert(&txn)
-                .await?;
+        let deployment_model = DeploymentModel::new(expires_at, challenge_id, &hostname, player_id)
+            .into_active_model()
+            .insert(&txn)
+            .await?;
 
         for container_model in &container_models {
             for network in &container_model.networks {
@@ -115,7 +114,7 @@ impl Manager {
 
         let flag = crate::gen_random(self.flag_len);
 
-        FlagModel::new(flag.clone(), challenge_id, Some(player_id), false)
+        FlagModel::new(&flag, challenge_id, Some(player_id), false)
             .into_active_model()
             .insert(&txn)
             .await?;
@@ -231,7 +230,7 @@ impl Manager {
 
                 InstanceModel::new(
                     container_info.id,
-                    container.name.clone(),
+                    &container.name,
                     deployment_model.id,
                     port_mapping,
                 )

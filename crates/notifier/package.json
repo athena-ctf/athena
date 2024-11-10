@@ -1,0 +1,7 @@
+{
+  "name": "notifier",
+  "scripts": {
+    "build": "cargo build --release",
+    "dev": "cargo run"
+  }
+}

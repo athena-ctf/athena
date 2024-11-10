@@ -6,6 +6,7 @@ use axum::extract::{MatchedPath, Request};
 use axum::http::Method;
 use axum::routing::get;
 use axum::Router;
+use base64ct::{Base64, Encoding};
 use fred::prelude::*;
 use fred::types::RespVersion;
 use lettre::Tokio1Executor;
@@ -15,6 +16,9 @@ use tokio::sync::RwLock;
 use tower_http::cors::{Any, CorsLayer};
 use tower_http::timeout::TimeoutLayer;
 use tower_http::trace::TraceLayer;
+use tower_sessions::cookie::Key;
+use tower_sessions::{Expiry, SessionManagerLayer};
+use tower_sessions_redis_store::RedisStore;
 use tracing::info_span;
 use utoipa::OpenApi;
 
@@ -99,7 +103,8 @@ pub async fn start(settings: Settings) -> Result<()> {
             persistent_client: persistent_client.clone(),
             docker_manager: docker_client,
             mail_transport,
-        })),
+        }))
+        .await,
     )
     .with_graceful_shutdown(shutdown_signal())
     .await
@@ -114,7 +119,21 @@ pub async fn start(settings: Settings) -> Result<()> {
     Ok(())
 }
 
-pub fn app(state: Arc<AppState>) -> axum::Router {
+async fn app(state: Arc<AppState>) -> axum::Router {
+    let session_settings = state.settings.read().await.session.clone();
+
+    let session_store = RedisStore::new(state.persistent_client.clone());
+    let session_layer = SessionManagerLayer::new(session_store)
+        .with_expiry(Expiry::OnInactivity(
+            Duration::from_secs(session_settings.expiry_duration)
+                .try_into()
+                .unwrap(),
+        ))
+        .with_signed(Key::from(
+            &Base64::decode_vec(&session_settings.key).unwrap(),
+        ))
+        .with_name(session_settings.cookie_name);
+
     Router::new()
         .merge(auth::router())
         .merge(admin_routes::router())
@@ -156,6 +175,7 @@ pub fn app(state: Arc<AppState>) -> axum::Router {
                 )
             }),
         )
+        .layer(session_layer)
         .layer(TimeoutLayer::new(Duration::from_secs(5)))
         .with_state(state)
 }

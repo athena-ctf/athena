@@ -9,3 +9,4 @@ sea-orm = { workspace = true }
 serde = { workspace = true }
 utoipa = { workspace = true }
 oxide-macros = { path = "../oxide-macros" }
+uuid = { workspace = true }

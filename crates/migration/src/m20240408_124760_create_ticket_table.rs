@@ -31,12 +31,21 @@ impl MigrationTrait for Migration {
                             .enumeration(TicketStatusEnum, TicketStatusVariants::iter())
                             .not_null(),
                     )
+                    .col(ColumnDef::new(Ticket::OpenedBy).uuid().not_null())
                     .col(ColumnDef::new(Ticket::AssignedTo).uuid())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-ticket-assigned_to")
                             .from(Ticket::Table, Ticket::AssignedTo)
                             .to(Admin::Table, Admin::Id)
+                            .on_delete(ForeignKeyAction::Cascade)
+                            .on_update(ForeignKeyAction::Cascade),
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                            .name("fk-ticket-opened_by")
+                            .from(Ticket::Table, Ticket::OpenedBy)
+                            .to(Player::Table, Player::Id)
                             .on_delete(ForeignKeyAction::Cascade)
                             .on_update(ForeignKeyAction::Cascade),
                     )
@@ -68,6 +77,7 @@ enum Ticket {
     UpdatedAt,
     Title,
     Status,
+    OpenedBy,
     AssignedTo,
 }
 
@@ -83,6 +93,12 @@ enum TicketStatusVariants {
 
 #[derive(DeriveIden)]
 enum Admin {
+    Table,
+    Id,
+}
+
+#[derive(DeriveIden)]
+enum Player {
     Table,
     Id,
 }

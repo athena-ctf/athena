@@ -8,6 +8,7 @@ mod challenge;
 mod flag;
 mod hint;
 mod leaderboard;
+mod notification;
 mod player;
 mod team;
 
@@ -20,6 +21,7 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(hint::router())
             .merge(player::router())
             .merge(team::router())
-            .merge(leaderboard::router()),
+            .merge(leaderboard::router())
+            .merge(notification::router()),
     )
 }

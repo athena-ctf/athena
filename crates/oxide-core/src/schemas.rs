@@ -1,6 +1,11 @@
+use axum::async_trait;
+use axum::extract::FromRequestParts;
+use axum::http::request::Parts;
+use axum::http::StatusCode;
 pub use entity::extensions::*;
 pub use entity::prelude::*;
 use serde::{Deserialize, Serialize};
+use tower_sessions::Session;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
@@ -13,12 +18,6 @@ pub struct LoginModel {
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct JsonResponse {
     pub message: String,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
-pub struct TokenPair {
-    pub access_token: String,
-    pub refresh_token: String,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
@@ -42,29 +41,6 @@ pub struct FlagVerificationResult {
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InviteVerificationResult {
     pub team_id: Uuid,
-}
-
-#[derive(Clone, Copy, Debug, Serialize, Deserialize, ToSchema)]
-#[serde(rename_all = "lowercase")]
-pub enum TokenClaimKind {
-    Player,
-    Admin(RoleEnum),
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
-#[serde(rename_all = "lowercase")]
-pub enum TokenType {
-    Access,
-    Refresh,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
-pub struct TokenClaims {
-    pub id: Uuid,
-    pub exp: u64,
-    pub iat: u64,
-    pub token_type: TokenType,
-    pub kind: TokenClaimKind,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, ToSchema)]
@@ -181,7 +157,7 @@ pub struct LeaderboardRankings {
     pub total: i64,
     pub offset: i64,
     pub count: i64,
-    pub rankings: Vec<(String, f64)>,
+    pub rankings: Vec<Ranking>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -219,4 +195,50 @@ pub struct HintSummary {
     pub id: Uuid,
     pub cost: i32,
     pub status: UnlockStatus,
+}
+
+pub struct AuthAdmin(pub AdminModel);
+
+#[async_trait]
+impl<S> FromRequestParts<S> for AuthAdmin
+where
+    S: Send + Sync,
+{
+    type Rejection = (StatusCode, String);
+
+    async fn from_request_parts(req: &mut Parts, state: &S) -> Result<Self, Self::Rejection> {
+        let session = Session::from_request_parts(req, state)
+            .await
+            .map_err(|(code, err)| (code, err.to_string()))?;
+        let model = session
+            .get("admin")
+            .await
+            .map_err(|err| (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))?
+            .unwrap();
+
+        Ok(Self(model))
+    }
+}
+
+pub struct AuthPlayer(pub PlayerModel);
+
+#[async_trait]
+impl<S> FromRequestParts<S> for AuthPlayer
+where
+    S: Send + Sync,
+{
+    type Rejection = (StatusCode, String);
+
+    async fn from_request_parts(req: &mut Parts, state: &S) -> Result<Self, Self::Rejection> {
+        let session = Session::from_request_parts(req, state)
+            .await
+            .map_err(|(code, err)| (code, err.to_string()))?;
+        let model = session
+            .get("player")
+            .await
+            .map_err(|err| (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))?
+            .unwrap();
+
+        Ok(Self(model))
+    }
 }

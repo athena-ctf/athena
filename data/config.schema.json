@@ -9,8 +9,8 @@
     "discord",
     "docker",
     "file_storage",
-    "jwt",
     "redis",
+    "session",
     "smtp",
     "token"
   ],
@@ -33,11 +33,11 @@
     "file_storage": {
       "$ref": "#/definitions/FileStorage"
     },
-    "jwt": {
-      "$ref": "#/definitions/Jwt"
-    },
     "redis": {
       "$ref": "#/definitions/Redis"
+    },
+    "session": {
+      "$ref": "#/definitions/Session"
     },
     "smtp": {
       "$ref": "#/definitions/Smtp"
@@ -113,6 +113,7 @@
       "required": [
         "description",
         "domain",
+        "level_map",
         "name",
         "prizes",
         "sponsors",
@@ -124,6 +125,12 @@
         },
         "domain": {
           "type": "string"
+        },
+        "level_map": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Level"
+          }
         },
         "name": {
           "type": "string"
@@ -267,25 +274,17 @@
     "Gcp": {
       "type": "object"
     },
-    "Jwt": {
+    "Level": {
       "type": "object",
       "required": [
-        "access_token_timeout",
-        "refresh_token_timeout",
-        "secret"
+        "color",
+        "name"
       ],
       "properties": {
-        "access_token_timeout": {
-          "type": "integer",
-          "format": "uint64",
-          "minimum": 0.0
+        "color": {
+          "type": "string"
         },
-        "refresh_token_timeout": {
-          "type": "integer",
-          "format": "uint64",
-          "minimum": 0.0
-        },
-        "secret": {
+        "name": {
           "type": "string"
         }
       }
@@ -357,6 +356,27 @@
         "expires": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "Session": {
+      "type": "object",
+      "required": [
+        "cookie_name",
+        "expiry_duration",
+        "key"
+      ],
+      "properties": {
+        "cookie_name": {
+          "type": "string"
+        },
+        "expiry_duration": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "key": {
+          "type": "string"
         }
       }
     },

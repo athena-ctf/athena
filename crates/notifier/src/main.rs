@@ -17,24 +17,47 @@ use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 use uuid::Uuid;
 
-static CONNECTED_CLIENTS: LazyLock<DashMap<Uuid, Sender<entity::notification::Model>>> =
-    LazyLock::new(|| DashMap::new());
+mod pg;
 
-pub async fn start_listening(channel_name: &str, pool: &Pool<Postgres>) -> Result<(), SqlxError> {
-    let mut listener = PgListener::connect_with(pool).await.unwrap();
-    listener.listen(channel_name).await?;
+static CONNECTED_CLIENTS: LazyLock<DashMap<Uuid, Sender<entity::notification::Model>>> =
+    LazyLock::new(DashMap::new);
+
+pub async fn start_listening(channel_name: String, pool: Pool<Postgres>) -> Result<(), SqlxError> {
+    let mut listener = PgListener::connect_with(&pool).await.unwrap();
+    listener.listen(&channel_name).await?;
+
     loop {
-        while let Some(notification) = listener.try_recv().await? {
+        while let Some(pg_notification) = listener.try_recv().await? {
             tracing::info!(
                 "received notification from channel {:?}",
-                notification.channel()
+                pg_notification.channel()
             );
 
-            let payload = notification.payload().to_owned();
-            let payload = serde_json::from_str::<entity::notification::Model>(&payload).unwrap();
+            let payload = pg_notification.payload().to_owned();
+            let payload = serde_json::from_str::<pg::Notification>(&payload)
+                .unwrap()
+                .into_model();
 
-            call_back(payload).await;
+            if let Some(payload) = payload {
+                if let Some(player_id) = payload.player_id {
+                    send_direct_message(player_id, payload).await;
+                } else {
+                    broadcast_message(payload).await;
+                }
+            }
         }
+    }
+}
+
+async fn send_direct_message(player_id: Uuid, model: entity::notification::Model) {
+    if let Some(tx) = CONNECTED_CLIENTS.get(&player_id) {
+        let _ = tx.send(model).await;
+    }
+}
+
+async fn broadcast_message(model: entity::notification::Model) {
+    for client in CONNECTED_CLIENTS.iter() {
+        let _ = client.value().send(model.clone()).await;
     }
 }
 
@@ -49,9 +72,7 @@ async fn main() {
         .await
         .unwrap();
 
-    start_listening(&settings.database.listener_channel, &pool)
-        .await
-        .unwrap();
+    let listener_handle = tokio::spawn(start_listening(settings.database.listener_channel, pool));
 
     let listener = TcpListener::bind("127.0.0.1:3000").await.unwrap();
     let app = Router::new()
@@ -60,13 +81,19 @@ async fn main() {
 
     tracing::debug!("listening on {}", listener.local_addr().unwrap());
 
-    axum::serve(listener, app).await.unwrap();
-}
+    let server_handle = axum::serve(listener, app);
 
-async fn call_back(model: entity::notification::Model) {
-    let value = CONNECTED_CLIENTS.get(&model.player_id);
-    if let Some(tx) = value {
-        tx.send(model).await.unwrap();
+    tokio::select! {
+        result = listener_handle => {
+            if let Err(e) = result {
+                tracing::error!("Listener task failed: {:?}", e);
+            }
+        }
+        result = server_handle => {
+            if let Err(e) = result {
+                tracing::error!("Server task failed: {:?}", e);
+            }
+        }
     }
 }
 

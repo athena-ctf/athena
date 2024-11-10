@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::routing::get;
-use axum::{Extension, Router};
+use axum::Router;
 use fred::prelude::*;
 use oxide_macros::table_api;
 use sea_orm::prelude::*;
@@ -11,11 +11,11 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Achievement, AchievementModel, Challenge, ChallengeModel, ChallengeSummary, ChallengeTag,
-    ChallengeTagModel, Container, ContainerModel, CreateChallengeSchema, Deployment,
+    Achievement, AchievementModel, AuthPlayer, Challenge, ChallengeModel, ChallengeSummary,
+    ChallengeTag, ChallengeTagModel, Container, ContainerModel, CreateChallengeSchema, Deployment,
     DeploymentModel, DetailedChallenge, File, FileModel, Flag, FlagModel, Hint, HintModel,
     HintSummary, JsonResponse, Player, PlayerChallengeState, PlayerModel, Submission,
-    SubmissionModel, Tag, TagModel, TokenClaims, Unlock, UnlockModel, UnlockStatus,
+    SubmissionModel, Tag, TagModel, Unlock, UnlockModel, UnlockStatus,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -35,7 +35,7 @@ table_api!(Challenge, single: [], optional: [], multiple: [Achievement, Containe
 )]
 /// List challenge summary by id
 pub async fn player_challenges(
-    Extension(claims): Extension<TokenClaims>,
+    AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
 ) -> Result<Json<Vec<ChallengeSummary>>> {
     let challenges = Challenge::find().all(&state.db_conn).await?;
@@ -46,7 +46,7 @@ pub async fn player_challenges(
             entity::submission::Column::Flags,
             entity::submission::Column::IsCorrect,
         ])
-        .filter(entity::submission::Column::PlayerId.eq(claims.id))
+        .filter(entity::submission::Column::PlayerId.eq(player.id))
         .order_by_asc(entity::submission::Column::ChallengeId)
         .into_tuple::<(Uuid, Vec<String>, bool)>()
         .all(&state.db_conn)
@@ -99,7 +99,7 @@ pub async fn player_challenges(
 )]
 /// Retrieve challenge details by id
 pub async fn detailed_challenge(
-    Extension(claims): Extension<TokenClaims>,
+    AuthPlayer(player): AuthPlayer,
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<DetailedChallenge>> {
@@ -109,7 +109,7 @@ pub async fn detailed_challenge(
         .columns(entity::hint::Column::iter())
         .columns(entity::unlock::Column::iter())
         .filter(entity::hint::Column::ChallengeId.eq(id))
-        .filter(entity::unlock::Column::PlayerId.eq(claims.id))
+        .filter(entity::unlock::Column::PlayerId.eq(player.id))
         .into_model::<HintModel, UnlockModel>()
         .all(&state.db_conn)
         .await?
@@ -153,13 +153,13 @@ pub async fn detailed_challenge(
 )]
 /// Start challenge containers by id
 pub async fn start_challenge(
-    Extension(claims): Extension<TokenClaims>,
+    AuthPlayer(player): AuthPlayer,
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<DeploymentModel>> {
     state
         .docker_manager
-        .deploy_challenge(id, claims.id)
+        .deploy_challenge(id, player.id)
         .await
         .map(Json)
 }
@@ -181,9 +181,9 @@ pub async fn start_challenge(
 )]
 /// Stop challenge containers by id
 pub async fn stop_challenge(
-    Extension(claims): Extension<TokenClaims>,
+    AuthPlayer(player): AuthPlayer,
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
 ) -> Result<()> {
-    state.docker_manager.cleanup_challenge(id, claims.id).await
+    state.docker_manager.cleanup_challenge(id, player.id).await
 }

@@ -11,15 +11,6 @@ impl MigrationTrait for Migration {
         manager
             .create_type(
                 Type::create()
-                    .as_enum(DifficultyEnum)
-                    .values(DifficultyVariants::iter())
-                    .to_owned(),
-            )
-            .await?;
-
-        manager
-            .create_type(
-                Type::create()
                     .as_enum(ChallengeTypeEnum)
                     .values(ChallengeTypeVariants::iter())
                     .to_owned(),
@@ -42,11 +33,7 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Challenge::Title).string().not_null())
                     .col(ColumnDef::new(Challenge::Description).string().not_null())
                     .col(ColumnDef::new(Challenge::Points).integer().not_null())
-                    .col(
-                        ColumnDef::new(Challenge::Difficulty)
-                            .enumeration(DifficultyEnum, DifficultyVariants::iter())
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(Challenge::Level).integer().not_null())
                     .col(
                         ColumnDef::new(Challenge::ChallengeType)
                             .enumeration(ChallengeTypeEnum, ChallengeTypeVariants::iter())
@@ -67,10 +54,6 @@ impl MigrationTrait for Migration {
             .await?;
 
         manager
-            .drop_type(Type::drop().if_exists().name(DifficultyEnum).to_owned())
-            .await?;
-
-        manager
             .drop_type(Type::drop().if_exists().name(ChallengeTypeEnum).to_owned())
             .await?;
 
@@ -88,20 +71,9 @@ enum Challenge {
     Description,
     Points,
     AuthorName,
-    Difficulty,
+    Level,
     ChallengeType,
     Solves,
-}
-
-#[derive(DeriveIden)]
-struct DifficultyEnum;
-
-#[derive(DeriveIden, EnumIter)]
-enum DifficultyVariants {
-    Easy,
-    Medium,
-    Hard,
-    Extreme,
 }
 
 #[derive(DeriveIden)]

@@ -26,6 +26,7 @@ pub struct Model {
     pub updated_at: DateTime,
     pub title: String,
     pub status: TicketStatusEnum,
+    pub opened_by: Uuid,
     pub assigned_to: Option<Uuid>,
 }
 
@@ -39,11 +40,25 @@ pub enum Relation {
         on_delete = "Cascade"
     )]
     Admin,
+    #[sea_orm(
+        belongs_to = "super::player::Entity",
+        from = "Column::AssignedTo",
+        to = "super::player::Column::Id",
+        on_update = "Cascade",
+        on_delete = "Cascade"
+    )]
+    Player,
 }
 
 impl Related<super::admin::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Admin.def()
+    }
+}
+
+impl Related<super::player::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Player.def()
     }
 }
 

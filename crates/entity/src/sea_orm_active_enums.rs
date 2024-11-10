@@ -15,30 +15,6 @@ use serde::{Deserialize, Serialize};
     Deserialize,
     utoipa::ToSchema,
 )]
-#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "difficulty_enum")]
-#[serde(rename_all = "snake_case")]
-pub enum DifficultyEnum {
-    #[sea_orm(string_value = "easy")]
-    Easy,
-    #[sea_orm(string_value = "extreme")]
-    Extreme,
-    #[sea_orm(string_value = "hard")]
-    Hard,
-    #[sea_orm(string_value = "medium")]
-    Medium,
-}
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    Eq,
-    EnumIter,
-    DeriveActiveEnum,
-    Copy,
-    Serialize,
-    Deserialize,
-    utoipa::ToSchema,
-)]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "flag_type_enum")]
 #[serde(rename_all = "snake_case")]
 pub enum ChallengeTypeEnum {
@@ -49,6 +25,7 @@ pub enum ChallengeTypeEnum {
     #[sea_orm(string_value = "static_flag")]
     StaticFlag,
 }
+
 #[derive(
     Debug,
     Clone,
@@ -69,6 +46,7 @@ pub enum GroupEnum {
     #[sea_orm(string_value = "player")]
     Player,
 }
+
 #[derive(
     Debug,
     Clone,
@@ -95,6 +73,7 @@ pub enum RoleEnum {
     #[sea_orm(string_value = "moderator")]
     Moderator,
 }
+
 #[derive(
     Debug,
     Clone,

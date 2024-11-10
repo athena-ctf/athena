@@ -1,26 +1,18 @@
 package config
 
 import (
-	"log"
-
-	"github.com/spf13/viper"
+	"encoding/json"
+	"os"
 )
 
 //go:generate go-jsonschema ../../data/config.schema.json -o config.go -p config --only-models -t --tags json
 var Config Settings
 
-func init() {
-	v := viper.New()
-	v.SetConfigName("config")
-	v.SetConfigType("yaml")
-	v.AddConfigPath(".")
-
-	var config Settings
-	if err := v.ReadInConfig(); err != nil {
-		log.Fatalf("Error reading config file: %s", err)
+func Read(path string) error {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return err
 	}
 
-	if err := v.Unmarshal(&config); err != nil {
-		log.Fatalf("Error unmarshalling config: %s", err)
-	}
+	return json.Unmarshal(data, &Config)
 }

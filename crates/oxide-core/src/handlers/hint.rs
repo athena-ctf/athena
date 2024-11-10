@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::routing::get;
-use axum::{Extension, Router};
+use axum::Router;
 use fred::prelude::*;
 use oxide_macros::table_api;
 use sea_orm::prelude::*;
@@ -11,8 +11,8 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Challenge, ChallengeModel, CreateHintSchema, Hint, HintModel, JsonResponse, Player,
-    PlayerModel, TokenClaims, Unlock, UnlockModel,
+    AuthPlayer, Challenge, ChallengeModel, CreateHintSchema, Hint, HintModel, JsonResponse, Player,
+    PlayerModel, Unlock, UnlockModel,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -33,13 +33,13 @@ table_api!(Hint, single: [Challenge], optional: [], multiple: [Unlock, Player]);
 )]
 /// Unlock hint by id
 pub async fn unlock_by_id(
-    Extension(claims): Extension<TokenClaims>,
+    AuthPlayer(player_model): AuthPlayer,
     state: State<Arc<AppState>>,
     Path(id): Path<Uuid>,
 ) -> Result<Json<HintModel>> {
     let txn = state.db_conn.begin().await?;
 
-    if let Some((_, Some(hint_model))) = Unlock::find_by_id((claims.id, id))
+    if let Some((_, Some(hint_model))) = Unlock::find_by_id((player_model.id, id))
         .find_also_related(Hint)
         .one(&txn)
         .await?
@@ -47,7 +47,7 @@ pub async fn unlock_by_id(
         return Ok(Json(hint_model));
     }
 
-    UnlockModel::new(claims.id, id)
+    UnlockModel::new(player_model.id, id)
         .into_active_model()
         .insert(&txn)
         .await?;
@@ -56,7 +56,6 @@ pub async fn unlock_by_id(
         return Err(Error::NotFound("Hint not found".to_owned()));
     };
 
-    let player_model = Player::find_by_id(claims.id).one(&txn).await?.unwrap();
     let score = player_model.score;
 
     state

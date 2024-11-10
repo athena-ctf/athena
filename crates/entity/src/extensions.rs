@@ -6,13 +6,13 @@ use utoipa::ToSchema;
 
 use super::sea_orm_active_enums::*;
 
-impl IntoActiveValue<Self> for DifficultyEnum {
+impl IntoActiveValue<Self> for ChallengeTypeEnum {
     fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
         sea_orm::ActiveValue::Set(self)
     }
 }
 
-impl IntoActiveValue<Self> for ChallengeTypeEnum {
+impl IntoActiveValue<Self> for GroupEnum {
     fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
         sea_orm::ActiveValue::Set(self)
     }

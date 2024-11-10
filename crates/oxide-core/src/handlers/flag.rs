@@ -2,7 +2,7 @@ use std::sync::{Arc, LazyLock};
 
 use axum::extract::{Json, Path, State};
 use axum::routing::get;
-use axum::{Extension, Router};
+use axum::Router;
 use dashmap::DashMap;
 use fred::prelude::*;
 use oxide_macros::table_api;
@@ -13,15 +13,15 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Challenge, ChallengeModel, ChallengeTypeEnum, CreateFlagSchema, Flag, FlagModel,
+    AuthPlayer, Challenge, ChallengeModel, ChallengeTypeEnum, CreateFlagSchema, Flag, FlagModel,
     FlagVerificationResult, JsonResponse, Player, PlayerModel, Submission, SubmissionModel,
-    TokenClaims, VerifyFlagSchema,
+    VerifyFlagSchema,
 };
 use crate::service::{AppState, CachedJson};
 
 table_api!(Flag, single: [Challenge], optional: [Player], multiple: []);
 
-static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(|| DashMap::new());
+static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(DashMap::new);
 
 #[utoipa::path(
     post,
@@ -38,18 +38,14 @@ static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(|| DashM
 )]
 /// Verify flag
 pub async fn verify(
-    Extension(claims): Extension<TokenClaims>,
+    AuthPlayer(player_model): AuthPlayer,
     state: State<Arc<AppState>>,
     Json(body): Json<VerifyFlagSchema>,
 ) -> Result<Json<FlagVerificationResult>> {
     let txn = state.db_conn.begin().await?;
 
-    let Some(player_model) = Player::find_by_id(claims.id).one(&state.db_conn).await? else {
-        return Err(Error::NotFound("Player does not exist".to_owned()));
-    };
-
     let prev_model = if let Some(submission_model) =
-        Submission::find_by_id((body.challenge_id, claims.id))
+        Submission::find_by_id((body.challenge_id, player_model.id))
             .one(&state.db_conn)
             .await?
     {
@@ -127,18 +123,14 @@ pub async fn verify(
         ChallengeTypeEnum::Containerized => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
-                .filter(entity::flag::Column::PlayerId.eq(claims.id))
+                .filter(entity::flag::Column::PlayerId.eq(player_model.id))
                 .one(&state.db_conn)
                 .await?
             else {
                 return Err(Error::NotFound("Flag is not generated".to_owned()));
             };
 
-            if flag_model.ignore_case {
-                flag_model.value.to_lowercase() == body.flag.to_lowercase()
-            } else {
-                flag_model.value == body.flag
-            }
+            flag_model.value == body.flag
         }
     };
 
@@ -166,10 +158,15 @@ pub async fn verify(
         submission_model.flags.push(body.flag);
         submission_model.into_active_model().update(&txn).await?;
     } else {
-        SubmissionModel::new(is_correct, claims.id, body.challenge_id, vec![body.flag])
-            .into_active_model()
-            .insert(&txn)
-            .await?;
+        SubmissionModel::new(
+            is_correct,
+            player_model.id,
+            body.challenge_id,
+            vec![body.flag],
+        )
+        .into_active_model()
+        .insert(&txn)
+        .await?;
     }
 
     txn.commit().await?;

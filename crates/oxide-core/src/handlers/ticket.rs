@@ -10,7 +10,9 @@ use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
 
 use crate::errors::{Error, Result};
-use crate::schemas::{Admin, AdminModel, CreateTicketSchema, JsonResponse, Ticket, TicketModel};
+use crate::schemas::{
+    Admin, AdminModel, CreateTicketSchema, JsonResponse, Player, PlayerModel, Ticket, TicketModel,
+};
 use crate::service::{AppState, CachedJson};
 
-table_api!(Ticket, single: [Admin], optional: [], multiple: []);
+table_api!(Ticket, single: [Admin, Player], optional: [], multiple: []);

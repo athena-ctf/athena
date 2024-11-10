@@ -8960,7 +8960,7 @@
         "tags": [
           "auth::admin"
         ],
-        "summary": "Create auth token",
+        "summary": "Login admin",
         "operationId": "admin_login",
         "requestBody": {
           "content": {
@@ -8978,7 +8978,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TokenPair"
+                  "$ref": "#/components/schemas/AdminModel"
                 }
               }
             }
@@ -9019,33 +9019,16 @@
         ]
       }
     },
-    "/auth/admin/token/refresh": {
+    "/auth/admin/logout": {
       "post": {
         "tags": [
           "auth::admin"
         ],
-        "summary": "Refresh auth token",
-        "operationId": "admin_refresh_token",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TokenPair"
-              }
-            }
-          },
-          "required": true
-        },
+        "summary": "Logout admin",
+        "operationId": "admin_logout",
         "responses": {
           "200": {
-            "description": "user logged in successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TokenPair"
-                }
-              }
-            }
+            "description": "user logged in successfully"
           },
           "400": {
             "description": "Invalid request body format",
@@ -9146,7 +9129,7 @@
         "tags": [
           "auth::player"
         ],
-        "summary": "Create auth token",
+        "summary": "Login user",
         "operationId": "player_login",
         "requestBody": {
           "content": {
@@ -9164,7 +9147,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TokenPair"
+                  "$ref": "#/components/schemas/PlayerModel"
                 }
               }
             }
@@ -9203,6 +9186,60 @@
         "security": [
           {}
         ]
+      }
+    },
+    "/auth/player/logout": {
+      "post": {
+        "tags": [
+          "auth::player"
+        ],
+        "summary": "Logout user",
+        "operationId": "player_logout",
+        "responses": {
+          "200": {
+            "description": "Refreshed token successfully"
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/auth/player/register": {
@@ -9510,77 +9547,6 @@
         "security": [
           {}
         ]
-      }
-    },
-    "/auth/player/token/refresh": {
-      "post": {
-        "tags": [
-          "auth::player"
-        ],
-        "summary": "Refresh auth token",
-        "operationId": "player_refresh_token",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TokenPair"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Refreshed token successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TokenPair"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "User not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/player/challenge/details/{id}": {
@@ -10179,6 +10145,70 @@
           },
           "403": {
             "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/player/notifications": {
+      "get": {
+        "tags": [
+          "notification"
+        ],
+        "summary": "List player notifications",
+        "operationId": "player_list",
+        "responses": {
+          "200": {
+            "description": "Listed notifications successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificationModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No hint found with specified id",
             "content": {
               "application/json": {
                 "schema": {
@@ -10851,14 +10881,17 @@
           "title",
           "description",
           "points",
-          "difficulty",
-          "flag_type",
+          "level",
+          "challenge_type",
           "author_name",
           "solves"
         ],
         "properties": {
           "author_name": {
             "type": "string"
+          },
+          "challenge_type": {
+            "$ref": "#/components/schemas/ChallengeTypeEnum"
           },
           "created_at": {
             "type": "string",
@@ -10867,15 +10900,13 @@
           "description": {
             "type": "string"
           },
-          "difficulty": {
-            "$ref": "#/components/schemas/DifficultyEnum"
-          },
-          "flag_type": {
-            "$ref": "#/components/schemas/FlagTypeEnum"
-          },
           "id": {
             "type": "string",
             "format": "uuid"
+          },
+          "level": {
+            "type": "integer",
+            "format": "int32"
           },
           "points": {
             "type": "integer",
@@ -10980,7 +11011,7 @@
         ],
         "properties": {
           "challenge": {
-            "$ref": "#/components/schemas/PartialChallenge"
+            "$ref": "#/components/schemas/ChallengeModel"
           },
           "state": {
             "$ref": "#/components/schemas/PlayerChallengeState"
@@ -10988,7 +11019,7 @@
           "tags": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreateTagSchema"
+              "$ref": "#/components/schemas/TagModel"
             }
           }
         }
@@ -11034,6 +11065,14 @@
             "$ref": "#/components/schemas/TagModel"
           }
         }
+      },
+      "ChallengeTypeEnum": {
+        "type": "string",
+        "enum": [
+          "containerized",
+          "regex_flag",
+          "static_flag"
+        ]
       },
       "ContainerModel": {
         "type": "object",
@@ -11190,8 +11229,8 @@
           "title",
           "description",
           "points",
-          "difficulty",
-          "flag_type",
+          "level",
+          "challenge_type",
           "author_name",
           "solves"
         ],
@@ -11199,14 +11238,15 @@
           "author_name": {
             "type": "string"
           },
+          "challenge_type": {
+            "$ref": "#/components/schemas/ChallengeTypeEnum"
+          },
           "description": {
             "type": "string"
           },
-          "difficulty": {
-            "$ref": "#/components/schemas/DifficultyEnum"
-          },
-          "flag_type": {
-            "$ref": "#/components/schemas/FlagTypeEnum"
+          "level": {
+            "type": "integer",
+            "format": "int32"
           },
           "points": {
             "type": "integer",
@@ -11445,15 +11485,17 @@
         "type": "object",
         "required": [
           "title",
-          "content",
-          "player_id"
+          "content"
         ],
         "properties": {
           "content": {
             "type": "string"
           },
           "player_id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uuid"
           },
           "title": {
@@ -11559,7 +11601,8 @@
         "type": "object",
         "required": [
           "title",
-          "status"
+          "status",
+          "opened_by"
         ],
         "properties": {
           "assigned_to": {
@@ -11567,6 +11610,10 @@
               "string",
               "null"
             ],
+            "format": "uuid"
+          },
+          "opened_by": {
+            "type": "string",
             "format": "uuid"
           },
           "status": {
@@ -11678,15 +11725,6 @@
           }
         }
       },
-      "DifficultyEnum": {
-        "type": "string",
-        "enum": [
-          "easy",
-          "extreme",
-          "hard",
-          "medium"
-        ]
-      },
       "FileModel": {
         "type": "object",
         "required": [
@@ -11795,14 +11833,6 @@
             ]
           }
         }
-      },
-      "FlagTypeEnum": {
-        "type": "string",
-        "enum": [
-          "per_user",
-          "regex",
-          "static"
-        ]
       },
       "FlagVerificationResult": {
         "type": "object",
@@ -12043,17 +12073,7 @@
           "rankings": {
             "type": "array",
             "items": {
-              "type": "array",
-              "items": false,
-              "prefixItems": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number",
-                  "format": "double"
-                }
-              ]
+              "$ref": "#/components/schemas/Ranking"
             }
           },
           "total": {
@@ -12084,8 +12104,7 @@
           "created_at",
           "updated_at",
           "title",
-          "content",
-          "player_id"
+          "content"
         ],
         "properties": {
           "content": {
@@ -12100,7 +12119,10 @@
             "format": "uuid"
           },
           "player_id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uuid"
           },
           "title": {
@@ -12114,50 +12136,16 @@
       },
       "NotificationRelations": {
         "type": "object",
-        "required": [
-          "player"
-        ],
         "properties": {
           "player": {
-            "$ref": "#/components/schemas/PlayerModel"
-          }
-        }
-      },
-      "PartialChallenge": {
-        "type": "object",
-        "required": [
-          "id",
-          "title",
-          "description",
-          "points",
-          "difficulty",
-          "author_name",
-          "solves"
-        ],
-        "properties": {
-          "author_name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "difficulty": {
-            "$ref": "#/components/schemas/DifficultyEnum"
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "points": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "solves": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/PlayerModel"
+              }
+            ]
           }
         }
       },
@@ -12264,7 +12252,8 @@
           "submissions",
           "unlocks",
           "challenges",
-          "hints"
+          "hints",
+          "tickets"
         ],
         "properties": {
           "achievements": {
@@ -12325,6 +12314,12 @@
           },
           "team": {
             "$ref": "#/components/schemas/TeamModel"
+          },
+          "tickets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketModel"
+            }
           },
           "unlocks": {
             "type": "array",
@@ -12751,7 +12746,7 @@
           "members": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreatePlayerSchema"
+              "$ref": "#/components/schemas/PlayerModel"
             }
           },
           "solved_challenges": {
@@ -12891,7 +12886,8 @@
           "created_at",
           "updated_at",
           "title",
-          "status"
+          "status",
+          "opened_by"
         ],
         "properties": {
           "assigned_to": {
@@ -12906,6 +12902,10 @@
             "format": "date-time"
           },
           "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "opened_by": {
             "type": "string",
             "format": "uuid"
           },
@@ -12924,11 +12924,15 @@
       "TicketRelations": {
         "type": "object",
         "required": [
-          "admin"
+          "admin",
+          "player"
         ],
         "properties": {
           "admin": {
             "$ref": "#/components/schemas/AdminModel"
+          },
+          "player": {
+            "$ref": "#/components/schemas/PlayerModel"
           }
         }
       },
@@ -12939,21 +12943,6 @@
           "open",
           "resolved"
         ]
-      },
-      "TokenPair": {
-        "type": "object",
-        "required": [
-          "access_token",
-          "refresh_token"
-        ],
-        "properties": {
-          "access_token": {
-            "type": "string"
-          },
-          "refresh_token": {
-            "type": "string"
-          }
-        }
       },
       "UnlockModel": {
         "type": "object",

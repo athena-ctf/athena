@@ -47,6 +47,9 @@ type Ctf struct {
 	// Domain corresponds to the JSON schema field "domain".
 	Domain string `json:"domain"`
 
+	// LevelMap corresponds to the JSON schema field "level_map".
+	LevelMap CtfLevelMap `json:"level_map"`
+
 	// Name corresponds to the JSON schema field "name".
 	Name string `json:"name"`
 
@@ -59,6 +62,8 @@ type Ctf struct {
 	// Time corresponds to the JSON schema field "time".
 	Time Time `json:"time"`
 }
+
+type CtfLevelMap map[string]Level
 
 type CtfPrizes map[string][]string
 
@@ -143,16 +148,12 @@ type FileStorage struct {
 
 type Gcp map[string]interface{}
 
-type Jwt struct {
-	// AccessTokenTimeout corresponds to the JSON schema field "access_token_timeout".
-	AccessTokenTimeout int `json:"access_token_timeout"`
+type Level struct {
+	// Color corresponds to the JSON schema field "color".
+	Color string `json:"color"`
 
-	// RefreshTokenTimeout corresponds to the JSON schema field
-	// "refresh_token_timeout".
-	RefreshTokenTimeout int `json:"refresh_token_timeout"`
-
-	// Secret corresponds to the JSON schema field "secret".
-	Secret string `json:"secret"`
+	// Name corresponds to the JSON schema field "name".
+	Name string `json:"name"`
 }
 
 type Local struct {
@@ -193,6 +194,17 @@ type RemoteStorageOptions struct {
 	Expires int `json:"expires"`
 }
 
+type Session struct {
+	// CookieName corresponds to the JSON schema field "cookie_name".
+	CookieName string `json:"cookie_name"`
+
+	// ExpiryDuration corresponds to the JSON schema field "expiry_duration".
+	ExpiryDuration int `json:"expiry_duration"`
+
+	// Key corresponds to the JSON schema field "key".
+	Key string `json:"key"`
+}
+
 type Settings struct {
 	// Challenge corresponds to the JSON schema field "challenge".
 	Challenge Challenge `json:"challenge"`
@@ -212,11 +224,11 @@ type Settings struct {
 	// FileStorage corresponds to the JSON schema field "file_storage".
 	FileStorage FileStorage `json:"file_storage"`
 
-	// Jwt corresponds to the JSON schema field "jwt".
-	Jwt Jwt `json:"jwt"`
-
 	// Redis corresponds to the JSON schema field "redis".
 	Redis Redis `json:"redis"`
+
+	// Session corresponds to the JSON schema field "session".
+	Session Session `json:"session"`
 
 	// Smtp corresponds to the JSON schema field "smtp".
 	Smtp Smtp `json:"smtp"`

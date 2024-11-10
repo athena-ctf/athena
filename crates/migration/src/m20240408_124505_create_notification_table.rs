@@ -29,7 +29,7 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(Notification::Title).string().not_null())
                     .col(ColumnDef::new(Notification::Content).string().not_null())
-                    .col(ColumnDef::new(Notification::PlayerId).uuid().not_null())
+                    .col(ColumnDef::new(Notification::PlayerId).uuid())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-notification-player_id")

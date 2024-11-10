@@ -59,6 +59,8 @@ pub enum Relation {
         on_delete = "Cascade"
     )]
     Team,
+    #[sea_orm(has_many = "super::ticket::Entity")]
+    Ticket,
     #[sea_orm(has_many = "super::unlock::Entity")]
     Unlock,
     #[sea_orm(
@@ -110,6 +112,12 @@ impl Related<super::submission::Entity> for Entity {
 impl Related<super::team::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Team.def()
+    }
+}
+
+impl Related<super::ticket::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Ticket.def()
     }
 }
 

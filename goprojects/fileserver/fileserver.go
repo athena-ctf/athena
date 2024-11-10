@@ -1,13 +1,11 @@
 package fileserver
 
 import (
-	"encoding/base64"
 	"fmt"
 
 	"athena.io/config"
 	"athena.io/ent"
 	"athena.io/fileserver/storage"
-	jwt "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -40,16 +38,6 @@ func Run() error {
 	defer client.Close()
 
 	fileHandler := NewHandler(client, s3Presigner, azPresigner, gcpPresigner)
-	b64 := make([]byte, base64.StdEncoding.DecodedLen(len(config.Config.Jwt.Secret)))
-	n, err := base64.StdEncoding.Decode(b64, []byte(config.Config.Jwt.Secret))
-	if err != nil {
-		return err
-	}
-
-	app.Use(jwt.New(jwt.Config{
-		SigningKey: jwt.SigningKey{Key: b64[:n]},
-	}))
-
 	app.Post("/upload/:location", fileHandler.Upload)
 	app.Get("/download/:id", fileHandler.Download)
 	app.Delete("/delete/:id", fileHandler.Delete)

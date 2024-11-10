@@ -66,7 +66,13 @@ pub async fn rankings(
             Some((offset, count)),
             true,
         )
-        .await?;
+        .await?
+        .into_iter()
+        .map(|(k, v)| Ranking {
+            member: k,
+            score: v,
+        })
+        .collect();
 
     let total = state
         .persistent_client

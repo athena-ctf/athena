@@ -29,7 +29,7 @@ pub enum Error {
     Hash(#[from] argon2::password_hash::Error),
 
     #[error("Error while handling JWT token: {0}")]
-    Jwt(#[from] jsonwebtoken::errors::Error),
+    Session(#[from] tower_sessions::session::Error),
 
     #[error("Athena was not configured to handle {0}")]
     InvalidConfig(String),

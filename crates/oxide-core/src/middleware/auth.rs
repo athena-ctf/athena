@@ -1,78 +1,91 @@
-use std::sync::Arc;
-
 use axum::body::Body;
-use axum::extract::{Request, State};
-use axum::http::{header, StatusCode};
+use axum::extract::Request;
+use axum::http::StatusCode;
 use axum::middleware::Next;
 use axum::response::IntoResponse;
 use axum::Json;
-use jsonwebtoken::{DecodingKey, Validation};
+use tower_sessions::Session;
 
 use crate::permissions::has_permission;
-use crate::schemas::{JsonResponse, TokenClaimKind, TokenClaims};
-use crate::service::AppState;
+use crate::schemas::{AdminModel, JsonResponse, PlayerModel};
 
 pub async fn middleware(
-    State(state): State<Arc<AppState>>,
-    mut req: Request<Body>,
+    session: Session,
+    req: Request<Body>,
     next: Next,
 ) -> Result<impl IntoResponse, (StatusCode, Json<JsonResponse>)> {
-    if req.uri().path().starts_with("/auth") && req.uri().path() != "/auth/me" {
+    let path = req.uri().path();
+
+    if path.starts_with("/auth") {
         return Ok(next.run(req).await);
     }
 
-    let token = req
-        .headers()
-        .get(header::AUTHORIZATION)
-        .and_then(|auth_header| auth_header.to_str().ok())
-        .and_then(|header| (header.len() > 7).then_some(header))
-        .map(|auth_value| auth_value[7..].to_owned());
+    if path.starts_with("/admin") {
+        if let Ok(model) = session.get::<AdminModel>("admin").await {
+            if let Some(model) = model {
+                if has_permission(req.method(), &path[7..], model.role) {
+                    return Ok(next.run(req).await);
+                }
 
-    let token = token.ok_or_else(|| {
-        let json_error = JsonResponse {
-            message: "Missing bearer token".to_string(),
-        };
-        (StatusCode::UNAUTHORIZED, Json(json_error))
-    })?;
+                return Err((
+                    StatusCode::FORBIDDEN,
+                    Json(JsonResponse {
+                        message: "Cannot access specified resource".to_owned(),
+                    }),
+                ));
+            }
 
-    let claims = jsonwebtoken::decode::<TokenClaims>(
-        &token,
-        &DecodingKey::from_base64_secret(&state.settings.read().await.jwt.secret).unwrap(),
-        &Validation::default(),
-    )
-    .map_err(|_| {
-        let json_error = JsonResponse {
-            message: "Invalid bearer token".to_string(),
-        };
-        (StatusCode::UNAUTHORIZED, Json(json_error))
-    })?
-    .claims;
-
-    let claims_kind = claims.kind;
-
-    req.extensions_mut().insert(claims);
-
-    match claims_kind {
-        TokenClaimKind::Player if req.uri().path().starts_with("/player") => {
-            Ok(next.run(req).await)
+            return Err((
+                StatusCode::UNAUTHORIZED,
+                Json(JsonResponse {
+                    message: "Session invalid".to_owned(),
+                }),
+            ));
         }
 
-        TokenClaimKind::Admin(role)
-            if req.uri().path().starts_with("/admin")
-                && has_permission(
-                    req.method(),
-                    req.uri().path().strip_prefix("/admin/").unwrap(),
-                    role,
-                ) =>
-        {
-            Ok(next.run(req).await)
-        }
-
-        _ => Err((
-            StatusCode::UNAUTHORIZED,
+        return Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
             Json(JsonResponse {
-                message: "Cannot access specified resource".to_owned(),
+                message: "Could not retrieve session".to_owned(),
             }),
-        )),
+        ));
     }
+
+    if path.starts_with("/player") {
+        if let Ok(model) = session.get::<PlayerModel>("player").await {
+            return if let Some(model) = model {
+                if model.ban_id.is_some() {
+                    Err((
+                        StatusCode::FORBIDDEN,
+                        Json(JsonResponse {
+                            message: "SPlayer banned".to_owned(),
+                        }),
+                    ))
+                } else {
+                    Ok(next.run(req).await)
+                }
+            } else {
+                Err((
+                    StatusCode::UNAUTHORIZED,
+                    Json(JsonResponse {
+                        message: "Session invalid".to_owned(),
+                    }),
+                ))
+            };
+        }
+
+        return Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(JsonResponse {
+                message: "Could not retrieve session".to_owned(),
+            }),
+        ));
+    }
+
+    Err((
+        StatusCode::NOT_FOUND,
+        Json(JsonResponse {
+            message: "The requested url does not exist.".to_owned(),
+        }),
+    ))
 }

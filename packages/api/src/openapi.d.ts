@@ -1090,7 +1090,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create auth token */
+    /** Login admin */
     post: operations["admin_login"];
     delete?: never;
     options?: never;
@@ -1098,7 +1098,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/auth/admin/token/refresh": {
+  "/auth/admin/logout": {
     parameters: {
       query?: never;
       header?: never;
@@ -1107,8 +1107,8 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Refresh auth token */
-    post: operations["admin_refresh_token"];
+    /** Logout admin */
+    post: operations["admin_logout"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1141,8 +1141,25 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create auth token */
+    /** Login user */
     post: operations["player_login"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/player/logout": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Logout user */
+    post: operations["player_logout"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1228,23 +1245,6 @@ export interface paths {
     put?: never;
     /** Send reset token to email */
     post: operations["player_reset_password_send_token"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/player/token/refresh": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Refresh auth token */
-    post: operations["player_refresh_token"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1381,6 +1381,23 @@ export interface paths {
     put?: never;
     /** List top 10 of leaderboard */
     post: operations["top_10"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/player/notifications": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List player notifications */
+    get: operations["player_list"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -1543,13 +1560,14 @@ export interface components {
     };
     ChallengeModel: {
       author_name: string;
+      challenge_type: components["schemas"]["ChallengeTypeEnum"];
       /** Format: date-time */
       created_at: string;
       description: string;
-      difficulty: components["schemas"]["DifficultyEnum"];
-      flag_type: components["schemas"]["FlagTypeEnum"];
       /** Format: uuid */
       id: string;
+      /** Format: int32 */
+      level: number;
       /** Format: int32 */
       points: number;
       /** Format: int32 */
@@ -1571,9 +1589,9 @@ export interface components {
       tags: components["schemas"]["TagModel"][];
     };
     ChallengeSummary: {
-      challenge: components["schemas"]["PartialChallenge"];
+      challenge: components["schemas"]["ChallengeModel"];
       state: components["schemas"]["PlayerChallengeState"];
-      tags: components["schemas"]["CreateTagSchema"][];
+      tags: components["schemas"]["TagModel"][];
     };
     ChallengeTagModel: {
       /** Format: uuid */
@@ -1589,6 +1607,8 @@ export interface components {
       challenge: components["schemas"]["ChallengeModel"];
       tag: components["schemas"]["TagModel"];
     };
+    /** @enum {string} */
+    ChallengeTypeEnum: "containerized" | "regex_flag" | "static_flag";
     ContainerModel: {
       /** Format: uuid */
       challenge_id: string;
@@ -1633,9 +1653,10 @@ export interface components {
     };
     CreateChallengeSchema: {
       author_name: string;
+      challenge_type: components["schemas"]["ChallengeTypeEnum"];
       description: string;
-      difficulty: components["schemas"]["DifficultyEnum"];
-      flag_type: components["schemas"]["FlagTypeEnum"];
+      /** Format: int32 */
+      level: number;
       /** Format: int32 */
       points: number;
       /** Format: int32 */
@@ -1708,7 +1729,7 @@ export interface components {
     CreateNotificationSchema: {
       content: string;
       /** Format: uuid */
-      player_id: string;
+      player_id?: string | null;
       title: string;
     };
     CreatePlayerSchema: {
@@ -1742,6 +1763,8 @@ export interface components {
     CreateTicketSchema: {
       /** Format: uuid */
       assigned_to?: string | null;
+      /** Format: uuid */
+      opened_by: string;
       status: components["schemas"]["TicketStatusEnum"];
       title: string;
     };
@@ -1775,8 +1798,6 @@ export interface components {
       files: components["schemas"]["FileModel"][];
       hints: components["schemas"]["HintSummary"][];
     };
-    /** @enum {string} */
-    DifficultyEnum: "easy" | "extreme" | "hard" | "medium";
     FileModel: {
       /** Format: uuid */
       challenge_id: string;
@@ -1810,8 +1831,6 @@ export interface components {
       challenge: components["schemas"]["ChallengeModel"];
       player?: null | components["schemas"]["PlayerModel"];
     };
-    /** @enum {string} */
-    FlagTypeEnum: "per_user" | "regex" | "static";
     FlagVerificationResult: {
       is_correct: boolean;
     };
@@ -1885,7 +1904,7 @@ export interface components {
       count: number;
       /** Format: int64 */
       offset: number;
-      rankings: [string, number][];
+      rankings: components["schemas"]["Ranking"][];
       /** Format: int64 */
       total: number;
     };
@@ -1900,25 +1919,13 @@ export interface components {
       /** Format: uuid */
       id: string;
       /** Format: uuid */
-      player_id: string;
+      player_id?: string | null;
       title: string;
       /** Format: date-time */
       updated_at: string;
     };
     NotificationRelations: {
-      player: components["schemas"]["PlayerModel"];
-    };
-    PartialChallenge: {
-      author_name: string;
-      description: string;
-      difficulty: components["schemas"]["DifficultyEnum"];
-      /** Format: uuid */
-      id: string;
-      /** Format: int32 */
-      points: number;
-      /** Format: int32 */
-      solves: number;
-      title: string;
+      player?: null | components["schemas"]["PlayerModel"];
     };
     /** @enum {string} */
     PlayerChallengeState: "solved" | "unsolved" | "challenge_limit_reached";
@@ -1957,6 +1964,7 @@ export interface components {
       notifications: components["schemas"]["NotificationModel"][];
       submissions: components["schemas"]["SubmissionModel"][];
       team: components["schemas"]["TeamModel"];
+      tickets: components["schemas"]["TicketModel"][];
       unlocks: components["schemas"]["UnlockModel"][];
       user: components["schemas"]["UserModel"];
     };
@@ -2079,7 +2087,7 @@ export interface components {
       updated_at: string;
     };
     TeamProfile: {
-      members: components["schemas"]["CreatePlayerSchema"][];
+      members: components["schemas"]["PlayerModel"][];
       solved_challenges: components["schemas"]["ChallengeModel"][];
       tag_solves: components["schemas"]["TagSolves"][];
       team: components["schemas"]["TeamModel"];
@@ -2117,6 +2125,8 @@ export interface components {
       created_at: string;
       /** Format: uuid */
       id: string;
+      /** Format: uuid */
+      opened_by: string;
       status: components["schemas"]["TicketStatusEnum"];
       title: string;
       /** Format: date-time */
@@ -2124,13 +2134,10 @@ export interface components {
     };
     TicketRelations: {
       admin: components["schemas"]["AdminModel"];
+      player: components["schemas"]["PlayerModel"];
     };
     /** @enum {string} */
     TicketStatusEnum: "closed" | "open" | "resolved";
-    TokenPair: {
-      access_token: string;
-      refresh_token: string;
-    };
     UnlockModel: {
       /** Format: date-time */
       created_at: string;
@@ -9633,7 +9640,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["TokenPair"];
+          "application/json": components["schemas"]["AdminModel"];
         };
       };
       /** @description Invalid request body format */
@@ -9665,27 +9672,21 @@ export interface operations {
       };
     };
   };
-  admin_refresh_token: {
+  admin_logout: {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TokenPair"];
-      };
-    };
+    requestBody?: never;
     responses: {
       /** @description user logged in successfully */
       200: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["TokenPair"];
-        };
+        content?: never;
       };
       /** @description Invalid request body format */
       400: {
@@ -9791,11 +9792,65 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["TokenPair"];
+          "application/json": components["schemas"]["PlayerModel"];
         };
       };
       /** @description Invalid request body format */
       400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  player_logout: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Refreshed token successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
         headers: {
           [name: string]: unknown;
         };
@@ -10047,66 +10102,6 @@ export interface operations {
       };
       /** @description Invalid request body format */
       400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User not found */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
-  player_refresh_token: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TokenPair"];
-      };
-    };
-    responses: {
-      /** @description Refreshed token successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["TokenPair"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
         headers: {
           [name: string]: unknown;
         };
@@ -10628,6 +10623,62 @@ export interface operations {
       };
       /** @description User does not have sufficient permissions */
       403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  player_list: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed notifications successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["NotificationModel"][];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description No hint found with specified id */
+      404: {
         headers: {
           [name: string]: unknown;
         };

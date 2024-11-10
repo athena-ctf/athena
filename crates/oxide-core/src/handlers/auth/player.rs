@@ -6,20 +6,20 @@ use argon2::password_hash::SaltString;
 use argon2::{Argon2, PasswordHasher};
 use askama::Template;
 use axum::extract::{Query, State};
-use axum::{Extension, Json};
+use axum::Json;
 use fred::prelude::SortedSetsInterface;
-use jsonwebtoken::{DecodingKey, Validation};
 use lettre::message::header::ContentType;
 use lettre::message::{Mailbox, MultiPart, SinglePart};
 use lettre::{AsyncTransport, Message};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, Condition, IntoActiveModel, TransactionTrait};
+use tower_sessions::Session;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    GroupEnum, Invite, InviteVerificationResult, JsonResponse, LoginModel, Player, PlayerModel,
-    RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery, ResetPasswordSchema,
-    SendTokenSchema, Team, TeamModel, TeamRegister, TokenClaims, TokenPair, User, UserModel,
+    AuthPlayer, GroupEnum, Invite, InviteVerificationResult, JsonResponse, LoginModel, Player,
+    PlayerModel, RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery,
+    ResetPasswordSchema, SendTokenSchema, Team, TeamModel, TeamRegister, User, UserModel,
 };
 use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
@@ -94,15 +94,10 @@ pub async fn register(
         .hash_password(body.password.as_bytes(), &salt)?
         .to_string();
 
-    let user = UserModel::new(
-        body.username,
-        body.email.clone(),
-        password,
-        GroupEnum::Player,
-    )
-    .into_active_model()
-    .insert(&txn)
-    .await?;
+    let user = UserModel::new(body.username, &body.email, password, GroupEnum::Player)
+        .into_active_model()
+        .insert(&txn)
+        .await?;
 
     state
         .persistent_client
@@ -369,18 +364,19 @@ pub async fn reset_password_send_token(
     request_body = LoginModel,
     operation_id = "player_login",
     responses(
-        (status = 200, description = "Player logged in successfully", body = TokenPair),
+        (status = 200, description = "Player logged in successfully", body = PlayerModel),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 404, description = "User not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
 )]
-/// Create auth token
+/// Login user
 pub async fn login(
     state: State<Arc<AppState>>,
+    session: Session,
     Json(body): Json<LoginModel>,
-) -> Result<Json<TokenPair>> {
+) -> Result<Json<PlayerModel>> {
     let Some(user_model) = super::verify(body.username, body.password, &state.db_conn).await?
     else {
         return Err(Error::BadRequest("Username invalid".to_owned()));
@@ -394,50 +390,29 @@ pub async fn login(
         return Err(Error::BadRequest("Player is banned".to_owned()));
     }
 
-    let token_pair = crate::service::generate_player_token_pair(
-        &player_model,
-        &state.settings.read().await.jwt,
-    )?;
-    Ok(Json(token_pair))
+    session.insert("player", player_model.clone()).await?;
+
+    Ok(Json(player_model))
 }
 
 #[utoipa::path(
     post,
-    path = "/auth/player/token/refresh",
-    request_body = TokenPair,
-    operation_id = "player_refresh_token",
+    path = "/auth/player/logout",
+    operation_id = "player_logout",
     responses(
-        (status = 200, description = "Refreshed token successfully", body = TokenPair),
+        (status = 200, description = "Refreshed token successfully"),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 404, description = "User not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
-/// Refresh auth token
-pub async fn refresh_token(
-    state: State<Arc<AppState>>,
-    Json(body): Json<TokenPair>,
-) -> Result<Json<TokenPair>> {
-    let claims = jsonwebtoken::decode::<TokenClaims>(
-        &body.refresh_token,
-        &DecodingKey::from_base64_secret(&state.settings.read().await.jwt.secret)?,
-        &Validation::default(),
-    )?
-    .claims;
-
-    let Some(player_model) = Player::find_by_id(claims.id).one(&state.db_conn).await? else {
-        return Err(Error::NotFound("User does not exist".to_owned()));
-    };
-
-    let token_pair = crate::service::generate_player_token_pair(
-        &player_model,
-        &state.settings.read().await.jwt,
-    )?;
-
-    Ok(Json(token_pair))
+/// Logout user
+pub async fn logout(session: Session) -> Result<()> {
+    Ok(session.delete().await?)
 }
 
+// TODO: move to player
 #[utoipa::path(
     get,
     path = "/auth/player/current",
@@ -450,15 +425,6 @@ pub async fn refresh_token(
     ),
 )]
 /// Return currently authenticated user
-pub async fn get_current_logged_in(
-    Extension(claims): Extension<TokenClaims>,
-    state: State<Arc<AppState>>,
-) -> Result<Json<PlayerModel>> {
-    Player::find_by_id(claims.id)
-        .one(&state.db_conn)
-        .await?
-        .map_or_else(
-            || Err(Error::NotFound("User does not exist".to_owned())),
-            |user_model| Ok(Json(user_model)),
-        )
+pub async fn get_current_logged_in(AuthPlayer(player): AuthPlayer) -> Result<Json<PlayerModel>> {
+    Ok(Json(player))
 }

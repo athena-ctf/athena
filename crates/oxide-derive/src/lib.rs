@@ -71,13 +71,13 @@ pub fn derive_details(input: TokenStream) -> TokenStream {
         if input.table.join {
             quote! {
                 impl Model {
-                    pub fn new(#(#field_names: #field_types,)*) -> Self {
+                    pub fn new(#(#field_names: impl Into<#field_types>,)*) -> Self {
                         let now = chrono::Utc::now().naive_utc();
 
                         Self {
                             created_at: now,
                             updated_at: now,
-                            #(#field_names,)*
+                            #(#field_names: #field_names.into(),)*
                         }
                     }
                 }
@@ -85,14 +85,14 @@ pub fn derive_details(input: TokenStream) -> TokenStream {
         } else {
             quote! {
                 impl Model {
-                    pub fn new(#(#field_names: #field_types,)*) -> Self {
+                    pub fn new(#(#field_names: impl Into<#field_types>,)*) -> Self {
                         let now = chrono::Utc::now().naive_utc();
 
                         Self {
-                            id: Uuid::now_v7(),
+                            id: uuid::Uuid::now_v7(),
                             created_at: now,
                             updated_at: now,
-                            #(#field_names,)*
+                            #(#field_names: #field_names.into(),)*
                         }
                     }
                 }

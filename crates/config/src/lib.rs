@@ -10,6 +10,12 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+pub struct Level {
+    name: String,
+    color: String,
+}
+
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
 pub struct Ctf {
     pub name: String,
     pub domain: String,
@@ -17,6 +23,7 @@ pub struct Ctf {
     pub time: Time,
     pub sponsors: IndexMap<String, Vec<Sponsor>>,
     pub prizes: IndexMap<String, Vec<String>>,
+    pub level_map: IndexMap<i32, Level>,
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
@@ -75,10 +82,10 @@ pub struct AwsS3 {
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
-pub struct Jwt {
-    pub secret: String,
-    pub access_token_timeout: u64,
-    pub refresh_token_timeout: u64,
+pub struct Session {
+    pub key: String,
+    pub expiry_duration: u64,
+    pub cookie_name: String,
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, Copy)]
@@ -179,7 +186,7 @@ pub struct Settings {
     pub database: Database,
     pub redis: Redis,
     pub file_storage: FileStorage,
-    pub jwt: Jwt,
+    pub session: Session,
     pub smtp: Smtp,
     pub docker: Docker,
     pub discord: Discord,
@@ -207,13 +214,43 @@ impl Default for Settings {
                 },
                 sponsors: IndexMap::new(),
                 prizes: IndexMap::new(),
+                level_map: IndexMap::from([
+                    (
+                        0,
+                        Level {
+                            name: "Very Easy".to_owned(),
+                            color: "#23332b".to_owned(),
+                        },
+                    ),
+                    (
+                        1,
+                        Level {
+                            name: "Easy".to_owned(),
+                            color: "#059c50".to_owned(),
+                        },
+                    ),
+                    (
+                        2,
+                        Level {
+                            name: "Medium".to_owned(),
+                            color: "#d0d40f".to_owned(),
+                        },
+                    ),
+                    (
+                        3,
+                        Level {
+                            name: "Hard".to_owned(),
+                            color: "#d4290f".to_owned(),
+                        },
+                    ),
+                ]),
             },
             database: Database {
                 host: "postgres".to_owned(),
                 port: 5432,
                 username: "postgres".to_owned(),
                 password: gen_random_password(),
-                listener_channel: "notification_insert".to_owned(),
+                listener_channel: "athena_db_modification".to_owned(),
                 database_name: "athena_db".to_owned(),
             },
             redis: Redis {
@@ -230,14 +267,14 @@ impl Default for Settings {
                     password: gen_random_password(),
                 },
             },
-            jwt: Jwt {
-                secret: Base64::encode_string(
+            session: Session {
+                key: Base64::encode_string(
                     &repeat_with(|| fastrand::u8(0..=255))
                         .take(32)
                         .collect::<Vec<_>>(),
                 ),
-                access_token_timeout: 600,
-                refresh_token_timeout: 86400,
+                expiry_duration: 600,
+                cookie_name: "sessionid".to_owned(),
             },
             file_storage: FileStorage {
                 remote_storage_options: None,

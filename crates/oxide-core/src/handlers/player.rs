@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::routing::get;
-use axum::{Extension, Router};
+use axum::Router;
 use fred::prelude::*;
 use oxide_macros::table_api;
 use sea_orm::prelude::*;
@@ -11,15 +11,15 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Achievement, AchievementModel, Ban, BanModel, Challenge, ChallengeModel, CreatePlayerSchema,
-    Deployment, DeploymentModel, Flag, FlagModel, Hint, HintModel, JsonResponse, Notification,
-    NotificationModel, Player, PlayerModel, PlayerProfile, PlayerSummary, Submission,
-    SubmissionModel, Team, TeamModel, TokenClaims, Unlock, UnlockModel, UpdateProfileSchema, User,
-    UserModel,
+    Achievement, AchievementModel, AuthPlayer, Ban, BanModel, Challenge, ChallengeModel,
+    CreatePlayerSchema, Deployment, DeploymentModel, Flag, FlagModel, Hint, HintModel,
+    JsonResponse, Notification, NotificationModel, Player, PlayerModel, PlayerProfile,
+    PlayerSummary, Submission, SubmissionModel, Team, TeamModel, Ticket, TicketModel, Unlock,
+    UnlockModel, UpdateProfileSchema, User, UserModel,
 };
 use crate::service::{AppState, CachedJson};
 
-table_api!(Player, single: [Team, User], optional: [Deployment, Ban], multiple: [Flag, Achievement, Notification, Submission, Unlock, Challenge, Hint]);
+table_api!(Player, single: [Team, User], optional: [Deployment, Ban], multiple: [Flag, Achievement, Notification, Submission, Unlock, Challenge, Hint, Ticket]);
 
 #[utoipa::path(
     get,
@@ -101,15 +101,14 @@ pub async fn update_profile_by_id(
 )]
 /// Retrieve player summary
 pub async fn retrieve_summary(
-    Extension(claims): Extension<TokenClaims>,
+    AuthPlayer(player_model): AuthPlayer,
     state: State<Arc<AppState>>,
 ) -> Result<Json<PlayerSummary>> {
-    let Some((user_model, Some(player_model))) = User::find_by_id(claims.id)
-        .find_also_related(Player)
+    let Some(user_model) = User::find_by_id(player_model.user_id)
         .one(&state.db_conn)
         .await?
     else {
-        return Err(Error::NotFound("Player not found".to_owned()));
+        return Err(Error::NotFound("User not found".to_owned()));
     };
 
     Ok(Json(PlayerSummary {

@@ -3,7 +3,7 @@ use std::sync::Arc;
 
 use axum::extract::{Json, Path, State};
 use axum::routing::get;
-use axum::{Extension, Router};
+use axum::Router;
 use entity::links::{TeamToAchievement, TeamToChallenge, TeamToSubmission, TeamToUnlock};
 use fred::prelude::*;
 use oxide_macros::table_api;
@@ -13,8 +13,8 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Tag, TagSolves, Team,
-    TeamModel, TeamProfile, TeamSummary, TokenClaims, User,
+    AuthPlayer, CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Tag,
+    TagSolves, Team, TeamModel, TeamProfile, TeamSummary, User,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -133,12 +133,12 @@ pub async fn update_details(
 )]
 /// Retrieve team summary
 pub async fn retrieve_summary(
-    Extension(claims): Extension<TokenClaims>,
+    AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
 ) -> Result<Json<TeamSummary>> {
     let Some(team_model) = Team::find()
         .left_join(Player)
-        .filter(entity::player::Column::Id.eq(claims.id))
+        .filter(entity::player::Column::Id.eq(player.id))
         .one(&state.db_conn)
         .await?
     else {

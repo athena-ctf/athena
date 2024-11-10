@@ -17,3 +17,4 @@ tower-http = { workspace = true }
 async-stream = "0.3.6"
 sqlx = "0.8.2"
 dashmap = { workspace = true }
+serde = { workspace = true }

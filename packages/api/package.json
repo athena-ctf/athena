@@ -6,12 +6,12 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "generate": "openapi-typescript -o ./src/openapi.d.ts && biome check . --write",
+    "generate": "openapi-typescript -o ./src/openapi.d.ts",
     "check": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^20.17.6",
-    "openapi-typescript": "^7.4.2",
+    "openapi-typescript": "^7.4.3",
     "typescript": "^5.6.3"
   },
   "dependencies": {
