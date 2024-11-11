@@ -2871,6 +2871,57 @@
         }
       }
     },
+    "/admin/current": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Return currently authenticated user",
+        "operationId": "admin_get_current",
+        "responses": {
+          "200": {
+            "description": "Password reset email sent successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/deployment": {
       "get": {
         "tags": [
@@ -6503,6 +6554,129 @@
         }
       }
     },
+    "/admin/settings/{*path}": {
+      "get": {
+        "tags": [
+          "settings"
+        ],
+        "summary": "Retrieve settings at path",
+        "operationId": "settings_retrieve",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "description": "The path to the resource",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "path"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved settings successfully",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "settings"
+        ],
+        "summary": "Retrieve settings at path",
+        "operationId": "settings_update",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "description": "The path to the resource",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "path"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Retrieved settings successfully"
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/stats": {
       "get": {
         "tags": [
@@ -8904,57 +9078,6 @@
         }
       }
     },
-    "/auth/admin/current": {
-      "get": {
-        "tags": [
-          "auth::admin"
-        ],
-        "summary": "Return currently authenticated user",
-        "operationId": "admin_get_current_logged_in",
-        "responses": {
-          "200": {
-            "description": "Password reset email sent successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AdminModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "User not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/auth/admin/login": {
       "post": {
         "tags": [
@@ -9020,7 +9143,7 @@
       }
     },
     "/auth/admin/logout": {
-      "post": {
+      "get": {
         "tags": [
           "auth::admin"
         ],
@@ -9042,57 +9165,6 @@
           },
           "401": {
             "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "User not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/player/current": {
-      "get": {
-        "tags": [
-          "auth::player"
-        ],
-        "summary": "Return currently authenticated user",
-        "operationId": "player_get_current_logged_in",
-        "responses": {
-          "200": {
-            "description": "Retrieved current logged in user successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlayerModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -9189,7 +9261,7 @@
       }
     },
     "/auth/player/logout": {
-      "post": {
+      "get": {
         "tags": [
           "auth::player"
         ],
@@ -9844,6 +9916,57 @@
           },
           "404": {
             "description": "No challenge found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/player/current": {
+      "get": {
+        "tags": [
+          "player"
+        ],
+        "summary": "Return currently authenticated user",
+        "operationId": "player_get_current",
+        "responses": {
+          "200": {
+            "description": "Retrieved current logged in user successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
             "content": {
               "application/json": {
                 "schema": {

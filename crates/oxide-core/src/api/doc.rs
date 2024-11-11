@@ -127,6 +127,8 @@ use crate::handlers::*;
         player::update_profile_by_id,
         player::retrieve_summary,
         player::get_current_logged_in,
+        settings::retrieve,
+        settings::update,
         stats::retrieve,
         submission::list,
         submission::create,

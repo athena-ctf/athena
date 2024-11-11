@@ -6,10 +6,24 @@ use oxide_macros::JsonPath;
 use serde_json::Value;
 
 use crate::errors::{Error, Result};
+use crate::schemas::JsonResponse;
 use crate::service::AppState;
 
-// TODO: add documentation
-
+#[utoipa::path(
+    get,
+    path = "/admin/settings/{*path}",
+    params(
+        ("path" = String, Path, format = "path", description = "The path to the resource")
+    ),
+    operation_id = "settings_retrieve",
+    responses(
+        (status = 200, description = "Retrieved settings successfully", body = Value),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
+    )
+)]
+/// Retrieve settings at path
 pub async fn retrieve(
     state: State<Arc<AppState>>,
     Path(path): Path<String>,
@@ -35,6 +49,22 @@ pub async fn retrieve(
         )
 }
 
+#[utoipa::path(
+    patch,
+    path = "/admin/settings/{*path}",
+    params(
+        ("path" = String, Path, format = "path", description = "The path to the resource")
+    ),
+    operation_id = "settings_update",
+    request_body = Value,
+    responses(
+        (status = 200, description = "Retrieved settings successfully"),
+        (status = 401, description = "Action is permissible after login", body = JsonResponse),
+        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
+    )
+)]
+/// Retrieve settings at path
 pub async fn update(
     state: State<Arc<AppState>>,
     Path(path): Path<String>,
