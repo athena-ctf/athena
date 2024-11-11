@@ -6,10 +6,10 @@ use axum::response::Sse;
 use axum::routing::get;
 use axum::{Error, Extension, Router};
 use dashmap::DashMap;
+use entity::prelude::*;
 use futures::Stream;
-use sqlx::error::Error as SqlxError;
-use sqlx::postgres::PgListener;
-use sqlx::{Pool, Postgres};
+use sea_orm::prelude::*;
+use sea_orm::{sqlx, Database, IntoActiveModel};
 use tokio::net::TcpListener;
 use tokio::sync::mpsc::{self, Sender};
 use tower_http::trace::TraceLayer;
@@ -19,15 +19,28 @@ use uuid::Uuid;
 
 mod pg;
 
-static CONNECTED_CLIENTS: LazyLock<DashMap<Uuid, Sender<entity::notification::Model>>> =
+static CONNECTED_CLIENTS: LazyLock<DashMap<Uuid, Sender<NotificationModel>>> =
     LazyLock::new(DashMap::new);
 
-pub async fn start_listening(channel_name: String, pool: Pool<Postgres>) -> Result<(), SqlxError> {
-    let mut listener = PgListener::connect_with(&pool).await.unwrap();
-    listener.listen(&channel_name).await?;
+pub async fn start_listening(
+    channel_name: String,
+    db_conn: sea_orm::DbConn,
+) -> Result<(), sea_orm::DbErr> {
+    let mut listener =
+        sqlx::postgres::PgListener::connect_with(db_conn.get_postgres_connection_pool())
+            .await
+            .unwrap();
+    listener
+        .listen(&channel_name)
+        .await
+        .map_err(|err| sea_orm::DbErr::Conn(sea_orm::RuntimeErr::SqlxError(err)))?;
 
     loop {
-        while let Some(pg_notification) = listener.try_recv().await? {
+        while let Some(pg_notification) = listener
+            .try_recv()
+            .await
+            .map_err(|err| sea_orm::DbErr::Exec(sea_orm::RuntimeErr::SqlxError(err)))?
+        {
             tracing::info!(
                 "received notification from channel {:?}",
                 pg_notification.channel()
@@ -36,9 +49,11 @@ pub async fn start_listening(channel_name: String, pool: Pool<Postgres>) -> Resu
             let payload = pg_notification.payload().to_owned();
             let payload = serde_json::from_str::<pg::Notification>(&payload)
                 .unwrap()
-                .into_model();
+                .into_model(&db_conn)
+                .await;
 
             if let Some(payload) = payload {
+                payload.clone().into_active_model().insert(&db_conn).await?;
                 if let Some(player_id) = payload.player_id {
                     send_direct_message(player_id, payload).await;
                 } else {
@@ -49,13 +64,13 @@ pub async fn start_listening(channel_name: String, pool: Pool<Postgres>) -> Resu
     }
 }
 
-async fn send_direct_message(player_id: Uuid, model: entity::notification::Model) {
+async fn send_direct_message(player_id: Uuid, model: NotificationModel) {
     if let Some(tx) = CONNECTED_CLIENTS.get(&player_id) {
         let _ = tx.send(model).await;
     }
 }
 
-async fn broadcast_message(model: entity::notification::Model) {
+async fn broadcast_message(model: NotificationModel) {
     for client in CONNECTED_CLIENTS.iter() {
         let _ = client.value().send(model.clone()).await;
     }
@@ -68,11 +83,11 @@ async fn main() {
         .init();
     let settings = config::Settings::new(&std::env::args().nth(1).unwrap()).unwrap();
 
-    let pool = sqlx::PgPool::connect(&settings.database.url())
-        .await
-        .unwrap();
-
-    let listener_handle = tokio::spawn(start_listening(settings.database.listener_channel, pool));
+    let db_conn = Database::connect(&settings.database.url()).await.unwrap();
+    let listener_handle = tokio::spawn(start_listening(
+        settings.database.listener_channel,
+        db_conn.clone(),
+    ));
 
     let listener = TcpListener::bind("127.0.0.1:3000").await.unwrap();
     let app = Router::new()
@@ -100,7 +115,7 @@ async fn main() {
 async fn sse_handler(
     Extension(id): Extension<Uuid>,
 ) -> Sse<impl Stream<Item = Result<Event, Error>>> {
-    let (tx, mut rx) = mpsc::channel::<entity::notification::Model>(100);
+    let (tx, mut rx) = mpsc::channel::<NotificationModel>(100);
     CONNECTED_CLIENTS.insert(id, tx);
 
     let stream = stream! {

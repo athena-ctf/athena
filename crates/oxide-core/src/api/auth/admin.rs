@@ -9,9 +9,5 @@ use crate::service::AppState;
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/auth/admin/login", post(auth::admin::login))
-        .route("/auth/admin/logout", post(auth::admin::logout))
-        .route(
-            "/auth/admin/current",
-            get(auth::admin::get_current_logged_in),
-        )
+        .route("/auth/admin/logout", get(auth::admin::logout))
 }

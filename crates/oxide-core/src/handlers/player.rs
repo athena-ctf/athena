@@ -133,3 +133,19 @@ pub async fn retrieve_summary(
         .await?,
     }))
 }
+
+#[utoipa::path(
+    get,
+    path = "/player/current",
+    operation_id = "player_get_current",
+    responses(
+        (status = 200, description = "Retrieved current logged in user successfully", body = PlayerModel),
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
+    ),
+)]
+/// Return currently authenticated user
+pub async fn get_current_logged_in(AuthPlayer(player): AuthPlayer) -> Result<Json<PlayerModel>> {
+    Ok(Json(player))
+}

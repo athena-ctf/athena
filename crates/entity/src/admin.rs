@@ -14,7 +14,7 @@ use super::sea_orm_active_enums::RoleEnum;
     Serialize,
     Deserialize,
     utoipa::ToSchema,
-    oxide_macros::derive::Details,
+    oxide_derive::Details,
 )]
 #[sea_orm(table_name = "admin")]
 #[schema(as = AdminModel)]

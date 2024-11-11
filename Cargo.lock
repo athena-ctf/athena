@@ -664,6 +664,7 @@ dependencies = [
  "config 0.14.1",
  "fastrand",
  "indexmap 2.6.0",
+ "oxide-macros",
  "schemars",
  "serde",
  "serde_json",
@@ -935,7 +936,7 @@ name = "entity"
 version = "0.1.0"
 dependencies = [
  "chrono",
- "oxide-macros",
+ "oxide-derive",
  "sea-orm",
  "serde",
  "utoipa",
@@ -1915,9 +1916,9 @@ dependencies = [
  "dashmap",
  "entity",
  "futures",
+ "sea-orm",
  "serde",
  "serde_json",
- "sqlx",
  "tokio",
  "tower-http",
  "tracing",
@@ -2123,8 +2124,12 @@ dependencies = [
 name = "oxide-macros"
 version = "0.1.0"
 dependencies = [
+ "chrono",
+ "indexmap 2.6.0",
  "oxide-derive",
  "paste",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

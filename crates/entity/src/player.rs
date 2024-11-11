@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
     Serialize,
     Deserialize,
     utoipa::ToSchema,
-    oxide_macros::derive::Details,
+    oxide_derive::Details,
 )]
 #[sea_orm(table_name = "player")]
 #[schema(as = PlayerModel)]

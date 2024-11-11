@@ -17,5 +17,3 @@ use crate::schemas::{
 use crate::service::{AppState, CachedJson};
 
 join_table_api!(Unlock, Player, "player_id", Hint, "hint_id");
-
-// TODO: add relations

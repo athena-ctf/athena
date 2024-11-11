@@ -6,3 +6,7 @@ edition = "2021"
 [dependencies]
 oxide-derive = { path = "../oxide-derive" }
 paste = "1.0.15"
+serde = { workspace = true }
+serde_json = { workspace = true }
+indexmap = { workspace = true }
+chrono = { workspace = true }

@@ -17,9 +17,9 @@ use tower_sessions::Session;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    AuthPlayer, GroupEnum, Invite, InviteVerificationResult, JsonResponse, LoginModel, Player,
-    PlayerModel, RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery,
-    ResetPasswordSchema, SendTokenSchema, Team, TeamModel, TeamRegister, User, UserModel,
+    GroupEnum, Invite, InviteVerificationResult, JsonResponse, LoginModel, Player, PlayerModel,
+    RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery, ResetPasswordSchema,
+    SendTokenSchema, Team, TeamModel, TeamRegister, User, UserModel,
 };
 use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
@@ -396,7 +396,7 @@ pub async fn login(
 }
 
 #[utoipa::path(
-    post,
+    get,
     path = "/auth/player/logout",
     operation_id = "player_logout",
     responses(
@@ -410,21 +410,4 @@ pub async fn login(
 /// Logout user
 pub async fn logout(session: Session) -> Result<()> {
     Ok(session.delete().await?)
-}
-
-// TODO: move to player
-#[utoipa::path(
-    get,
-    path = "/auth/player/current",
-    operation_id = "player_get_current_logged_in",
-    responses(
-        (status = 200, description = "Retrieved current logged in user successfully", body = PlayerModel),
-        (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
-        (status = 500, description = "Unexpected error", body = JsonResponse)
-    ),
-)]
-/// Return currently authenticated user
-pub async fn get_current_logged_in(AuthPlayer(player): AuthPlayer) -> Result<Json<PlayerModel>> {
-    Ok(Json(player))
 }

@@ -5,17 +5,19 @@ use base64ct::{Base64, Encoding};
 use chrono::{DateTime, Days, Utc};
 use config_rs::{Config, File};
 use indexmap::IndexMap;
+use oxide_macros::JsonPath;
 use schemars::gen::SchemaSettings;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Level {
     name: String,
     color: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Ctf {
     pub name: String,
     pub domain: String,
@@ -26,20 +28,20 @@ pub struct Ctf {
     pub level_map: IndexMap<i32, Level>,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Sponsor {
     name: String,
     logo: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Time {
     pub end: DateTime<Utc>,
     pub start: DateTime<Utc>,
     pub freeze: DateTime<Utc>,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Database {
     pub host: String,
     pub port: u16,
@@ -54,7 +56,7 @@ fn athena_db() -> String {
     "athena_db".to_owned()
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct RedisInner {
     pub host: String,
     pub port: u16,
@@ -62,7 +64,7 @@ pub struct RedisInner {
     pub password: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Redis {
     pub cache: RedisInner,
     pub persistent: RedisInner,
@@ -72,7 +74,7 @@ fn default_region() -> String {
     "ap-south-1".to_owned()
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct AwsS3 {
     #[serde(default = "default_region")]
     pub region: String,
@@ -81,14 +83,14 @@ pub struct AwsS3 {
     pub bucket_name: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Session {
     pub key: String,
     pub expiry_duration: u64,
     pub cookie_name: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, Copy)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, Copy, JsonPath)]
 #[serde(rename_all = "lowercase")]
 pub enum CompressionKind {
     Gzip,
@@ -96,32 +98,32 @@ pub enum CompressionKind {
     Br,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Local {
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub compress: Option<CompressionKind>,
     pub path: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Aws {}
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Gcp {}
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Azure {
     account_name: String,
     account_key: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct RemoteStorageOptions {
     bucket_name: String,
     expires: i32,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct FileStorage {
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub remote_storage_options: Option<RemoteStorageOptions>,
@@ -135,7 +137,7 @@ pub struct FileStorage {
     pub azure: Option<Azure>,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Smtp {
     pub from: String,
     pub reply_to: String,
@@ -144,7 +146,7 @@ pub struct Smtp {
     pub server_url: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Challenge {
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub max_attempts: Option<usize>,
@@ -155,7 +157,7 @@ pub struct Challenge {
     pub player_flag_len: usize,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Docker {
     pub single_instance_duration: usize,
     pub registry_url: String,
@@ -163,7 +165,7 @@ pub struct Docker {
     pub registry_password: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Discord {
     pub welcome_channel_id: String,
     pub editor_role_id: String,
@@ -174,13 +176,13 @@ pub struct Discord {
     pub bot_token: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Token {
     pub max_retries: u8, // Max 256 retries
     pub token_expiry_in_secs: i64,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Settings {
     pub ctf: Ctf,
     pub database: Database,

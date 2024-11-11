@@ -17,7 +17,7 @@ pub fn router() -> Router<Arc<AppState>> {
             post(auth::player::reset_password_send_token),
         )
         .route("/auth/player/login", post(auth::player::login))
-        .route("/auth/player/logout", post(auth::player::logout))
+        .route("/auth/player/logout", get(auth::player::logout))
         .route("/auth/player/register", post(auth::player::register))
         .route(
             "/auth/player/register/verify/invite",
@@ -30,9 +30,5 @@ pub fn router() -> Router<Arc<AppState>> {
         .route(
             "/auth/player/register/send-token",
             post(auth::player::register_send_token),
-        )
-        .route(
-            "/auth/player/current",
-            get(auth::player::get_current_logged_in),
         )
 }

@@ -12,7 +12,8 @@ config_rs = { package = "config", version = "0.14.1", default-features = false, 
     "json",
 ] }
 fastrand = { workspace = true }
-indexmap = { version = "2.6.0", features = ["serde"] }
+indexmap = { workspace = true }
 schemars = { version = "0.8.21", features = ["uuid1", "indexmap2", "chrono"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
+oxide-macros = { path = "../oxide-macros" }

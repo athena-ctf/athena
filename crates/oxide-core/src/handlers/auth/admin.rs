@@ -7,7 +7,7 @@ use sea_orm::TransactionTrait;
 use tower_sessions::Session;
 
 use crate::errors::{Error, Result};
-use crate::schemas::{Admin, AdminModel, AuthAdmin, JsonResponse, LoginModel};
+use crate::schemas::{Admin, AdminModel, JsonResponse, LoginModel};
 use crate::service::AppState;
 
 #[utoipa::path(
@@ -46,7 +46,7 @@ pub async fn login(
 }
 
 #[utoipa::path(
-    post,
+    get,
     path = "/auth/admin/logout",
     operation_id = "admin_logout",
     responses(
@@ -60,21 +60,4 @@ pub async fn login(
 /// Logout admin
 pub async fn logout(session: Session) -> Result<()> {
     Ok(session.delete().await?)
-}
-
-// TODO: move to admin
-#[utoipa::path(
-    get,
-    path = "/auth/admin/current",
-    operation_id = "admin_get_current_logged_in",
-    responses(
-        (status = 200, description = "Password reset email sent successful", body = AdminModel),
-        (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
-        (status = 500, description = "Unexpected error", body = JsonResponse)
-    ),
-)]
-/// Return currently authenticated user
-pub async fn get_current_logged_in(AuthAdmin(admin): AuthAdmin) -> Result<Json<AdminModel>> {
-    Ok(Json(admin))
 }
