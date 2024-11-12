@@ -15,9 +15,7 @@ const jetbrains_mono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
 });
 
-export default function Layout({
-  children,
-}: { children: React.ReactNode }): JSX.Element {
+export default function Layout({ children }: { children: React.ReactNode }): JSX.Element {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrains_mono.variable}`}>
       <body>
@@ -27,9 +25,7 @@ export default function Layout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="relative flex min-h-screen flex-col bg-background">
-            {children}
-          </div>
+          <div className="relative flex min-h-screen flex-col bg-background">{children}</div>
           <Toaster />
         </ThemeProvider>
       </body>

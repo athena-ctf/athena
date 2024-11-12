@@ -57,10 +57,7 @@ export default function Index() {
               <CardDescription>{step.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <ChooseTeamForm
-                next={() => stepper.next()}
-                prev={() => stepper.prev()}
-              />
+              <ChooseTeamForm next={() => stepper.next()} prev={() => stepper.prev()} />
             </CardContent>
           </>
         ),

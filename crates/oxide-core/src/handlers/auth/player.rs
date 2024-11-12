@@ -206,7 +206,11 @@ pub async fn register_send_token(
 
 #[utoipa::path(
     get,
-    path = "/auth/player/register/invite/verify",
+    path = "/auth/player/register/verify/invite",
+    params(
+        ("team_name" = String, Query, description = "Team name to check"),
+        ("invite_id" = String, Query, description = "Invite ID to verify")
+    ),
     operation_id = "player_register_verify_invite",
     responses(
         (status = 200, description = "Verified invite successfully", body = InviteVerificationResult),

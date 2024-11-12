@@ -78,9 +78,7 @@ export function AppearanceForm() {
                 </FormControl>
                 <ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
               </div>
-              <FormDescription>
-                Set the font you want to use in the dashboard.
-              </FormDescription>
+              <FormDescription>Set the font you want to use in the dashboard.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -91,9 +89,7 @@ export function AppearanceForm() {
           render={({ field }) => (
             <FormItem className="space-y-1">
               <FormLabel>Theme</FormLabel>
-              <FormDescription>
-                Select the theme for the dashboard.
-              </FormDescription>
+              <FormDescription>Select the theme for the dashboard.</FormDescription>
               <FormMessage />
               <RadioGroup
                 onValueChange={field.onChange}
@@ -121,9 +117,7 @@ export function AppearanceForm() {
                         </div>
                       </div>
                     </div>
-                    <span className="block w-full p-2 text-center font-normal">
-                      Light
-                    </span>
+                    <span className="block w-full p-2 text-center font-normal">Light</span>
                   </FormLabel>
                 </FormItem>
                 <FormItem>
@@ -147,9 +141,7 @@ export function AppearanceForm() {
                         </div>
                       </div>
                     </div>
-                    <span className="block w-full p-2 text-center font-normal">
-                      Dark
-                    </span>
+                    <span className="block w-full p-2 text-center font-normal">Dark</span>
                   </FormLabel>
                 </FormItem>
               </RadioGroup>

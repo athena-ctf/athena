@@ -37,6 +37,7 @@ use crate::handlers::*;
         auth::player::login,
         auth::player::logout,
         auth::player::register,
+        auth::player::register_verify_email,
         auth::player::register_verify_invite,
         auth::player::register_send_token,
         auth::player::reset_password,

@@ -16,29 +16,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@repo/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select";
 import { createUser } from "./actions";
 import { type DialogProps, userSchema } from "./schemas";
 import React from "react";
 
-export function UserDialogContent(
-  props: DialogProps<z.infer<typeof userSchema>>,
-) {
+export function UserDialogContent(props: DialogProps<z.infer<typeof userSchema>>) {
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     mode: "onSubmit",
@@ -94,10 +79,7 @@ export function UserDialogContent(
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Role</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a role" />
@@ -123,17 +105,10 @@ export function UserDialogContent(
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <div className="relative">
-                      <Input
-                        {...field}
-                        type={showPassword ? "text" : "password"}
-                      />
+                      <Input {...field} type={showPassword ? "text" : "password"} />
                       <div className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-400">
                         {showPassword ? (
-                          <Eye
-                            size={18}
-                            strokeWidth={1.5}
-                            onClick={() => setShowPassword(false)}
-                          />
+                          <Eye size={18} strokeWidth={1.5} onClick={() => setShowPassword(false)} />
                         ) : (
                           <EyeOff
                             size={18}
@@ -164,11 +139,7 @@ export function UserCreateDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto mr-2 hidden h-8 lg:flex"
-        >
+        <Button variant="outline" size="sm" className="ml-auto mr-2 hidden h-8 lg:flex">
           <PlusCircle className="mr-2 h-4 w-4" /> Create
         </Button>
       </DialogTrigger>

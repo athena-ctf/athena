@@ -10,9 +10,7 @@ import {
   Text,
 } from "@react-email/components";
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
+const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "";
 
 export const ConfirmEmail = () => (
   <Html>
@@ -21,17 +19,12 @@ export const ConfirmEmail = () => (
     <Body style={main}>
       <Container style={container}>
         <Section style={logoContainer}>
-          <Img
-            src={`${baseUrl}logo.png`}
-            width="120"
-            height="36"
-            alt="Athena CTF"
-          />
+          <Img src={`${baseUrl}logo.png`} width="120" height="36" alt="Athena CTF" />
         </Section>
         <Heading style={h1}>Confirm your email address</Heading>
         <Text style={heroText}>
-          Your confirmation code is below - enter it in your open browser window
-          and we'll help you get signed in.
+          Your confirmation code is below - enter it in your open browser window and we'll help you
+          get signed in.
         </Text>
 
         <Section style={codeBox}>
@@ -39,8 +32,8 @@ export const ConfirmEmail = () => (
         </Section>
 
         <Text style={text}>
-          If you didn't request this email, there's nothing to worry about, you
-          can safely ignore it.
+          If you didn't request this email, there's nothing to worry about, you can safely ignore
+          it.
         </Text>
       </Container>
     </Body>

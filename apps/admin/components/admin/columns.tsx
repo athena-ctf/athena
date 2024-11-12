@@ -1,12 +1,7 @@
 "use client";
 
 import type { components } from "@repo/api";
-import type {
-  CellContext,
-  ColumnDef,
-  HeaderContext,
-  Row,
-} from "@tanstack/react-table";
+import type { CellContext, ColumnDef, HeaderContext, Row } from "@tanstack/react-table";
 import { Button } from "@ui/components/ui/button";
 import { Checkbox } from "@ui/components/ui/checkbox";
 import {
@@ -55,9 +50,7 @@ import { UserDialogContent } from "./user";
 import React from "react";
 
 function toTitle(s: string) {
-  return s.replace(/^_*(.)|_+(.)/g, (s, c, d) =>
-    c ? c.toUpperCase() : ` ${d.toUpperCase()}`,
-  );
+  return s.replace(/^_*(.)|_+(.)/g, (s, c, d) => (c ? c.toUpperCase() : ` ${d.toUpperCase()}`));
 }
 
 type Fields<T> = {
@@ -121,9 +114,7 @@ function getColumnDef<T extends U, U>(
                 <DropdownMenuItem>
                   <DialogTrigger>Update</DialogTrigger>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => deleteObject(row.getValue("id"))}
-                >
+                <DropdownMenuItem onClick={() => deleteObject(row.getValue("id"))}>
                   Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>

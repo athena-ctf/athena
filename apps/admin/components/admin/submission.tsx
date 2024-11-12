@@ -15,29 +15,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@repo/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select";
 import { createSubmission } from "./actions";
 import { type DialogProps, submissionSchema } from "./schemas";
 import React, { useState } from "react";
 
-export function SubmissionDialogContent(
-  props: DialogProps<z.infer<typeof submissionSchema>>,
-) {
+export function SubmissionDialogContent(props: DialogProps<z.infer<typeof submissionSchema>>) {
   const form = useForm<z.infer<typeof submissionSchema>>({
     resolver: zodResolver(submissionSchema),
     mode: "onSubmit",
@@ -104,10 +89,7 @@ export function SubmissionDialogContent(
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Result</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a result" />
@@ -141,18 +123,11 @@ export function SubmissionCreateDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto mr-2 hidden h-8 lg:flex"
-        >
+        <Button variant="outline" size="sm" className="ml-auto mr-2 hidden h-8 lg:flex">
           <PlusCircle className="mr-2 h-4 w-4" /> Create
         </Button>
       </DialogTrigger>
-      <SubmissionDialogContent
-        action="Create"
-        closeDialog={() => setOpen(false)}
-      />
+      <SubmissionDialogContent action="Create" closeDialog={() => setOpen(false)} />
     </Dialog>
   );
 }

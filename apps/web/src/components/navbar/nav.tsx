@@ -3,7 +3,7 @@
 import { cn } from "@repo/ui/lib/utils";
 import { Link } from "@tanstack/react-router";
 
-export function MainNav() {
+export function Nav() {
   return (
     <div className="mr-4 hidden md:flex">
       <Link to="/" className="mr-6 flex items-center space-x-2">
@@ -14,25 +14,19 @@ export function MainNav() {
       <nav className="flex items-center gap-4 text-sm lg:gap-6">
         <Link
           to="/challenges"
-          className={cn(
-            "text-foreground/60 transition-colors hover:text-foreground/80",
-          )}
+          className={cn("text-foreground/60 transition-colors hover:text-foreground/80")}
         >
           Challenges
         </Link>
         <Link
           to="/scoreboard/team"
-          className={cn(
-            "text-foreground/60 transition-colors hover:text-foreground/80",
-          )}
+          className={cn("text-foreground/60 transition-colors hover:text-foreground/80")}
         >
           Scoreboard
         </Link>
         <Link
           to="/rules"
-          className={cn(
-            "text-foreground/60 transition-colors hover:text-foreground/80",
-          )}
+          className={cn("text-foreground/60 transition-colors hover:text-foreground/80")}
         >
           Rules
         </Link>

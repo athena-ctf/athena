@@ -30,26 +30,11 @@ import {
   VerticalTabsList,
   VerticalTabsTrigger,
 } from "./vertical-tabs";
-import {
-  Circle,
-  Download,
-  Lightbulb,
-  Lock,
-  LockOpen,
-  ScrollText,
-  Server,
-} from "lucide-react";
+import { Circle, Download, Lightbulb, Lock, LockOpen, ScrollText, Server } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-
-const difficultyColors = {
-  easy: "fill-green-400 text-green-400",
-  medium: "fill-yellow-300 text-yellow-300",
-  hard: "fill-red-500 text-red-500",
-  extreme: "",
-};
 
 export function ChallengeModal({
   challengeSummary,
@@ -82,25 +67,23 @@ export function ChallengeModal({
   };
 
   const unlockHint = (id: string, index: number) => {
-    fetchClient
-      .GET("/player/hint/unlock/{id}", { params: { path: { id } } })
-      .then((resp) => {
-        if (resp.error) {
-          toast.error("Could not unlock hint");
-          console.error(resp.error.message);
-        } else {
-          setChallengeDetails((details) => {
-            if (details) {
-              details.hints[index].status = {
-                kind: "unlocked",
-                value: resp.data.description,
-              };
-            }
+    fetchClient.GET("/player/hint/unlock/{id}", { params: { path: { id } } }).then((resp) => {
+      if (resp.error) {
+        toast.error("Could not unlock hint");
+        console.error(resp.error.message);
+      } else {
+        setChallengeDetails((details) => {
+          if (details) {
+            details.hints[index].status = {
+              kind: "unlocked",
+              value: resp.data.description,
+            };
+          }
 
-            return details;
-          });
-        }
-      });
+          return details;
+        });
+      }
+    });
     return "Loading ...";
   };
 
@@ -128,17 +111,12 @@ export function ChallengeModal({
       <DialogContent>
         <DialogHeader>
           <div className="flex place-content-center justify-between">
-            <Circle
-              className={
-                difficultyColors[challengeSummary.challenge.difficulty]
-              }
-            />
+            <Circle className={`${challengeSummary.challenge.level}`} />
             <div>
               <DialogTitle>{challengeSummary.challenge.title}</DialogTitle>
               <DialogDescription className="flex flex-col items-center py-3">
-                @{challengeSummary.challenge.author_name} &bull;{" "}
-                {challengeSummary.challenge.points} points &bull;{" "}
-                {challengeSummary.challenge.solves} Solves
+                @{challengeSummary.challenge.author_name} &bull; {challengeSummary.challenge.points}{" "}
+                points &bull; {challengeSummary.challenge.solves} Solves
               </DialogDescription>
             </div>
             <div className="flex flex-row space-x-2">
@@ -162,19 +140,18 @@ export function ChallengeModal({
                 </Tooltip>
               </TooltipProvider>
             </VerticalTabsTrigger>
-            {challengeSummary.challenge.container_meta &&
-              !challengeSummary.challenge.container_meta.single_instance && (
-                <VerticalTabsTrigger value="instance">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Server />
-                      </TooltipTrigger>
-                      <TooltipContent>Create Instance</TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </VerticalTabsTrigger>
-              )}
+            {challengeSummary.challenge.challenge_type === "containerized" && (
+              <VerticalTabsTrigger value="instance">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Server />
+                    </TooltipTrigger>
+                    <TooltipContent>Create Instance</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </VerticalTabsTrigger>
+            )}
             {challengeDetails?.files.length && (
               <VerticalTabsTrigger value="files">
                 <TooltipProvider>
@@ -201,13 +178,9 @@ export function ChallengeModal({
             )}
           </VerticalTabsList>
           <VerticalTabsContent value="description">
-            <ScrollArea className="h-max">
-              {challengeSummary.challenge.description}
-            </ScrollArea>
+            <ScrollArea className="h-max">{challengeSummary.challenge.description}</ScrollArea>
           </VerticalTabsContent>
-          <VerticalTabsContent value="instance">
-            {/* TODO */}
-          </VerticalTabsContent>
+          <VerticalTabsContent value="instance">{/* TODO */}</VerticalTabsContent>
           <VerticalTabsContent value="files">
             <div className="flex flex-col justify-between space-y-2">
               {challengeDetails?.files.map((file) => (
@@ -224,8 +197,8 @@ export function ChallengeModal({
               {challengeDetails?.hints.map((hint, index) => (
                 <AccordionItem value={hint.id} key={hint.id}>
                   <AccordionTrigger>
-                    {hint.status.kind === "unlocked" ? <LockOpen /> : <Lock />}{" "}
-                    Hint #{index} ({hint.cost} Points)
+                    {hint.status.kind === "unlocked" ? <LockOpen /> : <Lock />} Hint #{index} (
+                    {hint.cost} Points)
                   </AccordionTrigger>
                   <AccordionContent>
                     {hint.status.kind === "unlocked"

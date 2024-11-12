@@ -29,8 +29,7 @@ export function SiteHeader({
         <nav className="flex items-center justify-end space-x-2">
           <CtfTimer config={config} />
           <ModeToggle />
-          {typeof notifications !== "undefined" &&
-          typeof playerProfile !== "undefined" ? (
+          {typeof notifications !== "undefined" && typeof playerProfile !== "undefined" ? (
             <>
               <PlayerNotification notifications={notifications} />
               <ProfileDropdown user={playerProfile} logout={logout} />

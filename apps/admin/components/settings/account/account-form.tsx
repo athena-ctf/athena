@@ -20,11 +20,7 @@ import {
   FormMessage,
 } from "@ui/components/ui/form";
 import { Input } from "@ui/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@ui/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@ui/components/ui/popover";
 import { cn } from "@ui/lib/utils";
 import { CalendarIcon, CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -99,8 +95,7 @@ export function AccountForm() {
                 <Input placeholder="Your name" {...field} />
               </FormControl>
               <FormDescription>
-                This is the name that will be displayed on your profile and in
-                emails.
+                This is the name that will be displayed on your profile and in emails.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -122,11 +117,7 @@ export function AccountForm() {
                         !field.value && "text-muted-foreground",
                       )}
                     >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
+                      {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
@@ -136,16 +127,12 @@ export function AccountForm() {
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
+                    disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
                     initialFocus
                   />
                 </PopoverContent>
               </Popover>
-              <FormDescription>
-                Your date of birth is used to calculate your age.
-              </FormDescription>
+              <FormDescription>Your date of birth is used to calculate your age.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -168,9 +155,7 @@ export function AccountForm() {
                       )}
                     >
                       {field.value
-                        ? languages.find(
-                            (language) => language.value === field.value,
-                          )?.label
+                        ? languages.find((language) => language.value === field.value)?.label
                         : "Select language"}
                       <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -193,9 +178,7 @@ export function AccountForm() {
                             <CheckIcon
                               className={cn(
                                 "mr-2 h-4 w-4",
-                                language.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
+                                language.value === field.value ? "opacity-100" : "opacity-0",
                               )}
                             />
                             {language.label}

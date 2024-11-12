@@ -3,21 +3,8 @@
 import { login } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { loginSchema } from "@repo/ui/schemas";
 import { Eye, EyeOff } from "lucide-react";
@@ -62,9 +49,7 @@ export default function Page({
     <Card className="m-auto max-w-sm">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
-        <CardDescription>
-          Enter your username below to login to your account
-        </CardDescription>
+        <CardDescription>Enter your username below to login to your account</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -98,17 +83,10 @@ export default function Page({
                   </div>
                   <FormControl>
                     <div className="relative">
-                      <Input
-                        {...field}
-                        type={showPassword ? "text" : "password"}
-                      />
+                      <Input {...field} type={showPassword ? "text" : "password"} />
                       <div className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-400">
                         {showPassword ? (
-                          <Eye
-                            size={18}
-                            strokeWidth={1.5}
-                            onClick={() => setShowPassword(false)}
-                          />
+                          <Eye size={18} strokeWidth={1.5} onClick={() => setShowPassword(false)} />
                         ) : (
                           <EyeOff
                             size={18}

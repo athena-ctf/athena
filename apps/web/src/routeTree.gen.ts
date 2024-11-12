@@ -218,8 +218,7 @@ const ProfileRouteChildren: ProfileRouteChildren = {
   ProfileUsernameRoute: ProfileUsernameRoute,
 };
 
-const ProfileRouteWithChildren =
-  ProfileRoute._addFileChildren(ProfileRouteChildren);
+const ProfileRouteWithChildren = ProfileRoute._addFileChildren(ProfileRouteChildren);
 
 interface TeamRouteChildren {
   TeamTeamnameRoute: typeof TeamTeamnameRoute;

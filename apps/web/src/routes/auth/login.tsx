@@ -17,12 +17,13 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { fetchClient } from "@repo/api";
+import { useAuthStore } from "@/stores/auth";
 
 const loginSearchSchema = z.object({
   next: z.string().url().catch(""),
@@ -46,6 +47,7 @@ export default function Index() {
 
   const navigate = useNavigate();
   const { next } = Route.useSearch();
+  const { login } = useAuthStore();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -56,6 +58,7 @@ export default function Index() {
       toast.error("Could not login");
       console.error(resp.error.message);
     } else {
+      login(resp.data);
       toast.success("Logged in successfully");
       navigate({ to: next });
     }
@@ -65,9 +68,7 @@ export default function Index() {
     <Card className="m-auto max-w-sm">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
-        <CardDescription>
-          Enter your username below to login to your account
-        </CardDescription>
+        <CardDescription>Enter your username below to login to your account</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -92,26 +93,16 @@ export default function Index() {
                 <FormItem>
                   <div className="flex flex-row justify-between">
                     <FormLabel>Password</FormLabel>
-                    <Link
-                      to="/auth/reset"
-                      className="ml-auto inline-block text-sm underline"
-                    >
+                    <Link to="/auth/reset" className="ml-auto inline-block text-sm underline">
                       Forgot your password?
                     </Link>
                   </div>
                   <FormControl>
                     <div className="relative">
-                      <Input
-                        {...field}
-                        type={showPassword ? "text" : "password"}
-                      />
+                      <Input {...field} type={showPassword ? "text" : "password"} />
                       <div className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-400">
                         {showPassword ? (
-                          <Eye
-                            size={18}
-                            strokeWidth={1.5}
-                            onClick={() => setShowPassword(false)}
-                          />
+                          <Eye size={18} strokeWidth={1.5} onClick={() => setShowPassword(false)} />
                         ) : (
                           <EyeOff
                             size={18}
@@ -127,7 +118,7 @@ export default function Index() {
               )}
             />
             <Button type="submit" className="w-full">
-              Login
+              {form.formState.isSubmitting && <Loader2 className="animate-spin" />} Login
             </Button>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}

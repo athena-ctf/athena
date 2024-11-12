@@ -10,14 +10,6 @@ import {
 } from "@repo/ui/components/card";
 import { Circle } from "lucide-react";
 
-const difficulty = {
-  easy: "fill-green-400 text-green-400",
-  medium: "fill-yellow-300 text-yellow-300",
-  hard: "fill-red-500 text-red-500",
-  extreme: " fill-purple-900 text-purple-900",
-} as const;
-
-// TODO: add proper colors
 const stateColor = {
   solved: "",
   unsolved: "",
@@ -37,7 +29,7 @@ export function ChallengeCard({
             <div className="flex place-content-center justify-between">
               <div className="flex place-items-center space-x-4">
                 <Circle
-                  className={difficulty[challengeSummary.challenge.difficulty]}
+                  className={`${challengeSummary.challenge.level}`} // TODO: read from ctf settings
                 />
                 <CardTitle className="flex flex-col items-center text-xl">
                   {challengeSummary.challenge.title}

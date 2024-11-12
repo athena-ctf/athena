@@ -34,9 +34,7 @@ export function ProfileDropdown({
       <DropdownMenuContent className="w-40">
         <DropdownMenuLabel>
           <div className="place-content-center">
-            <span className="font-mono text-sm font-light">
-              @{user.username}
-            </span>
+            <span className="font-mono text-sm font-light">@{user.username}</span>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

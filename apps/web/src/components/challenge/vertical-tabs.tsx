@@ -68,9 +68,4 @@ const VerticalTabsContent = forwardRef<
 
 VerticalTabsContent.displayName = TabsPrimitive.Content.displayName;
 
-export {
-  VerticalTabs,
-  VerticalTabsContent,
-  VerticalTabsList,
-  VerticalTabsTrigger,
-};
+export { VerticalTabs, VerticalTabsContent, VerticalTabsList, VerticalTabsTrigger };

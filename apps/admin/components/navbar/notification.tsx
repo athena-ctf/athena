@@ -50,11 +50,7 @@ export function PlayerNotification({
                     variant="outline"
                     onClick={() => {
                       deleteNotification(notification.id).then(() => {
-                        setNotifs(
-                          notifs.filter(
-                            (notif) => notif.id !== notification.id,
-                          ),
-                        );
+                        setNotifs(notifs.filter((notif) => notif.id !== notification.id));
                       });
                     }}
                   >

@@ -1,22 +1,20 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 import { ChallengeCard } from "@/components/challenge/card";
-import {
-  MainChallengesSearch,
-  MobileChallengesSearch,
-} from "@/components/challenge/search";
+import { ChallengeSearch } from "@/components/challenge/search";
 import { type components, fetchClient } from "@repo/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import ChallengesFilter from "@/components/challenge/filter";
 
 export const Route = createLazyFileRoute("/challenges")({
   component: Index,
 });
 
 function Index() {
-  const [challenges, setChallenges] = useState<
-    components["schemas"]["ChallengeSummary"][]
-  >([]); // TODO: add loading screen
+  const [challenges, setChallenges] = useState<components["schemas"]["ChallengeSummary"][]>([]);
+  const [filtered, setFiltered] = useState<components["schemas"]["ChallengeSummary"][]>([]);
+  const [results, setResults] = useState<components["schemas"]["ChallengeSummary"][]>([]);
 
   useEffect(() => {
     fetchClient.GET("/player/challenges").then((resp) => {
@@ -30,18 +28,31 @@ function Index() {
 
   return (
     <div className="m-2">
-      <div className="mr-4 flex justify-between md:hidden">
-        <MobileChallengesSearch />
-      </div>
-      <div className="mr-4 hidden justify-between md:flex">
-        <MainChallengesSearch />
+      <div className="mr-4 flex justify-between">
+        <ChallengesFilter
+          tags={[]}
+          difficulties={[]}
+          onChange={(tags, difficulties, statuses) => {
+            setFiltered(
+              challenges.filter((challenge) => {
+                const hasMatchingTag = tags.some((tag) =>
+                  challenge.tags.some((newTag) => newTag.value === tag),
+                );
+                const hasMatchingDifficulty = difficulties.some(
+                  (difficulty) => challenge.challenge.level.toString() === difficulty,
+                );
+                const hasMatchingStatus = statuses.some((status) => challenge.state === status);
+
+                return hasMatchingTag || hasMatchingDifficulty || hasMatchingStatus;
+              }),
+            );
+          }}
+        />
+        <ChallengeSearch challenges={filtered} onChange={(results) => setResults(results)} />
       </div>
       <div className="py-5">
-        {challenges?.map((challengeSummary) => (
-          <ChallengeCard
-            challengeSummary={challengeSummary}
-            key={challengeSummary.challenge.id}
-          />
+        {results?.map((challengeSummary) => (
+          <ChallengeCard challengeSummary={challengeSummary} key={challengeSummary.challenge.id} />
         ))}
       </div>
     </div>

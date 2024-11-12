@@ -15,23 +15,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { Switch } from "../../../../packages/ui/src/components/ui/switch";
 import { createPlayer } from "./actions";
 import { type DialogProps, playerSchema } from "./schemas";
 import React, { useState } from "react";
 
-export function PlayerDialogContent(
-  props: DialogProps<z.infer<typeof playerSchema>>,
-) {
+export function PlayerDialogContent(props: DialogProps<z.infer<typeof playerSchema>>) {
   const form = useForm<z.infer<typeof playerSchema>>({
     resolver: zodResolver(playerSchema),
     defaultValues: props.values,
@@ -114,10 +105,7 @@ export function PlayerDialogContent(
                     <FormLabel>Verified</FormLabel>
                   </div>
                   <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                 </FormItem>
               )}
@@ -138,11 +126,7 @@ export function PlayerCreateDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto mr-2 hidden h-8 lg:flex"
-        >
+        <Button variant="outline" size="sm" className="ml-auto mr-2 hidden h-8 lg:flex">
           <PlusCircle className="mr-2 h-4 w-4" /> Create
         </Button>
       </DialogTrigger>

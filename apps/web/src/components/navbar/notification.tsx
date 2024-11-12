@@ -1,6 +1,6 @@
 "use client";
 
-import type { components } from "@repo/api";
+import { fetchClient, type components } from "@repo/api";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/alert";
 import { Button } from "@repo/ui/components/button";
 import {
@@ -12,12 +12,24 @@ import {
 import { ScrollArea } from "@repo/ui/components/scroll-area";
 import { formatDistance } from "date-fns";
 import { Bell, RefreshCcw } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-export function PlayerNotification({
-  notifications,
-}: {
-  notifications: components["schemas"]["NotificationModel"][];
-}) {
+export function PlayerNotification() {
+  const [notifications, setNotifications] = useState<components["schemas"]["NotificationModel"][]>(
+    [],
+  );
+
+  useEffect(() => {
+    fetchClient.GET("/player/notifications").then((resp) => {
+      if (resp.error) {
+        toast.error(resp.error.message);
+      } else {
+        setNotifications(resp.data);
+      }
+    });
+  }, []);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

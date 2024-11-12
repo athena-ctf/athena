@@ -3,14 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import {
-  Bold,
-  Italic,
-  List,
-  ListOrdered,
-  PlusCircle,
-  Strikethrough,
-} from "lucide-react";
+import { Bold, Italic, List, ListOrdered, PlusCircle, Strikethrough } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -25,22 +18,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@repo/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select";
 import { Toggle } from "../../../../packages/ui/src/components/ui/toggle";
 import { createChallenge } from "./actions";
 import { type DialogProps, challengeSchema } from "./schemas";
@@ -134,9 +114,7 @@ function DescriptionEditor({
 }
 
 export function ChallengeDialogContent(
-  props: DialogProps<
-    Omit<z.infer<typeof challengeSchema>, "tags" | "container_build_context">
-  >,
+  props: DialogProps<Omit<z.infer<typeof challengeSchema>, "tags" | "container_build_context">>,
 ) {
   const form = useForm<z.infer<typeof challengeSchema>>({
     resolver: zodResolver(challengeSchema),
@@ -194,10 +172,7 @@ export function ChallengeDialogContent(
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <DescriptionEditor
-                      description={field.value}
-                      onChange={field.onChange}
-                    />
+                    <DescriptionEditor description={field.value} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -209,23 +184,18 @@ export function ChallengeDialogContent(
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Difficulty</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a difficulty" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {["easy", "medium", "hard", "extreme"].map(
-                        (difficulty) => (
-                          <SelectItem value={difficulty} key={difficulty}>
-                            {difficulty}
-                          </SelectItem>
-                        ),
-                      )}
+                      {["easy", "medium", "hard", "extreme"].map((difficulty) => (
+                        <SelectItem value={difficulty} key={difficulty}>
+                          {difficulty}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -277,23 +247,18 @@ export function ChallengeDialogContent(
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Status</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a status" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {["active", "scheduled", "maintenance"].map(
-                        (difficulty) => (
-                          <SelectItem value={difficulty} key={difficulty}>
-                            {difficulty}
-                          </SelectItem>
-                        ),
-                      )}
+                      {["active", "scheduled", "maintenance"].map((difficulty) => (
+                        <SelectItem value={difficulty} key={difficulty}>
+                          {difficulty}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -306,10 +271,7 @@ export function ChallengeDialogContent(
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Flag Type</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a flag type" />
@@ -358,18 +320,11 @@ export function ChallengeCreateDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto mr-2 hidden h-8 lg:flex"
-        >
+        <Button variant="outline" size="sm" className="ml-auto mr-2 hidden h-8 lg:flex">
           <PlusCircle className="mr-2 h-4 w-4" /> Create
         </Button>
       </DialogTrigger>
-      <ChallengeDialogContent
-        action="Create"
-        closeDialog={() => setOpen(false)}
-      />
+      <ChallengeDialogContent action="Create" closeDialog={() => setOpen(false)} />
     </Dialog>
   );
 }

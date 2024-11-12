@@ -51,10 +51,7 @@ export function TeamScoreChart({ data }: TeamScoreChartProps) {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
             <Line
               dataKey="score"
               type="natural"
@@ -66,9 +63,7 @@ export function TeamScoreChart({ data }: TeamScoreChartProps) {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">
-          Showing total solved challenges
-        </div>
+        <div className="leading-none text-muted-foreground">Showing total solved challenges</div>
       </CardFooter>
     </Card>
   );

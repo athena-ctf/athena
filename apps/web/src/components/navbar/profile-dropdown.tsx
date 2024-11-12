@@ -1,9 +1,5 @@
 import type { components } from "@repo/api";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@repo/ui/components/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,19 +30,14 @@ export function ProfileDropdown({
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarImage
-            src={`https://gravatar.com/avatar/${url}?d=robohash`}
-            alt={user.username}
-          />
+          <AvatarImage src={`https://gravatar.com/avatar/${url}?d=robohash`} alt={user.username} />
           <AvatarFallback>{user.username}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40">
         <DropdownMenuLabel>
           <div className="place-content-center">
-            <span className="font-mono text-sm font-light">
-              @{user.username}
-            </span>
+            <span className="font-mono text-sm font-light">@{user.username}</span>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

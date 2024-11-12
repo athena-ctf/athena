@@ -16,22 +16,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { createBan } from "./actions";
 import { type DialogProps, banSchema } from "./schemas";
 import React from "react";
 
-export function BanDialogContent(
-  props: DialogProps<z.infer<typeof banSchema>>,
-) {
+export function BanDialogContent(props: DialogProps<z.infer<typeof banSchema>>) {
   const form = useForm<z.infer<typeof banSchema>>({
     resolver: zodResolver(banSchema),
     mode: "onSubmit",
@@ -95,11 +86,7 @@ export function BanCreateDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto mr-2 hidden h-8 lg:flex"
-        >
+        <Button variant="outline" size="sm" className="ml-auto mr-2 hidden h-8 lg:flex">
           <PlusCircle className="mr-2 h-4 w-4" /> Create
         </Button>
       </DialogTrigger>

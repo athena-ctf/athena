@@ -1,25 +1,37 @@
-import { Button } from "@repo/ui/components/button";
+import { useMemo } from "react";
+import Fuse from "fuse.js";
 import { Input } from "@repo/ui/components/input";
-import { Search } from "lucide-react";
+import type { components } from "@repo/api";
 
-export function MainChallengesSearch() {
-  return (
-    <div className="flex w-[40%]">
-      <Input className="" placeholder="Search Challenges here" />
-      <Button>
-        <Search />
-      </Button>
-    </div>
-  );
+interface FuzzySearchInputProps {
+  challenges: components["schemas"]["ChallengeSummary"][];
+  onChange: (results: components["schemas"]["ChallengeSummary"][]) => void;
+  placeholder?: string;
 }
 
-export function MobileChallengesSearch() {
-  return (
-    <div className="flex w-auto">
-      <Input className="" placeholder="Search Challenges here" />
-      <Button>
-        <Search />
-      </Button>
-    </div>
+export function ChallengeSearch({
+  challenges,
+  onChange,
+  placeholder = "Search...",
+}: FuzzySearchInputProps) {
+  const fuse = useMemo(
+    () =>
+      new Fuse(challenges, {
+        keys: [
+          { name: "challenge.title", weight: 0.7 },
+          { name: "challenge.description", weight: 0.3 },
+        ],
+        threshold: 0.4,
+        includeScore: true,
+      }),
+    [challenges],
   );
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const results = !value.trim() ? challenges : fuse.search(value).map((result) => result.item);
+    onChange(results);
+  };
+
+  return <Input onChange={handleSearch} placeholder={placeholder} />;
 }

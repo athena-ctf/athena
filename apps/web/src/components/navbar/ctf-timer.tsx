@@ -1,19 +1,11 @@
-import {
-  add,
-  addDays,
-  endOfDay,
-  format,
-  intervalToDuration,
-  isBefore,
-  parseISO,
-} from "date-fns";
+import { add, addDays, endOfDay, format, intervalToDuration, isBefore, parseISO } from "date-fns";
 import { useEffect, useState } from "react";
 
 export function CtfTimer() {
   const now = new Date();
   const endOfToday = endOfDay(now);
 
-  const endDate = addDays(parseISO("2024-10-13T11:31:36.949912752Z"), 2);
+  const endDate = addDays(parseISO("2024-10-13T11:31:36.949912752Z"), 2); // TODO: add ctf settings
   const remainingHours = endOfToday.getHours() - now.getHours();
   const nextDayAndExtraTime = add(now, {
     hours: remainingHours + 4,

@@ -13,9 +13,7 @@ export async function middleware(req: NextRequest) {
   const refreshToken = req.cookies.get("refresh_token")?.value;
 
   if (!accessToken || !refreshToken) {
-    return NextResponse.redirect(
-      new URL(`/auth/login?next=${req.nextUrl.pathname}`, req.url),
-    );
+    return NextResponse.redirect(new URL(`/auth/login?next=${req.nextUrl.pathname}`, req.url));
   }
 
   try {
@@ -25,9 +23,7 @@ export async function middleware(req: NextRequest) {
     );
 
     if (claims.payload.role === 0) {
-      return NextResponse.redirect(
-        new URL("/auth/login?error=forbidden", req.url),
-      );
+      return NextResponse.redirect(new URL("/auth/login?error=forbidden", req.url));
     }
   } catch {
     const { data, error } = await client.POST("/auth/token/refresh", {
@@ -38,9 +34,7 @@ export async function middleware(req: NextRequest) {
     });
 
     if (error) {
-      return NextResponse.redirect(
-        new URL(`/auth/login?next=${req.nextUrl.pathname}`, req.url),
-      );
+      return NextResponse.redirect(new URL(`/auth/login?next=${req.nextUrl.pathname}`, req.url));
     }
 
     const response = NextResponse.next();

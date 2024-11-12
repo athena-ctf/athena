@@ -28,13 +28,7 @@ export default async function Page() {
         actionButton={<PlayerCreateDialog />}
         data={data}
         filters={[]}
-        searchableColumns={[
-          "display_name",
-          "id",
-          "team_id",
-          "user_id",
-          "ban_id",
-        ]}
+        searchableColumns={["display_name", "id", "team_id", "user_id", "ban_id"]}
       />
     </div>
   );

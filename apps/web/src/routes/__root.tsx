@@ -28,12 +28,7 @@ function Index() {
           <SiteHeader />
           <Outlet />
         </div>
-        <Toaster
-          richColors
-          position="bottom-right"
-          closeButton
-          visibleToasts={5}
-        />
+        <Toaster richColors position="bottom-right" closeButton visibleToasts={5} />
       </ThemeProvider>
     </>
   );

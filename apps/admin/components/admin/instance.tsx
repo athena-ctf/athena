@@ -15,22 +15,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { createInstance } from "./actions";
 import { type DialogProps, instanceSchema } from "./schemas";
 import React, { useState } from "react";
 
-export function InstanceDialogContent(
-  props: DialogProps<z.infer<typeof instanceSchema>>,
-) {
+export function InstanceDialogContent(props: DialogProps<z.infer<typeof instanceSchema>>) {
   const form = useForm<z.infer<typeof instanceSchema>>({
     resolver: zodResolver(instanceSchema),
     defaultValues: props.values,
@@ -94,18 +85,11 @@ export function InstanceCreateDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto mr-2 hidden h-8 lg:flex"
-        >
+        <Button variant="outline" size="sm" className="ml-auto mr-2 hidden h-8 lg:flex">
           <PlusCircle className="mr-2 h-4 w-4" /> Create
         </Button>
       </DialogTrigger>
-      <InstanceDialogContent
-        action="Create"
-        closeDialog={() => setOpen(false)}
-      />
+      <InstanceDialogContent action="Create" closeDialog={() => setOpen(false)} />
     </Dialog>
   );
 }

@@ -15,22 +15,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { createTeam } from "./actions";
 import { type DialogProps, teamSchema } from "./schemas";
 import React, { useState } from "react";
 
-export function TeamDialogContent(
-  props: DialogProps<z.infer<typeof teamSchema>>,
-) {
+export function TeamDialogContent(props: DialogProps<z.infer<typeof teamSchema>>) {
   const form = useForm<z.infer<typeof teamSchema>>({
     resolver: zodResolver(teamSchema),
     mode: "onSubmit",
@@ -94,11 +85,7 @@ export function TeamCreateDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto mr-2 hidden h-8 lg:flex"
-        >
+        <Button variant="outline" size="sm" className="ml-auto mr-2 hidden h-8 lg:flex">
           <PlusCircle className="mr-2 h-4 w-4" /> Create
         </Button>
       </DialogTrigger>

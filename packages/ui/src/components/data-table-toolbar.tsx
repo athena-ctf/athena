@@ -37,9 +37,7 @@ export function DataTableToolbar<TData, TValue>({
   searchableColumns,
 }: DataTableToolbarProps<TData, TValue>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-  const [columnName, setColumnName] = useState<string>(
-    searchableColumns[0] ?? "",
-  );
+  const [columnName, setColumnName] = useState<string>(searchableColumns[0] ?? "");
 
   return (
     <div className="flex items-center justify-between">
@@ -63,12 +61,8 @@ export function DataTableToolbar<TData, TValue>({
             </Select>
             <Input
               placeholder="Filter column..."
-              value={
-                (table.getColumn(columnName)?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table.getColumn(columnName)?.setFilterValue(event.target.value)
-              }
+              value={(table.getColumn(columnName)?.getFilterValue() as string) ?? ""}
+              onChange={(event) => table.getColumn(columnName)?.setFilterValue(event.target.value)}
               className="h-8 w-[150px] lg:w-[250px]"
             />
           </>

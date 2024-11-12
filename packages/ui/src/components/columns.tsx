@@ -1,12 +1,7 @@
 "use client";
 
 import type { components } from "@repo/api";
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { type ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@ui/components/data-table-column-header";
 import { Button } from "@ui/components/ui/button";
 import { Checkbox } from "@ui/components/ui/checkbox";
@@ -30,16 +25,13 @@ import { MoreHorizontal } from "lucide-react";
 import React from "react";
 import { TeamModal } from "../../../../apps/codex/components/team/modal";
 
-export const playerTeamColumns: ColumnDef<
-  components["schemas"]["TeamPoints"]
->[] = [
+export const playerTeamColumns: ColumnDef<components["schemas"]["TeamPoints"]>[] = [
   {
     id: "select",
     header: ({ table }) => (
       <Checkbox
         checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
+          table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
@@ -55,35 +47,25 @@ export const playerTeamColumns: ColumnDef<
   },
   {
     accessorKey: "team.name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Team Name" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Team Name" />,
     cell: ({ row }) => {
       return <div className="pl-5 font-medium">{row.original.team.name}</div>;
     },
   },
   {
     accessorKey: "players",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Players" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Players" />,
     cell: ({ row }) => {
       return (
-        <div className="pl-5 font-medium">
-          {(row.getValue("players") as unknown[]).length}
-        </div>
+        <div className="pl-5 font-medium">{(row.getValue("players") as unknown[]).length}</div>
       );
     },
   },
   {
     accessorKey: "total_points",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Total Points" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Total Points" />,
     cell: ({ row }) => {
-      return (
-        <div className="pl-5 font-medium">{row.getValue("total_points")}</div>
-      );
+      return <div className="pl-5 font-medium">{row.getValue("total_points")}</div>;
     },
   },
   {
@@ -120,10 +102,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
@@ -141,10 +120,7 @@ export function DataTable<TData, TValue>({
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 );
               })}
@@ -154,10 +130,7 @@ export function DataTable<TData, TValue>({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
+              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

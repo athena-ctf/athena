@@ -1,9 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@ui/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@ui/components/ui/card";
 // biome-ignore lint/style/useImportType: <explanation>
 import React from "react";
 

@@ -10,9 +10,7 @@ import {
   Text,
 } from "@react-email/components";
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
+const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "";
 
 export const ResetPassword = () => (
   <Html>
@@ -21,18 +19,12 @@ export const ResetPassword = () => (
     <Body style={main}>
       <Container style={container}>
         <Section style={logoContainer}>
-          <Img
-            src={`${baseUrl}logo.png`}
-            width="120"
-            height="36"
-            alt="Athena CTF"
-          />
+          <Img src={`${baseUrl}logo.png`} width="120" height="36" alt="Athena CTF" />
         </Section>
         <Heading style={h1}>Reset your Password</Heading>
         <Text style={heroText}>
-          We received a request to reset your password for your account at
-          Athena CTF. To proceed with the password reset, please use the
-          following one-time password :
+          We received a request to reset your password for your account at Athena CTF. To proceed
+          with the password reset, please use the following one-time password :
         </Text>
 
         <Section style={codeBox}>
@@ -40,8 +32,8 @@ export const ResetPassword = () => (
         </Section>
 
         <Text style={text}>
-          If you didn't request this email, there's nothing to worry about, you
-          can safely ignore it.
+          If you didn't request this email, there's nothing to worry about, you can safely ignore
+          it.
         </Text>
       </Container>
     </Body>

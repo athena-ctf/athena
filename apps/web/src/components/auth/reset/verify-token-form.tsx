@@ -23,10 +23,7 @@ const verifyEmailSchema = z.object({
   token: z.string().length(8),
 });
 
-export function VerifyTokenForm({
-  prev,
-  next,
-}: { prev: () => void; next: () => void }) {
+export function VerifyTokenForm({ prev, next }: { prev: () => void; next: () => void }) {
   const form = useForm<z.infer<typeof verifyEmailSchema>>({
     resolver: zodResolver(verifyEmailSchema),
     mode: "onChange",

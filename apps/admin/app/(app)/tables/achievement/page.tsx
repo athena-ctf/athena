@@ -28,13 +28,7 @@ export default async function Page() {
         actionButton={<AchievementCreateDialog />}
         data={data}
         filters={[]}
-        searchableColumns={[
-          "value",
-          "id",
-          "challenge_id",
-          "player_id",
-          "team_id",
-        ]}
+        searchableColumns={["value", "id", "challenge_id", "player_id", "team_id"]}
       />
     </div>
   );

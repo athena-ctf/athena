@@ -27,14 +27,11 @@ export function EmailForm({ next }: { next: () => void }) {
   const { setEmail } = useResetStore();
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
-    const resp = await fetchClient.POST(
-      "/auth/player/reset-password/send-token",
-      {
-        body: {
-          email: values.email,
-        },
+    const resp = await fetchClient.POST("/auth/player/reset-password/send-token", {
+      body: {
+        email: values.email,
       },
-    );
+    });
     if (resp.error) {
       toast.error(resp.error.message);
     } else {

@@ -2,12 +2,7 @@ import { Badge } from "@ui/components/ui/badge";
 import { Button } from "@ui/components/ui/button";
 import { Input, type InputProps } from "@ui/components/ui/input";
 import { XIcon } from "lucide-react";
-import {
-  type Dispatch,
-  type SetStateAction,
-  forwardRef,
-  useState,
-} from "react";
+import { type Dispatch, type SetStateAction, forwardRef, useState } from "react";
 
 type InputTagsProps = InputProps & {
   value: string[];

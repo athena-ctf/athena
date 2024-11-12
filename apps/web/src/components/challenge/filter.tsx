@@ -1,189 +1,159 @@
-"use client";
-
-import type { components } from "@repo/api";
+import { useState, useCallback } from "react";
+import { X } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@repo/ui/components/command";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@repo/ui/components/dropdown-menu";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@repo/ui/components/popover";
-import { cn } from "@repo/ui/lib/utils";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
+import { FilterPopover } from "./filter-popover";
+import { FilterBadge } from "./filter-badge";
+import type { components } from "@repo/api";
 
-export function MainChallengesFilter({
-  tag,
-}: { tag: components["schemas"]["TagModel"][] }) {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+const STATUS_OPTIONS = ["solved", "unsolved", "challenge_limit_reached"];
+
+interface ChallengesFilterProps {
+  tags: components["schemas"]["TagModel"][];
+  difficulties: { level: number; value: string }[];
+  onChange: (tags: string[], difficulties: string[], status: string[]) => void;
+}
+
+export function ChallengesFilter({ tags, difficulties, onChange }: ChallengesFilterProps) {
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
+
+  const [tagOpen, setTagOpen] = useState(false);
+  const [difficultyOpen, setDifficultyOpen] = useState(false);
+  const [statusOpen, setStatusOpen] = useState(false);
+
+  const toggleSelection = (array: string[], value: string): string[] => {
+    return array.includes(value) ? array.filter((item) => item !== value) : [...array, value];
+  };
+
+  const handleTagSelect = (tag: string) => {
+    const newTags = toggleSelection(selectedTags, tag);
+    setSelectedTags(newTags);
+    onChange(newTags, selectedDifficulties, selectedStatus);
+  };
+
+  const handleDifficultySelect = (difficulty: string) => {
+    const newDifficulties = toggleSelection(selectedDifficulties, difficulty);
+    setSelectedDifficulties(newDifficulties);
+    onChange(selectedTags, newDifficulties, selectedStatus);
+  };
+
+  const handleStatusSelect = (status: string) => {
+    const newStatus = toggleSelection(selectedStatus, status);
+    setSelectedStatus(newStatus);
+    onChange(selectedTags, selectedDifficulties, newStatus);
+  };
+
+  const clearAllFilters = () => {
+    setSelectedTags([]);
+    setSelectedDifficulties([]);
+    setSelectedStatus([]);
+    onChange([], [], []);
+  };
+
+  const removeFilter = useCallback(
+    (category: string, value: string) => {
+      switch (category) {
+        case "tag": {
+          const newTags = selectedTags.filter((t) => t !== value);
+          setSelectedTags(newTags);
+          onChange(newTags, selectedDifficulties, selectedStatus);
+          break;
+        }
+        case "difficulty": {
+          const newDifficulties = selectedDifficulties.filter((d) => d !== value);
+          setSelectedDifficulties(newDifficulties);
+          onChange(selectedTags, newDifficulties, selectedStatus);
+          break;
+        }
+        case "status": {
+          const newStatus = selectedStatus.filter((s) => s !== value);
+          setSelectedStatus(newStatus);
+          onChange(selectedTags, selectedDifficulties, newStatus);
+          break;
+        }
+      }
+    },
+    [selectedTags, selectedDifficulties, selectedStatus, onChange],
+  );
+
+  const hasActiveFilters =
+    selectedTags.length > 0 || selectedDifficulties.length > 0 || selectedStatus.length > 0;
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[100px] justify-between"
-        >
-          {value ? tag.find((tag) => tag.value === value)?.value : "Filter"}
-          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandInput placeholder="Search Filter..." />
-          <CommandList>
-            <CommandEmpty>No Filter found.</CommandEmpty>
-            <CommandGroup>
-              {tag.map((tag) => (
-                <CommandItem
-                  key={tag.id}
-                  value={tag.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 size-4",
-                      value === tag.value ? "opacity-100" : "opacity-0",
-                    )}
-                  />
-                  {tag.value}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <FilterPopover
+          open={tagOpen}
+          setOpen={setTagOpen}
+          options={tags}
+          selected={selectedTags}
+          onSelect={handleTagSelect}
+          placeholder="Search tags..."
+          buttonText="Tags"
+        />
+
+        <FilterPopover
+          open={difficultyOpen}
+          setOpen={setDifficultyOpen}
+          options={difficulties.map((d) => ({
+            id: d.level.toString(),
+            value: d.value,
+          }))}
+          selected={selectedDifficulties}
+          onSelect={handleDifficultySelect}
+          placeholder="Search difficulty..."
+          buttonText="Difficulty"
+        />
+
+        <FilterPopover
+          open={statusOpen}
+          setOpen={setStatusOpen}
+          options={STATUS_OPTIONS.map((s) => ({ id: s, value: s }))}
+          selected={selectedStatus}
+          onSelect={handleStatusSelect}
+          placeholder="Search status..."
+          buttonText="Status"
+        />
+
+        {hasActiveFilters && (
+          <Button variant="ghost" size="sm" className="h-8 px-2 lg:px-3" onClick={clearAllFilters}>
+            Reset
+            <X className="ml-2 size-4" />
+          </Button>
+        )}
+      </div>
+
+      {hasActiveFilters && (
+        <div className="flex flex-wrap gap-2">
+          {selectedTags.map((tag) => (
+            <FilterBadge
+              key={tag}
+              label={tag}
+              category="tag"
+              onRemove={() => removeFilter("tag", tag)}
+            />
+          ))}
+          {selectedDifficulties.map((difficulty) => (
+            <FilterBadge
+              key={difficulty}
+              label={difficulty}
+              category="difficulty"
+              onRemove={() => removeFilter("difficulty", difficulty)}
+            />
+          ))}
+          {selectedStatus.map((status) => (
+            <FilterBadge
+              key={status}
+              label={status}
+              category="status"
+              onRemove={() => removeFilter("status", status)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
-export function MobileChallengesFilter({
-  tag,
-}: { tag: components["schemas"]["TagModel"][] }) {
-  const [openFilter1, setOpenFilter1] = useState(false);
-  const [openFilter2, setOpenFilter2] = useState(false);
-  const [valueFilter1, setValueFilter1] = useState("");
-  const [valueFilter2, setValueFilter2] = useState("");
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Filter</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="flex flex-col">
-        <Popover open={openFilter1} onOpenChange={setOpenFilter1}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={openFilter1}
-              className="w-[100px] justify-between"
-            >
-              {valueFilter1
-                ? tag.find((tag) => tag.value === valueFilter1)?.value
-                : "Filter"}
-              <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0">
-            <Command>
-              <CommandInput placeholder="Search Filter..." />
-              <CommandList>
-                <CommandEmpty>No Filter found.</CommandEmpty>
-                <CommandGroup>
-                  {tag.map((tag) => (
-                    <CommandItem
-                      key={tag.id}
-                      value={tag.value}
-                      onSelect={(currentValue) => {
-                        setValueFilter1(
-                          currentValue === valueFilter1 ? "" : currentValue,
-                        );
-                        setOpenFilter1(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 size-4",
-                          valueFilter1 === tag.value
-                            ? "opacity-100"
-                            : "opacity-0",
-                        )}
-                      />
-                      {tag.value}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-        <Popover open={openFilter2} onOpenChange={setOpenFilter2}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={openFilter2}
-              className="w-[100px] justify-between"
-            >
-              {valueFilter2
-                ? tag.find((tag) => tag.value === valueFilter2)?.value
-                : "Filter"}
-              <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0">
-            <Command>
-              <CommandInput placeholder="Search Filter..." />
-              <CommandList>
-                <CommandEmpty>No Filter found.</CommandEmpty>
-                <CommandGroup>
-                  {tag.map((tag) => (
-                    <CommandItem
-                      key={tag.id}
-                      value={tag.value}
-                      onSelect={(currentValue) => {
-                        setValueFilter2(
-                          currentValue === valueFilter2 ? "" : currentValue,
-                        );
-                        setOpenFilter2(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 size-4",
-                          valueFilter2 === tag.value
-                            ? "opacity-100"
-                            : "opacity-0",
-                        )}
-                      />
-                      {tag.value}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
+export default ChallengesFilter;

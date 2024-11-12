@@ -9,12 +9,7 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@repo/ui/components/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@repo/ui/components/tabs";
 import { Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -46,8 +41,10 @@ export function ChooseTeamForm({
   const { setTeam, email } = useRegisterStore();
 
   const onJoinFormSubmit = async (values: z.infer<typeof joinTeamSchema>) => {
-    const resp = await fetchClient.POST("/player/invite/verify", {
-      body: { invite_id: values.inviteId, team_name: values.teamName },
+    const resp = await fetchClient.GET("/auth/player/register/verify/invite", {
+      params: {
+        query: { invite_id: values.inviteId, team_name: values.teamName },
+      },
     });
 
     if (resp.error) {
@@ -60,12 +57,9 @@ export function ChooseTeamForm({
         invite_id: values.inviteId,
       });
 
-      const respSendToken = await fetchClient.POST(
-        "/auth/player/register/send-token",
-        {
-          body: { email },
-        },
-      );
+      const respSendToken = await fetchClient.POST("/auth/player/register/send-token", {
+        body: { email },
+      });
 
       if (respSendToken.error) {
         toast.error(respSendToken.error.message);
@@ -81,9 +75,7 @@ export function ChooseTeamForm({
     mode: "onChange",
   });
 
-  const onCreateFormSubmit = async (
-    values: z.infer<typeof createTeamSchema>,
-  ) => {
+  const onCreateFormSubmit = async (values: z.infer<typeof createTeamSchema>) => {
     setTeam({
       kind: "create",
       team_name: values.teamName,
@@ -109,10 +101,7 @@ export function ChooseTeamForm({
       </TabsList>
       <TabsContent value="create">
         <Form {...createForm}>
-          <form
-            onSubmit={createForm.handleSubmit(onCreateFormSubmit)}
-            className="space-y-2"
-          >
+          <form onSubmit={createForm.handleSubmit(onCreateFormSubmit)} className="space-y-2">
             <FormField
               control={createForm.control}
               name="teamName"
@@ -128,11 +117,7 @@ export function ChooseTeamForm({
             />
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
-              <Link
-                to="/auth/login"
-                search={{ next: "" }}
-                className="underline"
-              >
+              <Link to="/auth/login" search={{ next: "" }} className="underline">
                 Login
               </Link>
             </div>
@@ -145,10 +130,7 @@ export function ChooseTeamForm({
       </TabsContent>
       <TabsContent value="join">
         <Form {...joinForm}>
-          <form
-            onSubmit={joinForm.handleSubmit(onJoinFormSubmit)}
-            className="space-y-2"
-          >
+          <form onSubmit={joinForm.handleSubmit(onJoinFormSubmit)} className="space-y-2">
             <FormField
               control={joinForm.control}
               name="teamName"

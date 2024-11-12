@@ -1,15 +1,7 @@
 "use client";
 
 import type { CtfConfig } from "@repo/config/schema";
-import {
-  add,
-  addDays,
-  endOfDay,
-  format,
-  intervalToDuration,
-  isBefore,
-  parseISO,
-} from "date-fns";
+import { add, addDays, endOfDay, format, intervalToDuration, isBefore, parseISO } from "date-fns";
 import React from "react";
 import { useEffect, useState } from "react";
 

@@ -23,16 +23,8 @@ export const challengeSchema = z.object({
   ]),
   max_points: z.number(),
   min_points: z.number(),
-  status: z.union([
-    z.literal("active"),
-    z.literal("maintenance"),
-    z.literal("scheduled"),
-  ]),
-  flag_type: z.union([
-    z.literal("static"),
-    z.literal("regex"),
-    z.literal("peruser"),
-  ]),
+  status: z.union([z.literal("active"), z.literal("maintenance"), z.literal("scheduled")]),
+  flag_type: z.union([z.literal("static"), z.literal("regex"), z.literal("peruser")]),
   title: z.string(),
   tags: z.array(z.string()),
   container_build_context: z.custom<File>((file) => file instanceof File, {

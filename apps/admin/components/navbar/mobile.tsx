@@ -54,11 +54,7 @@ export function MobileNav({ config }: { config: CtfConfig }) {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="pr-0">
-        <MobileLink
-          href="/"
-          className="flex items-center"
-          onOpenChange={setOpenNav}
-        >
+        <MobileLink href="/" className="flex items-center" onOpenChange={setOpenNav}>
           <NextImage src="/logo.jpeg" alt="CTF Logo" width={16} height={16} />
           <span className="font-bold">{config.ctf.name}</span>
         </MobileLink>
@@ -89,13 +85,7 @@ interface MobileLinkProps extends LinkProps {
   className?: string;
 }
 
-function MobileLink({
-  href,
-  onOpenChange,
-  className,
-  children,
-  ...props
-}: MobileLinkProps) {
+function MobileLink({ href, onOpenChange, className, children, ...props }: MobileLinkProps) {
   const router = useRouter();
   return (
     <Link

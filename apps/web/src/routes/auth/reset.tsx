@@ -68,10 +68,7 @@ export default function Index() {
               <CardDescription>{step.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <NewPasswordForm
-                next={() => stepper.next()}
-                prev={() => stepper.prev()}
-              />
+              <NewPasswordForm prev={() => stepper.prev()} />
             </CardContent>
           </>
         ),

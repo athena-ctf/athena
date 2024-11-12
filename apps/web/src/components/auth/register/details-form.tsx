@@ -36,12 +36,11 @@ export function DetailsForm({ next }: { next: () => void }) {
     mode: "onChange",
   });
 
-  const { setDisplayName, setEmail, setPassword, setUsername } =
-    useRegisterStore();
+  const { setDisplayName, setEmail, setPassword, setUsername } = useRegisterStore();
 
   const onSubmit = async (values: z.infer<typeof detailsSchema>) => {
-    const resp = await fetchClient.GET("/auth/player/register/exists", {
-      params: { query: { email: values.email, username: values.username } },
+    const resp = await fetchClient.GET("/auth/player/register/verify/email", {
+      params: { query: { email: values.email } },
     });
 
     if (resp.error) {
@@ -112,17 +111,9 @@ export function DetailsForm({ next }: { next: () => void }) {
                   <Input {...field} type={showPassword ? "text" : "password"} />
                   <div className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-400">
                     {showPassword ? (
-                      <Eye
-                        size={18}
-                        strokeWidth={1.5}
-                        onClick={() => setShowPassword(false)}
-                      />
+                      <Eye size={18} strokeWidth={1.5} onClick={() => setShowPassword(false)} />
                     ) : (
-                      <EyeOff
-                        size={18}
-                        strokeWidth={1.5}
-                        onClick={() => setShowPassword(true)}
-                      />
+                      <EyeOff size={18} strokeWidth={1.5} onClick={() => setShowPassword(true)} />
                     )}
                   </div>
                 </div>
@@ -139,10 +130,7 @@ export function DetailsForm({ next }: { next: () => void }) {
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <div className="relative">
-                  <Input
-                    {...field}
-                    type={showConfirmPassword ? "text" : "password"}
-                  />
+                  <Input {...field} type={showConfirmPassword ? "text" : "password"} />
                   <div className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-400">
                     {showConfirmPassword ? (
                       <Eye

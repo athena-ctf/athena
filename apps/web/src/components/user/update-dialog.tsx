@@ -57,12 +57,10 @@ export default function UserUpdateDialog({
           <Button
             type="submit"
             onClick={() =>
-              updateProfile(player.id, player.team_id ?? "", displayName).then(
-                (res) => {
-                  if (res.error) toast.error(res.error.message);
-                  else toast.success("Updated profile successfully");
-                },
-              )
+              updateProfile(player.id, player.team_id ?? "", displayName).then((res) => {
+                if (res.error) toast.error(res.error.message);
+                else toast.success("Updated profile successfully");
+              })
             }
           >
             Save changes

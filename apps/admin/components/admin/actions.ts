@@ -3,9 +3,7 @@
 import { client, type components } from "@repo/api";
 import { cookies } from "next/headers";
 
-export async function createAchievement(
-  values: components["schemas"]["AchievementDetails"],
-) {
+export async function createAchievement(values: components["schemas"]["AchievementDetails"]) {
   const { data, error } = await client.POST("/achievement", {
     body: values,
     headers: {
@@ -35,9 +33,7 @@ export async function createBan(values: components["schemas"]["BanDetails"]) {
   return data;
 }
 
-export async function createChallenge(
-  values: components["schemas"]["CreateChallengeSchema"],
-) {
+export async function createChallenge(values: components["schemas"]["CreateChallengeSchema"]) {
   const { data, error } = await client.POST("/challenge", {
     body: values,
     headers: {
@@ -71,9 +67,7 @@ export async function createChallenge(
   return data;
 }
 
-export async function uploadFile(
-  values: components["schemas"]["UploadedFile"],
-) {
+export async function uploadFile(values: components["schemas"]["UploadedFile"]) {
   const { data, error } = await client.POST("/file/upload", {
     body: values,
     headers: {
@@ -127,9 +121,7 @@ export async function createHint(values: components["schemas"]["HintDetails"]) {
   return data;
 }
 
-export async function createInstance(
-  values: components["schemas"]["InstanceDetails"],
-) {
+export async function createInstance(values: components["schemas"]["InstanceDetails"]) {
   const { data, error } = await client.POST("/instance", {
     body: values,
     headers: {
@@ -144,9 +136,7 @@ export async function createInstance(
   return data;
 }
 
-export async function createInvite(
-  values: components["schemas"]["InviteDetails"],
-) {
+export async function createInvite(values: components["schemas"]["InviteDetails"]) {
   const { data, error } = await client.POST("/invite", {
     body: values,
     headers: {
@@ -161,9 +151,7 @@ export async function createInvite(
   return data;
 }
 
-export async function createNotification(
-  values: components["schemas"]["NotificationDetails"],
-) {
+export async function createNotification(values: components["schemas"]["NotificationDetails"]) {
   const { data, error } = await client.POST("/notification", {
     body: values,
     headers: {
@@ -178,9 +166,7 @@ export async function createNotification(
   return data;
 }
 
-export async function createPlayer(
-  values: components["schemas"]["PlayerDetails"],
-) {
+export async function createPlayer(values: components["schemas"]["PlayerDetails"]) {
   const { data, error } = await client.POST("/player", {
     body: values,
     headers: {
@@ -195,9 +181,7 @@ export async function createPlayer(
   return data;
 }
 
-export async function createSubmission(
-  values: components["schemas"]["SubmissionDetails"],
-) {
+export async function createSubmission(values: components["schemas"]["SubmissionDetails"]) {
   const { data, error } = await client.POST("/submission", {
     body: values,
     headers: {

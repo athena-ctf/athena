@@ -15,23 +15,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
 import { createHint } from "./actions";
 import { type DialogProps, hintSchema } from "./schemas";
 import React, { useState } from "react";
 
-export function HintDialogContent(
-  props: DialogProps<z.infer<typeof hintSchema>>,
-) {
+export function HintDialogContent(props: DialogProps<z.infer<typeof hintSchema>>) {
   const form = useForm<z.infer<typeof hintSchema>>({
     resolver: zodResolver(hintSchema),
     defaultValues: props.values,
@@ -108,11 +99,7 @@ export function HintCreateDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto mr-2 hidden h-8 lg:flex"
-        >
+        <Button variant="outline" size="sm" className="ml-auto mr-2 hidden h-8 lg:flex">
           <PlusCircle className="mr-2 h-4 w-4" /> Create
         </Button>
       </DialogTrigger>

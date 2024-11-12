@@ -17,11 +17,7 @@ import {
 
 import { cn } from "@repo/ui/lib/utils";
 import { Input } from "@repo/ui/input";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@repo/ui/resizable";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@repo/ui/resizable";
 import { Separator } from "@repo/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/tabs";
 import { TooltipProvider } from "@repo/ui/tooltip";
@@ -59,9 +55,7 @@ export function Mail({
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(sizes: number[]) => {
-          document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-            sizes,
-          )}`;
+          document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
         }}
         className="h-full max-h-[800px] items-stretch"
       >
@@ -73,20 +67,13 @@ export function Mail({
           maxSize={20}
           onCollapse={() => {
             setIsCollapsed(true);
-            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-              true,
-            )}`;
+            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`;
           }}
           onResize={() => {
             setIsCollapsed(false);
-            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-              false,
-            )}`;
+            document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`;
           }}
-          className={cn(
-            isCollapsed &&
-              "min-w-[50px] transition-all duration-300 ease-in-out",
-          )}
+          className={cn(isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out")}
         >
           <Nav
             isCollapsed={isCollapsed}
@@ -172,16 +159,10 @@ export function Mail({
             <div className="flex items-center px-4 py-2">
               <h1 className="text-xl font-bold">Inbox</h1>
               <TabsList className="ml-auto">
-                <TabsTrigger
-                  value="all"
-                  className="text-zinc-600 dark:text-zinc-200"
-                >
+                <TabsTrigger value="all" className="text-zinc-600 dark:text-zinc-200">
                   All mail
                 </TabsTrigger>
-                <TabsTrigger
-                  value="unread"
-                  className="text-zinc-600 dark:text-zinc-200"
-                >
+                <TabsTrigger value="unread" className="text-zinc-600 dark:text-zinc-200">
                   Unread
                 </TabsTrigger>
               </TabsList>
@@ -205,9 +186,7 @@ export function Mail({
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[2]}>
-          <MailDisplay
-            mail={mails.find((item) => item.id === mail.selected) || null}
-          />
+          <MailDisplay mail={mails.find((item) => item.id === mail.selected) || null} />
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>

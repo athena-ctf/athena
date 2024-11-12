@@ -30,10 +30,7 @@ const colors = [
 
 const chartConfig = {} satisfies ChartConfig;
 
-export function ScoreChart({
-  details,
-  names,
-}: components["schemas"]["LeaderboardModel"]) {
+export function ScoreChart({ details, names }: components["schemas"]["LeaderboardModel"]) {
   return (
     <Card>
       <CardHeader>
