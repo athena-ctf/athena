@@ -12,8 +12,16 @@ impl MigrationTrait for Migration {
                     .table(Flag::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Flag::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Flag::CreatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Flag::UpdatedAt).date_time().not_null())
+                    .col(
+                        ColumnDef::new(Flag::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Flag::UpdatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Flag::Value).string().not_null())
                     .col(ColumnDef::new(Flag::ChallengeId).uuid().not_null())
                     .col(ColumnDef::new(Flag::PlayerId).uuid())

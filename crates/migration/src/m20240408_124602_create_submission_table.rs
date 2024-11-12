@@ -17,8 +17,16 @@ impl MigrationTrait for Migration {
                             .col(Submission::ChallengeId)
                             .col(Submission::PlayerId),
                     )
-                    .col(ColumnDef::new(Submission::CreatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Submission::UpdatedAt).date_time().not_null())
+                    .col(
+                        ColumnDef::new(Submission::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Submission::UpdatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Submission::IsCorrect).boolean().not_null())
                     .col(ColumnDef::new(Submission::PlayerId).uuid().not_null())
                     .col(ColumnDef::new(Submission::ChallengeId).uuid().not_null())

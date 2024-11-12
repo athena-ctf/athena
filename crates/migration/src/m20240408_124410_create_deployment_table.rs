@@ -17,9 +17,21 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Deployment::CreatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Deployment::UpdatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Deployment::ExpiresAt).date_time().not_null())
+                    .col(
+                        ColumnDef::new(Deployment::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Deployment::UpdatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Deployment::ExpiresAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Deployment::ChallengeId).uuid().not_null())
                     .col(
                         ColumnDef::new(Deployment::Hostname)

@@ -15,4 +15,4 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud!(Achievement, single: [Player, Challenge], optional: [], multiple: []);
+oxide_macros::crud!(Achievement, single: [Player, Challenge], optional: [], multiple: []);

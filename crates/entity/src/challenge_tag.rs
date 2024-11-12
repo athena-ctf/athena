@@ -12,14 +12,13 @@ use serde::{Deserialize, Serialize};
     Serialize,
     Deserialize,
     utoipa::ToSchema,
-    oxide_derive::Details,
+    oxide_macros::Details,
 )]
 #[sea_orm(table_name = "challenge_tag")]
 #[schema(as = ChallengeTagModel)]
-#[oxide(table(name = "ChallengeTag", join))]
 pub struct Model {
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
     #[sea_orm(primary_key, auto_increment = false)]
     pub challenge_id: Uuid,
     #[sea_orm(primary_key, auto_increment = false)]

@@ -936,10 +936,11 @@ name = "entity"
 version = "0.1.0"
 dependencies = [
  "chrono",
- "oxide-derive",
+ "oxide-macros",
  "sea-orm",
  "serde",
  "utoipa",
+ "utoipa-config",
 ]
 
 [[package]]
@@ -2107,28 +2108,18 @@ dependencies = [
  "tower-sessions-redis-store",
  "tracing",
  "utoipa",
+ "utoipa-config",
  "uuid",
-]
-
-[[package]]
-name = "oxide-derive"
-version = "0.1.0"
-dependencies = [
- "darling",
- "heck 0.5.0",
- "quote",
- "syn 2.0.87",
 ]
 
 [[package]]
 name = "oxide-macros"
 version = "0.1.0"
 dependencies = [
- "chrono",
- "indexmap 2.6.0",
- "oxide-derive",
- "serde",
- "serde_json",
+ "darling",
+ "heck 0.5.0",
+ "quote",
+ "syn 2.0.87",
 ]
 
 [[package]]
@@ -4099,16 +4090,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "utoipa-config"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "06638ae95f08a14f307292bcf2e8ae34b6adbec526190a46a83d27363007a81e"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "utoipa-gen"
 version = "5.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5629efe65599d0ccd5d493688cbf6e03aa7c1da07fe59ff97cf5977ed0637f66"
 dependencies = [
+ "once_cell",
  "proc-macro2",
  "quote",
  "regex",
  "syn 2.0.87",
  "url",
+ "utoipa-config",
  "uuid",
 ]
 

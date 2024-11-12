@@ -11,6 +11,10 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+mod json_path;
+
+pub use json_path::JsonPath;
+
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Level {
     name: String,

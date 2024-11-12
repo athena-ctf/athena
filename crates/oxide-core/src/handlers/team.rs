@@ -17,7 +17,7 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud!(Team, single: [], optional: [], multiple: [Invite, Player]);
+oxide_macros::crud!(Team, single: [], optional: [], multiple: [Invite, Player]);
 
 #[utoipa::path(
     get,

@@ -12,4 +12,4 @@ use crate::errors::{Error, Result};
 use crate::schemas::{Challenge, ChallengeModel, CreateFileSchema, File, FileModel, JsonResponse};
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud!(File, single: [Challenge], optional: [], multiple: []);
+oxide_macros::crud!(File, single: [Challenge], optional: [], multiple: []);

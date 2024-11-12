@@ -15,4 +15,4 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud!(Deployment, single: [Challenge, Player], optional: [], multiple: [Instance]);
+oxide_macros::crud!(Deployment, single: [Challenge, Player], optional: [], multiple: [Instance]);

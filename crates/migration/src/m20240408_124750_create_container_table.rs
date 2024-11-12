@@ -12,8 +12,16 @@ impl MigrationTrait for Migration {
                     .table(Container::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Container::Id).uuid().primary_key())
-                    .col(ColumnDef::new(Container::CreatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Container::UpdatedAt).date_time().not_null())
+                    .col(
+                        ColumnDef::new(Container::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Container::UpdatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Container::ChallengeId).uuid().not_null())
                     .col(ColumnDef::new(Container::Name).string().not_null())
                     .col(ColumnDef::new(Container::Image).string().not_null())

@@ -12,8 +12,16 @@ impl MigrationTrait for Migration {
                     .table(Invite::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Invite::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Invite::CreatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Invite::UpdatedAt).date_time().not_null())
+                    .col(
+                        ColumnDef::new(Invite::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Invite::UpdatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Invite::Remaining).integer().not_null())
                     .col(ColumnDef::new(Invite::TeamId).uuid().not_null())
                     .foreign_key(

@@ -18,7 +18,7 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud!(Flag, single: [Challenge], optional: [Player], multiple: []);
+oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: []);
 
 static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(DashMap::new);
 

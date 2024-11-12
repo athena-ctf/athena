@@ -63,4 +63,8 @@ fn main() {
         perm_file.to_string(),
     )
     .expect("Failed to write permissions file");
+
+    utoipa_config::Config::new()
+        .alias_for("DateTimeWithTimeZone", "DateTime<FixedOffset>")
+        .write_to_file();
 }

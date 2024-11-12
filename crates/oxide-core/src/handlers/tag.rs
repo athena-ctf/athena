@@ -15,4 +15,4 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud!(Tag, single: [], optional: [], multiple: [ChallengeTag, Challenge]);
+oxide_macros::crud!(Tag, single: [], optional: [], multiple: [ChallengeTag, Challenge]);

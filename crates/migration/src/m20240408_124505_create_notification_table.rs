@@ -19,12 +19,12 @@ impl MigrationTrait for Migration {
                     )
                     .col(
                         ColumnDef::new(Notification::CreatedAt)
-                            .date_time()
+                            .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .col(
                         ColumnDef::new(Notification::UpdatedAt)
-                            .date_time()
+                            .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .col(ColumnDef::new(Notification::Title).string().not_null())

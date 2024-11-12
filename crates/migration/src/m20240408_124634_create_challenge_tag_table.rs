@@ -19,12 +19,12 @@ impl MigrationTrait for Migration {
                     )
                     .col(
                         ColumnDef::new(ChallengeTag::CreatedAt)
-                            .date_time()
+                            .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .col(
                         ColumnDef::new(ChallengeTag::UpdatedAt)
-                            .date_time()
+                            .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .col(ColumnDef::new(ChallengeTag::ChallengeId).uuid().not_null())

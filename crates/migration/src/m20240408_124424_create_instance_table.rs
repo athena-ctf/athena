@@ -12,8 +12,16 @@ impl MigrationTrait for Migration {
                     .table(Instance::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Instance::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Instance::CreatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Instance::UpdatedAt).date_time().not_null())
+                    .col(
+                        ColumnDef::new(Instance::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Instance::UpdatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
                     .col(
                         ColumnDef::new(Instance::ContainerId)
                             .string()

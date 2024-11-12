@@ -19,12 +19,12 @@ impl MigrationTrait for Migration {
                     )
                     .col(
                         ColumnDef::new(Achievement::CreatedAt)
-                            .date_time()
+                            .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .col(
                         ColumnDef::new(Achievement::UpdatedAt)
-                            .date_time()
+                            .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .col(ColumnDef::new(Achievement::Value).string().not_null())

@@ -12,4 +12,4 @@ use crate::errors::{Error, Result};
 use crate::schemas::{CreateInviteSchema, Invite, InviteModel, JsonResponse, Team, TeamModel};
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud!(Invite, single: [Team], optional: [], multiple: []);
+oxide_macros::crud!(Invite, single: [Team], optional: [], multiple: []);

@@ -15,4 +15,4 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud_join!(ChallengeTag, Challenge, Tag);
+oxide_macros::crud_join!(ChallengeTag, Challenge, Tag);

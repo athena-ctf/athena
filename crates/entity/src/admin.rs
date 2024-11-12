@@ -14,16 +14,15 @@ use super::sea_orm_active_enums::RoleEnum;
     Serialize,
     Deserialize,
     utoipa::ToSchema,
-    oxide_derive::Details,
+    oxide_macros::Details,
 )]
 #[sea_orm(table_name = "admin")]
 #[schema(as = AdminModel)]
-#[oxide(table(name = "Admin"))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
     pub role: RoleEnum,
     #[sea_orm(unique)]
     pub user_id: Uuid,

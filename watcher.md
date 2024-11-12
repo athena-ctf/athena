@@ -18,8 +18,8 @@ The schemas of the concerned tables are:
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
     pub value: String,
     pub prize: i32,
     pub challenge_id: Uuid,
@@ -32,8 +32,8 @@ pub struct Model {
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
     pub reason: String,
     pub duration: i32,
 }
@@ -44,8 +44,8 @@ pub struct Model {
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
     pub title: String,
     pub description: String,
     pub points: i32,
@@ -62,8 +62,8 @@ pub struct Model {
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
     pub description: String,
     pub cost: i32,
     pub challenge_id: Uuid,
@@ -75,8 +75,8 @@ pub struct Model {
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
     pub title: String,
     pub content: String,
     pub player_id: Option<Uuid>,
@@ -89,8 +89,8 @@ pub struct Model {
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
     pub team_id: Uuid,
     pub ban_id: Option<Uuid>,
     #[sea_orm(unique)]
@@ -105,8 +105,8 @@ pub struct Model {
 ```rs
 // submission
 pub struct Model {
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
     pub is_correct: bool, // Add score on create or update only if this is true
     #[sea_orm(primary_key, auto_increment = false)]
     pub player_id: Uuid,
@@ -120,8 +120,8 @@ pub struct Model {
 ```rs
 // unlock
 pub struct Model {
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
     #[sea_orm(primary_key, auto_increment = false)]
     pub player_id: Uuid,
     #[sea_orm(primary_key, auto_increment = false)]

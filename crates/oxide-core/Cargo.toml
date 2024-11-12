@@ -54,6 +54,7 @@ heck = "0.5.0"
 quote = "1.0.37"
 serde = { workspace = true }
 toml = "0.8.19"
+utoipa-config = "0.1.2"
 
 [features]
 file-transport = ["lettre/file-transport"]

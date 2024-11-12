@@ -12,7 +12,7 @@ use crate::errors::{Error, Result};
 use crate::schemas::{Ban, BanModel, CreateBanSchema, JsonResponse, Player, PlayerModel};
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud!(Ban, single: [Player], optional: [], multiple: []);
+oxide_macros::crud!(Ban, single: [Player], optional: [], multiple: []);
 
 #[utoipa::path(
     post,

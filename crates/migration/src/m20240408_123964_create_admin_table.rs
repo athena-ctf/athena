@@ -23,8 +23,16 @@ impl MigrationTrait for Migration {
                     .table(Admin::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Admin::Id).uuid().primary_key().not_null())
-                    .col(ColumnDef::new(Admin::CreatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Admin::UpdatedAt).date_time().not_null())
+                    .col(
+                        ColumnDef::new(Admin::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Admin::UpdatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
                     .col(
                         ColumnDef::new(Admin::Role)
                             .enumeration(RoleEnum, RoleVariants::iter())

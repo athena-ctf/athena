@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use axum::extract::{Path, State};
 use axum::Json;
-use oxide_macros::JsonPath;
+use config::JsonPath;
 use serde_json::Value;
 
 use crate::errors::{Error, Result};

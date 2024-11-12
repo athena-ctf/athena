@@ -15,7 +15,7 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud!(Admin, single: [User], optional: [], multiple: [Ticket]);
+oxide_macros::crud!(Admin, single: [User], optional: [], multiple: [Ticket]);
 
 #[utoipa::path(
     get,

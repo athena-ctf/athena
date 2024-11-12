@@ -8,4 +8,7 @@ chrono = { workspace = true }
 sea-orm = { workspace = true }
 serde = { workspace = true }
 utoipa = { workspace = true }
-oxide-derive = { path = "../oxide-derive" }
+oxide-macros = { path = "../oxide-macros" }
+
+[build-dependencies]
+utoipa-config = "0.1.2"

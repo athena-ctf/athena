@@ -3,9 +3,11 @@ name = "oxide-macros"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+proc-macro = true
+
 [dependencies]
-oxide-derive = { path = "../oxide-derive" }
-serde = { workspace = true }
-serde_json = { workspace = true }
-indexmap = { workspace = true }
-chrono = { workspace = true }
+darling = "0.20.10"
+quote = "1.0.37"
+syn = "2.0.79"
+heck = "0.5.0"

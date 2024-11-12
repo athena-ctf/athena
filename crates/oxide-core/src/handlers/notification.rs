@@ -15,7 +15,7 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud!(Notification, single: [], optional: [Player], multiple: []);
+oxide_macros::crud!(Notification, single: [], optional: [Player], multiple: []);
 
 #[utoipa::path(
     get,

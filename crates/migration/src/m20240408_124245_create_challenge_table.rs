@@ -28,8 +28,16 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Challenge::CreatedAt).date_time().not_null())
-                    .col(ColumnDef::new(Challenge::UpdatedAt).date_time().not_null())
+                    .col(
+                        ColumnDef::new(Challenge::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(Challenge::UpdatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Challenge::Title).string().not_null())
                     .col(ColumnDef::new(Challenge::Description).string().not_null())
                     .col(ColumnDef::new(Challenge::Points).integer().not_null())

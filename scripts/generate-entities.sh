@@ -3,7 +3,7 @@ sea generate entity \
     --with-copy-enums \
     --with-serde both \
     --serde-skip-hidden-column \
-    --model-extra-derives "utoipa::ToSchema","oxide_derive::Details" \
+    --model-extra-derives "utoipa::ToSchema","oxide_macros::Details" \
     --model-extra-attributes "schema(as = Model)",'oxide(table(name = ""))' \
     --enum-extra-derives "utoipa::ToSchema" \
     --enum-extra-attributes 'serde(rename_all = "snake_case")' \

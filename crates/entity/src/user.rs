@@ -14,16 +14,15 @@ use super::sea_orm_active_enums::GroupEnum;
     Serialize,
     Deserialize,
     utoipa::ToSchema,
-    oxide_derive::Details,
+    oxide_macros::Details,
 )]
 #[sea_orm(table_name = "user")]
 #[schema(as = UserModel)]
-#[oxide(table(name = "User", impl_new))]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
-    pub created_at: DateTime,
-    pub updated_at: DateTime,
+    pub created_at: DateTimeWithTimeZone,
+    pub updated_at: DateTimeWithTimeZone,
     pub username: String,
     #[sea_orm(unique)]
     pub email: String,

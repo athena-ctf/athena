@@ -14,4 +14,4 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud!(User, single: [], optional: [Admin, Player], multiple: []);
+oxide_macros::crud!(User, single: [], optional: [Admin, Player], multiple: []);

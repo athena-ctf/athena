@@ -14,4 +14,4 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::derive::crud_join!(Unlock, Player, Hint);
+oxide_macros::crud_join!(Unlock, Player, Hint);

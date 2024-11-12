@@ -12,8 +12,16 @@ impl MigrationTrait for Migration {
                     .table(File::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(File::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(File::CreatedAt).date_time().not_null())
-                    .col(ColumnDef::new(File::UpdatedAt).date_time().not_null())
+                    .col(
+                        ColumnDef::new(File::CreatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(File::UpdatedAt)
+                            .timestamp_with_time_zone()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(File::Name).string().not_null())
                     .col(ColumnDef::new(File::Url).string().not_null().unique_key())
                     .col(ColumnDef::new(File::ChallengeId).uuid().not_null())

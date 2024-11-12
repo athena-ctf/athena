@@ -1,4 +1,4 @@
-use chrono::Utc;
+use chrono::Local;
 use sea_orm::prelude::Uuid;
 use sea_orm::{ActiveValue, IntoActiveModel, IntoActiveValue};
 use serde::{Deserialize, Serialize};
@@ -42,7 +42,7 @@ impl IntoActiveModel<super::player::ActiveModel> for UpdateProfileSchema {
             id: ActiveValue::NotSet,
             user_id: ActiveValue::NotSet,
             created_at: ActiveValue::NotSet,
-            updated_at: ActiveValue::Set(Utc::now().naive_utc()),
+            updated_at: ActiveValue::Set(Local::now().fixed_offset()),
             team_id: self.team_id.map_or(ActiveValue::NotSet, ActiveValue::Set),
             ban_id: ActiveValue::NotSet,
             discord_id: self.discord_id.map_or(ActiveValue::NotSet, |discord_id| {
