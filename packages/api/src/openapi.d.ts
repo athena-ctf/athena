@@ -247,7 +247,7 @@ export interface paths {
     /** List challenge_tags */
     get: operations["list_challenge_tags"];
     put?: never;
-    /** Create ChallengeTag */
+    /** Create challenge_tag */
     post: operations["create_challenge_tag"];
     delete?: never;
     options?: never;
@@ -839,7 +839,7 @@ export interface paths {
     /** List submissions */
     get: operations["list_submissions"];
     put?: never;
-    /** Create Submission */
+    /** Create submission */
     post: operations["create_submission"];
     delete?: never;
     options?: never;
@@ -1055,7 +1055,7 @@ export interface paths {
     /** List unlocks */
     get: operations["list_unlocks"];
     put?: never;
-    /** Create Unlock */
+    /** Create unlock */
     post: operations["create_unlock"];
     delete?: never;
     options?: never;
@@ -2110,8 +2110,6 @@ export interface components {
     };
     TagSolves: {
       solves: number;
-      /** Format: uuid */
-      tag_id: string;
       tag_value: string;
     };
     TeamModel: {

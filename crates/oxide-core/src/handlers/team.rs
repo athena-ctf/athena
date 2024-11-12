@@ -6,7 +6,6 @@ use axum::routing::get;
 use axum::Router;
 use entity::links::{TeamToAchievement, TeamToChallenge, TeamToSubmission, TeamToUnlock};
 use fred::prelude::*;
-use oxide_macros::table_api;
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
@@ -18,7 +17,7 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-table_api!(Team, single: [], optional: [], multiple: [Invite, Player]);
+oxide_macros::derive::crud!(Team, single: [], optional: [], multiple: [Invite, Player]);
 
 #[utoipa::path(
     get,

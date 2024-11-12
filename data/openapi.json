@@ -1980,7 +1980,7 @@
         "tags": [
           "challenge_tag"
         ],
-        "summary": "Create ChallengeTag",
+        "summary": "Create challenge_tag",
         "operationId": "create_challenge_tag",
         "requestBody": {
           "content": {
@@ -6785,7 +6785,7 @@
         "tags": [
           "submission"
         ],
-        "summary": "Create Submission",
+        "summary": "Create submission",
         "operationId": "create_submission",
         "requestBody": {
           "content": {
@@ -8641,7 +8641,7 @@
         "tags": [
           "unlock"
         ],
-        "summary": "Create Unlock",
+        "summary": "Create unlock",
         "operationId": "create_unlock",
         "requestBody": {
           "content": {
@@ -12917,7 +12917,6 @@
       "TagSolves": {
         "type": "object",
         "required": [
-          "tag_id",
           "tag_value",
           "solves"
         ],
@@ -12925,10 +12924,6 @@
           "solves": {
             "type": "integer",
             "minimum": 0
-          },
-          "tag_id": {
-            "type": "string",
-            "format": "uuid"
           },
           "tag_value": {
             "type": "string"

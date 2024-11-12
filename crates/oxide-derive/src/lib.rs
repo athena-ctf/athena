@@ -18,3 +18,8 @@ pub fn derive_json_path(input: TokenStream) -> TokenStream {
 pub fn crud(input: TokenStream) -> TokenStream {
     crud::crud_impl(input)
 }
+
+#[proc_macro]
+pub fn crud_join(input: TokenStream) -> TokenStream {
+    crud::crud_join_impl(input)
+}

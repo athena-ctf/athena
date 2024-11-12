@@ -5,7 +5,6 @@ use axum::routing::get;
 use axum::Router;
 use dashmap::DashMap;
 use fred::prelude::*;
-use oxide_macros::table_api;
 use regex::Regex;
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel, TransactionTrait};
@@ -19,7 +18,7 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-table_api!(Flag, single: [Challenge], optional: [Player], multiple: []);
+oxide_macros::derive::crud!(Flag, single: [Challenge], optional: [Player], multiple: []);
 
 static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(DashMap::new);
 

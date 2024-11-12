@@ -88,7 +88,7 @@ pub fn derive_details_impl(input: TokenStream) -> TokenStream {
                         let now = chrono::Utc::now().naive_utc();
 
                         Self {
-                            id: uuid::Uuid::now_v7(),
+                            id: Uuid::now_v7(),
                             created_at: now,
                             updated_at: now,
                             #(#field_names: #field_names.into(),)*

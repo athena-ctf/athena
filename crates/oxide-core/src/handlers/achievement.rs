@@ -4,7 +4,6 @@ use axum::extract::{Json, Path, State};
 use axum::routing::get;
 use axum::Router;
 use fred::prelude::*;
-use oxide_macros::table_api;
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel};
 use uuid::Uuid;
@@ -16,4 +15,4 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-table_api!(Achievement, single: [Player, Challenge], optional: [], multiple: []);
+oxide_macros::derive::crud!(Achievement, single: [Player, Challenge], optional: [], multiple: []);
