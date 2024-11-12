@@ -11080,6 +11080,24 @@
           }
         }
       },
+      "ChallengeDeployment": {
+        "type": "object",
+        "required": [
+          "deployment",
+          "instances"
+        ],
+        "properties": {
+          "deployment": {
+            "$ref": "#/components/schemas/DeploymentModel"
+          },
+          "instances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InstanceModel"
+            }
+          }
+        }
+      },
       "ChallengeModel": {
         "type": "object",
         "required": [
@@ -11919,6 +11937,16 @@
           "hints"
         ],
         "properties": {
+          "deployment": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/ChallengeDeployment"
+              }
+            ]
+          },
           "files": {
             "type": "array",
             "items": {

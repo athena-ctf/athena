@@ -46,15 +46,14 @@ pub async fn retrieve_profile(
         .into_iter()
         .map(|tag| {
             (
-                tag.value.clone(),
+                tag.id,
                 TagSolves {
-                    tag_id: tag.id,
                     tag_value: tag.value,
                     solves: 0,
                 },
             )
         })
-        .collect::<HashMap<String, TagSolves>>();
+        .collect::<HashMap<_, _>>();
 
     let solved_challenges = player_model
         .find_related(Challenge)
@@ -66,7 +65,7 @@ pub async fn retrieve_profile(
         let tags = submitted_challenge.find_related(Tag).all(db).await?;
         for tag in tags {
             tags_map
-                .entry(tag.value)
+                .entry(tag.id)
                 .and_modify(|tag_solves| tag_solves.solves += 1);
         }
     }

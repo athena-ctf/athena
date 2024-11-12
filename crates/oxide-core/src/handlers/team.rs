@@ -53,15 +53,14 @@ pub async fn retrieve_team_by_teamname(
         .into_iter()
         .map(|tag| {
             (
-                tag.value.clone(),
+                tag.id,
                 TagSolves {
-                    tag_id: tag.id,
                     tag_value: tag.value,
                     solves: 0,
                 },
             )
         })
-        .collect::<HashMap<String, TagSolves>>();
+        .collect::<HashMap<_, _>>();
 
     let mut challenges = Vec::new();
 
@@ -77,7 +76,7 @@ pub async fn retrieve_team_by_teamname(
             .await?;
         for tag in tags {
             tags_map
-                .entry(tag.value)
+                .entry(tag.id)
                 .and_modify(|tag_solves| tag_solves.solves += 1);
         }
 
@@ -151,15 +150,14 @@ pub async fn retrieve_summary(
         .into_iter()
         .map(|tag| {
             (
-                tag.value.clone(),
+                tag.id,
                 TagSolves {
-                    tag_id: tag.id,
                     tag_value: tag.value,
                     solves: 0,
                 },
             )
         })
-        .collect::<HashMap<String, TagSolves>>();
+        .collect::<HashMap<_, _>>();
 
     for submitted_challenge in team_model
         .find_linked(TeamToChallenge)
@@ -173,7 +171,7 @@ pub async fn retrieve_summary(
             .await?;
         for tag in tags {
             tags_map
-                .entry(tag.value)
+                .entry(tag.id)
                 .and_modify(|tag_solves| tag_solves.solves += 1);
         }
     }

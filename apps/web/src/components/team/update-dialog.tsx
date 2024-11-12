@@ -1,7 +1,4 @@
-"use client";
-
 import type { components } from "@repo/api";
-import { updateProfile } from "@ui/components/actions";
 import { Button } from "@repo/ui/components/button";
 import {
   Dialog,

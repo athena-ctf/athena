@@ -20,7 +20,6 @@ pub struct Level {
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Ctf {
     pub name: String,
-    pub domain: String,
     pub description: String,
     pub time: Time,
     pub sponsors: IndexMap<String, Vec<Sponsor>>,
@@ -184,6 +183,7 @@ pub struct Token {
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Settings {
+    pub domain: String,
     pub ctf: Ctf,
     pub database: Database,
     pub redis: Redis,
@@ -205,9 +205,9 @@ fn gen_random_password() -> String {
 impl Default for Settings {
     fn default() -> Self {
         Self {
+            domain: "athena.io".to_owned(),
             ctf: Ctf {
                 name: "Athena CTF".to_owned(),
-                domain: "athena.io".to_owned(),
                 description: "Athena is a hosted platform for CTFs".to_owned(),
                 time: Time {
                     end: Utc::now().checked_add_days(Days::new(2)).unwrap(),

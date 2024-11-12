@@ -1,54 +1,13 @@
-// interface UserScoreChartProps {
-//     data: {
-//         date: string;
-//         score: number;
-//     }[];
-// }
-
-// export function UserScoreChart({ data }: UserScoreChartProps) {
-//   return (
-//     <Card>
-//       <CardContent>
-//         <ResponsiveContainer width={"95%"} height={300}>
-//           <LineChart
-//             className=""
-//             data={data}
-//             margin={{
-//               top: 5,
-//               right: 30,
-//               left: 20,
-//               bottom: 5,
-//             }}
-//           >
-//             <CartesianGrid strokeDasharray="3 3" />
-//             <XAxis dataKey="date" />
-//             <YAxis />
-//             <ChartTooltip />
-//             <Legend />
-//             <Line
-//               type="monotone"
-//               dataKey="score"
-//               stroke="#8884d8"
-//               activeDot={{ r: 8 }}
-//             />
-//           </LineChart>
-//         </ResponsiveContainer>
-//       </CardContent>
-//     </Card>
-//   );
-// }
-
-"use client";
-
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@repo/ui/card";
+import { Card, CardContent, CardTitle, CardHeader } from "@repo/ui/components/card";
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@repo/ui/chart";
+} from "@repo/ui/components/chart";
+
 interface UserScoreChartProps {
   data: {
     date: string;
@@ -66,7 +25,7 @@ export function UserScoreChart({ data }: UserScoreChartProps) {
   return (
     <Card>
       <CardHeader>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Showing total solved challenges</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -97,9 +56,8 @@ export function UserScoreChart({ data }: UserScoreChartProps) {
           </LineChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">Showing total solved challenges</div>
-      </CardFooter>
     </Card>
   );
 }
+
+// FIXME: what is this?

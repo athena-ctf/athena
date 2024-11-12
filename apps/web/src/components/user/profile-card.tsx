@@ -32,7 +32,7 @@ export function UserProfileCard({
           />
           <div className="flex w-full flex-col space-y-2">
             <div className="flex justify-between align-middle">
-              <span className="text-lg font-semibold">{player.display_name}</span>
+              <span className="text-lg font-semibold">{user.username}</span>
               <UserUpdateDialog player={player} />
             </div>
             <span className="text-sm text-neutral-500">@{user.username}</span>

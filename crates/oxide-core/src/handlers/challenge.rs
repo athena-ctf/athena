@@ -11,11 +11,11 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Achievement, AchievementModel, AuthPlayer, Challenge, ChallengeModel, ChallengeSummary,
-    ChallengeTag, ChallengeTagModel, Container, ContainerModel, CreateChallengeSchema, Deployment,
-    DeploymentModel, DetailedChallenge, File, FileModel, Flag, FlagModel, Hint, HintModel,
-    HintSummary, JsonResponse, Player, PlayerChallengeState, PlayerModel, Submission,
-    SubmissionModel, Tag, TagModel, Unlock, UnlockModel, UnlockStatus,
+    Achievement, AchievementModel, AuthPlayer, Challenge, ChallengeDeployment, ChallengeModel,
+    ChallengeSummary, ChallengeTag, ChallengeTagModel, Container, ContainerModel,
+    CreateChallengeSchema, Deployment, DeploymentModel, DetailedChallenge, File, FileModel, Flag,
+    FlagModel, Hint, HintModel, HintSummary, Instance, JsonResponse, Player, PlayerChallengeState,
+    PlayerModel, Submission, SubmissionModel, Tag, TagModel, Unlock, UnlockModel, UnlockStatus,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -127,12 +127,30 @@ pub async fn detailed_challenge(
         })
         .collect();
 
+    let deployment = if let Some(deployment_model) = Deployment::find()
+        .filter(entity::deployment::Column::PlayerId.eq(player.id))
+        .filter(entity::deployment::Column::ChallengeId.eq(id))
+        .one(&state.db_conn)
+        .await?
+    {
+        Some(ChallengeDeployment {
+            instances: deployment_model
+                .find_related(Instance)
+                .all(&state.db_conn)
+                .await?,
+            deployment: deployment_model,
+        })
+    } else {
+        None
+    };
+
     Ok(Json(DetailedChallenge {
         files: File::find()
             .filter(entity::file::Column::ChallengeId.eq(id))
             .all(&state.db_conn)
             .await?,
         hints,
+        deployment,
     }))
 }
 

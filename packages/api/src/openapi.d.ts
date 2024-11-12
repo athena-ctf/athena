@@ -1593,6 +1593,10 @@ export interface components {
     BanRelations: {
       player: components["schemas"]["PlayerModel"];
     };
+    ChallengeDeployment: {
+      deployment: components["schemas"]["DeploymentModel"];
+      instances: components["schemas"]["InstanceModel"][];
+    };
     ChallengeModel: {
       author_name: string;
       challenge_type: components["schemas"]["ChallengeTypeEnum"];
@@ -1830,6 +1834,7 @@ export interface components {
       player: components["schemas"]["PlayerModel"];
     };
     DetailedChallenge: {
+      deployment?: null | components["schemas"]["ChallengeDeployment"];
       files: components["schemas"]["FileModel"][];
       hints: components["schemas"]["HintSummary"][];
     };

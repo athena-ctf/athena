@@ -80,7 +80,7 @@ pub async fn start(settings: Settings) -> Result<()> {
         db_conn.clone(),
         settings.challenge.clone(),
         "caddy:2019".to_owned(),
-        settings.ctf.domain.clone(),
+        settings.domain.clone(),
     )?;
 
     let txn = db_conn.begin().await?;
@@ -93,11 +93,13 @@ pub async fn start(settings: Settings) -> Result<()> {
         expiration_duration: settings.token.token_expiry_in_secs,
     };
 
+    let settings = Arc::new(RwLock::new(settings));
+
     axum::serve(
         listener,
         app(Arc::new(AppState {
             db_conn,
-            settings: RwLock::new(settings),
+            settings: settings.clone(),
             token_manager,
             cache_client: cache_client.clone(),
             persistent_client: persistent_client.clone(),
@@ -115,6 +117,11 @@ pub async fn start(settings: Settings) -> Result<()> {
 
     persistent_client.quit().await?;
     persistent_conn.await.unwrap()?;
+
+    std::fs::write("", serde_json::to_vec(&*settings.read().await)?).map_err(|err| Error::Fs {
+        source: err,
+        path: "".to_owned(),
+    })?; // FIXME: provide actual path
 
     Ok(())
 }

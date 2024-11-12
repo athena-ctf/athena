@@ -1,5 +1,3 @@
-"use client";
-
 import { fetchClient, type components } from "@repo/api";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/alert";
 import { Button } from "@repo/ui/components/button";

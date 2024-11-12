@@ -8,11 +8,11 @@ import {
   TableRow,
 } from "@repo/ui/components/table";
 
-interface UserSolvedChallengeProps {
+export function UserSolvedChallenge({
+  challenge,
+}: {
   challenge: components["schemas"]["ChallengeModel"][];
-}
-
-export function UserSolvedChallenge({ challenge }: UserSolvedChallengeProps) {
+}) {
   return (
     <Table>
       <TableHeader>

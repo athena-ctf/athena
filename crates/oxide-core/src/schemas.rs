@@ -81,9 +81,16 @@ pub struct ChallengeSummary {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct ChallengeDeployment {
+    pub deployment: DeploymentModel,
+    pub instances: Vec<InstanceModel>,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct DetailedChallenge {
     pub files: Vec<FileModel>,
     pub hints: Vec<HintSummary>,
+    pub deployment: Option<ChallengeDeployment>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -112,7 +119,6 @@ pub struct StatSchema {
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct TagSolves {
-    pub tag_id: Uuid,
     pub tag_value: String,
     pub solves: usize,
 }

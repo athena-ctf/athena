@@ -6,14 +6,9 @@ import type { components } from "@repo/api";
 interface FuzzySearchInputProps {
   challenges: components["schemas"]["ChallengeSummary"][];
   onChange: (results: components["schemas"]["ChallengeSummary"][]) => void;
-  placeholder?: string;
 }
 
-export function ChallengeSearch({
-  challenges,
-  onChange,
-  placeholder = "Search...",
-}: FuzzySearchInputProps) {
+export function ChallengeSearch({ challenges, onChange }: FuzzySearchInputProps) {
   const fuse = useMemo(
     () =>
       new Fuse(challenges, {
@@ -33,5 +28,5 @@ export function ChallengeSearch({
     onChange(results);
   };
 
-  return <Input onChange={handleSearch} placeholder={placeholder} />;
+  return <Input onChange={handleSearch} placeholder="Search..." />;
 }

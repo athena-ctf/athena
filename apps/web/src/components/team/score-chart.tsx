@@ -1,13 +1,6 @@
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/components/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card";
 import {
   type ChartConfig,
   ChartContainer,
@@ -31,7 +24,7 @@ export function TeamScoreChart({ data }: TeamScoreChartProps) {
   return (
     <Card>
       <CardHeader>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Showing total solved challenges</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -62,9 +55,6 @@ export function TeamScoreChart({ data }: TeamScoreChartProps) {
           </LineChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">Showing total solved challenges</div>
-      </CardFooter>
     </Card>
   );
 }

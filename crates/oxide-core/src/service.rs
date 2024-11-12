@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use axum::response::IntoResponse;
 use axum::Json;
 pub use config::Settings;
@@ -12,7 +14,7 @@ use crate::token::TokenManager;
 
 pub struct AppState {
     pub db_conn: DbConn,
-    pub settings: RwLock<Settings>,
+    pub settings: Arc<RwLock<Settings>>,
 
     pub cache_client: RedisPool,
     pub persistent_client: RedisPool,
