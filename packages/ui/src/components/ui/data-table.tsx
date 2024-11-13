@@ -12,8 +12,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { DataTableFacetedFilterProps } from "@ui/components/data-table-faceted-filter";
-import { DataTableToolbar } from "@ui/components/data-table-toolbar";
+import type { DataTableFacetedFilterProps } from "@ui/components/ui/data-table-faceted-filter";
+import { DataTableToolbar } from "@ui/components/ui/data-table-toolbar";
 import { Button } from "@ui/components/ui/button";
 import {
   Select,

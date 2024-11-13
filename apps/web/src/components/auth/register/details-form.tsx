@@ -9,14 +9,13 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRegisterStore } from "@/stores/register";
 import { Link } from "@tanstack/react-router";
 import { fetchClient } from "@repo/api";
 import { toast } from "sonner";
+import { PasswordInput } from "@repo/ui/components/password-input";
 
 const detailsSchema = z
   .object({
@@ -54,9 +53,6 @@ export function DetailsForm({ next }: { next: () => void }) {
       next();
     }
   };
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
     <Form {...form}>
@@ -107,16 +103,7 @@ export function DetailsForm({ next }: { next: () => void }) {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Input {...field} type={showPassword ? "text" : "password"} />
-                  <div className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-400">
-                    {showPassword ? (
-                      <Eye size={18} strokeWidth={1.5} onClick={() => setShowPassword(false)} />
-                    ) : (
-                      <EyeOff size={18} strokeWidth={1.5} onClick={() => setShowPassword(true)} />
-                    )}
-                  </div>
-                </div>
+                <PasswordInput {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -129,24 +116,7 @@ export function DetailsForm({ next }: { next: () => void }) {
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Input {...field} type={showConfirmPassword ? "text" : "password"} />
-                  <div className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-400">
-                    {showConfirmPassword ? (
-                      <Eye
-                        size={18}
-                        strokeWidth={1.5}
-                        onClick={() => setShowConfirmPassword(false)}
-                      />
-                    ) : (
-                      <EyeOff
-                        size={18}
-                        strokeWidth={1.5}
-                        onClick={() => setShowConfirmPassword(true)}
-                      />
-                    )}
-                  </div>
-                </div>
+                <PasswordInput {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { loginSchema } from "@repo/ui/schemas";
-import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -26,8 +25,6 @@ export default function Page({
   });
 
   const router = useRouter();
-
-  const [showPassword, setShowPassword] = useState(false);
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
     login(values)

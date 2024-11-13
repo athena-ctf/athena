@@ -2,7 +2,7 @@
 
 import type { components } from "@repo/api";
 import { type ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "@ui/components/data-table-column-header";
+import { DataTableColumnHeader } from "@ui/components/ui/data-table-column-header";
 import { Button } from "@ui/components/ui/button";
 import { Checkbox } from "@ui/components/ui/checkbox";
 import { Dialog, DialogTrigger } from "@ui/components/ui/dialog";
@@ -23,7 +23,6 @@ import {
 } from "@ui/components/ui/table";
 import { MoreHorizontal } from "lucide-react";
 import React from "react";
-import { TeamModal } from "../../../../apps/codex/components/team/modal";
 
 export const playerTeamColumns: ColumnDef<components["schemas"]["TeamPoints"]>[] = [
   {

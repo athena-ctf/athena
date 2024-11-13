@@ -13,9 +13,9 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "./dropdown-menu";
 import React from "react";
-import { Button } from "./ui/button";
+import { Button } from "./button";
 import { Ellipsis } from "lucide-react";
 
 interface DataTableRowActionsProps<TData> {

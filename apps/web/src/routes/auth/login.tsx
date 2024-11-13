@@ -17,13 +17,13 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { PasswordInput } from "@repo/ui/components/password-input";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { fetchClient } from "@repo/api";
 import { useAuthStore } from "@/stores/auth";
+import { Loader2 } from "lucide-react";
 
 const loginSearchSchema = z.object({
   next: z.string().url().catch(""),
@@ -48,8 +48,6 @@ export default function Index() {
   const navigate = useNavigate();
   const { next } = Route.useSearch();
   const { login } = useAuthStore();
-
-  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (body: z.infer<typeof loginSchema>) => {
     const resp = await fetchClient.POST("/auth/player/login", { body });
@@ -98,20 +96,7 @@ export default function Index() {
                     </Link>
                   </div>
                   <FormControl>
-                    <div className="relative">
-                      <Input {...field} type={showPassword ? "text" : "password"} />
-                      <div className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-400">
-                        {showPassword ? (
-                          <Eye size={18} strokeWidth={1.5} onClick={() => setShowPassword(false)} />
-                        ) : (
-                          <EyeOff
-                            size={18}
-                            strokeWidth={1.5}
-                            onClick={() => setShowPassword(true)}
-                          />
-                        )}
-                      </div>
-                    </div>
+                    <PasswordInput {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
