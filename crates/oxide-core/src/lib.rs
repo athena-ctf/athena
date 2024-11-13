@@ -2,7 +2,6 @@ pub mod api;
 pub mod docker;
 pub mod errors;
 pub mod handlers;
-pub mod mail;
 pub mod middleware;
 pub mod permissions;
 pub mod schemas;

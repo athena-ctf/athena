@@ -118,10 +118,14 @@ pub async fn start(settings: Settings) -> Result<()> {
     persistent_client.quit().await?;
     persistent_conn.await.unwrap()?;
 
-    std::fs::write("", serde_json::to_vec(&*settings.read().await)?).map_err(|err| Error::Fs {
-        source: err,
-        path: "".to_owned(),
-    })?; // FIXME: provide actual path
+    let location = settings.read().await.location.clone().unwrap();
+
+    std::fs::write(&location, serde_json::to_vec(&*settings.read().await)?).map_err(|err| {
+        Error::Fs {
+            source: err,
+            path: location,
+        }
+    })?;
 
     Ok(())
 }

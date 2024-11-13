@@ -188,6 +188,8 @@ pub struct Token {
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Settings {
     pub domain: String,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub location: Option<String>,
     pub ctf: Ctf,
     pub database: Database,
     pub redis: Redis,
@@ -210,6 +212,7 @@ impl Default for Settings {
     fn default() -> Self {
         Self {
             domain: "athena.io".to_owned(),
+            location: None,
             ctf: Ctf {
                 name: "Athena CTF".to_owned(),
                 description: "Athena is a hosted platform for CTFs".to_owned(),
@@ -334,6 +337,7 @@ impl Settings {
     pub fn new(location: &str) -> Result<Self, Box<dyn Error>> {
         let s = Config::builder()
             .add_source(File::with_name(location))
+            .set_override("location", location)?
             .build()?;
 
         let settings = s.try_deserialize()?;

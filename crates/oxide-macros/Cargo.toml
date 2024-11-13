@@ -9,5 +9,5 @@ proc-macro = true
 [dependencies]
 darling = "0.20.10"
 quote = "1.0.37"
-syn = "2.0.79"
+syn = "2.0.87"
 heck = "0.5.0"

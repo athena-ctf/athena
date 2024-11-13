@@ -16,10 +16,6 @@ chrono = { workspace = true }
 entity = { path = "../entity" }
 fastrand = { workspace = true }
 fred = { version = "9.4.0", features = ["partial-tracing"] }
-imap = { version = "3.0.0-alpha.14", default-features = false, features = [
-    "rustls-tls",
-] }
-imap-proto = "0.16.5"
 lettre = { version = "0.11.10", default-features = false, features = [
     "tokio1-rustls-tls",
     "smtp-transport",
@@ -34,7 +30,7 @@ ring = "0.17.8"
 sea-orm = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-thiserror = "2.0.2"
+thiserror = "2.0.3"
 tokio = { workspace = true }
 tower-http = { workspace = true }
 tracing = { workspace = true }

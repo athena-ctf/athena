@@ -615,9 +615,9 @@ fn gen_delete_fn(entity: &Ident) -> impl ToTokens {
 
 fn gen_relations_fn(
     entity: &Ident,
-    single: Vec<Ident>,
-    multiple: Vec<Ident>,
-    optional: Vec<Ident>,
+    single: &[Ident],
+    multiple: &[Ident],
+    optional: &[Ident],
 ) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 
@@ -734,7 +734,7 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
     let retrieve_fn = gen_retrieve_fn(&entity);
     let update_fn = gen_update_fn(&entity);
     let delete_fn = gen_delete_fn(&entity);
-    let relations_fn = gen_relations_fn(&entity, single, multiple, optional);
+    let relations_fn = gen_relations_fn(&entity, &single, &multiple, &optional);
 
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 

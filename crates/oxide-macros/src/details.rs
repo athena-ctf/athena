@@ -29,11 +29,10 @@ pub fn derive_details_impl(input: TokenStream) -> TokenStream {
     );
 
     let binding = input.data.take_struct().unwrap();
-    let join = binding
+    let join = !binding
         .fields
         .iter()
-        .find(|f| f.ident.as_ref().is_some_and(|ident| ident == "id"))
-        .is_none();
+        .any(|f| f.ident.as_ref().is_some_and(|ident| ident == "id"));
 
     let detail_fields = binding.fields.iter().filter(|f| {
         f.ident
@@ -44,55 +43,38 @@ pub fn derive_details_impl(input: TokenStream) -> TokenStream {
     let field_names = &detail_fields.clone().map(|f| &f.ident).collect::<Vec<_>>();
     let field_types = &detail_fields.clone().map(|f| &f.ty).collect::<Vec<_>>();
 
-    let into_active_model = if join {
-        quote! {
-            fn into_active_model(self) -> ActiveModel {
-                ActiveModel {
-                    created_at: sea_orm::ActiveValue::NotSet,
-                    updated_at: sea_orm::ActiveValue::Set(chrono::Local::now().fixed_offset()),
-                    #(#field_names: sea_orm::ActiveValue::Set(self.#field_names),)*
-                }
-            }
-        }
-    } else {
-        quote! {
-            fn into_active_model(self) -> ActiveModel {
-                ActiveModel {
-                    id: sea_orm::ActiveValue::NotSet,
-                    created_at: sea_orm::ActiveValue::NotSet,
-                    updated_at: sea_orm::ActiveValue::Set(chrono::Local::now().fixed_offset()),
-                    #(#field_names: sea_orm::ActiveValue::Set(self.#field_names),)*
-                }
+    let (id_field_active_model, id_field_impl_new) = (!join)
+        .then_some((
+            quote! {
+                id: sea_orm::ActiveValue::NotSet,
+            },
+            quote! {
+                id: Uuid::now_v7(),
+            },
+        ))
+        .unzip();
+
+    let into_active_model = quote! {
+        fn into_active_model(self) -> ActiveModel {
+            ActiveModel {
+                #id_field_active_model
+                created_at: sea_orm::ActiveValue::NotSet,
+                updated_at: sea_orm::ActiveValue::Set(chrono::Local::now().fixed_offset()),
+                #(#field_names: sea_orm::ActiveValue::Set(self.#field_names),)*
             }
         }
     };
 
-    let impl_new = if join {
-        quote! {
-            impl Model {
-                pub fn new(#(#field_names: impl Into<#field_types>,)*) -> Self {
-                    let now = chrono::Local::now().fixed_offset();
+    let impl_new = quote! {
+        impl Model {
+            pub fn new(#(#field_names: impl Into<#field_types>,)*) -> Self {
+                let now = chrono::Local::now().fixed_offset();
 
-                    Self {
-                        created_at: now,
-                        updated_at: now,
-                        #(#field_names: #field_names.into(),)*
-                    }
-                }
-            }
-        }
-    } else {
-        quote! {
-            impl Model {
-                pub fn new(#(#field_names: impl Into<#field_types>,)*) -> Self {
-                    let now = chrono::Local::now().fixed_offset();
-
-                    Self {
-                        id: Uuid::now_v7(),
-                        created_at: now,
-                        updated_at: now,
-                        #(#field_names: #field_names.into(),)*
-                    }
+                Self {
+                    #id_field_impl_new
+                    created_at: now,
+                    updated_at: now,
+                    #(#field_names: #field_names.into(),)*
                 }
             }
         }
