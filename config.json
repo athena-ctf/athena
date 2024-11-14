@@ -1,22 +1,40 @@
 {
+  "domain": "athena.io",
   "ctf": {
     "name": "Athena CTF",
-    "domain": "athena.io",
     "description": "Athena is a hosted platform for CTFs",
     "time": {
-      "span": "2days",
-      "start": "2024-11-03T11:38:47.895665507Z",
-      "freeze": "1day"
+      "end": "2024-11-15T18:15:50.541489268Z",
+      "start": "2024-11-13T18:15:50.541530746Z",
+      "freeze": "2024-11-16T18:15:50.541530117Z"
     },
     "sponsors": {},
-    "prizes": {}
+    "prizes": {},
+    "level_map": {
+      "0": {
+        "name": "Very Easy",
+        "color": "#23332b"
+      },
+      "1": {
+        "name": "Easy",
+        "color": "#059c50"
+      },
+      "2": {
+        "name": "Medium",
+        "color": "#d0d40f"
+      },
+      "3": {
+        "name": "Hard",
+        "color": "#d4290f"
+      }
+    }
   },
   "database": {
     "host": "postgres",
     "port": 5432,
     "username": "postgres",
-    "password": "A3rztf9ww0lB",
-    "listener_channel": "notification_insert",
+    "password": "E122ezEav1wM",
+    "listener_channel": "athena_db_modification",
     "database_name": "athena_db"
   },
   "redis": {
@@ -24,13 +42,13 @@
       "host": "redis_cache",
       "port": 6379,
       "username": "redis_cache",
-      "password": "7pHVH8OsJTv2"
+      "password": "OWlvI735VlTq"
     },
     "persistent": {
       "host": "redis_token",
       "port": 6379,
       "username": "redis_token",
-      "password": "tMtXIdQRwiEX"
+      "password": "GzR5Ck43JeQ7"
     }
   },
   "file_storage": {
@@ -39,23 +57,23 @@
       "path": "/var/athena/static"
     }
   },
-  "jwt": {
-    "secret": "iaVxrN4uxPsS0s89FhlrsKP6MHQCmTKDZ7OYFCxEEqI=",
-    "access_token_timeout": 600,
-    "refresh_token_timeout": 86400
+  "session": {
+    "key": "KJ02bd3W9cDcT1gVOGQ8HO5u+EDXeWpZap+yviOji2c=",
+    "expiry_duration": 600,
+    "cookie_name": "sessionid"
   },
   "smtp": {
     "from": "noreply@athena.io",
     "reply_to": "admin@athena.io",
     "username": "athena_smtp",
-    "password": "8dplTDUeaOKO",
+    "password": "RR7cccgU4bM5",
     "server_url": "smtp.athena.io"
   },
   "docker": {
     "single_instance_duration": 15,
     "registry_url": "registry.athena.io",
     "registry_username": "athena",
-    "registry_password": "p2K5ggfUTj2l"
+    "registry_password": "pV8vNLkjpLpo"
   },
   "discord": {
     "welcome_channel_id": "",
@@ -73,7 +91,7 @@
   "challenge": {
     "container_registry": "registry.athena.io",
     "registry_username": "athena",
-    "registry_password": "a7OwcCj2ERWq",
+    "registry_password": "nSoCucAx4w5U",
     "container_timeout": 900,
     "player_flag_len": 20
   }

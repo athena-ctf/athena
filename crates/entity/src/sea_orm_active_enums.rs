@@ -15,9 +15,13 @@ use serde::{Deserialize, Serialize};
     Deserialize,
     utoipa::ToSchema,
 )]
-#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "flag_type_enum")]
+#[sea_orm(
+    rs_type = "String",
+    db_type = "Enum",
+    enum_name = "challenge_kind_enum"
+)]
 #[serde(rename_all = "snake_case")]
-pub enum ChallengeTypeEnum {
+pub enum ChallengeKindEnum {
     #[sea_orm(string_value = "containerized")]
     Containerized,
     #[sea_orm(string_value = "regex_flag")]

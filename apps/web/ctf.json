@@ -1,0 +1,29 @@
+{
+    "name": "Athena CTF",
+    "description": "Athena is a hosted platform for CTFs",
+    "time": {
+        "end": "2024-11-15T18:15:50.541489268Z",
+        "start": "2024-11-13T18:15:50.541530746Z",
+        "freeze": "2024-11-16T18:15:50.541530117Z"
+    },
+    "sponsors": {},
+    "prizes": {},
+    "level_map": {
+        "0": {
+            "name": "Very Easy",
+            "color": "#23332b"
+        },
+        "1": {
+            "name": "Easy",
+            "color": "#059c50"
+        },
+        "2": {
+            "name": "Medium",
+            "color": "#d0d40f"
+        },
+        "3": {
+            "name": "Hard",
+            "color": "#d4290f"
+        }
+    }
+}

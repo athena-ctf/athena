@@ -9961,10 +9961,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChallengeSummary"
-                  }
+                  "$ref": "#/components/schemas/PlayerChallenges"
                 }
               }
             }
@@ -12392,6 +12389,27 @@
           "unsolved",
           "challenge_limit_reached"
         ]
+      },
+      "PlayerChallenges": {
+        "type": "object",
+        "required": [
+          "summaries",
+          "tags"
+        ],
+        "properties": {
+          "summaries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChallengeSummary"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagModel"
+            }
+          }
+        }
       },
       "PlayerModel": {
         "type": "object",

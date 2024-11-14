@@ -3,6 +3,7 @@ use std::sync::Arc;
 use axum::extract::{Json, Path, State};
 use axum::routing::get;
 use axum::Router;
+use entity::prelude::ChallengeKindEnum;
 use fred::prelude::*;
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, IntoActiveModel, Iterable, QueryOrder, QuerySelect};
@@ -10,10 +11,10 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Achievement, AchievementModel, AuthPlayer, Challenge, ChallengeDeployment, ChallengeModel,
-    ChallengeSummary, ChallengeTag, ChallengeTagModel, Container, ContainerModel,
-    CreateChallengeSchema, Deployment, DeploymentModel, DetailedChallenge, File, FileModel, Flag,
-    FlagModel, Hint, HintModel, HintSummary, Instance, JsonResponse, Player, PlayerChallengeState,
+    Achievement, AchievementModel, AuthPlayer, Challenge, ChallengeModel, ChallengeSummary,
+    ChallengeTag, ChallengeTagModel, Container, ContainerModel, CreateChallengeSchema, Deployment,
+    DeploymentModel, DetailedChallenge, File, FileModel, Flag, FlagModel, Hint, HintModel,
+    HintSummary, Instance, JsonResponse, Player, PlayerChallengeState, PlayerChallenges,
     PlayerModel, Submission, SubmissionModel, Tag, TagModel, Unlock, UnlockModel, UnlockStatus,
 };
 use crate::service::{AppState, CachedJson};
@@ -24,7 +25,7 @@ oxide_macros::crud!(Challenge, single: [], optional: [], multiple: [Achievement,
     get,
     path = "/player/challenges",
     responses(
-        (status = 200, description = "Listed player challenges successfully", body = [ChallengeSummary]),
+        (status = 200, description = "Listed player challenges successfully", body = PlayerChallenges),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
@@ -36,7 +37,7 @@ oxide_macros::crud!(Challenge, single: [], optional: [], multiple: [Achievement,
 pub async fn player_challenges(
     AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
-) -> Result<Json<Vec<ChallengeSummary>>> {
+) -> Result<Json<PlayerChallenges>> {
     let challenges = Challenge::find().all(&state.db_conn).await?;
     let submissions = Submission::find()
         .select_only()
@@ -56,7 +57,7 @@ pub async fn player_challenges(
         let tags = challenge.find_related(Tag).all(&state.db_conn).await?;
         let max_attempts = state.settings.read().await.challenge.max_attempts;
 
-        let state = submissions
+        let player_state = submissions
             .binary_search_by_key(&challenge.id, |(id, ..)| *id)
             .ok()
             .map_or(PlayerChallengeState::ChallengeLimitReached, |idx: usize| {
@@ -71,14 +72,28 @@ pub async fn player_challenges(
                 }
             });
 
+        let deployment = if challenge.kind == ChallengeKindEnum::Containerized {
+            Deployment::find()
+                .filter(entity::deployment::Column::ChallengeId.eq(challenge.id))
+                .filter(entity::deployment::Column::PlayerId.eq(player.id))
+                .one(&state.db_conn)
+                .await?
+        } else {
+            None
+        };
+
         summaries.push(ChallengeSummary {
             challenge,
             tags,
-            state,
+            state: player_state,
+            deployment,
         });
     }
 
-    Ok(Json(summaries))
+    Ok(Json(PlayerChallenges {
+        summaries,
+        tags: Tag::find().all(&state.db_conn).await?,
+    }))
 }
 
 #[utoipa::path(
@@ -126,19 +141,18 @@ pub async fn detailed_challenge(
         })
         .collect();
 
-    let deployment = if let Some(deployment_model) = Deployment::find()
+    let instances = if let Some(deployment_model) = Deployment::find()
         .filter(entity::deployment::Column::PlayerId.eq(player.id))
         .filter(entity::deployment::Column::ChallengeId.eq(id))
         .one(&state.db_conn)
         .await?
     {
-        Some(ChallengeDeployment {
-            instances: deployment_model
+        Some(
+            deployment_model
                 .find_related(Instance)
                 .all(&state.db_conn)
                 .await?,
-            deployment: deployment_model,
-        })
+        )
     } else {
         None
     };
@@ -149,7 +163,7 @@ pub async fn detailed_challenge(
             .all(&state.db_conn)
             .await?,
         hints,
-        deployment,
+        instances,
     }))
 }
 

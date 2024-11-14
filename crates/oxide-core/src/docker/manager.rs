@@ -82,7 +82,7 @@ impl Manager {
             return Err(Error::NotFound("Challenge not found".to_owned()));
         };
 
-        if challenge_model.challenge_type != ChallengeTypeEnum::Containerized {
+        if challenge_model.kind != ChallengeKindEnum::Containerized {
             return Err(Error::BadRequest(
                 "Challenge cannot be instantiated".to_owned(),
             ));

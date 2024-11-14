@@ -78,19 +78,20 @@ pub struct ChallengeSummary {
     pub challenge: ChallengeModel,
     pub tags: Vec<TagModel>,
     pub state: PlayerChallengeState,
+    pub deployment: Option<DeploymentModel>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct ChallengeDeployment {
-    pub deployment: DeploymentModel,
-    pub instances: Vec<InstanceModel>,
+pub struct PlayerChallenges {
+    pub summaries: Vec<ChallengeSummary>,
+    pub tags: Vec<TagModel>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct DetailedChallenge {
     pub files: Vec<FileModel>,
     pub hints: Vec<HintSummary>,
-    pub deployment: Option<ChallengeDeployment>,
+    pub instances: Option<Vec<InstanceModel>>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

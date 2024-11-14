@@ -12,7 +12,7 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    AuthPlayer, Challenge, ChallengeModel, ChallengeTypeEnum, CreateFlagSchema, Flag, FlagModel,
+    AuthPlayer, Challenge, ChallengeKindEnum, ChallengeModel, CreateFlagSchema, Flag, FlagModel,
     FlagVerificationResult, JsonResponse, Player, PlayerModel, Submission, SubmissionModel,
     VerifyFlagSchema,
 };
@@ -75,8 +75,8 @@ pub async fn verify(
 
     let points = challenge_model.points;
 
-    let is_correct = match challenge_model.challenge_type {
-        ChallengeTypeEnum::StaticFlag => {
+    let is_correct = match challenge_model.kind {
+        ChallengeKindEnum::StaticFlag => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
                 .one(&state.db_conn)
@@ -92,7 +92,7 @@ pub async fn verify(
             }
         }
 
-        ChallengeTypeEnum::RegexFlag => {
+        ChallengeKindEnum::RegexFlag => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
                 .one(&state.db_conn)
@@ -119,7 +119,7 @@ pub async fn verify(
             }
         }
 
-        ChallengeTypeEnum::Containerized => {
+        ChallengeKindEnum::Containerized => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
                 .filter(entity::flag::Column::PlayerId.eq(player_model.id))

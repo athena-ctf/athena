@@ -11,8 +11,8 @@ impl MigrationTrait for Migration {
         manager
             .create_type(
                 Type::create()
-                    .as_enum(ChallengeTypeEnum)
-                    .values(ChallengeTypeVariants::iter())
+                    .as_enum(ChallengeKindEnum)
+                    .values(ChallengeKindVariants::iter())
                     .to_owned(),
             )
             .await?;
@@ -43,8 +43,8 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Challenge::Points).integer().not_null())
                     .col(ColumnDef::new(Challenge::Level).integer().not_null())
                     .col(
-                        ColumnDef::new(Challenge::ChallengeType)
-                            .enumeration(ChallengeTypeEnum, ChallengeTypeVariants::iter())
+                        ColumnDef::new(Challenge::Kind)
+                            .enumeration(ChallengeKindEnum, ChallengeKindVariants::iter())
                             .not_null(),
                     )
                     .col(ColumnDef::new(Challenge::AuthorName).string().not_null())
@@ -62,7 +62,7 @@ impl MigrationTrait for Migration {
             .await?;
 
         manager
-            .drop_type(Type::drop().if_exists().name(ChallengeTypeEnum).to_owned())
+            .drop_type(Type::drop().if_exists().name(ChallengeKindEnum).to_owned())
             .await?;
 
         Ok(())
@@ -80,15 +80,15 @@ enum Challenge {
     Points,
     AuthorName,
     Level,
-    ChallengeType,
+    Kind,
     Solves,
 }
 
 #[derive(DeriveIden)]
-struct ChallengeTypeEnum;
+struct ChallengeKindEnum;
 
 #[derive(DeriveIden, EnumIter)]
-enum ChallengeTypeVariants {
+enum ChallengeKindVariants {
     StaticFlag,
     RegexFlag,
     Containerized,
