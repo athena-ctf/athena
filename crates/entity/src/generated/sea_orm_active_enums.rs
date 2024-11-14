@@ -29,7 +29,6 @@ pub enum ChallengeKindEnum {
     #[sea_orm(string_value = "static_flag")]
     StaticFlag,
 }
-
 #[derive(
     Debug,
     Clone,
@@ -50,7 +49,6 @@ pub enum GroupEnum {
     #[sea_orm(string_value = "player")]
     Player,
 }
-
 #[derive(
     Debug,
     Clone,
@@ -77,7 +75,6 @@ pub enum RoleEnum {
     #[sea_orm(string_value = "moderator")]
     Moderator,
 }
-
 #[derive(
     Debug,
     Clone,

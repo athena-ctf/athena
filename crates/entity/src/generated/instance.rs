@@ -24,8 +24,8 @@ pub struct Model {
     #[sea_orm(unique)]
     pub container_id: String,
     pub container_name: String,
-    pub deployment_id: Uuid,
     pub port_mapping: Vec<String>,
+    pub deployment_id: Uuid,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

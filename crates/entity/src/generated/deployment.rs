@@ -3,8 +3,6 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use super::sea_orm_active_enums::TicketStatusEnum;
-
 #[derive(
     Clone,
     Debug,
@@ -16,32 +14,35 @@ use super::sea_orm_active_enums::TicketStatusEnum;
     utoipa::ToSchema,
     oxide_macros::Details,
 )]
-#[sea_orm(table_name = "ticket")]
-#[schema(as = TicketModel)]
+#[sea_orm(table_name = "deployment")]
+#[schema(as = DeploymentModel)]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
-    pub title: String,
-    pub status: TicketStatusEnum,
-    pub opened_by: Uuid,
-    pub assigned_to: Option<Uuid>,
+    pub expires_at: DateTimeWithTimeZone,
+    pub challenge_id: Uuid,
+    #[sea_orm(unique)]
+    pub hostname: String,
+    pub player_id: Uuid,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
     #[sea_orm(
-        belongs_to = "super::admin::Entity",
-        from = "Column::AssignedTo",
-        to = "super::admin::Column::Id",
+        belongs_to = "super::challenge::Entity",
+        from = "Column::ChallengeId",
+        to = "super::challenge::Column::Id",
         on_update = "Cascade",
         on_delete = "Cascade"
     )]
-    Admin,
+    Challenge,
+    #[sea_orm(has_many = "super::instance::Entity")]
+    Instance,
     #[sea_orm(
         belongs_to = "super::player::Entity",
-        from = "Column::AssignedTo",
+        from = "Column::PlayerId",
         to = "super::player::Column::Id",
         on_update = "Cascade",
         on_delete = "Cascade"
@@ -49,9 +50,15 @@ pub enum Relation {
     Player,
 }
 
-impl Related<super::admin::Entity> for Entity {
+impl Related<super::challenge::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Admin.def()
+        Relation::Challenge.def()
+    }
+}
+
+impl Related<super::instance::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Instance.def()
     }
 }
 

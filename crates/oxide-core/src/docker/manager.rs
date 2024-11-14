@@ -5,7 +5,7 @@ use bollard::container::{Config, CreateContainerOptions, StartContainerOptions};
 use bollard::image::CreateImageOptions;
 use bollard::network::{ConnectNetworkOptions, CreateNetworkOptions};
 use bollard::Docker;
-use chrono::{Duration, Utc};
+use chrono::{Duration, Local};
 use entity::prelude::*;
 use futures::StreamExt;
 use sea_orm::prelude::*;
@@ -90,7 +90,7 @@ impl Manager {
 
         let container_models = challenge_model.find_related(Container).all(&txn).await?;
 
-        let expires_at = Utc::now().naive_utc() + Duration::seconds(self.container_timeout);
+        let expires_at = Local::now().fixed_offset() + Duration::seconds(self.container_timeout);
         let hostname = crate::gen_random(10);
 
         let txn = self.db.begin().await?;
@@ -231,8 +231,8 @@ impl Manager {
                 InstanceModel::new(
                     container_info.id,
                     &container.name,
-                    deployment_model.id,
                     port_mapping,
+                    deployment_model.id,
                 )
                 .into_active_model()
                 .insert(&txn)
@@ -251,7 +251,7 @@ impl Manager {
         let txn = self.db.begin().await?;
 
         let expired_deployments = Deployment::find()
-            .filter(entity::deployment::Column::ExpiresAt.lt(Utc::now()))
+            .filter(entity::deployment::Column::ExpiresAt.lt(Local::now()))
             .all(&txn)
             .await?;
 
