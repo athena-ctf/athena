@@ -13,7 +13,7 @@ use uuid::Uuid;
 use crate::errors::{Error, Result};
 use crate::schemas::{
     AuthPlayer, CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Tag,
-    TagSolves, Team, TeamDetails, TeamModel, TeamProfile, User,
+    TagSolves, Team, TeamDetails, TeamModel, TeamProfile,
 };
 use crate::service::{AppState, CachedJson};
 
@@ -36,15 +36,7 @@ async fn get_team_profile(
     let mut members = Vec::with_capacity(players.len());
 
     for player_model in players {
-        members.push(
-            super::retrieve_profile(
-                player_model.find_related(User).one(db).await?.unwrap(),
-                player_model,
-                db,
-                pool,
-            )
-            .await?,
-        );
+        members.push(super::retrieve_profile(player_model, db, pool).await?);
     }
 
     let mut tags_map = Tag::find()
@@ -204,25 +196,6 @@ pub async fn retrieve_summary(
                 .entry(tag.id)
                 .and_modify(|tag_solves| tag_solves.solves += 1);
         }
-    }
-
-    let players = team_model.find_related(Player).all(&state.db_conn).await?;
-    let mut members = Vec::with_capacity(players.len());
-
-    for player_model in players {
-        members.push(
-            super::retrieve_profile(
-                player_model
-                    .find_related(User)
-                    .one(&state.db_conn)
-                    .await?
-                    .unwrap(),
-                player_model,
-                &state.db_conn,
-                &state.persistent_client,
-            )
-            .await?,
-        );
     }
 
     Ok(Json(TeamDetails {

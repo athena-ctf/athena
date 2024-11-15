@@ -23,16 +23,6 @@ impl MigrationTrait for Migration {
                             .not_null(),
                     )
                     .col(ColumnDef::new(File::Name).string().not_null())
-                    .col(ColumnDef::new(File::Url).string().not_null().unique_key())
-                    .col(ColumnDef::new(File::ChallengeId).uuid().not_null())
-                    .foreign_key(
-                        ForeignKey::create()
-                            .name("fk-file-challenge_id")
-                            .from(File::Table, File::ChallengeId)
-                            .to(Challenge::Table, Challenge::Id)
-                            .on_delete(ForeignKeyAction::Cascade)
-                            .on_update(ForeignKeyAction::Cascade),
-                    )
                     .to_owned(),
             )
             .await?;
@@ -56,12 +46,4 @@ enum File {
     CreatedAt,
     UpdatedAt,
     Name,
-    Url,
-    ChallengeId,
-}
-
-#[derive(DeriveIden)]
-enum Challenge {
-    Table,
-    Id,
 }

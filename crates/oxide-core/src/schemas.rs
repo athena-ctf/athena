@@ -116,7 +116,6 @@ pub struct StatSchema {
     pub team: u64,
     pub ticket: u64,
     pub unlocks: u64,
-    pub user: u64,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -128,7 +127,6 @@ pub struct TagSolves {
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct PlayerProfile {
     pub player: PlayerModel,
-    pub user: UserModel,
     pub solved_challenges: Vec<ChallengeModel>,
     pub tag_solves: Vec<TagSolves>,
     pub rank: u64,

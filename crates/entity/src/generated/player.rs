@@ -22,17 +22,20 @@ pub struct Model {
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
     pub team_id: Uuid,
+    #[sea_orm(unique)]
     pub ban_id: Option<Uuid>,
     #[sea_orm(unique)]
     pub discord_id: Option<String>,
+    pub username: String,
     #[sea_orm(unique)]
-    pub user_id: Uuid,
+    pub email: String,
+    #[sea_orm(column_name = "_password")]
+    #[serde(skip)]
+    pub password: String,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::achievement::Entity")]
-    Achievement,
     #[sea_orm(
         belongs_to = "super::ban::Entity",
         from = "Column::BanId",
@@ -47,6 +50,8 @@ pub enum Relation {
     Flag,
     #[sea_orm(has_many = "super::notification::Entity")]
     Notification,
+    #[sea_orm(has_many = "super::player_achievement::Entity")]
+    PlayerAchievement,
     #[sea_orm(has_many = "super::submission::Entity")]
     Submission,
     #[sea_orm(
@@ -61,20 +66,6 @@ pub enum Relation {
     Ticket,
     #[sea_orm(has_many = "super::unlock::Entity")]
     Unlock,
-    #[sea_orm(
-        belongs_to = "super::user::Entity",
-        from = "Column::UserId",
-        to = "super::user::Column::Id",
-        on_update = "Cascade",
-        on_delete = "Cascade"
-    )]
-    User,
-}
-
-impl Related<super::achievement::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Achievement.def()
-    }
 }
 
 impl Related<super::ban::Entity> for Entity {
@@ -98,6 +89,12 @@ impl Related<super::flag::Entity> for Entity {
 impl Related<super::notification::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Notification.def()
+    }
+}
+
+impl Related<super::player_achievement::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::PlayerAchievement.def()
     }
 }
 
@@ -125,9 +122,13 @@ impl Related<super::unlock::Entity> for Entity {
     }
 }
 
-impl Related<super::user::Entity> for Entity {
+impl Related<super::achievement::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::User.def()
+        super::player_achievement::Relation::Achievement.def()
+    }
+
+    fn via() -> Option<RelationDef> {
+        Some(super::player_achievement::Relation::Player.def().rev())
     }
 }
 

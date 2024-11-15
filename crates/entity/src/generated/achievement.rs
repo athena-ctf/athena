@@ -23,39 +23,27 @@ pub struct Model {
     pub updated_at: DateTimeWithTimeZone,
     pub value: String,
     pub prize: i32,
-    pub challenge_id: Uuid,
-    pub player_id: Uuid,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(
-        belongs_to = "super::challenge::Entity",
-        from = "Column::ChallengeId",
-        to = "super::challenge::Column::Id",
-        on_update = "Cascade",
-        on_delete = "Cascade"
-    )]
-    Challenge,
-    #[sea_orm(
-        belongs_to = "super::player::Entity",
-        from = "Column::PlayerId",
-        to = "super::player::Column::Id",
-        on_update = "Cascade",
-        on_delete = "Cascade"
-    )]
-    Player,
+    #[sea_orm(has_many = "super::player_achievement::Entity")]
+    PlayerAchievement,
 }
 
-impl Related<super::challenge::Entity> for Entity {
+impl Related<super::player_achievement::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Challenge.def()
+        Relation::PlayerAchievement.def()
     }
 }
 
 impl Related<super::player::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Player.def()
+        super::player_achievement::Relation::Player.def()
+    }
+
+    fn via() -> Option<RelationDef> {
+        Some(super::player_achievement::Relation::Achievement.def().rev())
     }
 }
 

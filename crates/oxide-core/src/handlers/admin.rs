@@ -10,12 +10,11 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Admin, AdminModel, AuthAdmin, CreateAdminSchema, JsonResponse, Ticket, TicketModel, User,
-    UserModel,
+    Admin, AdminModel, AuthAdmin, CreateAdminSchema, JsonResponse, Ticket, TicketModel,
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::crud!(Admin, single: [User], optional: [], multiple: [Ticket]);
+oxide_macros::crud!(Admin, single: [], optional: [], multiple: [Ticket]);
 
 #[utoipa::path(
     get,

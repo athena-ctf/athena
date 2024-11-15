@@ -12,13 +12,13 @@ use crate::errors::{Error, Result};
 use crate::schemas::{
     Achievement, AchievementModel, AuthPlayer, Ban, BanModel, Challenge, ChallengeModel,
     CreatePlayerSchema, Deployment, DeploymentModel, Flag, FlagModel, Hint, HintModel,
-    JsonResponse, Notification, NotificationModel, Player, PlayerDetails, PlayerModel,
-    PlayerProfile, Submission, SubmissionModel, Team, TeamModel, Ticket, TicketModel, Unlock,
-    UnlockModel, UpdateProfileSchema, User, UserModel,
+    JsonResponse, Notification, NotificationModel, Player, PlayerAchievement,
+    PlayerAchievementModel, PlayerDetails, PlayerModel, PlayerProfile, Submission, SubmissionModel,
+    Team, TeamModel, Ticket, TicketModel, Unlock, UnlockModel, UpdateProfileSchema,
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::crud!(Player, single: [Team, User], optional: [Deployment, Ban], multiple: [Flag, Achievement, Notification, Submission, Unlock, Challenge, Hint, Ticket]);
+oxide_macros::crud!(Player, single: [Team], optional: [Deployment, Ban], multiple: [Flag, Achievement, PlayerAchievement, Notification, Submission, Unlock, Challenge, Hint, Ticket]);
 
 #[utoipa::path(
     get,
@@ -38,9 +38,8 @@ pub async fn retrieve_profile_by_username(
     state: State<Arc<AppState>>,
     Path(username): Path<String>,
 ) -> Result<Json<PlayerProfile>> {
-    let Some((user_model, Some(player_model))) = User::find()
-        .find_also_related(Player)
-        .filter(entity::user::Column::Username.eq(&username))
+    let Some(player_model) = Player::find()
+        .filter(entity::player::Column::Username.eq(&username))
         .one(&state.db_conn)
         .await?
     else {
@@ -48,13 +47,7 @@ pub async fn retrieve_profile_by_username(
     };
 
     Ok(Json(
-        super::retrieve_profile(
-            user_model,
-            player_model,
-            &state.db_conn,
-            &state.persistent_client,
-        )
-        .await?,
+        super::retrieve_profile(player_model, &state.db_conn, &state.persistent_client).await?,
     ))
 }
 
@@ -103,13 +96,6 @@ pub async fn retrieve_summary(
     AuthPlayer(player_model): AuthPlayer,
     state: State<Arc<AppState>>,
 ) -> Result<Json<PlayerDetails>> {
-    let Some(user_model) = User::find_by_id(player_model.user_id)
-        .one(&state.db_conn)
-        .await?
-    else {
-        return Err(Error::NotFound("User not found".to_owned()));
-    };
-
     Ok(Json(PlayerDetails {
         submissions: player_model
             .find_related(Submission)
@@ -123,13 +109,8 @@ pub async fn retrieve_summary(
             .find_related(Achievement)
             .all(&state.db_conn)
             .await?,
-        profile: super::retrieve_profile(
-            user_model,
-            player_model,
-            &state.db_conn,
-            &state.persistent_client,
-        )
-        .await?,
+        profile: super::retrieve_profile(player_model, &state.db_conn, &state.persistent_client)
+            .await?,
     }))
 }
 

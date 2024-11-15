@@ -10,9 +10,17 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Achievement, AchievementModel, Challenge, ChallengeModel, CreateAchievementSchema,
-    JsonResponse, Player, PlayerModel,
+    Achievement, AchievementModel, CreateAchievementSchema, JsonResponse, Player,
+    PlayerAchievement, PlayerAchievementModel, PlayerModel,
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::crud!(Achievement, single: [Player, Challenge], optional: [], multiple: []);
+oxide_macros::crud!(
+    Achievement,
+    single: [Player, PlayerAchievement],
+    optional: [],
+    multiple: [],
+    on_delete: async {
+        Ok::<(), Error>(())
+    }
+);

@@ -24,8 +24,10 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(handlers::achievement::router())
             .merge(handlers::ban::router())
             .merge(handlers::challenge::router())
+            .merge(handlers::challenge_file::router())
             .merge(handlers::challenge_tag::router())
             .merge(handlers::container::router())
+            .merge(handlers::deployment::router())
             .merge(handlers::file::router())
             .merge(handlers::flag::router())
             .merge(handlers::hint::router())
@@ -39,7 +41,6 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(handlers::team::router())
             .merge(handlers::ticket::router())
             .merge(handlers::unlock::router())
-            .merge(utils_router())
-            .merge(handlers::deployment::router()),
+            .merge(utils_router()),
     )
 }

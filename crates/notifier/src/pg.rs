@@ -15,7 +15,6 @@ pub enum Action<T> {
 pub enum Notification {
     Challenge(Action<ChallengeModel>),
     Player(Action<PlayerModel>),
-    Achievement(Action<AchievementModel>),
     Ticket(Action<TicketModel>),
     Invite(Action<InviteModel>),
 }
@@ -91,44 +90,6 @@ impl Notification {
                     }
                 }
             },
-            Self::Achievement(action) => match action {
-                Action::Delete { model } => Some(NotificationModel::new(
-                    "Achievement removed",
-                    format!(r#"Your achievement "{}" is removed"#, model.value),
-                    model.player_id,
-                )),
-                Action::Insert { model } => Some(NotificationModel::new(
-                    "Achievement added",
-                    format!(r#"You have a new achievement "{}""#, model.value),
-                    model.player_id,
-                )),
-                Action::Update {
-                    old_model,
-                    new_model,
-                } => {
-                    if old_model.value != new_model.value {
-                        Some(NotificationModel::new(
-                            "Achievement renamed",
-                            format!(
-                                r#"Your achievement "{}" has been renamed to "{}""#,
-                                old_model.value, new_model.value
-                            ),
-                            new_model.player_id,
-                        ))
-                    } else if old_model.prize != new_model.prize {
-                        Some(NotificationModel::new(
-                            "Achievement re evaluated",
-                            format!(
-                                r#"Your achievement "{}" has been reevaluated from {} to  {}"#,
-                                old_model.value, old_model.prize, new_model.prize
-                            ),
-                            new_model.player_id,
-                        ))
-                    } else {
-                        None
-                    }
-                }
-            },
             Self::Ticket(action) => match action {
                 Action::Delete { model } => Some(NotificationModel::new(
                     "Ticket removed",
@@ -149,8 +110,7 @@ impl Notification {
                             new_model.opened_by,
                         ))
                     } else if old_model.assigned_to.is_none() && new_model.assigned_to.is_some() {
-                        let (_, user_model) = Admin::find_by_id(new_model.assigned_to.unwrap())
-                            .find_also_related(User)
+                        let admin_model = Admin::find_by_id(new_model.assigned_to.unwrap())
                             .one(db)
                             .await
                             .unwrap()
@@ -159,8 +119,7 @@ impl Notification {
                             "Ticket assigned",
                             format!(
                                 r#"Your ticket "{}" has been assigned to {}"#,
-                                new_model.title,
-                                user_model.unwrap().username
+                                new_model.title, admin_model.username
                             ),
                             new_model.opened_by,
                         ))

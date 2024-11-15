@@ -38,15 +38,8 @@ impl MigrationTrait for Migration {
                             .enumeration(RoleEnum, RoleVariants::iter())
                             .not_null(),
                     )
-                    .col(ColumnDef::new(Admin::UserId).uuid().not_null().unique_key())
-                    .foreign_key(
-                        ForeignKey::create()
-                            .name("fk-admin-user_id")
-                            .from(Admin::Table, Admin::UserId)
-                            .to(User::Table, User::Id)
-                            .on_delete(ForeignKeyAction::Cascade)
-                            .on_update(ForeignKeyAction::Cascade),
-                    )
+                    .col(ColumnDef::new(Admin::Username).string().not_null())
+                    .col(ColumnDef::new(Admin::Password).string().not_null())
                     .to_owned(),
             )
             .await?;
@@ -73,14 +66,10 @@ enum Admin {
     Id,
     CreatedAt,
     UpdatedAt,
+    Username,
+    #[sea_orm(iden = "_password")]
+    Password,
     Role,
-    UserId,
-}
-
-#[derive(DeriveIden)]
-pub enum User {
-    Table,
-    Id,
 }
 
 #[derive(DeriveIden)]

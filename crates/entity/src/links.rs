@@ -52,7 +52,7 @@ impl Linked for TeamToAchievement {
     fn link(&self) -> Vec<sea_orm::LinkDef> {
         vec![
             super::player::Relation::Team.def().rev(),
-            super::player::Relation::Achievement.def(),
+            super::player_achievement::Relation::Achievement.def(),
         ]
     }
 }

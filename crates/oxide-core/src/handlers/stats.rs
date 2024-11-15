@@ -56,6 +56,5 @@ pub async fn retrieve(state: State<Arc<AppState>>) -> Result<Json<StatSchema>> {
         team: entity::team::Entity::find().count(&state.db_conn).await?,
         ticket: entity::ticket::Entity::find().count(&state.db_conn).await?,
         unlocks: entity::unlock::Entity::find().count(&state.db_conn).await?,
-        user: entity::user::Entity::find().count(&state.db_conn).await?,
     }))
 }

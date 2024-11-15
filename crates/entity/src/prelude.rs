@@ -4,6 +4,7 @@ pub use super::achievement::{CreateAchievementSchema, Model as AchievementModel}
 pub use super::admin::{CreateAdminSchema, Model as AdminModel};
 pub use super::ban::{CreateBanSchema, Model as BanModel};
 pub use super::challenge::{CreateChallengeSchema, Model as ChallengeModel};
+pub use super::challenge_file::{CreateChallengeFileSchema, Model as ChallengeFileModel};
 pub use super::challenge_tag::{CreateChallengeTagSchema, Model as ChallengeTagModel};
 pub use super::container::{CreateContainerSchema, Model as ContainerModel};
 pub use super::deployment::{CreateDeploymentSchema, Model as DeploymentModel};
@@ -14,11 +15,13 @@ pub use super::instance::{CreateInstanceSchema, Model as InstanceModel};
 pub use super::invite::{CreateInviteSchema, Model as InviteModel};
 pub use super::notification::{CreateNotificationSchema, Model as NotificationModel};
 pub use super::player::{CreatePlayerSchema, Model as PlayerModel};
+pub use super::player_achievement::{
+    CreatePlayerAchievementSchema, Model as PlayerAchievementModel,
+};
 pub use super::sea_orm_active_enums::*;
 pub use super::submission::{CreateSubmissionSchema, Model as SubmissionModel};
 pub use super::tag::{CreateTagSchema, Model as TagModel};
 pub use super::team::{CreateTeamSchema, Model as TeamModel};
 pub use super::ticket::{CreateTicketSchema, Model as TicketModel};
 pub use super::unlock::{CreateUnlockSchema, Model as UnlockModel};
-pub use super::user::{CreateUserSchema, Model as UserModel};
 pub use crate::generated::prelude::*;

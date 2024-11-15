@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use argon2::{Argon2, PasswordHash, PasswordVerifier};
 use axum::extract::State;
 use axum::Json;
 use sea_orm::prelude::*;
@@ -30,13 +31,24 @@ pub async fn login(
     Json(body): Json<LoginModel>,
 ) -> Result<Json<AdminModel>> {
     let txn = state.db_conn.begin().await?;
-    let Some(user_model) = super::verify(body.username, body.password, &txn).await? else {
-        return Err(Error::BadRequest("Username invalid".to_owned()));
+
+    let Some(admin_model) = Admin::find()
+        .filter(entity::admin::Column::Username.eq(&body.username))
+        .one(&txn)
+        .await?
+    else {
+        return Err(Error::NotFound("No admin with username exists".to_owned()));
     };
 
-    let Some(admin_model) = user_model.find_related(Admin).one(&txn).await? else {
-        return Err(Error::NotFound("User is not admin".to_owned()));
-    };
+    if Argon2::default()
+        .verify_password(
+            body.password.as_bytes(),
+            &PasswordHash::new(&admin_model.password)?,
+        )
+        .is_err()
+    {
+        return Err(Error::BadRequest("Invalid password".to_owned()));
+    }
 
     session.insert("admin", admin_model.clone()).await?;
 

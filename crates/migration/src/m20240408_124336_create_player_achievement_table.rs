@@ -9,85 +9,79 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(Player::Table)
+                    .table(PlayerAchievement::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(Player::Id).uuid().primary_key().not_null())
+                    .primary_key(
+                        Index::create()
+                            .name("pk-player_achievement")
+                            .col(PlayerAchievement::PlayerId)
+                            .col(PlayerAchievement::AchievementId),
+                    )
                     .col(
-                        ColumnDef::new(Player::CreatedAt)
+                        ColumnDef::new(PlayerAchievement::CreatedAt)
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(Player::UpdatedAt)
+                        ColumnDef::new(PlayerAchievement::UpdatedAt)
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
-                    .col(ColumnDef::new(Player::TeamId).uuid().not_null())
-                    .col(ColumnDef::new(Player::BanId).uuid().unique_key())
-                    .col(ColumnDef::new(Player::DiscordId).string().unique_key())
-                    .col(ColumnDef::new(Player::Username).string().not_null())
                     .col(
-                        ColumnDef::new(Player::Email)
-                            .string()
-                            .unique_key()
+                        ColumnDef::new(PlayerAchievement::PlayerId)
+                            .uuid()
                             .not_null(),
                     )
-                    .col(ColumnDef::new(Player::Password).string().not_null())
+                    .col(
+                        ColumnDef::new(PlayerAchievement::AchievementId)
+                            .uuid()
+                            .not_null(),
+                    )
                     .foreign_key(
                         ForeignKey::create()
-                            .name("fk-player-team_id")
-                            .from(Player::Table, Player::TeamId)
-                            .to(Team::Table, Team::Id)
+                            .name("fk-player_achievement-player_id")
+                            .from(PlayerAchievement::Table, PlayerAchievement::PlayerId)
+                            .to(Player::Table, Player::Id)
                             .on_delete(ForeignKeyAction::Cascade)
                             .on_update(ForeignKeyAction::Cascade),
                     )
                     .foreign_key(
                         ForeignKey::create()
-                            .name("fk-player-ban_id")
-                            .from(Player::Table, Player::BanId)
-                            .to(Ban::Table, Ban::Id)
+                            .name("fk-player_achievement-achievement_id")
+                            .from(PlayerAchievement::Table, PlayerAchievement::AchievementId)
+                            .to(Achievement::Table, Achievement::Id)
                             .on_delete(ForeignKeyAction::Cascade)
                             .on_update(ForeignKeyAction::Cascade),
                     )
                     .to_owned(),
             )
-            .await?;
-
-        Ok(())
+            .await
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(Player::Table).to_owned())
-            .await?;
-
-        Ok(())
+            .drop_table(Table::drop().table(PlayerAchievement::Table).to_owned())
+            .await
     }
 }
 
 #[derive(DeriveIden)]
-enum Player {
+enum PlayerAchievement {
     Table,
-    Id,
+    PlayerId,
+    AchievementId,
     CreatedAt,
     UpdatedAt,
-    Username,
-    Email,
-    #[sea_orm(iden = "_password")]
-    Password,
-    BanId,
-    TeamId,
-    DiscordId,
 }
 
 #[derive(DeriveIden)]
-enum Team {
+enum Achievement {
     Table,
     Id,
 }
 
 #[derive(DeriveIden)]
-enum Ban {
+enum Player {
     Table,
     Id,
 }

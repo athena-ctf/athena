@@ -33,16 +33,14 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::achievement::Entity")]
-    Achievement,
+    #[sea_orm(has_many = "super::challenge_file::Entity")]
+    ChallengeFile,
     #[sea_orm(has_many = "super::challenge_tag::Entity")]
     ChallengeTag,
     #[sea_orm(has_many = "super::container::Entity")]
     Container,
     #[sea_orm(has_many = "super::deployment::Entity")]
     Deployment,
-    #[sea_orm(has_many = "super::file::Entity")]
-    File,
     #[sea_orm(has_many = "super::flag::Entity")]
     Flag,
     #[sea_orm(has_many = "super::hint::Entity")]
@@ -51,9 +49,9 @@ pub enum Relation {
     Submission,
 }
 
-impl Related<super::achievement::Entity> for Entity {
+impl Related<super::challenge_file::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Achievement.def()
+        Relation::ChallengeFile.def()
     }
 }
 
@@ -75,12 +73,6 @@ impl Related<super::deployment::Entity> for Entity {
     }
 }
 
-impl Related<super::file::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::File.def()
-    }
-}
-
 impl Related<super::flag::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Flag.def()
@@ -96,6 +88,16 @@ impl Related<super::hint::Entity> for Entity {
 impl Related<super::submission::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Submission.def()
+    }
+}
+
+impl Related<super::file::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::challenge_file::Relation::File.def()
+    }
+
+    fn via() -> Option<RelationDef> {
+        Some(super::challenge_file::Relation::Challenge.def().rev())
     }
 }
 

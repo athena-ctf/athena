@@ -11,7 +11,7 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Achievement, AchievementModel, AuthPlayer, Challenge, ChallengeModel, ChallengeSummary,
+    AuthPlayer, Challenge, ChallengeFile, ChallengeFileModel, ChallengeModel, ChallengeSummary,
     ChallengeTag, ChallengeTagModel, Container, ContainerModel, CreateChallengeSchema, Deployment,
     DeploymentModel, DetailedChallenge, File, FileModel, Flag, FlagModel, Hint, HintModel,
     HintSummary, Instance, JsonResponse, Player, PlayerChallengeState, PlayerChallenges,
@@ -19,7 +19,12 @@ use crate::schemas::{
 };
 use crate::service::{AppState, CachedJson};
 
-oxide_macros::crud!(Challenge, single: [], optional: [], multiple: [Achievement, Container, File, Hint, Deployment, Tag, Submission, ChallengeTag, Flag, Player]);
+oxide_macros::crud!(
+    Challenge,
+    single: [],
+    optional: [],
+    multiple: [Container, File, Hint, Deployment, Tag, Submission, ChallengeTag, ChallengeFile, Flag, Player]
+);
 
 #[utoipa::path(
     get,
@@ -165,7 +170,8 @@ pub async fn detailed_challenge(
 
     Ok(Json(DetailedChallenge {
         files: File::find()
-            .filter(entity::file::Column::ChallengeId.eq(id))
+            .inner_join(ChallengeFile)
+            .filter(entity::challenge_file::Column::ChallengeId.eq(id))
             .all(&state.db_conn)
             .await?,
         hints,

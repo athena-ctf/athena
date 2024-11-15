@@ -22,26 +22,27 @@ pub struct Model {
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
     pub name: String,
-    #[sea_orm(unique)]
-    pub url: String,
-    pub challenge_id: Uuid,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(
-        belongs_to = "super::challenge::Entity",
-        from = "Column::ChallengeId",
-        to = "super::challenge::Column::Id",
-        on_update = "Cascade",
-        on_delete = "Cascade"
-    )]
-    Challenge,
+    #[sea_orm(has_many = "super::challenge_file::Entity")]
+    ChallengeFile,
+}
+
+impl Related<super::challenge_file::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::ChallengeFile.def()
+    }
 }
 
 impl Related<super::challenge::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Challenge.def()
+        super::challenge_file::Relation::Challenge.def()
+    }
+
+    fn via() -> Option<RelationDef> {
+        Some(super::challenge_file::Relation::File.def().rev())
     }
 }
 

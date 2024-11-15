@@ -3,7 +3,7 @@ use std::sync::Arc;
 
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
-use argon2::{Argon2, PasswordHasher};
+use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use askama::Template;
 use axum::extract::{Query, State};
 use axum::Json;
@@ -17,9 +17,9 @@ use tower_sessions::Session;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    GroupEnum, Invite, InviteVerificationResult, JsonResponse, LoginModel, Player, PlayerModel,
+    Invite, InviteVerificationResult, JsonResponse, LoginModel, Player, PlayerModel,
     RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery, ResetPasswordSchema,
-    SendTokenSchema, Team, TeamModel, TeamRegister, User, UserModel,
+    SendTokenSchema, Team, TeamModel, TeamRegister,
 };
 use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
@@ -44,8 +44,8 @@ pub async fn register_verify_email(
     state: State<Arc<AppState>>,
     Query(query): Query<RegisterVerifyEmailQuery>,
 ) -> Result<()> {
-    if User::find()
-        .filter(Condition::any().add(entity::user::Column::Email.eq(query.email)))
+    if Player::find()
+        .filter(Condition::any().add(entity::player::Column::Email.eq(query.email)))
         .one(&state.db_conn)
         .await?
         .is_some()
@@ -94,11 +94,6 @@ pub async fn register(
         .hash_password(body.password.as_bytes(), &salt)?
         .to_string();
 
-    let user = UserModel::new(body.username, &body.email, password, GroupEnum::Player)
-        .into_active_model()
-        .insert(&txn)
-        .await?;
-
     state
         .persistent_client
         .zadd::<(), _, _>(
@@ -126,7 +121,7 @@ pub async fn register(
         }
 
         TeamRegister::Create { team_name } => {
-            let team_model = TeamModel::new(body.email, team_name)
+            let team_model = TeamModel::new(&body.email, team_name)
                 .into_active_model()
                 .insert(&txn)
                 .await?;
@@ -135,7 +130,7 @@ pub async fn register(
         }
     };
 
-    PlayerModel::new(team_id, None, None, user.id)
+    PlayerModel::new(team_id, None, None, body.username, body.email, password)
         .into_active_model()
         .insert(&txn)
         .await?;
@@ -281,16 +276,15 @@ pub async fn reset_password(
 
     let txn = state.db_conn.begin().await?;
 
-    let Some((user_model, Some(_))) = User::find()
-        .find_also_related(Player)
-        .filter(entity::user::Column::Email.eq(&body.email))
+    let Some(player_model) = Player::find()
+        .filter(entity::player::Column::Email.eq(&body.email))
         .one(&state.db_conn)
         .await?
     else {
-        return Err(Error::NotFound("User does not exist".to_owned()));
+        return Err(Error::NotFound("Player does not exist".to_owned()));
     };
 
-    let mut active_user = user_model.into_active_model();
+    let mut active_user = player_model.into_active_model();
     let salt = SaltString::generate(&mut OsRng);
 
     active_user.password = ActiveValue::Set(
@@ -381,14 +375,23 @@ pub async fn login(
     session: Session,
     Json(body): Json<LoginModel>,
 ) -> Result<Json<PlayerModel>> {
-    let Some(user_model) = super::verify(body.username, body.password, &state.db_conn).await?
+    let Some(player_model) = Player::find()
+        .filter(entity::admin::Column::Username.eq(&body.username))
+        .one(&state.db_conn)
+        .await?
     else {
-        return Err(Error::BadRequest("Username invalid".to_owned()));
+        return Err(Error::NotFound("No player with username exists".to_owned()));
     };
 
-    let Some(player_model) = user_model.find_related(Player).one(&state.db_conn).await? else {
-        return Err(Error::NotFound("User is not admin".to_owned()));
-    };
+    if Argon2::default()
+        .verify_password(
+            body.password.as_bytes(),
+            &PasswordHash::new(&player_model.password)?,
+        )
+        .is_err()
+    {
+        return Err(Error::BadRequest("Invalid password".to_owned()));
+    }
 
     if player_model.ban_id.is_some() {
         return Err(Error::BadRequest("Player is banned".to_owned()));

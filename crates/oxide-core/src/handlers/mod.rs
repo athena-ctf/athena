@@ -3,6 +3,7 @@ pub mod admin;
 pub mod auth;
 pub mod ban;
 pub mod challenge;
+pub mod challenge_file;
 pub mod challenge_tag;
 pub mod container;
 pub mod deployment;
@@ -21,7 +22,6 @@ pub mod tag;
 pub mod team;
 pub mod ticket;
 pub mod unlock;
-pub mod user;
 
 use std::collections::HashMap;
 
@@ -29,10 +29,9 @@ use fred::prelude::*;
 use sea_orm::prelude::*;
 
 use crate::errors::Result;
-use crate::schemas::{Challenge, PlayerModel, PlayerProfile, Tag, TagSolves, UserModel};
+use crate::schemas::{Challenge, PlayerModel, PlayerProfile, Tag, TagSolves};
 
 pub async fn retrieve_profile(
-    user_model: UserModel,
     player_model: PlayerModel,
     db: &DbConn,
     pool: &RedisPool,
@@ -76,7 +75,6 @@ pub async fn retrieve_profile(
     }
 
     Ok(PlayerProfile {
-        user: user_model,
         player: player_model,
         solved_challenges,
         tag_solves: tags_map.values().cloned().collect(),

@@ -2,8 +2,7 @@ use proc_macro::TokenStream;
 use quote::{format_ident, quote, ToTokens};
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
-use syn::spanned::Spanned;
-use syn::{bracketed, parse_macro_input, Ident, ItemFn, Token};
+use syn::{bracketed, parse_macro_input, ExprAsync, Ident, Token};
 
 struct JoinCrudMacroInput {
     entity: Ident,
@@ -373,8 +372,8 @@ struct CrudMacroInput {
     single: Vec<Ident>,
     multiple: Vec<Ident>,
     optional: Vec<Ident>,
-    on_update_hook: Option<ItemFn>,
-    on_delete_hook: Option<ItemFn>,
+    on_update_hook: Option<ExprAsync>,
+    on_delete_hook: Option<ExprAsync>,
 }
 
 impl Parse for CrudMacroInput {
@@ -417,14 +416,17 @@ impl Parse for CrudMacroInput {
         while !input.is_empty()
             && (macro_input.on_delete_hook.is_none() || macro_input.on_update_hook.is_none())
         {
-            let hook_fn = input.parse::<ItemFn>()?;
+            input.parse::<Token![,]>()?;
 
-            match hook_fn.sig.ident.to_string().as_str() {
+            let hook_fn = input.parse::<Ident>()?;
+            input.parse::<Token![:]>()?;
+
+            match hook_fn.to_string().as_str() {
                 "on_delete" if macro_input.on_delete_hook.is_none() => {
-                    macro_input.on_delete_hook = Some(hook_fn)
+                    macro_input.on_delete_hook = Some(input.parse::<ExprAsync>()?);
                 }
                 "on_update" if macro_input.on_delete_hook.is_none() => {
-                    macro_input.on_update_hook = Some(hook_fn)
+                    macro_input.on_update_hook = Some(input.parse::<ExprAsync>()?);
                 }
                 "on_delete" | "on_update" => {
                     return Err(syn::Error::new(hook_fn.span(), "This hook is already specified once. It cannot be mentioned more than once"));
@@ -560,7 +562,7 @@ fn gen_retrieve_fn(entity: &Ident) -> impl ToTokens {
     }
 }
 
-fn gen_update_fn(entity: &Ident, on_update_hook: Option<ItemFn>) -> impl ToTokens {
+fn gen_update_fn(entity: &Ident, on_update_hook: Option<ExprAsync>) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 
     let doc = format!("Update {entity_snake} by id");
@@ -573,15 +575,9 @@ fn gen_update_fn(entity: &Ident, on_update_hook: Option<ItemFn>) -> impl ToToken
     let entity_model = format_ident!("{entity}Model");
     let request_body = format_ident!("Create{entity}Schema");
 
-    let hook_call = if on_update_hook.is_some() {
-        Some(quote! { on_update(id, &body, &state).await?; })
-    } else {
-        None
-    };
+    let hook_await = on_update_hook.map(|hook| quote! { #hook.await?; });
 
     quote! {
-        #on_update_hook
-
         #[doc = #doc]
         #[utoipa::path(
             patch,
@@ -603,19 +599,19 @@ fn gen_update_fn(entity: &Ident, on_update_hook: Option<ItemFn>) -> impl ToToken
             Path(id): Path<Uuid>,
             Json(body): Json<#request_body>,
         ) -> Result<Json<#entity_model>> {
-            let mut model = body.into_active_model();
+            let mut model = body.clone().into_active_model();
             model.id = ActiveValue::Set(id);
             let model = model.update(&state.db_conn).await?;
             state.cache_client.del::<(), _>(format!(#redis_key, id.simple())).await?;
 
-            #hook_call
+            #hook_await
 
             Ok(Json(model))
         }
     }
 }
 
-fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<ItemFn>) -> impl ToTokens {
+fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<ExprAsync>) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 
     let doc = format!("Delete {entity_snake} by id");
@@ -625,15 +621,9 @@ fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<ItemFn>) -> impl ToToken
     let not_found = format!("No {entity_snake} found with specified id");
     let redis_key = format!("{entity_snake}:{{}}");
 
-    let hook_call = if on_delete_hook.is_some() {
-        Some(quote! { on_delete(id, &state).await?; })
-    } else {
-        None
-    };
+    let hook_await = on_delete_hook.map(|hook| quote! { #hook.await?; });
 
     quote! {
-        #on_delete_hook
-
         #[doc = #doc]
         #[utoipa::path(
             delete,
@@ -654,7 +644,7 @@ fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<ItemFn>) -> impl ToToken
             if delete_result.rows_affected == 1 {
                 state.cache_client.del::<(), _>(format!(#redis_key, id.simple())).await?;
 
-                #hook_call
+                #hook_await
 
                 Ok(())
             } else {

@@ -1923,6 +1923,500 @@
         }
       }
     },
+    "/admin/challenge_file": {
+      "get": {
+        "tags": [
+          "challenge_file"
+        ],
+        "summary": "List challenge_files",
+        "operationId": "list_challenge_files",
+        "responses": {
+          "200": {
+            "description": "Listed challenge_files successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChallengeFileModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "challenge_file"
+        ],
+        "summary": "Create challenge_file",
+        "operationId": "create_challenge_file",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChallengeFileSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created challenge_file successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeFileModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge_file found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/challenge_file/{challenge_id}-{file_id}": {
+      "get": {
+        "tags": [
+          "challenge_file"
+        ],
+        "summary": "Retrieve challenge_file by id",
+        "operationId": "retrieve_challenge_file_by_id",
+        "parameters": [
+          {
+            "name": "challenge_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "file_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved challenge_file by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeFileModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge_file found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "challenge_file"
+        ],
+        "summary": "Delete challenge_file by id",
+        "operationId": "delete_challenge_file_by_id",
+        "parameters": [
+          {
+            "name": "challenge_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "file_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted challenge_file by id successfully"
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge_file found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "challenge_file"
+        ],
+        "summary": "Update challenge_file by id",
+        "operationId": "update_challenge_file_by_id",
+        "parameters": [
+          {
+            "name": "challenge_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "file_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChallengeFileSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated challenge_file by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeFileModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge_file found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/challenge_file/{challenge_id}-{file_id}/relations": {
+      "get": {
+        "tags": [
+          "challenge_file"
+        ],
+        "summary": "Retrieve challenge_file relations by id",
+        "operationId": "retrieve_challenge_file_relations_by_id",
+        "parameters": [
+          {
+            "name": "challenge_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "file_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved challenge_file relations by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeFileRelations"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge_file found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/challenge_tag": {
       "get": {
         "tags": [
@@ -4753,7 +5247,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/InstanceModel"
+                    "$ref": "#/components/schemas/InviteModel"
                   }
                 }
               }
@@ -4813,7 +5307,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InstanceModel"
+                  "$ref": "#/components/schemas/InviteModel"
                 }
               }
             }
@@ -4896,7 +5390,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InstanceModel"
+                  "$ref": "#/components/schemas/InviteModel"
                 }
               }
             }
@@ -5061,7 +5555,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InstanceModel"
+                  "$ref": "#/components/schemas/InviteModel"
                 }
               }
             }
@@ -10229,8 +10723,8 @@
         "tags": [
           "leaderboard"
         ],
-        "summary": "List leaderboard rankings with offset and count",
-        "operationId": "rankings",
+        "summary": "List leaderboard rankings of players with offset and count",
+        "operationId": "player_rankings",
         "parameters": [
           {
             "name": "offset",
@@ -10255,11 +10749,158 @@
         ],
         "responses": {
           "200": {
-            "description": "Listed leaderboard rankings with offset and count successfully",
+            "description": "Listed leaderboard rankings of players with offset and count successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LeaderboardRankings"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/player/leaderboard/team/rankings": {
+      "post": {
+        "tags": [
+          "leaderboard"
+        ],
+        "summary": "List leaderboard rankings of teams with offset and count",
+        "operationId": "team_rankings",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset of the rankings",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of teams to get",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listed leaderboard rankings of teams with offset and count successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardRankings"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/player/leaderboard/team/top10": {
+      "post": {
+        "tags": [
+          "leaderboard"
+        ],
+        "summary": "List top 10 teams of leaderboard",
+        "operationId": "team_top_10",
+        "responses": {
+          "200": {
+            "description": "Listed top 10 teams successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Ranking"
+                  }
                 }
               }
             }
@@ -10312,11 +10953,11 @@
         "tags": [
           "leaderboard"
         ],
-        "summary": "List top 10 of leaderboard",
-        "operationId": "top_10",
+        "summary": "List top 10 players of leaderboard",
+        "operationId": "player_top_10",
         "responses": {
           "200": {
-            "description": "Listed top 10 rankings successfully",
+            "description": "Listed top 10 players successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -10448,7 +11089,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerSummary"
+                  "$ref": "#/components/schemas/PlayerDetails"
                 }
               }
             }
@@ -10519,7 +11160,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeamSummary"
+                  "$ref": "#/components/schemas/TeamDetails"
                 }
               }
             }
@@ -10937,24 +11578,14 @@
           "created_at",
           "updated_at",
           "value",
-          "prize",
-          "challenge_id",
-          "player_id"
+          "prize"
         ],
         "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "created_at": {
             "type": "string",
             "format": "date-time"
           },
           "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "player_id": {
             "type": "string",
             "format": "uuid"
           },
@@ -10975,14 +11606,14 @@
         "type": "object",
         "required": [
           "player",
-          "challenge"
+          "player_achievement"
         ],
         "properties": {
-          "challenge": {
-            "$ref": "#/components/schemas/ChallengeModel"
-          },
           "player": {
             "$ref": "#/components/schemas/PlayerModel"
+          },
+          "player_achievement": {
+            "$ref": "#/components/schemas/PlayerAchievementModel"
           }
         }
       },
@@ -10993,7 +11624,7 @@
           "created_at",
           "updated_at",
           "role",
-          "user_id"
+          "username"
         ],
         "properties": {
           "created_at": {
@@ -11011,16 +11642,14 @@
             "type": "string",
             "format": "date-time"
           },
-          "user_id": {
-            "type": "string",
-            "format": "uuid"
+          "username": {
+            "type": "string"
           }
         }
       },
       "AdminRelations": {
         "type": "object",
         "required": [
-          "user",
           "tickets"
         ],
         "properties": {
@@ -11029,9 +11658,6 @@
             "items": {
               "$ref": "#/components/schemas/TicketModel"
             }
-          },
-          "user": {
-            "$ref": "#/components/schemas/UserModel"
           }
         }
       },
@@ -11077,6 +11703,48 @@
           }
         }
       },
+      "ChallengeFileModel": {
+        "type": "object",
+        "required": [
+          "created_at",
+          "updated_at",
+          "challenge_id",
+          "file_id"
+        ],
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "file_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ChallengeFileRelations": {
+        "type": "object",
+        "required": [
+          "challenge",
+          "file"
+        ],
+        "properties": {
+          "challenge": {
+            "$ref": "#/components/schemas/ChallengeModel"
+          },
+          "file": {
+            "$ref": "#/components/schemas/FileModel"
+          }
+        }
+      },
       "ChallengeKindEnum": {
         "type": "string",
         "enum": [
@@ -11096,8 +11764,7 @@
           "points",
           "level",
           "kind",
-          "author_name",
-          "solves"
+          "author_name"
         ],
         "properties": {
           "author_name": {
@@ -11125,10 +11792,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "solves": {
-            "type": "integer",
-            "format": "int32"
-          },
           "title": {
             "type": "string"
           },
@@ -11141,7 +11804,6 @@
       "ChallengeRelations": {
         "type": "object",
         "required": [
-          "achievements",
           "containers",
           "files",
           "hints",
@@ -11149,14 +11811,15 @@
           "tags",
           "submissions",
           "challenge_tags",
+          "challenge_files",
           "flags",
           "players"
         ],
         "properties": {
-          "achievements": {
+          "challenge_files": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AchievementModel"
+              "$ref": "#/components/schemas/ChallengeFileModel"
             }
           },
           "challenge_tags": {
@@ -11220,7 +11883,8 @@
         "required": [
           "challenge",
           "tags",
-          "state"
+          "state",
+          "solves"
         ],
         "properties": {
           "challenge": {
@@ -11235,6 +11899,11 @@
                 "$ref": "#/components/schemas/DeploymentModel"
               }
             ]
+          },
+          "solves": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
           },
           "state": {
             "$ref": "#/components/schemas/PlayerChallengeState"
@@ -11384,19 +12053,9 @@
         "type": "object",
         "required": [
           "value",
-          "prize",
-          "challenge_id",
-          "player_id"
+          "prize"
         ],
         "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "player_id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "prize": {
             "type": "integer",
             "format": "int32"
@@ -11410,15 +12069,18 @@
         "type": "object",
         "required": [
           "role",
-          "user_id"
+          "username",
+          "password"
         ],
         "properties": {
+          "password": {
+            "type": "string"
+          },
           "role": {
             "$ref": "#/components/schemas/RoleEnum"
           },
-          "user_id": {
-            "type": "string",
-            "format": "uuid"
+          "username": {
+            "type": "string"
           }
         }
       },
@@ -11438,6 +12100,23 @@
           }
         }
       },
+      "CreateChallengeFileSchema": {
+        "type": "object",
+        "required": [
+          "challenge_id",
+          "file_id"
+        ],
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "file_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "CreateChallengeSchema": {
         "type": "object",
         "required": [
@@ -11446,8 +12125,7 @@
           "points",
           "level",
           "kind",
-          "author_name",
-          "solves"
+          "author_name"
         ],
         "properties": {
           "author_name": {
@@ -11464,10 +12142,6 @@
             "format": "int32"
           },
           "points": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "solves": {
             "type": "integer",
             "format": "int32"
           },
@@ -11587,19 +12261,10 @@
       "CreateFileSchema": {
         "type": "object",
         "required": [
-          "name",
-          "url",
-          "challenge_id"
+          "name"
         ],
         "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "name": {
-            "type": "string"
-          },
-          "url": {
             "type": "string"
           }
         }
@@ -11722,8 +12387,9 @@
         "type": "object",
         "required": [
           "team_id",
-          "user_id",
-          "score"
+          "username",
+          "email",
+          "password"
         ],
         "properties": {
           "ban_id": {
@@ -11739,17 +12405,18 @@
               "null"
             ]
           },
-          "score": {
-            "type": "integer",
-            "format": "int32"
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
           },
           "team_id": {
             "type": "string",
             "format": "uuid"
           },
-          "user_id": {
-            "type": "string",
-            "format": "uuid"
+          "username": {
+            "type": "string"
           }
         }
       },
@@ -11796,8 +12463,7 @@
         "type": "object",
         "required": [
           "email",
-          "name",
-          "score"
+          "name"
         ],
         "properties": {
           "email": {
@@ -11805,10 +12471,6 @@
           },
           "name": {
             "type": "string"
-          },
-          "score": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
@@ -11911,7 +12573,7 @@
           "instances": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/InstanceModel"
+              "$ref": "#/components/schemas/InviteModel"
             }
           },
           "player": {
@@ -11944,7 +12606,7 @@
               "null"
             ],
             "items": {
-              "$ref": "#/components/schemas/InstanceModel"
+              "$ref": "#/components/schemas/InviteModel"
             }
           }
         }
@@ -11955,15 +12617,9 @@
           "id",
           "created_at",
           "updated_at",
-          "name",
-          "url",
-          "challenge_id"
+          "name"
         ],
         "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "created_at": {
             "type": "string",
             "format": "date-time"
@@ -11978,9 +12634,6 @@
           "updated_at": {
             "type": "string",
             "format": "date-time"
-          },
-          "url": {
-            "type": "string"
           }
         }
       },
@@ -12069,13 +12722,6 @@
           }
         }
       },
-      "GroupEnum": {
-        "type": "string",
-        "enum": [
-          "admin",
-          "player"
-        ]
-      },
       "HintModel": {
         "type": "object",
         "required": [
@@ -12155,48 +12801,6 @@
           },
           "status": {
             "$ref": "#/components/schemas/UnlockStatus"
-          }
-        }
-      },
-      "InstanceModel": {
-        "type": "object",
-        "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "container_id",
-          "container_name",
-          "port_mapping",
-          "deployment_id"
-        ],
-        "properties": {
-          "container_id": {
-            "type": "string"
-          },
-          "container_name": {
-            "type": "string"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "deployment_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "port_mapping": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
           }
         }
       },
@@ -12373,6 +12977,33 @@
           }
         }
       },
+      "PlayerAchievementModel": {
+        "type": "object",
+        "required": [
+          "created_at",
+          "updated_at",
+          "player_id",
+          "achievement_id"
+        ],
+        "properties": {
+          "achievement_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "PlayerChallengeState": {
         "type": "string",
         "enum": [
@@ -12402,6 +13033,38 @@
           }
         }
       },
+      "PlayerDetails": {
+        "type": "object",
+        "required": [
+          "profile",
+          "submissions",
+          "unlocks",
+          "achievements"
+        ],
+        "properties": {
+          "achievements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AchievementModel"
+            }
+          },
+          "profile": {
+            "$ref": "#/components/schemas/PlayerProfile"
+          },
+          "submissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubmissionModel"
+            }
+          },
+          "unlocks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnlockModel"
+            }
+          }
+        }
+      },
       "PlayerModel": {
         "type": "object",
         "required": [
@@ -12409,8 +13072,8 @@
           "created_at",
           "updated_at",
           "team_id",
-          "user_id",
-          "score"
+          "username",
+          "email"
         ],
         "properties": {
           "ban_id": {
@@ -12430,13 +13093,12 @@
               "null"
             ]
           },
+          "email": {
+            "type": "string"
+          },
           "id": {
             "type": "string",
             "format": "uuid"
-          },
-          "score": {
-            "type": "integer",
-            "format": "int32"
           },
           "team_id": {
             "type": "string",
@@ -12446,9 +13108,8 @@
             "type": "string",
             "format": "date-time"
           },
-          "user_id": {
-            "type": "string",
-            "format": "uuid"
+          "username": {
+            "type": "string"
           }
         }
       },
@@ -12456,10 +13117,10 @@
         "type": "object",
         "required": [
           "player",
-          "user",
           "solved_challenges",
           "tag_solves",
-          "rank"
+          "rank",
+          "score"
         ],
         "properties": {
           "player": {
@@ -12467,7 +13128,13 @@
           },
           "rank": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "minimum": 0
+          },
+          "score": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
           },
           "solved_challenges": {
             "type": "array",
@@ -12480,9 +13147,6 @@
             "items": {
               "$ref": "#/components/schemas/TagSolves"
             }
-          },
-          "user": {
-            "$ref": "#/components/schemas/UserModel"
           }
         }
       },
@@ -12490,9 +13154,9 @@
         "type": "object",
         "required": [
           "team",
-          "user",
           "flags",
           "achievements",
+          "player_achievements",
           "notifications",
           "submissions",
           "unlocks",
@@ -12551,6 +13215,12 @@
               "$ref": "#/components/schemas/NotificationModel"
             }
           },
+          "player_achievements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayerAchievementModel"
+            }
+          },
           "submissions": {
             "type": "array",
             "items": {
@@ -12564,41 +13234,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TicketModel"
-            }
-          },
-          "unlocks": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UnlockModel"
-            }
-          },
-          "user": {
-            "$ref": "#/components/schemas/UserModel"
-          }
-        }
-      },
-      "PlayerSummary": {
-        "type": "object",
-        "required": [
-          "profile",
-          "submissions",
-          "unlocks",
-          "achievements"
-        ],
-        "properties": {
-          "achievements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AchievementModel"
-            }
-          },
-          "profile": {
-            "$ref": "#/components/schemas/PlayerProfile"
-          },
-          "submissions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubmissionModel"
             }
           },
           "unlocks": {
@@ -12717,8 +13352,7 @@
           "tag",
           "team",
           "ticket",
-          "unlocks",
-          "user"
+          "unlocks"
         ],
         "properties": {
           "achievement": {
@@ -12812,11 +13446,6 @@
             "minimum": 0
           },
           "unlocks": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "user": {
             "type": "integer",
             "format": "int64",
             "minimum": 0
@@ -12939,6 +13568,38 @@
           }
         }
       },
+      "TeamDetails": {
+        "type": "object",
+        "required": [
+          "profile",
+          "submissions",
+          "unlocks",
+          "achievements"
+        ],
+        "properties": {
+          "achievements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AchievementModel"
+            }
+          },
+          "profile": {
+            "$ref": "#/components/schemas/TeamProfile"
+          },
+          "submissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubmissionModel"
+            }
+          },
+          "unlocks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnlockModel"
+            }
+          }
+        }
+      },
       "TeamModel": {
         "type": "object",
         "required": [
@@ -12946,8 +13607,7 @@
           "created_at",
           "updated_at",
           "email",
-          "name",
-          "score"
+          "name"
         ],
         "properties": {
           "created_at": {
@@ -12964,10 +13624,6 @@
           "name": {
             "type": "string"
           },
-          "score": {
-            "type": "integer",
-            "format": "int32"
-          },
           "updated_at": {
             "type": "string",
             "format": "date-time"
@@ -12980,14 +13636,26 @@
           "team",
           "solved_challenges",
           "tag_solves",
-          "members"
+          "members",
+          "rank",
+          "score"
         ],
         "properties": {
           "members": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PlayerModel"
+              "$ref": "#/components/schemas/PlayerProfile"
             }
+          },
+          "rank": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "score": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
           },
           "solved_challenges": {
             "type": "array",
@@ -13069,52 +13737,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PlayerModel"
-            }
-          }
-        }
-      },
-      "TeamSummary": {
-        "type": "object",
-        "required": [
-          "team",
-          "members",
-          "submissions",
-          "unlocks",
-          "achievements",
-          "tag_solves"
-        ],
-        "properties": {
-          "achievements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AchievementModel"
-            }
-          },
-          "members": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PlayerProfile"
-            }
-          },
-          "submissions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubmissionModel"
-            }
-          },
-          "tag_solves": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TagSolves"
-            }
-          },
-          "team": {
-            "$ref": "#/components/schemas/TeamModel"
-          },
-          "unlocks": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UnlockModel"
             }
           }
         }
@@ -13264,6 +13886,10 @@
       },
       "UpdateProfileSchema": {
         "type": "object",
+        "required": [
+          "username",
+          "email"
+        ],
         "properties": {
           "discord_id": {
             "type": [
@@ -13271,43 +13897,8 @@
               "null"
             ]
           },
-          "team_id": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "uuid"
-          }
-        }
-      },
-      "UserModel": {
-        "type": "object",
-        "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "username",
-          "email",
-          "group"
-        ],
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
           "email": {
             "type": "string"
-          },
-          "group": {
-            "$ref": "#/components/schemas/GroupEnum"
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
           },
           "username": {
             "type": "string"
