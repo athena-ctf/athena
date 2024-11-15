@@ -33,6 +33,9 @@
     "file_storage": {
       "$ref": "#/definitions/FileStorage"
     },
+    "location": {
+      "type": "string"
+    },
     "redis": {
       "$ref": "#/definitions/Redis"
     },
@@ -231,8 +234,7 @@
       "required": [
         "registry_password",
         "registry_url",
-        "registry_username",
-        "single_instance_duration"
+        "registry_username"
       ],
       "properties": {
         "registry_password": {
@@ -243,11 +245,6 @@
         },
         "registry_username": {
           "type": "string"
-        },
-        "single_instance_duration": {
-          "type": "integer",
-          "format": "uint",
-          "minimum": 0.0
         }
       }
     },

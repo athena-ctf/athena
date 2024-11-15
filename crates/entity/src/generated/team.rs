@@ -23,7 +23,6 @@ pub struct Model {
     pub updated_at: DateTimeWithTimeZone,
     pub email: String,
     pub name: String,
-    pub score: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

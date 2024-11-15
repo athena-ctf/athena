@@ -11077,23 +11077,13 @@
           }
         }
       },
-      "ChallengeDeployment": {
-        "type": "object",
-        "required": [
-          "deployment",
-          "instances"
-        ],
-        "properties": {
-          "deployment": {
-            "$ref": "#/components/schemas/DeploymentModel"
-          },
-          "instances": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/InstanceModel"
-            }
-          }
-        }
+      "ChallengeKindEnum": {
+        "type": "string",
+        "enum": [
+          "containerized",
+          "regex_flag",
+          "static_flag"
+        ]
       },
       "ChallengeModel": {
         "type": "object",
@@ -11105,16 +11095,13 @@
           "description",
           "points",
           "level",
-          "challenge_type",
+          "kind",
           "author_name",
           "solves"
         ],
         "properties": {
           "author_name": {
             "type": "string"
-          },
-          "challenge_type": {
-            "$ref": "#/components/schemas/ChallengeTypeEnum"
           },
           "created_at": {
             "type": "string",
@@ -11126,6 +11113,9 @@
           "id": {
             "type": "string",
             "format": "uuid"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/ChallengeKindEnum"
           },
           "level": {
             "type": "integer",
@@ -11236,6 +11226,16 @@
           "challenge": {
             "$ref": "#/components/schemas/ChallengeModel"
           },
+          "deployment": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/DeploymentModel"
+              }
+            ]
+          },
           "state": {
             "$ref": "#/components/schemas/PlayerChallengeState"
           },
@@ -11288,14 +11288,6 @@
             "$ref": "#/components/schemas/TagModel"
           }
         }
-      },
-      "ChallengeTypeEnum": {
-        "type": "string",
-        "enum": [
-          "containerized",
-          "regex_flag",
-          "static_flag"
-        ]
       },
       "ContainerModel": {
         "type": "object",
@@ -11453,7 +11445,7 @@
           "description",
           "points",
           "level",
-          "challenge_type",
+          "kind",
           "author_name",
           "solves"
         ],
@@ -11461,11 +11453,11 @@
           "author_name": {
             "type": "string"
           },
-          "challenge_type": {
-            "$ref": "#/components/schemas/ChallengeTypeEnum"
-          },
           "description": {
             "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/ChallengeKindEnum"
           },
           "level": {
             "type": "integer",
@@ -11665,8 +11657,8 @@
         "required": [
           "container_id",
           "container_name",
-          "deployment_id",
-          "port_mapping"
+          "port_mapping",
+          "deployment_id"
         ],
         "properties": {
           "container_id": {
@@ -11934,16 +11926,6 @@
           "hints"
         ],
         "properties": {
-          "deployment": {
-            "oneOf": [
-              {
-                "type": "null"
-              },
-              {
-                "$ref": "#/components/schemas/ChallengeDeployment"
-              }
-            ]
-          },
           "files": {
             "type": "array",
             "items": {
@@ -11954,6 +11936,15 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/HintSummary"
+            }
+          },
+          "instances": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/InstanceModel"
             }
           }
         }
@@ -12175,8 +12166,8 @@
           "updated_at",
           "container_id",
           "container_name",
-          "deployment_id",
-          "port_mapping"
+          "port_mapping",
+          "deployment_id"
         ],
         "properties": {
           "container_id": {

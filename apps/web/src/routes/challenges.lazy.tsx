@@ -6,6 +6,7 @@ import { type components, fetchClient } from "@repo/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import ChallengesFilter from "@/components/challenge/filter";
+import { useCtfStore } from "@/stores/ctf";
 
 export const Route = createLazyFileRoute("/challenges")({
   component: Index,
@@ -29,12 +30,17 @@ function Index() {
     });
   }, []);
 
+  const ctf = useCtfStore();
+
   return (
     <div className="m-2">
       <div className="mr-4 flex justify-between">
         <ChallengesFilter
           tags={tags}
-          difficulties={[]}
+          difficulties={Object.entries(ctf.level_map).map(([k, v]) => ({
+            level: k,
+            value: v.name,
+          }))}
           onChange={(tags, difficulties, statuses) => {
             setFiltered(
               challenges.filter((challenge) => {

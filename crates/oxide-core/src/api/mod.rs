@@ -80,7 +80,7 @@ pub async fn start(settings: Settings) -> Result<()> {
         db_conn.clone(),
         settings.challenge.clone(),
         "caddy:2019".to_owned(),
-        settings.domain.clone(),
+        settings.ctf.domain.clone(),
     )?;
 
     let txn = db_conn.begin().await?;

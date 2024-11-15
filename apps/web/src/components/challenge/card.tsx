@@ -1,6 +1,7 @@
 import type { components } from "@repo/api";
 import { ChallengeModal } from "./modal";
 import { Badge } from "@repo/ui/components/badge";
+import { CountdownTimer } from "@repo/ui/components/countdown";
 import {
   Card,
   CardContent,
@@ -9,6 +10,8 @@ import {
   CardTitle,
 } from "@repo/ui/components/card";
 import { Circle } from "lucide-react";
+import { useCtfStore } from "@/stores/ctf";
+import { parseISO } from "date-fns";
 
 const stateColor = {
   solved: "",
@@ -21,6 +24,8 @@ export function ChallengeCard({
 }: {
   challengeSummary: components["schemas"]["ChallengeSummary"];
 }) {
+  const ctf = useCtfStore();
+
   return (
     <div className="mx-[7%] my-2 cursor-pointer">
       <ChallengeModal challengeSummary={challengeSummary}>
@@ -29,10 +34,15 @@ export function ChallengeCard({
             <div className="flex place-content-center justify-between">
               <div className="flex place-items-center space-x-4">
                 <Circle
-                  className={`${challengeSummary.challenge.level}`} // TODO: read from ctf settings
+                  style={{
+                    color: ctf.level_map[challengeSummary.challenge.level.toString()].color,
+                  }}
                 />
-                <CardTitle className="flex flex-col items-center text-xl">
+                <CardTitle className="flex flex-row content-between text-xl w-full">
                   {challengeSummary.challenge.title}
+                  {challengeSummary.deployment?.expires_at && (
+                    <CountdownTimer targetDate={parseISO(challengeSummary.deployment.expires_at)} />
+                  )}
                 </CardTitle>
                 <CardDescription className="flex flex-col items-center">
                   @{challengeSummary.challenge.author_name}

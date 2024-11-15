@@ -140,14 +140,16 @@ export function ChallengeModal({
                 </Tooltip>
               </TooltipProvider>
             </VerticalTabsTrigger>
-            {challengeSummary.challenge.challenge_type === "containerized" && (
-              <VerticalTabsTrigger value="instance">
+            {challengeSummary.challenge.kind === "containerized" && (
+              <VerticalTabsTrigger value="deployment">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Server />
                     </TooltipTrigger>
-                    <TooltipContent>Create Instance</TooltipContent>
+                    <TooltipContent>
+                      {challengeSummary.deployment ? "View Deployment" : "Start Deployment"}
+                    </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               </VerticalTabsTrigger>
@@ -180,7 +182,7 @@ export function ChallengeModal({
           <VerticalTabsContent value="description">
             <ScrollArea className="h-max">{challengeSummary.challenge.description}</ScrollArea>
           </VerticalTabsContent>
-          <VerticalTabsContent value="instance">{/* TODO */}</VerticalTabsContent>
+          <VerticalTabsContent value="deployment">{/* TODO */}</VerticalTabsContent>
           <VerticalTabsContent value="files">
             <div className="flex flex-col justify-between space-y-2">
               {challengeDetails?.files.map((file) => (

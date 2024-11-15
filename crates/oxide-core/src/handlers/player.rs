@@ -12,8 +12,8 @@ use crate::errors::{Error, Result};
 use crate::schemas::{
     Achievement, AchievementModel, AuthPlayer, Ban, BanModel, Challenge, ChallengeModel,
     CreatePlayerSchema, Deployment, DeploymentModel, Flag, FlagModel, Hint, HintModel,
-    JsonResponse, Notification, NotificationModel, Player, PlayerModel, PlayerProfile,
-    PlayerSummary, Submission, SubmissionModel, Team, TeamModel, Ticket, TicketModel, Unlock,
+    JsonResponse, Notification, NotificationModel, Player, PlayerDetails, PlayerModel,
+    PlayerProfile, Submission, SubmissionModel, Team, TeamModel, Ticket, TicketModel, Unlock,
     UnlockModel, UpdateProfileSchema, User, UserModel,
 };
 use crate::service::{AppState, CachedJson};
@@ -90,7 +90,7 @@ pub async fn update_profile_by_id(
     path = "/player/summary",
     operation_id = "retrieve_player_summary",
     responses(
-        (status = 200, description = "Retrieved player summary by id successfully", body = PlayerSummary),
+        (status = 200, description = "Retrieved player summary by id successfully", body = PlayerDetails),
         (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
@@ -102,7 +102,7 @@ pub async fn update_profile_by_id(
 pub async fn retrieve_summary(
     AuthPlayer(player_model): AuthPlayer,
     state: State<Arc<AppState>>,
-) -> Result<Json<PlayerSummary>> {
+) -> Result<Json<PlayerDetails>> {
     let Some(user_model) = User::find_by_id(player_model.user_id)
         .one(&state.db_conn)
         .await?
@@ -110,7 +110,7 @@ pub async fn retrieve_summary(
         return Err(Error::NotFound("User not found".to_owned()));
     };
 
-    Ok(Json(PlayerSummary {
+    Ok(Json(PlayerDetails {
         submissions: player_model
             .find_related(Submission)
             .all(&state.db_conn)

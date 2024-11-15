@@ -31,12 +31,6 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .unique_key(),
                     )
-                    .col(
-                        ColumnDef::new(Player::Score)
-                            .integer()
-                            .not_null()
-                            .default(0),
-                    )
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-player-team_id")
@@ -87,7 +81,6 @@ enum Player {
     BanId,
     TeamId,
     DiscordId,
-    Score,
 }
 
 #[derive(DeriveIden)]

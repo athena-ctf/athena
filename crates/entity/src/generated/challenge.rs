@@ -29,7 +29,6 @@ pub struct Model {
     pub level: i32,
     pub kind: ChallengeKindEnum,
     pub author_name: String,
-    pub solves: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

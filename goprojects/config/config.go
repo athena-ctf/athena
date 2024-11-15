@@ -122,10 +122,6 @@ type Docker struct {
 
 	// RegistryUsername corresponds to the JSON schema field "registry_username".
 	RegistryUsername string `json:"registry_username"`
-
-	// SingleInstanceDuration corresponds to the JSON schema field
-	// "single_instance_duration".
-	SingleInstanceDuration int `json:"single_instance_duration"`
 }
 
 type FileStorage struct {
@@ -223,6 +219,9 @@ type Settings struct {
 
 	// FileStorage corresponds to the JSON schema field "file_storage".
 	FileStorage FileStorage `json:"file_storage"`
+
+	// Location corresponds to the JSON schema field "location".
+	Location *string `json:"location,omitempty"`
 
 	// Redis corresponds to the JSON schema field "redis".
 	Redis Redis `json:"redis"`

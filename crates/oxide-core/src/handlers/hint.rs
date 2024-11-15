@@ -55,21 +55,16 @@ pub async fn unlock_by_id(
         return Err(Error::NotFound("Hint not found".to_owned()));
     };
 
-    let score = player_model.score;
-
     state
         .persistent_client
         .zincrby::<(), _, _>(
-            "leaderboard",
+            "leaderboard:player",
             f64::from(-hint_model.cost),
             &player_model.id.simple().to_string(),
         )
         .await?;
 
-    let mut active_model = player_model.into_active_model();
-    active_model.score = ActiveValue::Set(score - hint_model.cost);
-
-    active_model.update(&txn).await?;
+    // TODO: update team score
 
     Ok(Json(hint_model))
 }

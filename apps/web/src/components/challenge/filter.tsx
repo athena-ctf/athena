@@ -9,7 +9,7 @@ const STATUS_OPTIONS = ["solved", "unsolved", "challenge_limit_reached"];
 
 interface ChallengesFilterProps {
   tags: components["schemas"]["TagModel"][];
-  difficulties: { level: number; value: string }[];
+  difficulties: { level: string; value: string }[];
   onChange: (tags: string[], difficulties: string[], status: string[]) => void;
 }
 

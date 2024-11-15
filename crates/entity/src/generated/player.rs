@@ -27,7 +27,6 @@ pub struct Model {
     pub discord_id: Option<String>,
     #[sea_orm(unique)]
     pub user_id: Uuid,
-    pub score: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

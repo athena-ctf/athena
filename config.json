@@ -1,12 +1,12 @@
 {
-  "domain": "athena.io",
   "ctf": {
     "name": "Athena CTF",
+    "domain": "athena.io",
     "description": "Athena is a hosted platform for CTFs",
     "time": {
-      "end": "2024-11-15T18:15:50.541489268Z",
-      "start": "2024-11-13T18:15:50.541530746Z",
-      "freeze": "2024-11-16T18:15:50.541530117Z"
+      "end": "2024-11-16T20:05:56.172493675Z",
+      "start": "2024-11-14T20:05:56.172563261Z",
+      "freeze": "2024-11-17T20:05:56.172561500Z"
     },
     "sponsors": {},
     "prizes": {},
@@ -33,7 +33,7 @@
     "host": "postgres",
     "port": 5432,
     "username": "postgres",
-    "password": "E122ezEav1wM",
+    "password": "LNiMVWDSh3bU",
     "listener_channel": "athena_db_modification",
     "database_name": "athena_db"
   },
@@ -42,13 +42,13 @@
       "host": "redis_cache",
       "port": 6379,
       "username": "redis_cache",
-      "password": "OWlvI735VlTq"
+      "password": "Alp3YWAxtKRl"
     },
     "persistent": {
       "host": "redis_token",
       "port": 6379,
       "username": "redis_token",
-      "password": "GzR5Ck43JeQ7"
+      "password": "1H7f5sSwURUd"
     }
   },
   "file_storage": {
@@ -58,7 +58,7 @@
     }
   },
   "session": {
-    "key": "KJ02bd3W9cDcT1gVOGQ8HO5u+EDXeWpZap+yviOji2c=",
+    "key": "RgNKkiPfQr5ntaIVFpJeqOXy7y+VfZNgu0nzC+UiQ2I=",
     "expiry_duration": 600,
     "cookie_name": "sessionid"
   },
@@ -66,14 +66,13 @@
     "from": "noreply@athena.io",
     "reply_to": "admin@athena.io",
     "username": "athena_smtp",
-    "password": "RR7cccgU4bM5",
+    "password": "0HKx5yJRFf18",
     "server_url": "smtp.athena.io"
   },
   "docker": {
-    "single_instance_duration": 15,
     "registry_url": "registry.athena.io",
     "registry_username": "athena",
-    "registry_password": "pV8vNLkjpLpo"
+    "registry_password": "BBo0nLbwGWgd"
   },
   "discord": {
     "welcome_channel_id": "",
@@ -91,7 +90,7 @@
   "challenge": {
     "container_registry": "registry.athena.io",
     "registry_username": "athena",
-    "registry_password": "nSoCucAx4w5U",
+    "registry_password": "W3630nSjwuMW",
     "container_timeout": 900,
     "player_flag_len": 20
   }

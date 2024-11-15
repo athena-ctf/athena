@@ -12,4 +12,4 @@ type CtfType = Omit<typeof ctf, "level_map" | "sponsors" | "prizes"> & {
   prizes: Record<string, string>;
 };
 
-export const useConfigStore = create<CtfType>()(() => ctf);
+export const useCtfStore = create<CtfType>()(() => ctf);

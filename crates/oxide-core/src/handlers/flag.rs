@@ -66,7 +66,7 @@ pub async fn verify(
         None
     };
 
-    let Some(mut challenge_model) = Challenge::find_by_id(body.challenge_id)
+    let Some(challenge_model) = Challenge::find_by_id(body.challenge_id)
         .one(&state.db_conn)
         .await?
     else {
@@ -134,23 +134,25 @@ pub async fn verify(
     };
 
     if is_correct {
-        challenge_model.solves += 1;
-        challenge_model.into_active_model().save(&txn).await?;
-
-        let mut player_model_cloned = player_model.clone();
-        player_model_cloned.score += points;
-
         state
             .persistent_client
             .zincrby::<(), _, _>(
-                "leaderboard",
+                "leaderboard:player",
                 f64::from(points),
                 &player_model.id.simple().to_string(),
             )
             .await?;
 
-        let active_model = player_model_cloned.into_active_model();
-        active_model.update(&txn).await?;
+        // TODO: update team score
+
+        state
+            .persistent_client
+            .hincrby::<(), _, _>(
+                "challenge:solves",
+                challenge_model.id.simple().to_string(),
+                1,
+            )
+            .await?;
     }
 
     if let Some(mut submission_model) = prev_model {

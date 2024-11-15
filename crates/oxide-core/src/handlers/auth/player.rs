@@ -126,7 +126,7 @@ pub async fn register(
         }
 
         TeamRegister::Create { team_name } => {
-            let team_model = TeamModel::new(body.email, team_name, 0)
+            let team_model = TeamModel::new(body.email, team_name)
                 .into_active_model()
                 .insert(&txn)
                 .await?;
@@ -135,7 +135,7 @@ pub async fn register(
         }
     };
 
-    PlayerModel::new(team_id, None, None, user.id, 0)
+    PlayerModel::new(team_id, None, None, user.id)
         .into_active_model()
         .insert(&txn)
         .await?;

@@ -24,7 +24,6 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(Team::Email).string().not_null())
                     .col(ColumnDef::new(Team::Name).string().not_null())
-                    .col(ColumnDef::new(Team::Score).integer().not_null())
                     .to_owned(),
             )
             .await?;
@@ -49,5 +48,4 @@ enum Team {
     UpdatedAt,
     Email,
     Name,
-    Score,
 }

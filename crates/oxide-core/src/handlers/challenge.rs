@@ -82,11 +82,17 @@ pub async fn player_challenges(
             None
         };
 
+        let solves = state
+            .persistent_client
+            .hget("challenge:solves", challenge.id.simple().to_string())
+            .await?;
+
         summaries.push(ChallengeSummary {
             challenge,
             tags,
             state: player_state,
             deployment,
+            solves,
         });
     }
 

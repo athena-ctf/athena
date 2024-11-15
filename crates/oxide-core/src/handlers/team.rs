@@ -13,11 +13,82 @@ use uuid::Uuid;
 use crate::errors::{Error, Result};
 use crate::schemas::{
     AuthPlayer, CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Tag,
-    TagSolves, Team, TeamModel, TeamProfile, TeamSummary, User,
+    TagSolves, Team, TeamDetails, TeamModel, TeamProfile, User,
 };
 use crate::service::{AppState, CachedJson};
 
 oxide_macros::crud!(Team, single: [], optional: [], multiple: [Invite, Player]);
+
+async fn get_team_profile(
+    team_model: TeamModel,
+    pool: &RedisPool,
+    db: &DbConn,
+) -> Result<TeamProfile> {
+    let rank = pool
+        .zrevrank("leaderboard:team", &team_model.id.simple().to_string())
+        .await?;
+
+    let score = pool
+        .zscore("leaderboard:team", &team_model.id.simple().to_string())
+        .await?;
+
+    let players = team_model.find_related(Player).all(db).await?;
+    let mut members = Vec::with_capacity(players.len());
+
+    for player_model in players {
+        members.push(
+            super::retrieve_profile(
+                player_model.find_related(User).one(db).await?.unwrap(),
+                player_model,
+                db,
+                pool,
+            )
+            .await?,
+        );
+    }
+
+    let mut tags_map = Tag::find()
+        .all(db)
+        .await?
+        .into_iter()
+        .map(|tag| {
+            (
+                tag.id,
+                TagSolves {
+                    tag_value: tag.value,
+                    solves: 0,
+                },
+            )
+        })
+        .collect::<HashMap<_, _>>();
+
+    let mut challenges = Vec::new();
+
+    for submitted_challenge in team_model
+        .find_linked(TeamToChallenge)
+        .filter(entity::submission::Column::IsCorrect.eq(true))
+        .all(db)
+        .await?
+    {
+        let tags = submitted_challenge.find_related(Tag).all(db).await?;
+        for tag in tags {
+            tags_map
+                .entry(tag.id)
+                .and_modify(|tag_solves| tag_solves.solves += 1);
+        }
+
+        challenges.push(submitted_challenge);
+    }
+
+    Ok(TeamProfile {
+        team: team_model,
+        solved_challenges: challenges,
+        tag_solves: tags_map.values().cloned().collect(),
+        members,
+        rank,
+        score,
+    })
+}
 
 #[utoipa::path(
     get,
@@ -45,49 +116,9 @@ pub async fn retrieve_team_by_teamname(
         return Err(Error::NotFound("Team not found".to_owned()));
     };
 
-    let players = team_model.find_related(Player).all(&state.db_conn).await?;
-    let mut tags_map = Tag::find()
-        .all(&state.db_conn)
-        .await?
-        .into_iter()
-        .map(|tag| {
-            (
-                tag.id,
-                TagSolves {
-                    tag_value: tag.value,
-                    solves: 0,
-                },
-            )
-        })
-        .collect::<HashMap<_, _>>();
-
-    let mut challenges = Vec::new();
-
-    for submitted_challenge in team_model
-        .find_linked(TeamToChallenge)
-        .filter(entity::submission::Column::IsCorrect.eq(true))
-        .all(&state.db_conn)
-        .await?
-    {
-        let tags = submitted_challenge
-            .find_related(Tag)
-            .all(&state.db_conn)
-            .await?;
-        for tag in tags {
-            tags_map
-                .entry(tag.id)
-                .and_modify(|tag_solves| tag_solves.solves += 1);
-        }
-
-        challenges.push(submitted_challenge);
-    }
-
-    Ok(Json(TeamProfile {
-        team: team_model,
-        solved_challenges: challenges,
-        tag_solves: tags_map.values().cloned().collect(),
-        members: players,
-    }))
+    get_team_profile(team_model, &state.persistent_client, &state.db_conn)
+        .await
+        .map(Json)
 }
 
 #[utoipa::path(
@@ -121,7 +152,7 @@ pub async fn update_details(
     path = "/player/team/summary",
     operation_id = "retrieve_team_summary",
     responses(
-        (status = 200, description = "Retrieved team summary by id successfully", body = TeamSummary),
+        (status = 200, description = "Retrieved team summary by id successfully", body = TeamDetails),
         (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
@@ -133,7 +164,7 @@ pub async fn update_details(
 pub async fn retrieve_summary(
     AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
-) -> Result<Json<TeamSummary>> {
+) -> Result<Json<TeamDetails>> {
     let Some(team_model) = Team::find()
         .left_join(Player)
         .filter(entity::player::Column::Id.eq(player.id))
@@ -194,8 +225,7 @@ pub async fn retrieve_summary(
         );
     }
 
-    Ok(Json(TeamSummary {
-        members,
+    Ok(Json(TeamDetails {
         submissions: team_model
             .find_linked(TeamToSubmission)
             .all(&state.db_conn)
@@ -208,7 +238,6 @@ pub async fn retrieve_summary(
             .find_linked(TeamToAchievement)
             .all(&state.db_conn)
             .await?,
-        team: team_model,
-        tag_solves: tags_map.values().cloned().collect(),
+        profile: get_team_profile(team_model, &state.persistent_client, &state.db_conn).await?,
     }))
 }

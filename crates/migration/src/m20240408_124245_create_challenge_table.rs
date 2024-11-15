@@ -48,7 +48,6 @@ impl MigrationTrait for Migration {
                             .not_null(),
                     )
                     .col(ColumnDef::new(Challenge::AuthorName).string().not_null())
-                    .col(ColumnDef::new(Challenge::Solves).integer().not_null())
                     .to_owned(),
             )
             .await?;
@@ -81,7 +80,6 @@ enum Challenge {
     AuthorName,
     Level,
     Kind,
-    Solves,
 }
 
 #[derive(DeriveIden)]

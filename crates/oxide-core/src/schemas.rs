@@ -79,6 +79,7 @@ pub struct ChallengeSummary {
     pub tags: Vec<TagModel>,
     pub state: PlayerChallengeState,
     pub deployment: Option<DeploymentModel>,
+    pub solves: u64,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -130,11 +131,12 @@ pub struct PlayerProfile {
     pub user: UserModel,
     pub solved_challenges: Vec<ChallengeModel>,
     pub tag_solves: Vec<TagSolves>,
-    pub rank: i64,
+    pub rank: u64,
+    pub score: u64,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct PlayerSummary {
+pub struct PlayerDetails {
     pub profile: PlayerProfile,
     pub submissions: Vec<SubmissionModel>,
     pub unlocks: Vec<UnlockModel>,
@@ -146,17 +148,17 @@ pub struct TeamProfile {
     pub team: TeamModel,
     pub solved_challenges: Vec<ChallengeModel>,
     pub tag_solves: Vec<TagSolves>,
-    pub members: Vec<PlayerModel>,
+    pub members: Vec<PlayerProfile>,
+    pub rank: u64,
+    pub score: u64,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct TeamSummary {
-    pub team: TeamModel,
-    pub members: Vec<PlayerProfile>,
+pub struct TeamDetails {
+    pub profile: TeamProfile,
     pub submissions: Vec<SubmissionModel>,
     pub unlocks: Vec<UnlockModel>,
     pub achievements: Vec<AchievementModel>,
-    pub tag_solves: Vec<TagSolves>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

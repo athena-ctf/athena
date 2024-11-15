@@ -24,6 +24,7 @@ pub struct Level {
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Ctf {
     pub name: String,
+    pub domain: String,
     pub description: String,
     pub time: Time,
     pub sponsors: IndexMap<String, Vec<Sponsor>>,
@@ -162,7 +163,6 @@ pub struct Challenge {
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Docker {
-    pub single_instance_duration: usize,
     pub registry_url: String,
     pub registry_username: String,
     pub registry_password: String,
@@ -187,7 +187,6 @@ pub struct Token {
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Settings {
-    pub domain: String,
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub location: Option<String>,
     pub ctf: Ctf,
@@ -211,10 +210,10 @@ fn gen_random_password() -> String {
 impl Default for Settings {
     fn default() -> Self {
         Self {
-            domain: "athena.io".to_owned(),
             location: None,
             ctf: Ctf {
                 name: "Athena CTF".to_owned(),
+                domain: "athena.io".to_owned(),
                 description: "Athena is a hosted platform for CTFs".to_owned(),
                 time: Time {
                     end: Utc::now().checked_add_days(Days::new(2)).unwrap(),
@@ -303,7 +302,6 @@ impl Default for Settings {
                 server_url: "smtp.athena.io".to_owned(),
             },
             docker: Docker {
-                single_instance_duration: 15,
                 registry_url: "registry.athena.io".to_owned(),
                 registry_username: "athena".to_owned(),
                 registry_password: gen_random_password(),
