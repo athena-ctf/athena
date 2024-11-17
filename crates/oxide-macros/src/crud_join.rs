@@ -1,51 +1,30 @@
 use proc_macro::TokenStream;
 use quote::{format_ident, quote, ToTokens};
 use syn::parse::{Parse, ParseStream};
-use syn::punctuated::Punctuated;
-use syn::{bracketed, parse_macro_input, ExprAsync, Ident, Token};
+use syn::{parse_macro_input, ExprAsync, Ident, Token};
 
-struct CrudMacroInput {
+struct JoinCrudMacroInput {
     entity: Ident,
-    single: Vec<Ident>,
-    multiple: Vec<Ident>,
-    optional: Vec<Ident>,
+    related_from: Ident,
+    related_to: Ident,
     on_update_hook: Option<ExprAsync>,
     on_delete_hook: Option<ExprAsync>,
 }
 
-impl Parse for CrudMacroInput {
+impl Parse for JoinCrudMacroInput {
     fn parse(input: ParseStream) -> syn::Result<Self> {
-        let entity: Ident = input.parse()?;
+        let entity = input.parse::<Ident>()?;
         input.parse::<Token![,]>()?;
 
-        input.parse::<Ident>()?;
-        input.parse::<Token![:]>()?;
-        let content;
-        bracketed!(content in input);
-        let single: Punctuated<Ident, Token![,]> =
-            content.parse_terminated(Ident::parse, Token![,])?;
+        let related_from: Ident = input.parse()?;
         input.parse::<Token![,]>()?;
 
-        input.parse::<Ident>()?;
-        input.parse::<Token![:]>()?;
-        let content;
-        bracketed!(content in input);
-        let optional: Punctuated<Ident, Token![,]> =
-            content.parse_terminated(Ident::parse, Token![,])?;
-        input.parse::<Token![,]>()?;
-
-        input.parse::<Ident>()?;
-        input.parse::<Token![:]>()?;
-        let content;
-        bracketed!(content in input);
-        let multiple: Punctuated<Ident, Token![,]> =
-            content.parse_terminated(Ident::parse, Token![,])?;
+        let related_to: Ident = input.parse()?;
 
         let mut macro_input = Self {
             entity,
-            single: single.into_iter().collect(),
-            multiple: multiple.into_iter().collect(),
-            optional: optional.into_iter().collect(),
+            related_from,
+            related_to,
             on_delete_hook: None,
             on_update_hook: None,
         };
@@ -62,7 +41,7 @@ impl Parse for CrudMacroInput {
                 "on_delete" if macro_input.on_delete_hook.is_none() => {
                     macro_input.on_delete_hook = Some(input.parse::<ExprAsync>()?);
                 }
-                "on_update" if macro_input.on_update_hook.is_none() => {
+                "on_update" if macro_input.on_delete_hook.is_none() => {
                     macro_input.on_update_hook = Some(input.parse::<ExprAsync>()?);
                 }
                 "on_delete" | "on_update" => {
@@ -81,7 +60,7 @@ impl Parse for CrudMacroInput {
     }
 }
 
-fn gen_list_fn(entity: &Ident) -> impl ToTokens {
+fn gen_join_list_fn(entity: &Ident) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 
     let doc = format!("List {entity_snake}s");
@@ -110,7 +89,7 @@ fn gen_list_fn(entity: &Ident) -> impl ToTokens {
     }
 }
 
-fn gen_create_fn(entity: &Ident) -> impl ToTokens {
+fn gen_join_create_fn(entity: &Ident) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 
     let doc = format!("Create {entity_snake}");
@@ -143,7 +122,6 @@ fn gen_create_fn(entity: &Ident) -> impl ToTokens {
             Json(body): Json<#request_body>,
         ) -> Result<Json<#entity_model>> {
             let mut model = body.into_active_model();
-            model.id = ActiveValue::Set(Uuid::now_v7());
             model.created_at = model.updated_at.clone();
 
             Ok(Json(model.insert(&state.db_conn).await?))
@@ -151,15 +129,18 @@ fn gen_create_fn(entity: &Ident) -> impl ToTokens {
     }
 }
 
-fn gen_retrieve_fn(entity: &Ident) -> impl ToTokens {
+fn gen_join_retrieve_fn(entity: &Ident, related_from: &Ident, related_to: &Ident) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
+    let related_from_snake_id = format!("{}_id", heck::AsSnakeCase(related_from.to_string()));
+    let related_to_snake_id = format!("{}_id", heck::AsSnakeCase(related_to.to_string()));
 
     let doc = format!("Retrieve {entity_snake} by id");
-    let path = format!("/admin/{entity_snake}/{{id}}");
+    let path =
+        format!("/admin/{entity_snake}/{{{related_from_snake_id}}}-{{{related_to_snake_id}}}");
     let operation_id = format!("retrieve_{entity_snake}_by_id");
     let description = format!("Retrieved {entity_snake} by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
-    let redis_key = format!("{entity_snake}:{{}}");
+    let redis_key = format!("{entity_snake}:{{}}:{{}}");
 
     let entity_model = format_ident!("{entity}Model");
 
@@ -169,7 +150,10 @@ fn gen_retrieve_fn(entity: &Ident) -> impl ToTokens {
             get,
             path = #path,
             operation_id = #operation_id,
-            params(("id" = Uuid, Path, description = "Id of entity")),
+            params(
+                (#related_from_snake_id = Uuid, Path, description = "Id of entity"),
+                (#related_to_snake_id = Uuid, Path, description = "Id of entity"),
+            ),
             responses(
                 (status = 200, description = #description, body = #entity_model),
                 (status = 400, description = "Invalid parameters format", body = JsonResponse),
@@ -181,15 +165,15 @@ fn gen_retrieve_fn(entity: &Ident) -> impl ToTokens {
         )]
         pub async fn retrieve_by_id(
             state: State<Arc<AppState>>,
-            Path(id): Path<Uuid>,
+            Path(id): Path<(Uuid, Uuid)>,
         ) -> Result<CachedJson<#entity_model>> {
-            let cached = state.cache_client.get::<Option<String>, _>(format!(#redis_key, id.simple())).await?;
+            let cached = state.cache_client.get::<Option<String>, _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
 
             if let Some(value) = cached {
                 Ok(CachedJson::Cached(value))
             } else {
                 if let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? {
-                    state.cache_client.set::<(), _, _>(format!(#redis_key, id.simple()), serde_json::to_string(&model)?, Some(Expiration::EX(900)), None, false).await?;
+                    state.cache_client.set::<(), _, _>(format!(#redis_key, id.0.simple(), id.1.simple()), serde_json::to_string(&model)?, Some(Expiration::EX(900)), None, false).await?;
                     Ok(CachedJson::New(Json(model)))
                 } else {
                     Err(Error::NotFound(#not_found.to_owned()))
@@ -199,15 +183,26 @@ fn gen_retrieve_fn(entity: &Ident) -> impl ToTokens {
     }
 }
 
-fn gen_update_fn(entity: &Ident, on_update_hook: Option<ExprAsync>) -> impl ToTokens {
+fn gen_join_update_fn(
+    entity: &Ident,
+    related_from: &Ident,
+    related_to: &Ident,
+    on_update_hook: Option<ExprAsync>,
+) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
+    let related_from_snake_id = format!("{}_id", heck::AsSnakeCase(related_from.to_string()));
+    let related_to_snake_id = format!("{}_id", heck::AsSnakeCase(related_to.to_string()));
+
+    let related_from_snake = format_ident!("{related_from_snake_id}");
+    let related_to_snake = format_ident!("{related_to_snake_id}");
 
     let doc = format!("Update {entity_snake} by id");
-    let path = format!("/admin/{entity_snake}/{{id}}");
+    let path =
+        format!("/admin/{entity_snake}/{{{related_from_snake_id}}}-{{{related_to_snake_id}}}");
     let operation_id = format!("update_{entity_snake}_by_id");
     let description = format!("Updated {entity_snake} by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
-    let redis_key = format!("{entity_snake}:{{}}");
+    let redis_key = format!("{entity_snake}:{{}}:{{}}");
 
     let entity_model = format_ident!("{entity}Model");
     let request_body = format_ident!("Create{entity}Schema");
@@ -221,7 +216,10 @@ fn gen_update_fn(entity: &Ident, on_update_hook: Option<ExprAsync>) -> impl ToTo
             path = #path,
             operation_id = #operation_id,
             request_body = #request_body,
-            params(("id" = Uuid, Path, description = "Id of entity")),
+            params(
+                (#related_from_snake_id = Uuid, Path, description = "Id of entity"),
+                (#related_to_snake_id = Uuid, Path, description = "Id of entity"),
+            ),
             responses(
                 (status = 200, description = #description, body = #entity_model),
                 (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
@@ -233,32 +231,40 @@ fn gen_update_fn(entity: &Ident, on_update_hook: Option<ExprAsync>) -> impl ToTo
         )]
         pub async fn update_by_id(
             state: State<Arc<AppState>>,
-            Path(id): Path<Uuid>,
+            Path(id): Path<(Uuid, Uuid)>,
             Json(body): Json<#request_body>,
         ) -> Result<Json<#entity_model>> {
-            let mut active_model = body.clone().into_active_model();
-            active_model.id = ActiveValue::Set(id);
-            let updated_model = active_model.update(&state.db_conn).await?;
-            state.cache_client.del::<(), _>(format!(#redis_key, id.simple())).await?;
+            let mut model = body.into_active_model();
+            model.#related_from_snake = ActiveValue::Set(id.0);
+            model.#related_to_snake = ActiveValue::Set(id.1);
 
-            let model = updated_model.clone();
-            let state_cloned = state.clone();
+            let model = model.update(&state.db_conn).await?;
+
             #hook_await
 
-            Ok(Json(updated_model))
+            state.cache_client.del::<(), _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
+            Ok(Json(model))
         }
     }
 }
 
-fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<ExprAsync>) -> impl ToTokens {
+fn gen_join_delete_fn(
+    entity: &Ident,
+    related_from: &Ident,
+    related_to: &Ident,
+    on_delete_hook: Option<ExprAsync>,
+) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
+    let related_from_snake_id = format!("{}_id", heck::AsSnakeCase(related_from.to_string()));
+    let related_to_snake_id = format!("{}_id", heck::AsSnakeCase(related_to.to_string()));
 
     let doc = format!("Delete {entity_snake} by id");
-    let path = format!("/admin/{entity_snake}/{{id}}");
+    let path =
+        format!("/admin/{entity_snake}/{{{related_from_snake_id}}}-{{{related_to_snake_id}}}");
     let operation_id = format!("delete_{entity_snake}_by_id");
     let description = format!("Deleted {entity_snake} by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
-    let redis_key = format!("{entity_snake}:{{}}");
+    let redis_key = format!("{entity_snake}:{{}}.{{}}");
 
     let hook_await = on_delete_hook.map(|hook| quote! { tokio::spawn(#hook); });
 
@@ -268,7 +274,10 @@ fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<ExprAsync>) -> impl ToTo
             delete,
             path = #path,
             operation_id = #operation_id,
-            params(("id" = Uuid, Path, description = "Id of entity")),
+            params(
+                (#related_from_snake_id = Uuid, Path, description = "Id of entity"),
+                (#related_to_snake_id = Uuid, Path, description = "Id of entity"),
+            ),
             responses(
                 (status = 204, description = #description),
                 (status = 400, description = "Invalid parameters format", body = JsonResponse),
@@ -278,18 +287,12 @@ fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<ExprAsync>) -> impl ToTo
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]
-        pub async fn delete_by_id(state: State<Arc<AppState>>, Path(id): Path<Uuid>) -> Result<()> {
-            let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? else {
-                return Err(Error::NotFound(#not_found.to_owned()));
-            };
-
-            let state_cloned = state.clone();
-
-            #hook_await
-
+        pub async fn delete_by_id(state: State<Arc<AppState>>, Path(id): Path<(Uuid, Uuid)>) -> Result<()> {
             let delete_result = #entity::delete_by_id(id).exec(&state.db_conn).await?;
             if delete_result.rows_affected == 1 {
-                state.cache_client.del::<(), _>(format!(#redis_key, id.simple())).await?;
+                state.cache_client.del::<(), _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
+
+                #hook_await
 
                 Ok(())
             } else {
@@ -299,79 +302,39 @@ fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<ExprAsync>) -> impl ToTo
     }
 }
 
-fn gen_relations_fn(
+fn gen_join_relations_fn(
     entity: &Ident,
-    single: &[Ident],
-    multiple: &[Ident],
-    optional: &[Ident],
+    related_from: &Ident,
+    related_to: &Ident,
 ) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
+    let related_from_snake = format_ident!(
+        "{}",
+        heck::AsSnakeCase(related_from.to_string()).to_string()
+    );
+    let related_to_snake =
+        format_ident!("{}", heck::AsSnakeCase(related_to.to_string()).to_string());
+
+    let related_from_snake_id = format!("{}_id", heck::AsSnakeCase(related_from.to_string()));
+    let related_to_snake_id = format!("{}_id", heck::AsSnakeCase(related_to.to_string()));
 
     let doc = format!("Retrieve {entity_snake} relations by id");
-    let path = format!("/admin/{entity_snake}/{{id}}/relations");
+    let path = format!(
+        "/admin/{entity_snake}/{{{related_from_snake_id}}}-{{{related_to_snake_id}}}/relations"
+    );
     let operation_id = format!("retrieve_{entity_snake}_relations_by_id");
     let description = format!("Retrieved {entity_snake} relations by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
 
     let entity_relations = format_ident!("{entity}Relations");
-
-    let single_fields = single.iter().map(|ident| {
-        let ident_snake = format_ident!("{}", heck::AsSnakeCase(ident.to_string()).to_string());
-        let ident_model = format_ident!("{}Model", ident);
-
-        quote! {
-            pub #ident_snake: #ident_model,
-        }
-    });
-
-    let optional_fields = optional.iter().map(|ident| {
-        let ident_snake = format_ident!("{}", heck::AsSnakeCase(ident.to_string()).to_string());
-        let ident_model = format_ident!("{}Model", ident);
-
-        quote! {
-            pub #ident_snake: Option<#ident_model>,
-        }
-    });
-
-    let multiple_fields = multiple.iter().map(|ident| {
-        let ident_snake = format_ident!("{}s", heck::AsSnakeCase(ident.to_string()).to_string());
-        let ident_model = format_ident!("{}Model", ident);
-
-        quote! {
-            pub #ident_snake: Vec<#ident_model>,
-        }
-    });
-
-    let single_relations = single.iter().map(|ident| {
-        let ident_snake = format_ident!("{}", heck::AsSnakeCase(ident.to_string()).to_string());
-
-        quote! {
-            #ident_snake: model.find_related(#ident).one(&state.db_conn).await?.unwrap(),
-        }
-    });
-
-    let optional_relations = optional.iter().map(|ident| {
-        let ident_snake = format_ident!("{}", heck::AsSnakeCase(ident.to_string()).to_string());
-
-        quote! {
-            #ident_snake: model.find_related(#ident).one(&state.db_conn).await?,
-        }
-    });
-
-    let multiple_relations = multiple.iter().map(|ident| {
-        let ident_snake = format_ident!("{}s", heck::AsSnakeCase(ident.to_string()).to_string());
-
-        quote! {
-            #ident_snake: model.find_related(#ident).all(&state.db_conn).await?,
-        }
-    });
+    let related_from_model = format_ident!("{related_from}Model");
+    let related_to_model = format_ident!("{related_to}Model");
 
     quote! {
         #[derive(Clone, Debug, serde::Serialize, serde::Deserialize, utoipa::ToSchema)]
         pub struct #entity_relations {
-            #(#single_fields)*
-            #(#optional_fields)*
-            #(#multiple_fields)*
+            pub #related_from_snake: #related_from_model,
+            pub #related_to_snake: #related_to_model
         }
 
         #[doc = #doc]
@@ -380,7 +343,8 @@ fn gen_relations_fn(
             path = #path,
             operation_id = #operation_id,
             params(
-                ("id" = Uuid, Path, description = "Id of entity"),
+                (#related_from_snake_id = Uuid, Path, description = "Id of entity"),
+                (#related_to_snake_id = Uuid, Path, description = "Id of entity"),
             ),
             responses(
                 (status = 200, description = #description, body = #entity_relations),
@@ -392,22 +356,21 @@ fn gen_relations_fn(
         )]
         pub async fn retrieve_relations_by_id(
             state: State<Arc<AppState>>,
-            Path(id): Path<Uuid>,
+            Path(id): Path<(Uuid, Uuid)>,
         ) -> Result<Json<#entity_relations>> {
             let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? else {
                 return Err(Error::NotFound(#not_found.to_owned()))
             };
 
             Ok(Json(#entity_relations {
-                #(#single_relations)*
-                #(#optional_relations)*
-                #(#multiple_relations)*
+                #related_from_snake: #related_from::find_by_id(id.0).one(&state.db_conn).await?.unwrap(),
+                #related_to_snake: #related_to::find_by_id(id.1).one(&state.db_conn).await?.unwrap(),
             }))
         }
     }
 }
 
-fn gen_import_fn(entity: &Ident) -> impl ToTokens {
+fn gen_join_import_fn(entity: &Ident) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 
     let doc = format!("Import {entity_snake}s");
@@ -452,7 +415,7 @@ fn gen_import_fn(entity: &Ident) -> impl ToTokens {
     }
 }
 
-fn gen_export_fn(entity: &Ident) -> impl ToTokens {
+fn gen_join_export_fn(entity: &Ident) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 
     let doc = format!("Export {entity_snake}s");
@@ -505,30 +468,29 @@ fn gen_export_fn(entity: &Ident) -> impl ToTokens {
     }
 }
 
-pub fn crud_impl(input: TokenStream) -> TokenStream {
-    let CrudMacroInput {
+pub fn crud_join_impl(input: TokenStream) -> TokenStream {
+    let JoinCrudMacroInput {
         entity,
-        single,
-        multiple,
-        optional,
+        related_from,
+        related_to,
         on_delete_hook,
         on_update_hook,
-    } = parse_macro_input!(input as CrudMacroInput);
+    } = parse_macro_input!(input as JoinCrudMacroInput);
 
-    let list_fn = gen_list_fn(&entity);
-    let create_fn = gen_create_fn(&entity);
-    let retrieve_fn = gen_retrieve_fn(&entity);
-    let update_fn = gen_update_fn(&entity, on_update_hook);
-    let delete_fn = gen_delete_fn(&entity, on_delete_hook);
-    let relations_fn = gen_relations_fn(&entity, &single, &multiple, &optional);
-    let import_fn = gen_import_fn(&entity);
-    let export_fn = gen_export_fn(&entity);
+    let list_fn = gen_join_list_fn(&entity);
+    let create_fn = gen_join_create_fn(&entity);
+    let retrieve_fn = gen_join_retrieve_fn(&entity, &related_from, &related_to);
+    let update_fn = gen_join_update_fn(&entity, &related_from, &related_to, on_update_hook);
+    let delete_fn = gen_join_delete_fn(&entity, &related_from, &related_to, on_delete_hook);
+    let relations_fn = gen_join_relations_fn(&entity, &related_from, &related_to);
+    let import_fn = gen_join_import_fn(&entity);
+    let export_fn = gen_join_export_fn(&entity);
 
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 
     let route_base = format!("/{entity_snake}");
-    let route_id = format!("{route_base}/:id");
-    let route_relations = format!("{route_base}/:id/relations");
+    let route_id = format!("{route_base}/:id-:id");
+    let route_relations = format!("{route_base}/:id-:id/relations");
     let route_import = format!("{route_base}/import");
     let route_export = format!("{route_base}/export");
 

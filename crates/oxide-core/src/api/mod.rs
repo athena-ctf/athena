@@ -41,8 +41,6 @@ pub async fn start(settings: Settings) -> Result<()> {
         .await
         .map_err(Error::Bind)?;
 
-    tracing::info!("starting axum on port 7000");
-
     #[cfg(not(feature = "file-transport"))]
     let mail_transport = {
         let credentials = lettre::transport::smtp::authentication::Credentials::new(
@@ -83,8 +81,14 @@ pub async fn start(settings: Settings) -> Result<()> {
         settings.ctf.domain.clone(),
     )?;
 
+    if !tasks::verify_achievements(&db_conn).await? {
+        tracing::error!("Add base achievements before starting server.");
+        return Err(Error::InvalidConfig("Achievements".to_owned()));
+    }
+
     let txn = db_conn.begin().await?;
     tasks::load_leaderboard(&txn, &persistent_client).await?;
+    tasks::load_challenge_solves(&txn, &persistent_client).await?;
     txn.commit().await?;
 
     let token_manager = TokenManager {
@@ -111,6 +115,8 @@ pub async fn start(settings: Settings) -> Result<()> {
     .with_graceful_shutdown(shutdown_signal())
     .await
     .map_err(Error::Serve)?;
+
+    tracing::info!("starting server on port 7000");
 
     cache_client.quit().await?;
     cache_conn.await.unwrap()?;

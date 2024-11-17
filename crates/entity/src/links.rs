@@ -1,5 +1,7 @@
 use sea_orm::{Linked, RelationTrait};
 
+// TODO: check links
+
 pub struct TeamToChallenge;
 
 impl Linked for TeamToChallenge {
@@ -43,6 +45,21 @@ impl Linked for TeamToUnlock {
     }
 }
 
+pub struct TeamToHint;
+
+impl Linked for TeamToHint {
+    type FromEntity = super::team::Entity;
+    type ToEntity = super::hint::Entity;
+
+    fn link(&self) -> Vec<sea_orm::LinkDef> {
+        vec![
+            super::player::Relation::Team.def().rev(),
+            super::unlock::Relation::Player.def().rev(),
+            super::unlock::Relation::Hint.def(),
+        ]
+    }
+}
+
 pub struct TeamToAchievement;
 
 impl Linked for TeamToAchievement {
@@ -52,6 +69,7 @@ impl Linked for TeamToAchievement {
     fn link(&self) -> Vec<sea_orm::LinkDef> {
         vec![
             super::player::Relation::Team.def().rev(),
+            super::player_achievement::Relation::Player.def().rev(),
             super::player_achievement::Relation::Achievement.def(),
         ]
     }

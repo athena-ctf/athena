@@ -1,6 +1,7 @@
 use proc_macro::TokenStream;
 
 mod crud;
+mod crud_join;
 mod details;
 mod json_path;
 
@@ -21,5 +22,5 @@ pub fn crud(input: TokenStream) -> TokenStream {
 
 #[proc_macro]
 pub fn crud_join(input: TokenStream) -> TokenStream {
-    crud::crud_join_impl(input)
+    crud_join::crud_join_impl(input)
 }

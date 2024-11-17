@@ -44,6 +44,7 @@ impl IntoActiveModel<super::player::ActiveModel> for UpdateProfileSchema {
             discord_id: self.discord_id.map_or(ActiveValue::NotSet, |discord_id| {
                 ActiveValue::Set(Some(discord_id))
             }),
+            avatar_url: ActiveValue::NotSet,
         }
     }
 }

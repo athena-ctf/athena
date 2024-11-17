@@ -27,8 +27,14 @@ impl MigrationTrait for Migration {
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
-                    .col(ColumnDef::new(Achievement::Value).string().not_null())
+                    .col(
+                        ColumnDef::new(Achievement::Value)
+                            .string()
+                            .not_null()
+                            .unique_key(),
+                    )
                     .col(ColumnDef::new(Achievement::Prize).integer().not_null())
+                    .col(ColumnDef::new(Achievement::LogoUrl).string().not_null())
                     .to_owned(),
             )
             .await?;
@@ -53,4 +59,5 @@ enum Achievement {
     UpdatedAt,
     Value,
     Prize,
+    LogoUrl,
 }

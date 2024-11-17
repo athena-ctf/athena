@@ -59,6 +59,15 @@ pub enum Error {
 
     #[error("Not Found: {0}")]
     NotFound(String),
+
+    #[error("Export error: {0:?}")]
+    Sqlx(#[from] sea_orm::sqlx::Error),
+
+    #[error("Temp file error: {0:?}")]
+    Temp(#[from] std::io::Error),
+
+    #[error("CSV error: {0}")]
+    Csv(#[from] csv::Error),
 }
 
 pub type Result<T, E = Error> = std::result::Result<T, E>;

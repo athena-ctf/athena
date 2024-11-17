@@ -130,10 +130,18 @@ pub async fn register(
         }
     };
 
-    PlayerModel::new(team_id, None, None, body.username, body.email, password)
-        .into_active_model()
-        .insert(&txn)
-        .await?;
+    PlayerModel::new(
+        team_id,
+        None,
+        None,
+        body.username,
+        body.email,
+        password,
+        body.avatar_url,
+    )
+    .into_active_model()
+    .insert(&txn)
+    .await?;
 
     txn.commit().await?;
 

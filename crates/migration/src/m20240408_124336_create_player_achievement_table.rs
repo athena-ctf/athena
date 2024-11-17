@@ -37,6 +37,11 @@ impl MigrationTrait for Migration {
                             .uuid()
                             .not_null(),
                     )
+                    .col(
+                        ColumnDef::new(PlayerAchievement::Count)
+                            .integer()
+                            .not_null(),
+                    )
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-player_achievement-player_id")
@@ -72,6 +77,7 @@ enum PlayerAchievement {
     AchievementId,
     CreatedAt,
     UpdatedAt,
+    Count,
 }
 
 #[derive(DeriveIden)]

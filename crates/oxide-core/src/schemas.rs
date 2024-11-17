@@ -2,8 +2,10 @@ use axum::async_trait;
 use axum::extract::FromRequestParts;
 use axum::http::request::Parts;
 use axum::http::StatusCode;
+use chrono::{DateTime, FixedOffset};
 pub use entity::extensions::*;
 pub use entity::prelude::*;
+use sea_orm::FromQueryResult;
 use serde::{Deserialize, Serialize};
 use tower_sessions::Session;
 use utoipa::ToSchema;
@@ -56,6 +58,7 @@ pub struct RegisterPlayer {
     pub password: String,
     pub token: String,
     pub team: TeamRegister,
+    pub avatar_url: String,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -124,10 +127,23 @@ pub struct TagSolves {
     pub solves: usize,
 }
 
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema, FromQueryResult)]
+#[sea_orm(entity = "Achievement")]
+pub struct AchievementsReceived {
+    pub id: Uuid,
+    pub created_at: DateTime<FixedOffset>,
+    pub updated_at: DateTime<FixedOffset>,
+    pub value: String,
+    pub prize: i32,
+    pub logo_url: String,
+    pub count: i32,
+}
+
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct PlayerProfile {
     pub player: PlayerModel,
     pub solved_challenges: Vec<ChallengeModel>,
+    pub achievements: Vec<AchievementsReceived>,
     pub tag_solves: Vec<TagSolves>,
     pub rank: u64,
     pub score: u64,
@@ -138,7 +154,6 @@ pub struct PlayerDetails {
     pub profile: PlayerProfile,
     pub submissions: Vec<SubmissionModel>,
     pub unlocks: Vec<UnlockModel>,
-    pub achievements: Vec<AchievementModel>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -248,4 +263,10 @@ where
 
         Ok(Self(model))
     }
+}
+
+#[derive(ToSchema)]
+pub struct ImportFile {
+    #[schema(value_type = String, format = Binary)]
+    pub csv_file: Vec<u8>,
 }

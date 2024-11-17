@@ -23,6 +23,7 @@ pub struct Model {
     pub player_id: Uuid,
     #[sea_orm(primary_key, auto_increment = false)]
     pub achievement_id: Uuid,
+    pub count: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

@@ -33,6 +33,7 @@ impl MigrationTrait for Migration {
                             .not_null(),
                     )
                     .col(ColumnDef::new(Player::Password).string().not_null())
+                    .col(ColumnDef::new(Player::AvatarUrl).string().not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-player-team_id")
@@ -78,6 +79,7 @@ enum Player {
     BanId,
     TeamId,
     DiscordId,
+    AvatarUrl,
 }
 
 #[derive(DeriveIden)]

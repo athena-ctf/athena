@@ -21,8 +21,10 @@ pub struct Model {
     pub id: Uuid,
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
+    #[sea_orm(unique)]
     pub value: String,
     pub prize: i32,
+    pub logo_url: String,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

@@ -1,22 +1,15 @@
-use std::sync::{Arc, LazyLock};
+use std::sync::LazyLock;
 
-use axum::extract::{Json, Path, State};
-use axum::routing::get;
-use axum::Router;
 use dashmap::DashMap;
-use fred::prelude::*;
 use regex::Regex;
-use sea_orm::prelude::*;
-use sea_orm::{ActiveValue, IntoActiveModel, TransactionTrait};
-use uuid::Uuid;
+use sea_orm::sea_query::OnConflict;
+use sea_orm::{Iterable, TransactionTrait};
 
-use crate::errors::{Error, Result};
 use crate::schemas::{
-    AuthPlayer, Challenge, ChallengeKindEnum, ChallengeModel, CreateFlagSchema, Flag, FlagModel,
-    FlagVerificationResult, JsonResponse, Player, PlayerModel, Submission, SubmissionModel,
-    VerifyFlagSchema,
+    Achievement, AuthPlayer, Challenge, ChallengeKindEnum, ChallengeModel, CreateFlagSchema, Flag,
+    FlagModel, FlagVerificationResult, JsonResponse, Player, PlayerAchievement,
+    PlayerAchievementModel, PlayerModel, Submission, SubmissionModel, VerifyFlagSchema,
 };
-use crate::service::{AppState, CachedJson};
 
 oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: []);
 
@@ -143,16 +136,68 @@ pub async fn verify(
             )
             .await?;
 
-        // TODO: update team score
-
         state
             .persistent_client
-            .hincrby::<(), _, _>(
+            .zincrby::<(), _, _>(
+                "leaderboard:team",
+                f64::from(points),
+                &player_model.team_id.simple().to_string(),
+            )
+            .await?;
+
+        let solves = state
+            .persistent_client
+            .hincrby::<u64, _, _>(
                 "challenge:solves",
                 challenge_model.id.simple().to_string(),
                 1,
             )
             .await?;
+
+        let achievement_model = match solves {
+            1 => Some(
+                Achievement::find()
+                    .filter(entity::achievement::Column::Value.eq("First Blood"))
+                    .one(&txn)
+                    .await?
+                    .unwrap(),
+            ),
+
+            2 => Some(
+                Achievement::find()
+                    .filter(entity::achievement::Column::Value.eq("Second Blood"))
+                    .one(&txn)
+                    .await?
+                    .unwrap(),
+            ),
+
+            3 => Some(
+                Achievement::find()
+                    .filter(entity::achievement::Column::Value.eq("Third Blood"))
+                    .one(&txn)
+                    .await?
+                    .unwrap(),
+            ),
+            _ => None,
+        };
+
+        if let Some(achievement_model) = achievement_model {
+            PlayerAchievement::insert(
+                PlayerAchievementModel::new(player_model.id, achievement_model.id, 1)
+                    .into_active_model(),
+            )
+            .on_conflict(
+                OnConflict::columns(entity::player_achievement::PrimaryKey::iter())
+                    .update_column(entity::player_achievement::Column::Count)
+                    .value(
+                        entity::player_achievement::Column::Count,
+                        Expr::col(entity::player_achievement::Column::Count).add(1),
+                    )
+                    .to_owned(),
+            )
+            .exec(&txn)
+            .await?;
+        }
     }
 
     if let Some(mut submission_model) = prev_model {

@@ -1,19 +1,9 @@
-use std::sync::Arc;
+use sea_orm::TransactionTrait;
 
-use axum::extract::{Json, Path, State};
-use axum::routing::get;
-use axum::Router;
-use fred::prelude::*;
-use sea_orm::prelude::*;
-use sea_orm::{ActiveValue, IntoActiveModel, TransactionTrait};
-use uuid::Uuid;
-
-use crate::errors::{Error, Result};
 use crate::schemas::{
     AuthPlayer, Challenge, ChallengeModel, CreateHintSchema, Hint, HintModel, JsonResponse, Player,
     PlayerModel, Unlock, UnlockModel,
 };
-use crate::service::{AppState, CachedJson};
 
 oxide_macros::crud!(Hint, single: [Challenge], optional: [], multiple: [Unlock, Player]);
 

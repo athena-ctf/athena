@@ -26,22 +26,30 @@ pub mod unlock;
 use std::collections::HashMap;
 
 use fred::prelude::*;
+use futures::Stream;
 use sea_orm::prelude::*;
+use sea_orm::{Iterable, QuerySelect};
+use tempfile::NamedTempFile;
+use tokio::fs::File;
+use tokio::io::BufReader;
+use tokio_util::io::ReaderStream;
 
 use crate::errors::Result;
-use crate::schemas::{Challenge, PlayerModel, PlayerProfile, Tag, TagSolves};
+use crate::schemas::{
+    Achievement, AchievementsReceived, Challenge, PlayerModel, PlayerProfile, Tag, TagSolves,
+};
 
 pub async fn retrieve_profile(
-    player_model: PlayerModel,
+    player: PlayerModel,
     db: &DbConn,
     pool: &RedisPool,
 ) -> Result<PlayerProfile> {
     let rank = pool
-        .zrevrank("leaderboard:player", &player_model.id.simple().to_string())
+        .zrevrank("leaderboard:player", &player.id.simple().to_string())
         .await?;
 
     let score = pool
-        .zscore("leaderboard:player", &player_model.id.simple().to_string())
+        .zscore("leaderboard:player", &player.id.simple().to_string())
         .await?;
 
     let mut tags_map = Tag::find()
@@ -59,7 +67,7 @@ pub async fn retrieve_profile(
         })
         .collect::<HashMap<_, _>>();
 
-    let solved_challenges = player_model
+    let solved_challenges = player
         .find_related(Challenge)
         .filter(entity::submission::Column::IsCorrect.eq(true))
         .all(db)
@@ -74,11 +82,51 @@ pub async fn retrieve_profile(
         }
     }
 
+    let achievements = player
+        .find_related(Achievement)
+        .select_only()
+        .columns(entity::achievement::Column::iter())
+        .column(entity::player_achievement::Column::Count)
+        .into_model::<AchievementsReceived>()
+        .all(db)
+        .await?;
+    let tag_solves = tags_map.values().cloned().collect();
+
     Ok(PlayerProfile {
-        player: player_model,
+        player,
         solved_challenges,
-        tag_solves: tags_map.values().cloned().collect(),
+        achievements,
+        tag_solves,
         rank,
         score,
     })
+}
+
+struct CsvStream {
+    _temp_file: NamedTempFile, // This ensures the file is deleted when dropped
+    stream: ReaderStream<BufReader<File>>,
+}
+
+impl CsvStream {
+    async fn new(temp_file: NamedTempFile) -> std::io::Result<Self> {
+        let file = File::open(temp_file.path()).await?;
+        let reader = BufReader::new(file);
+        let stream = ReaderStream::new(reader);
+
+        Ok(Self {
+            _temp_file: temp_file,
+            stream,
+        })
+    }
+}
+
+impl Stream for CsvStream {
+    type Item = std::io::Result<bytes::Bytes>;
+
+    fn poll_next(
+        mut self: std::pin::Pin<&mut Self>,
+        cx: &mut std::task::Context<'_>,
+    ) -> std::task::Poll<Option<Self::Item>> {
+        std::pin::Pin::new(&mut self.stream).poll_next(cx)
+    }
 }

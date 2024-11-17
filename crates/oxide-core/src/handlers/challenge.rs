@@ -1,23 +1,13 @@
-use std::sync::Arc;
+use sea_orm::{Iterable, QueryFilter, QueryOrder, QuerySelect};
 
-use axum::extract::{Json, Path, State};
-use axum::routing::get;
-use axum::Router;
-use entity::prelude::ChallengeKindEnum;
-use fred::prelude::*;
-use sea_orm::prelude::*;
-use sea_orm::{ActiveValue, IntoActiveModel, Iterable, QueryOrder, QuerySelect};
-use uuid::Uuid;
-
-use crate::errors::{Error, Result};
 use crate::schemas::{
-    AuthPlayer, Challenge, ChallengeFile, ChallengeFileModel, ChallengeModel, ChallengeSummary,
-    ChallengeTag, ChallengeTagModel, Container, ContainerModel, CreateChallengeSchema, Deployment,
-    DeploymentModel, DetailedChallenge, File, FileModel, Flag, FlagModel, Hint, HintModel,
-    HintSummary, Instance, JsonResponse, Player, PlayerChallengeState, PlayerChallenges,
-    PlayerModel, Submission, SubmissionModel, Tag, TagModel, Unlock, UnlockModel, UnlockStatus,
+    AuthPlayer, Challenge, ChallengeFile, ChallengeFileModel, ChallengeKindEnum, ChallengeModel,
+    ChallengeSummary, ChallengeTag, ChallengeTagModel, Container, ContainerModel,
+    CreateChallengeSchema, Deployment, DeploymentModel, DetailedChallenge, File, FileModel, Flag,
+    FlagModel, Hint, HintModel, HintSummary, Instance, JsonResponse, Player, PlayerChallengeState,
+    PlayerChallenges, PlayerModel, Submission, SubmissionModel, Tag, TagModel, Unlock, UnlockModel,
+    UnlockStatus,
 };
-use crate::service::{AppState, CachedJson};
 
 oxide_macros::crud!(
     Challenge,
