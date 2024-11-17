@@ -5,7 +5,32 @@ use crate::schemas::{
     PlayerModel, Unlock, UnlockModel,
 };
 
-oxide_macros::crud!(Hint, single: [Challenge], optional: [], multiple: [Unlock, Player]);
+oxide_macros::crud!(
+    Hint,
+    single: [Challenge],
+    optional: [],
+    multiple: [Unlock, Player],
+    on_delete: {
+        for player_model in model.find_related(Player).all(&state.db_conn).await? {
+            state.persistent_client.zincrby::<(), _, _>(
+                "leaderboard:player",
+                -f64::from(model.cost),
+                player_model.id.simple().to_string()
+            ).await?;
+        }
+    },
+    on_update: {
+        if model.cost != old_model.cost {
+            for player_model in model.find_related(Player).all(&state.db_conn).await? {
+                state.persistent_client.zincrby::<(), _, _>(
+                    "leaderboard:player",
+                    f64::from(model.cost - old_model.cost),
+                    player_model.id.simple().to_string()
+                ).await?;
+            }
+        }
+    }
+);
 
 #[utoipa::path(
     get,

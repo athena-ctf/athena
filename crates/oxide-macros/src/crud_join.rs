@@ -1,14 +1,14 @@
 use proc_macro::TokenStream;
 use quote::{format_ident, quote, ToTokens};
 use syn::parse::{Parse, ParseStream};
-use syn::{parse_macro_input, ExprAsync, Ident, Token};
+use syn::{parse_macro_input, Block, Ident, Token};
 
 struct JoinCrudMacroInput {
     entity: Ident,
     related_from: Ident,
     related_to: Ident,
-    on_update_hook: Option<ExprAsync>,
-    on_delete_hook: Option<ExprAsync>,
+    on_update_hook: Option<Block>,
+    on_delete_hook: Option<Block>,
 }
 
 impl Parse for JoinCrudMacroInput {
@@ -39,10 +39,10 @@ impl Parse for JoinCrudMacroInput {
 
             match hook_fn.to_string().as_str() {
                 "on_delete" if macro_input.on_delete_hook.is_none() => {
-                    macro_input.on_delete_hook = Some(input.parse::<ExprAsync>()?);
+                    macro_input.on_delete_hook = Some(input.parse::<Block>()?);
                 }
                 "on_update" if macro_input.on_delete_hook.is_none() => {
-                    macro_input.on_update_hook = Some(input.parse::<ExprAsync>()?);
+                    macro_input.on_update_hook = Some(input.parse::<Block>()?);
                 }
                 "on_delete" | "on_update" => {
                     return Err(syn::Error::new(hook_fn.span(), "This hook is already specified once. It cannot be mentioned more than once"));
@@ -187,7 +187,7 @@ fn gen_join_update_fn(
     entity: &Ident,
     related_from: &Ident,
     related_to: &Ident,
-    on_update_hook: Option<ExprAsync>,
+    on_update_hook: Option<Block>,
 ) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
     let related_from_snake_id = format!("{}_id", heck::AsSnakeCase(related_from.to_string()));
@@ -207,7 +207,10 @@ fn gen_join_update_fn(
     let entity_model = format_ident!("{entity}Model");
     let request_body = format_ident!("Create{entity}Schema");
 
-    let hook_await = on_update_hook.map(|hook| quote! { tokio::spawn(#hook); });
+    let hook = on_update_hook.map(|hook| {
+        let stmts = hook.stmts;
+        quote! { #(#stmts)* }
+    });
 
     quote! {
         #[doc = #doc]
@@ -240,7 +243,7 @@ fn gen_join_update_fn(
 
             let model = model.update(&state.db_conn).await?;
 
-            #hook_await
+            #hook
 
             state.cache_client.del::<(), _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
             Ok(Json(model))
@@ -252,7 +255,7 @@ fn gen_join_delete_fn(
     entity: &Ident,
     related_from: &Ident,
     related_to: &Ident,
-    on_delete_hook: Option<ExprAsync>,
+    on_delete_hook: Option<Block>,
 ) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
     let related_from_snake_id = format!("{}_id", heck::AsSnakeCase(related_from.to_string()));
@@ -266,7 +269,10 @@ fn gen_join_delete_fn(
     let not_found = format!("No {entity_snake} found with specified id");
     let redis_key = format!("{entity_snake}:{{}}.{{}}");
 
-    let hook_await = on_delete_hook.map(|hook| quote! { tokio::spawn(#hook); });
+    let hook = on_delete_hook.map(|hook| {
+        let stmts = hook.stmts;
+        quote! { #(#stmts)* }
+    });
 
     quote! {
         #[doc = #doc]
@@ -288,16 +294,16 @@ fn gen_join_delete_fn(
             )
         )]
         pub async fn delete_by_id(state: State<Arc<AppState>>, Path(id): Path<(Uuid, Uuid)>) -> Result<()> {
-            let delete_result = #entity::delete_by_id(id).exec(&state.db_conn).await?;
-            if delete_result.rows_affected == 1 {
-                state.cache_client.del::<(), _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
+            let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? else {
+                return Err(Error::NotFound(#not_found.to_owned()));
+            };
 
-                #hook_await
+            #hook
 
-                Ok(())
-            } else {
-                Err(Error::NotFound(#not_found.to_owned()))
-            }
+            #entity::delete_by_id(id).exec(&state.db_conn).await?;
+            state.cache_client.del::<(), _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
+
+            Ok(())
         }
     }
 }

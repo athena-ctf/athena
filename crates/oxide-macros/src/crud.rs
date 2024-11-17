@@ -2,15 +2,15 @@ use proc_macro::TokenStream;
 use quote::{format_ident, quote, ToTokens};
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
-use syn::{bracketed, parse_macro_input, ExprAsync, Ident, Token};
+use syn::{bracketed, parse_macro_input, Block, Ident, Token};
 
 struct CrudMacroInput {
     entity: Ident,
     single: Vec<Ident>,
     multiple: Vec<Ident>,
     optional: Vec<Ident>,
-    on_update_hook: Option<ExprAsync>,
-    on_delete_hook: Option<ExprAsync>,
+    on_update_hook: Option<Block>,
+    on_delete_hook: Option<Block>,
 }
 
 impl Parse for CrudMacroInput {
@@ -60,10 +60,10 @@ impl Parse for CrudMacroInput {
 
             match hook_fn.to_string().as_str() {
                 "on_delete" if macro_input.on_delete_hook.is_none() => {
-                    macro_input.on_delete_hook = Some(input.parse::<ExprAsync>()?);
+                    macro_input.on_delete_hook = Some(input.parse::<Block>()?);
                 }
                 "on_update" if macro_input.on_update_hook.is_none() => {
-                    macro_input.on_update_hook = Some(input.parse::<ExprAsync>()?);
+                    macro_input.on_update_hook = Some(input.parse::<Block>()?);
                 }
                 "on_delete" | "on_update" => {
                     return Err(syn::Error::new(hook_fn.span(), "This hook is already specified once. It cannot be mentioned more than once"));
@@ -199,7 +199,7 @@ fn gen_retrieve_fn(entity: &Ident) -> impl ToTokens {
     }
 }
 
-fn gen_update_fn(entity: &Ident, on_update_hook: Option<ExprAsync>) -> impl ToTokens {
+fn gen_update_fn(entity: &Ident, on_update_hook: Option<Block>) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 
     let doc = format!("Update {entity_snake} by id");
@@ -212,7 +212,31 @@ fn gen_update_fn(entity: &Ident, on_update_hook: Option<ExprAsync>) -> impl ToTo
     let entity_model = format_ident!("{entity}Model");
     let request_body = format_ident!("Create{entity}Schema");
 
-    let hook_await = on_update_hook.map(|hook| quote! { tokio::spawn(#hook); });
+    let hook = on_update_hook.map_or_else(
+        || {
+            quote! {
+                let mut active_model = body.into_active_model();
+                active_model.id = ActiveValue::Set(id);
+                let model = active_model.update(&state.db_conn).await?;
+                state.cache_client.del::<(), _>(format!(#redis_key, id.simple())).await?;
+            }
+        },
+        |hook| {
+            let stmts = hook.stmts;
+            quote! {
+                let Some(old_model) = #entity::find_by_id(id).one(&state.db_conn).await? else {
+                    return Err(Error::NotFound(#not_found.to_owned()))
+                };
+
+                let mut active_model = body.into_active_model();
+                active_model.id = ActiveValue::Set(id);
+                let model = active_model.update(&state.db_conn).await?;
+                state.cache_client.del::<(), _>(format!(#redis_key, id.simple())).await?;
+
+                #(#stmts)*
+            }
+        },
+    );
 
     quote! {
         #[doc = #doc]
@@ -236,21 +260,14 @@ fn gen_update_fn(entity: &Ident, on_update_hook: Option<ExprAsync>) -> impl ToTo
             Path(id): Path<Uuid>,
             Json(body): Json<#request_body>,
         ) -> Result<Json<#entity_model>> {
-            let mut active_model = body.clone().into_active_model();
-            active_model.id = ActiveValue::Set(id);
-            let updated_model = active_model.update(&state.db_conn).await?;
-            state.cache_client.del::<(), _>(format!(#redis_key, id.simple())).await?;
+            #hook
 
-            let model = updated_model.clone();
-            let state_cloned = state.clone();
-            #hook_await
-
-            Ok(Json(updated_model))
+            Ok(Json(model))
         }
     }
 }
 
-fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<ExprAsync>) -> impl ToTokens {
+fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<Block>) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 
     let doc = format!("Delete {entity_snake} by id");
@@ -260,7 +277,16 @@ fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<ExprAsync>) -> impl ToTo
     let not_found = format!("No {entity_snake} found with specified id");
     let redis_key = format!("{entity_snake}:{{}}");
 
-    let hook_await = on_delete_hook.map(|hook| quote! { tokio::spawn(#hook); });
+    let hook = on_delete_hook.map(|hook| {
+        let stmts = hook.stmts;
+        quote! {
+            let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? else {
+                return Err(Error::NotFound(#not_found.to_owned()));
+            };
+
+            #(#stmts)*
+        }
+    });
 
     quote! {
         #[doc = #doc]
@@ -279,22 +305,12 @@ fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<ExprAsync>) -> impl ToTo
             )
         )]
         pub async fn delete_by_id(state: State<Arc<AppState>>, Path(id): Path<Uuid>) -> Result<()> {
-            let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? else {
-                return Err(Error::NotFound(#not_found.to_owned()));
-            };
+            #hook
 
-            let state_cloned = state.clone();
+            #entity::delete_by_id(id).exec(&state.db_conn).await?;
+            state.cache_client.del::<(), _>(format!(#redis_key, id.simple())).await?;
 
-            #hook_await
-
-            let delete_result = #entity::delete_by_id(id).exec(&state.db_conn).await?;
-            if delete_result.rows_affected == 1 {
-                state.cache_client.del::<(), _>(format!(#redis_key, id.simple())).await?;
-
-                Ok(())
-            } else {
-                Err(Error::NotFound(#not_found.to_owned()))
-            }
+            Ok(())
         }
     }
 }

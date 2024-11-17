@@ -15,6 +15,7 @@ pub mod invite;
 pub mod leaderboard;
 pub mod notification;
 pub mod player;
+pub mod player_achievement;
 pub mod settings;
 pub mod stats;
 pub mod submission;
