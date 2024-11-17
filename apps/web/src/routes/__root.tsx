@@ -14,7 +14,7 @@ function Index() {
   const ctf = useCtfStore();
 
   useEffect(() => {
-    const eventSource = new EventSource(`notification.${ctf.domain}`); // TODO: add path
+    const eventSource = new EventSource(`events.${ctf.domain}`);
     eventSource.onmessage = (event) => {
       const notification = JSON.parse(event.data);
 
@@ -26,7 +26,7 @@ function Index() {
 
   return (
     <>
-      <ThemeProvider defaultTheme="system" storageKey="athena-theme">
+      <ThemeProvider storageKey="athena-theme">
         <div className="relative flex min-h-screen flex-col bg-background">
           <SiteHeader />
           <Outlet />

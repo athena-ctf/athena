@@ -1,7 +1,8 @@
-import { Avatar, AvatarImage } from "@repo/ui/components/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
 import { Card, CardContent } from "@repo/ui/components/card";
 import { Badge } from "@repo/ui/components/badge";
 import type { components } from "@repo/api";
+import { getOrdinal } from "@/utils/get-ordinal";
 
 export default function PlayerProfileCard({
   playerProfile,
@@ -11,6 +12,7 @@ export default function PlayerProfileCard({
       <CardContent className="flex flex-col items-center p-6 space-y-4">
         <Avatar className="w-24 h-24">
           <AvatarImage src={playerProfile.player.avatar_url} alt={playerProfile.player.username} />
+          <AvatarFallback>{playerProfile.player.username.slice(0, 2).toUpperCase()}</AvatarFallback>
         </Avatar>
 
         <div className="text-center space-y-1">
@@ -21,7 +23,7 @@ export default function PlayerProfileCard({
         <div className="flex justify-between w-full text-sm min-h-[80px]">
           <div>
             <p className="font-semibold">Rank</p>
-            <p className="text-3xl font-bold text-primary">#{playerProfile.rank}</p>
+            <p className="text-3xl font-bold text-primary">{getOrdinal(playerProfile.rank)}</p>
           </div>
           <div className="text-right">
             <p className="font-semibold">Score</p>
@@ -37,11 +39,11 @@ export default function PlayerProfileCard({
         </div>
 
         <div className="flex justify-between w-full pt-4 border-t">
-          {playerProfile.achievements.map((achievement) => (
-            <div className="relative" key={achievement.id}>
-              <img src={achievement.logo_url} alt={achievement.value} className="w-10 h-10" />
+          {playerProfile.awards.map((award) => (
+            <div className="relative" key={award.id}>
+              <img src={award.logo_url} alt={award.value} className="w-10 h-10" />
               <Badge className="absolute -top-2 -right-2 h-5 min-w-[20px] px-1 flex items-center justify-center">
-                {achievement.count}
+                {award.count}
               </Badge>
             </div>
           ))}

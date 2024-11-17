@@ -1,6 +1,6 @@
-pub mod achievement;
 pub mod admin;
 pub mod auth;
+pub mod award;
 pub mod ban;
 pub mod challenge;
 pub mod challenge_file;
@@ -15,7 +15,7 @@ pub mod invite;
 pub mod leaderboard;
 pub mod notification;
 pub mod player;
-pub mod player_achievement;
+pub mod player_award;
 pub mod settings;
 pub mod stats;
 pub mod submission;
@@ -37,7 +37,7 @@ use tokio_util::io::ReaderStream;
 
 use crate::errors::Result;
 use crate::schemas::{
-    Achievement, AchievementsReceived, Challenge, PlayerModel, PlayerProfile, Tag, TagSolves,
+    Award, AwardsReceived, Challenge, PlayerModel, PlayerProfile, Tag, TagSolves,
 };
 
 pub async fn retrieve_profile(
@@ -83,12 +83,12 @@ pub async fn retrieve_profile(
         }
     }
 
-    let achievements = player
-        .find_related(Achievement)
+    let awards = player
+        .find_related(Award)
         .select_only()
-        .columns(entity::achievement::Column::iter())
-        .column(entity::player_achievement::Column::Count)
-        .into_model::<AchievementsReceived>()
+        .columns(entity::award::Column::iter())
+        .column(entity::player_award::Column::Count)
+        .into_model::<AwardsReceived>()
         .all(db)
         .await?;
     let tag_solves = tags_map.values().cloned().collect();
@@ -96,7 +96,7 @@ pub async fn retrieve_profile(
     Ok(PlayerProfile {
         player,
         solved_challenges,
-        achievements,
+        awards,
         tag_solves,
         rank,
         score,

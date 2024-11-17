@@ -21,7 +21,7 @@ pub fn router() -> Router<Arc<AppState>> {
     Router::new().nest(
         "/admin",
         Router::new()
-            .merge(handlers::achievement::router())
+            .merge(handlers::award::router())
             .merge(handlers::admin::router())
             .merge(handlers::ban::router())
             .merge(handlers::challenge_file::router())
@@ -35,7 +35,7 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(handlers::instance::router())
             .merge(handlers::invite::router())
             .merge(handlers::notification::router())
-            .merge(handlers::player_achievement::router())
+            .merge(handlers::player_award::router())
             .merge(handlers::player::router())
             .merge(handlers::submission::router())
             .merge(handlers::tag::router())

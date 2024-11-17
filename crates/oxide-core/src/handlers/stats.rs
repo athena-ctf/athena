@@ -21,9 +21,7 @@ use crate::service::AppState;
 /// Retrieve stats of all tables
 pub async fn retrieve(state: State<Arc<AppState>>) -> Result<Json<StatSchema>> {
     Ok(Json(StatSchema {
-        achievement: entity::achievement::Entity::find()
-            .count(&state.db_conn)
-            .await?,
+        award: entity::award::Entity::find().count(&state.db_conn).await?,
         admin: entity::admin::Entity::find().count(&state.db_conn).await?,
         ban: entity::ban::Entity::find().count(&state.db_conn).await?,
         challenge_tag: entity::challenge_tag::Entity::find()

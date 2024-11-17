@@ -4,94 +4,6 @@
  */
 
 export interface paths {
-  "/admin/achievement": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** List achievements */
-    get: operations["list_achievements"];
-    put?: never;
-    /** Create achievement */
-    post: operations["create_achievement"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/admin/achievement/export": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Export achievements */
-    get: operations["export_achievements"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/admin/achievement/import": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Import achievements */
-    get: operations["import_achievements"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/admin/achievement/{id}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Retrieve achievement by id */
-    get: operations["retrieve_achievement_by_id"];
-    put?: never;
-    post?: never;
-    /** Delete achievement by id */
-    delete: operations["delete_achievement_by_id"];
-    options?: never;
-    head?: never;
-    /** Update achievement by id */
-    patch: operations["update_achievement_by_id"];
-    trace?: never;
-  };
-  "/admin/achievement/{id}/relations": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Retrieve achievement relations by id */
-    get: operations["retrieve_achievement_relations_by_id"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   "/admin/admin": {
     parameters: {
       query?: never;
@@ -153,14 +65,14 @@ export interface paths {
     };
     /** Retrieve admin by id */
     get: operations["retrieve_admin_by_id"];
-    put?: never;
+    /** Update admin by id */
+    put: operations["update_admin_by_id"];
     post?: never;
     /** Delete admin by id */
     delete: operations["delete_admin_by_id"];
     options?: never;
     head?: never;
-    /** Update admin by id */
-    patch: operations["update_admin_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/admin/{id}/relations": {
@@ -172,6 +84,94 @@ export interface paths {
     };
     /** Retrieve admin relations by id */
     get: operations["retrieve_admin_relations_by_id"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/award": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List awards */
+    get: operations["list_awards"];
+    put?: never;
+    /** Create award */
+    post: operations["create_award"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/award/export": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Export awards */
+    get: operations["export_awards"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/award/import": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Import awards */
+    get: operations["import_awards"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/award/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Retrieve award by id */
+    get: operations["retrieve_award_by_id"];
+    /** Update award by id */
+    put: operations["update_award_by_id"];
+    post?: never;
+    /** Delete award by id */
+    delete: operations["delete_award_by_id"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/award/{id}/relations": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Retrieve award relations by id */
+    get: operations["retrieve_award_relations_by_id"];
     put?: never;
     post?: never;
     delete?: never;
@@ -258,14 +258,14 @@ export interface paths {
     };
     /** Retrieve ban by id */
     get: operations["retrieve_ban_by_id"];
-    put?: never;
+    /** Update ban by id */
+    put: operations["update_ban_by_id"];
     post?: never;
     /** Delete ban by id */
     delete: operations["delete_ban_by_id"];
     options?: never;
     head?: never;
-    /** Update ban by id */
-    patch: operations["update_ban_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/ban/{id}/relations": {
@@ -346,14 +346,14 @@ export interface paths {
     };
     /** Retrieve challenge by id */
     get: operations["retrieve_challenge_by_id"];
-    put?: never;
+    /** Update challenge by id */
+    put: operations["update_challenge_by_id"];
     post?: never;
     /** Delete challenge by id */
     delete: operations["delete_challenge_by_id"];
     options?: never;
     head?: never;
-    /** Update challenge by id */
-    patch: operations["update_challenge_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/challenge/{id}/relations": {
@@ -434,14 +434,14 @@ export interface paths {
     };
     /** Retrieve challenge_file by id */
     get: operations["retrieve_challenge_file_by_id"];
-    put?: never;
+    /** Update challenge_file by id */
+    put: operations["update_challenge_file_by_id"];
     post?: never;
     /** Delete challenge_file by id */
     delete: operations["delete_challenge_file_by_id"];
     options?: never;
     head?: never;
-    /** Update challenge_file by id */
-    patch: operations["update_challenge_file_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/challenge_file/{challenge_id}-{file_id}/relations": {
@@ -522,14 +522,14 @@ export interface paths {
     };
     /** Retrieve challenge_tag by id */
     get: operations["retrieve_challenge_tag_by_id"];
-    put?: never;
+    /** Update challenge_tag by id */
+    put: operations["update_challenge_tag_by_id"];
     post?: never;
     /** Delete challenge_tag by id */
     delete: operations["delete_challenge_tag_by_id"];
     options?: never;
     head?: never;
-    /** Update challenge_tag by id */
-    patch: operations["update_challenge_tag_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/challenge_tag/{challenge_id}-{tag_id}/relations": {
@@ -610,14 +610,14 @@ export interface paths {
     };
     /** Retrieve container by id */
     get: operations["retrieve_container_by_id"];
-    put?: never;
+    /** Update container by id */
+    put: operations["update_container_by_id"];
     post?: never;
     /** Delete container by id */
     delete: operations["delete_container_by_id"];
     options?: never;
     head?: never;
-    /** Update container by id */
-    patch: operations["update_container_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/container/{id}/relations": {
@@ -715,14 +715,14 @@ export interface paths {
     };
     /** Retrieve deployment by id */
     get: operations["retrieve_deployment_by_id"];
-    put?: never;
+    /** Update deployment by id */
+    put: operations["update_deployment_by_id"];
     post?: never;
     /** Delete deployment by id */
     delete: operations["delete_deployment_by_id"];
     options?: never;
     head?: never;
-    /** Update deployment by id */
-    patch: operations["update_deployment_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/deployment/{id}/relations": {
@@ -803,14 +803,14 @@ export interface paths {
     };
     /** Retrieve file by id */
     get: operations["retrieve_file_by_id"];
-    put?: never;
+    /** Update file by id */
+    put: operations["update_file_by_id"];
     post?: never;
     /** Delete file by id */
     delete: operations["delete_file_by_id"];
     options?: never;
     head?: never;
-    /** Update file by id */
-    patch: operations["update_file_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/file/{id}/relations": {
@@ -891,14 +891,14 @@ export interface paths {
     };
     /** Retrieve flag by id */
     get: operations["retrieve_flag_by_id"];
-    put?: never;
+    /** Update flag by id */
+    put: operations["update_flag_by_id"];
     post?: never;
     /** Delete flag by id */
     delete: operations["delete_flag_by_id"];
     options?: never;
     head?: never;
-    /** Update flag by id */
-    patch: operations["update_flag_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/flag/{id}/relations": {
@@ -979,14 +979,14 @@ export interface paths {
     };
     /** Retrieve hint by id */
     get: operations["retrieve_hint_by_id"];
-    put?: never;
+    /** Update hint by id */
+    put: operations["update_hint_by_id"];
     post?: never;
     /** Delete hint by id */
     delete: operations["delete_hint_by_id"];
     options?: never;
     head?: never;
-    /** Update hint by id */
-    patch: operations["update_hint_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/hint/{id}/relations": {
@@ -1067,14 +1067,14 @@ export interface paths {
     };
     /** Retrieve instance by id */
     get: operations["retrieve_instance_by_id"];
-    put?: never;
+    /** Update instance by id */
+    put: operations["update_instance_by_id"];
     post?: never;
     /** Delete instance by id */
     delete: operations["delete_instance_by_id"];
     options?: never;
     head?: never;
-    /** Update instance by id */
-    patch: operations["update_instance_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/instance/{id}/relations": {
@@ -1155,14 +1155,14 @@ export interface paths {
     };
     /** Retrieve invite by id */
     get: operations["retrieve_invite_by_id"];
-    put?: never;
+    /** Update invite by id */
+    put: operations["update_invite_by_id"];
     post?: never;
     /** Delete invite by id */
     delete: operations["delete_invite_by_id"];
     options?: never;
     head?: never;
-    /** Update invite by id */
-    patch: operations["update_invite_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/invite/{id}/relations": {
@@ -1243,14 +1243,14 @@ export interface paths {
     };
     /** Retrieve notification by id */
     get: operations["retrieve_notification_by_id"];
-    put?: never;
+    /** Update notification by id */
+    put: operations["update_notification_by_id"];
     post?: never;
     /** Delete notification by id */
     delete: operations["delete_notification_by_id"];
     options?: never;
     head?: never;
-    /** Update notification by id */
-    patch: operations["update_notification_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/notification/{id}/relations": {
@@ -1331,14 +1331,14 @@ export interface paths {
     };
     /** Retrieve player by id */
     get: operations["retrieve_player_by_id"];
-    put?: never;
+    /** Update player by id */
+    put: operations["update_player_by_id"];
     post?: never;
     /** Delete player by id */
     delete: operations["delete_player_by_id"];
     options?: never;
     head?: never;
-    /** Update player by id */
-    patch: operations["update_player_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/player/{id}/relations": {
@@ -1358,33 +1358,33 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/admin/player_achievement": {
+  "/admin/player_award": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** List player_achievements */
-    get: operations["list_player_achievements"];
+    /** List player_awards */
+    get: operations["list_player_awards"];
     put?: never;
-    /** Create player_achievement */
-    post: operations["create_player_achievement"];
+    /** Create player_award */
+    post: operations["create_player_award"];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/admin/player_achievement/export": {
+  "/admin/player_award/export": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** Export player_achievements */
-    get: operations["export_player_achievements"];
+    /** Export player_awards */
+    get: operations["export_player_awards"];
     put?: never;
     post?: never;
     delete?: never;
@@ -1393,15 +1393,15 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/admin/player_achievement/import": {
+  "/admin/player_award/import": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** Import player_achievements */
-    get: operations["import_player_achievements"];
+    /** Import player_awards */
+    get: operations["import_player_awards"];
     put?: never;
     post?: never;
     delete?: never;
@@ -1410,34 +1410,34 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/admin/player_achievement/{player_id}-{achievement_id}": {
+  "/admin/player_award/{player_id}-{award_id}": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** Retrieve player_achievement by id */
-    get: operations["retrieve_player_achievement_by_id"];
-    put?: never;
+    /** Retrieve player_award by id */
+    get: operations["retrieve_player_award_by_id"];
+    /** Update player_award by id */
+    put: operations["update_player_award_by_id"];
     post?: never;
-    /** Delete player_achievement by id */
-    delete: operations["delete_player_achievement_by_id"];
+    /** Delete player_award by id */
+    delete: operations["delete_player_award_by_id"];
     options?: never;
     head?: never;
-    /** Update player_achievement by id */
-    patch: operations["update_player_achievement_by_id"];
+    patch?: never;
     trace?: never;
   };
-  "/admin/player_achievement/{player_id}-{achievement_id}/relations": {
+  "/admin/player_award/{player_id}-{award_id}/relations": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** Retrieve player_achievement relations by id */
-    get: operations["retrieve_player_achievement_relations_by_id"];
+    /** Retrieve player_award relations by id */
+    get: operations["retrieve_player_award_relations_by_id"];
     put?: never;
     post?: never;
     delete?: never;
@@ -1542,14 +1542,14 @@ export interface paths {
     };
     /** Retrieve submission by id */
     get: operations["retrieve_submission_by_id"];
-    put?: never;
+    /** Update submission by id */
+    put: operations["update_submission_by_id"];
     post?: never;
     /** Delete submission by id */
     delete: operations["delete_submission_by_id"];
     options?: never;
     head?: never;
-    /** Update submission by id */
-    patch: operations["update_submission_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/submission/{challenge_id}-{player_id}/relations": {
@@ -1630,14 +1630,14 @@ export interface paths {
     };
     /** Retrieve tag by id */
     get: operations["retrieve_tag_by_id"];
-    put?: never;
+    /** Update tag by id */
+    put: operations["update_tag_by_id"];
     post?: never;
     /** Delete tag by id */
     delete: operations["delete_tag_by_id"];
     options?: never;
     head?: never;
-    /** Update tag by id */
-    patch: operations["update_tag_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/tag/{id}/relations": {
@@ -1718,14 +1718,14 @@ export interface paths {
     };
     /** Retrieve team by id */
     get: operations["retrieve_team_by_id"];
-    put?: never;
+    /** Update team by id */
+    put: operations["update_team_by_id"];
     post?: never;
     /** Delete team by id */
     delete: operations["delete_team_by_id"];
     options?: never;
     head?: never;
-    /** Update team by id */
-    patch: operations["update_team_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/team/{id}/relations": {
@@ -1806,14 +1806,14 @@ export interface paths {
     };
     /** Retrieve ticket by id */
     get: operations["retrieve_ticket_by_id"];
-    put?: never;
+    /** Update ticket by id */
+    put: operations["update_ticket_by_id"];
     post?: never;
     /** Delete ticket by id */
     delete: operations["delete_ticket_by_id"];
     options?: never;
     head?: never;
-    /** Update ticket by id */
-    patch: operations["update_ticket_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/ticket/{id}/relations": {
@@ -1894,14 +1894,14 @@ export interface paths {
     };
     /** Retrieve unlock by id */
     get: operations["retrieve_unlock_by_id"];
-    put?: never;
+    /** Update unlock by id */
+    put: operations["update_unlock_by_id"];
     post?: never;
     /** Delete unlock by id */
     delete: operations["delete_unlock_by_id"];
     options?: never;
     head?: never;
-    /** Update unlock by id */
-    patch: operations["update_unlock_by_id"];
+    patch?: never;
     trace?: never;
   };
   "/admin/unlock/{player_id}-{hint_id}/relations": {
@@ -2401,36 +2401,6 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
-    AchievementModel: {
-      /** Format: date-time */
-      created_at: string;
-      /** Format: uuid */
-      id: string;
-      logo_url: string;
-      /** Format: int32 */
-      prize: number;
-      /** Format: date-time */
-      updated_at: string;
-      value: string;
-    };
-    AchievementRelations: {
-      player: components["schemas"]["PlayerModel"];
-      player_achievement: components["schemas"]["PlayerAchievementModel"];
-    };
-    AchievementsReceived: {
-      /** Format: int32 */
-      count: number;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: uuid */
-      id: string;
-      logo_url: string;
-      /** Format: int32 */
-      prize: number;
-      /** Format: date-time */
-      updated_at: string;
-      value: string;
-    };
     AdminModel: {
       /** Format: date-time */
       created_at: string;
@@ -2443,6 +2413,36 @@ export interface components {
     };
     AdminRelations: {
       tickets: components["schemas"]["TicketModel"][];
+    };
+    AwardModel: {
+      /** Format: date-time */
+      created_at: string;
+      /** Format: uuid */
+      id: string;
+      logo_url: string;
+      /** Format: int32 */
+      prize: number;
+      /** Format: date-time */
+      updated_at: string;
+      value: string;
+    };
+    AwardRelations: {
+      player: components["schemas"]["PlayerModel"];
+      player_award: components["schemas"]["PlayerAwardModel"];
+    };
+    AwardsReceived: {
+      /** Format: int32 */
+      count: number;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: uuid */
+      id: string;
+      logo_url: string;
+      /** Format: int32 */
+      prize: number;
+      /** Format: date-time */
+      updated_at: string;
+      value: string;
     };
     BanModel: {
       /** Format: date-time */
@@ -2547,16 +2547,16 @@ export interface components {
     ContainerRelations: {
       challenge: components["schemas"]["ChallengeModel"];
     };
-    CreateAchievementSchema: {
-      logo_url: string;
-      /** Format: int32 */
-      prize: number;
-      value: string;
-    };
     CreateAdminSchema: {
       password: string;
       role: components["schemas"]["RoleEnum"];
       username: string;
+    };
+    CreateAwardSchema: {
+      logo_url: string;
+      /** Format: int32 */
+      prize: number;
+      value: string;
     };
     CreateBanSchema: {
       /** Format: int32 */
@@ -2645,9 +2645,9 @@ export interface components {
       player_id?: string | null;
       title: string;
     };
-    CreatePlayerAchievementSchema: {
+    CreatePlayerAwardSchema: {
       /** Format: uuid */
-      achievement_id: string;
+      award_id: string;
       /** Format: int32 */
       count: number;
       /** Format: uuid */
@@ -2829,9 +2829,9 @@ export interface components {
     NotificationRelations: {
       player?: null | components["schemas"]["PlayerModel"];
     };
-    PlayerAchievementModel: {
+    PlayerAwardModel: {
       /** Format: uuid */
-      achievement_id: string;
+      award_id: string;
       /** Format: int32 */
       count: number;
       /** Format: date-time */
@@ -2841,8 +2841,8 @@ export interface components {
       /** Format: date-time */
       updated_at: string;
     };
-    PlayerAchievementRelations: {
-      achievement: components["schemas"]["AchievementModel"];
+    PlayerAwardRelations: {
+      award: components["schemas"]["AwardModel"];
       player: components["schemas"]["PlayerModel"];
     };
     /** @enum {string} */
@@ -2873,7 +2873,7 @@ export interface components {
       username: string;
     };
     PlayerProfile: {
-      achievements: components["schemas"]["AchievementsReceived"][];
+      awards: components["schemas"]["AwardsReceived"][];
       player: components["schemas"]["PlayerModel"];
       /** Format: int64 */
       rank: number;
@@ -2883,14 +2883,14 @@ export interface components {
       tag_solves: components["schemas"]["TagSolves"][];
     };
     PlayerRelations: {
-      achievements: components["schemas"]["AchievementModel"][];
+      awards: components["schemas"]["AwardModel"][];
       ban?: null | components["schemas"]["BanModel"];
       challenges: components["schemas"]["ChallengeModel"][];
       deployment?: null | components["schemas"]["DeploymentModel"];
       flags: components["schemas"]["FlagModel"][];
       hints: components["schemas"]["HintModel"][];
       notifications: components["schemas"]["NotificationModel"][];
-      player_achievements: components["schemas"]["PlayerAchievementModel"][];
+      player_awards: components["schemas"]["PlayerAwardModel"][];
       submissions: components["schemas"]["SubmissionModel"][];
       team: components["schemas"]["TeamModel"];
       tickets: components["schemas"]["TicketModel"][];
@@ -2922,9 +2922,9 @@ export interface components {
     };
     StatSchema: {
       /** Format: int64 */
-      achievement: number;
-      /** Format: int64 */
       admin: number;
+      /** Format: int64 */
+      award: number;
       /** Format: int64 */
       ban: number;
       /** Format: int64 */
@@ -2994,7 +2994,7 @@ export interface components {
       tag_value: string;
     };
     TeamDetails: {
-      achievements: components["schemas"]["AchievementModel"][];
+      awards: components["schemas"]["AwardModel"][];
       profile: components["schemas"]["TeamProfile"];
       submissions: components["schemas"]["SubmissionModel"][];
       unlocks: components["schemas"]["UnlockModel"][];
@@ -3100,488 +3100,6 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  list_achievements: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Listed achievements successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["AchievementModel"][];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
-  create_achievement: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateAchievementSchema"];
-      };
-    };
-    responses: {
-      /** @description Created achievement successfully */
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["AchievementModel"];
-        };
-      };
-      /** @description Invalid request body format */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description No achievement found with specified id */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
-  export_achievements: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Exported achievements successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
-  import_achievements: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "multipart/form-data": {
-          /** Format: binary */
-          csv_file: string;
-        };
-      };
-    };
-    responses: {
-      /** @description Imported achievements successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
-  retrieve_achievement_by_id: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Retrieved achievement by id successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["AchievementModel"];
-        };
-      };
-      /** @description Invalid parameters format */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description No achievement found with specified id */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
-  delete_achievement_by_id: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Deleted achievement by id successfully */
-      204: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description Invalid parameters format */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description No achievement found with specified id */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
-  update_achievement_by_id: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateAchievementSchema"];
-      };
-    };
-    responses: {
-      /** @description Updated achievement by id successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["AchievementModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description No achievement found with specified id */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
-  retrieve_achievement_relations_by_id: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Retrieved achievement relations by id successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["AchievementRelations"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description No achievement found with specified id */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
   list_admins: {
     parameters: {
       query?: never;
@@ -3867,7 +3385,7 @@ export interface operations {
       };
     };
   };
-  delete_admin_by_id: {
+  update_admin_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -3877,16 +3395,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateAdminSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted admin by id successfully */
-      204: {
+      /** @description Updated admin by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["AdminModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -3933,7 +3457,7 @@ export interface operations {
       };
     };
   };
-  update_admin_by_id: {
+  delete_admin_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -3943,22 +3467,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateAdminSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated admin by id successfully */
-      200: {
+      /** @description Deleted admin by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["AdminModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -4045,6 +3563,488 @@ export interface operations {
         };
       };
       /** @description No admin found with specified id */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  list_awards: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed awards successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AwardModel"][];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  create_award: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateAwardSchema"];
+      };
+    };
+    responses: {
+      /** @description Created award successfully */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AwardModel"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description No award found with specified id */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  export_awards: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Exported awards successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  import_awards: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          /** Format: binary */
+          csv_file: string;
+        };
+      };
+    };
+    responses: {
+      /** @description Imported awards successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  retrieve_award_by_id: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Id of entity */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Retrieved award by id successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AwardModel"];
+        };
+      };
+      /** @description Invalid parameters format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description No award found with specified id */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  update_award_by_id: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Id of entity */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateAwardSchema"];
+      };
+    };
+    responses: {
+      /** @description Updated award by id successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AwardModel"];
+        };
+      };
+      /** @description Invalid parameters/request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description No award found with specified id */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  delete_award_by_id: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Id of entity */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Deleted award by id successfully */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid parameters format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description No award found with specified id */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  retrieve_award_relations_by_id: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Id of entity */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Retrieved award relations by id successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AwardRelations"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description No award found with specified id */
       404: {
         headers: {
           [name: string]: unknown;
@@ -4421,7 +4421,7 @@ export interface operations {
       };
     };
   };
-  delete_ban_by_id: {
+  update_ban_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -4431,16 +4431,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateBanSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted ban by id successfully */
-      204: {
+      /** @description Updated ban by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["BanModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -4487,7 +4493,7 @@ export interface operations {
       };
     };
   };
-  update_ban_by_id: {
+  delete_ban_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -4497,22 +4503,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateBanSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated ban by id successfully */
-      200: {
+      /** @description Deleted ban by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["BanModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -4903,7 +4903,7 @@ export interface operations {
       };
     };
   };
-  delete_challenge_by_id: {
+  update_challenge_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -4913,16 +4913,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateChallengeSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted challenge by id successfully */
-      204: {
+      /** @description Updated challenge by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["ChallengeModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -4969,7 +4975,7 @@ export interface operations {
       };
     };
   };
-  update_challenge_by_id: {
+  delete_challenge_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -4979,22 +4985,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateChallengeSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated challenge by id successfully */
-      200: {
+      /** @description Deleted challenge by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["ChallengeModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -5387,7 +5387,7 @@ export interface operations {
       };
     };
   };
-  delete_challenge_file_by_id: {
+  update_challenge_file_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -5399,16 +5399,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateChallengeFileSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted challenge_file by id successfully */
-      204: {
+      /** @description Updated challenge_file by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["ChallengeFileModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -5455,7 +5461,7 @@ export interface operations {
       };
     };
   };
-  update_challenge_file_by_id: {
+  delete_challenge_file_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -5467,22 +5473,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateChallengeFileSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated challenge_file by id successfully */
-      200: {
+      /** @description Deleted challenge_file by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["ChallengeFileModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -5877,7 +5877,7 @@ export interface operations {
       };
     };
   };
-  delete_challenge_tag_by_id: {
+  update_challenge_tag_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -5889,16 +5889,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateChallengeTagSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted challenge_tag by id successfully */
-      204: {
+      /** @description Updated challenge_tag by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["ChallengeTagModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -5945,7 +5951,7 @@ export interface operations {
       };
     };
   };
-  update_challenge_tag_by_id: {
+  delete_challenge_tag_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -5957,22 +5963,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateChallengeTagSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated challenge_tag by id successfully */
-      200: {
+      /** @description Deleted challenge_tag by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["ChallengeTagModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -6365,7 +6365,7 @@ export interface operations {
       };
     };
   };
-  delete_container_by_id: {
+  update_container_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -6375,16 +6375,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateContainerSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted container by id successfully */
-      204: {
+      /** @description Updated container by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["ContainerModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -6431,7 +6437,7 @@ export interface operations {
       };
     };
   };
-  update_container_by_id: {
+  delete_container_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -6441,22 +6447,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateContainerSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated container by id successfully */
-      200: {
+      /** @description Deleted container by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["ContainerModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -6894,7 +6894,7 @@ export interface operations {
       };
     };
   };
-  delete_deployment_by_id: {
+  update_deployment_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -6904,16 +6904,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateDeploymentSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted deployment by id successfully */
-      204: {
+      /** @description Updated deployment by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["DeploymentModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -6960,7 +6966,7 @@ export interface operations {
       };
     };
   };
-  update_deployment_by_id: {
+  delete_deployment_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -6970,22 +6976,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateDeploymentSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated deployment by id successfully */
-      200: {
+      /** @description Deleted deployment by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["DeploymentModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -7376,7 +7376,7 @@ export interface operations {
       };
     };
   };
-  delete_file_by_id: {
+  update_file_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -7386,16 +7386,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateFileSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted file by id successfully */
-      204: {
+      /** @description Updated file by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["FileModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -7442,7 +7448,7 @@ export interface operations {
       };
     };
   };
-  update_file_by_id: {
+  delete_file_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -7452,22 +7458,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateFileSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated file by id successfully */
-      200: {
+      /** @description Deleted file by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["FileModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -7858,7 +7858,7 @@ export interface operations {
       };
     };
   };
-  delete_flag_by_id: {
+  update_flag_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -7868,16 +7868,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateFlagSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted flag by id successfully */
-      204: {
+      /** @description Updated flag by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["FlagModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -7924,7 +7930,7 @@ export interface operations {
       };
     };
   };
-  update_flag_by_id: {
+  delete_flag_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -7934,22 +7940,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateFlagSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated flag by id successfully */
-      200: {
+      /** @description Deleted flag by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["FlagModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -8340,7 +8340,7 @@ export interface operations {
       };
     };
   };
-  delete_hint_by_id: {
+  update_hint_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -8350,16 +8350,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateHintSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted hint by id successfully */
-      204: {
+      /** @description Updated hint by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["HintModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -8406,7 +8412,7 @@ export interface operations {
       };
     };
   };
-  update_hint_by_id: {
+  delete_hint_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -8416,22 +8422,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateHintSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated hint by id successfully */
-      200: {
+      /** @description Deleted hint by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["HintModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -8822,7 +8822,7 @@ export interface operations {
       };
     };
   };
-  delete_instance_by_id: {
+  update_instance_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -8832,16 +8832,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateInstanceSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted instance by id successfully */
-      204: {
+      /** @description Updated instance by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["InviteModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -8888,7 +8894,7 @@ export interface operations {
       };
     };
   };
-  update_instance_by_id: {
+  delete_instance_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -8898,22 +8904,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateInstanceSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated instance by id successfully */
-      200: {
+      /** @description Deleted instance by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["InviteModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -9304,7 +9304,7 @@ export interface operations {
       };
     };
   };
-  delete_invite_by_id: {
+  update_invite_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -9314,16 +9314,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateInviteSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted invite by id successfully */
-      204: {
+      /** @description Updated invite by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["InviteModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -9370,7 +9376,7 @@ export interface operations {
       };
     };
   };
-  update_invite_by_id: {
+  delete_invite_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -9380,22 +9386,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateInviteSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated invite by id successfully */
-      200: {
+      /** @description Deleted invite by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["InviteModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -9786,7 +9786,7 @@ export interface operations {
       };
     };
   };
-  delete_notification_by_id: {
+  update_notification_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -9796,16 +9796,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateNotificationSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted notification by id successfully */
-      204: {
+      /** @description Updated notification by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["NotificationModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -9852,7 +9858,7 @@ export interface operations {
       };
     };
   };
-  update_notification_by_id: {
+  delete_notification_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -9862,22 +9868,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateNotificationSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated notification by id successfully */
-      200: {
+      /** @description Deleted notification by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["NotificationModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -10268,7 +10268,7 @@ export interface operations {
       };
     };
   };
-  delete_player_by_id: {
+  update_player_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -10278,16 +10278,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreatePlayerSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted player by id successfully */
-      204: {
+      /** @description Updated player by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["PlayerModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -10334,7 +10340,7 @@ export interface operations {
       };
     };
   };
-  update_player_by_id: {
+  delete_player_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -10344,22 +10350,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreatePlayerSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated player by id successfully */
-      200: {
+      /** @description Deleted player by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["PlayerModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -10465,7 +10465,7 @@ export interface operations {
       };
     };
   };
-  list_player_achievements: {
+  list_player_awards: {
     parameters: {
       query?: never;
       header?: never;
@@ -10474,13 +10474,13 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
-      /** @description Listed player_achievements successfully */
+      /** @description Listed player_awards successfully */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["PlayerAchievementModel"][];
+          "application/json": components["schemas"]["PlayerAwardModel"][];
         };
       };
       /** @description Action is permissible after login */
@@ -10512,7 +10512,7 @@ export interface operations {
       };
     };
   };
-  create_player_achievement: {
+  create_player_award: {
     parameters: {
       query?: never;
       header?: never;
@@ -10521,17 +10521,17 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreatePlayerAchievementSchema"];
+        "application/json": components["schemas"]["CreatePlayerAwardSchema"];
       };
     };
     responses: {
-      /** @description Created player_achievement successfully */
+      /** @description Created player_award successfully */
       201: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["PlayerAchievementModel"];
+          "application/json": components["schemas"]["PlayerAwardModel"];
         };
       };
       /** @description Invalid request body format */
@@ -10561,7 +10561,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description No player_achievement found with specified id */
+      /** @description No player_award found with specified id */
       404: {
         headers: {
           [name: string]: unknown;
@@ -10581,7 +10581,7 @@ export interface operations {
       };
     };
   };
-  export_player_achievements: {
+  export_player_awards: {
     parameters: {
       query?: never;
       header?: never;
@@ -10590,7 +10590,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
-      /** @description Exported player_achievements successfully */
+      /** @description Exported player_awards successfully */
       200: {
         headers: {
           [name: string]: unknown;
@@ -10628,7 +10628,7 @@ export interface operations {
       };
     };
   };
-  import_player_achievements: {
+  import_player_awards: {
     parameters: {
       query?: never;
       header?: never;
@@ -10644,7 +10644,7 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Imported player_achievements successfully */
+      /** @description Imported player_awards successfully */
       200: {
         headers: {
           [name: string]: unknown;
@@ -10682,7 +10682,7 @@ export interface operations {
       };
     };
   };
-  retrieve_player_achievement_by_id: {
+  retrieve_player_award_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -10690,19 +10690,19 @@ export interface operations {
         /** @description Id of entity */
         player_id: string;
         /** @description Id of entity */
-        achievement_id: string;
+        award_id: string;
       };
       cookie?: never;
     };
     requestBody?: never;
     responses: {
-      /** @description Retrieved player_achievement by id successfully */
+      /** @description Retrieved player_award by id successfully */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["PlayerAchievementModel"];
+          "application/json": components["schemas"]["PlayerAwardModel"];
         };
       };
       /** @description Invalid parameters format */
@@ -10732,7 +10732,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description No player_achievement found with specified id */
+      /** @description No player_award found with specified id */
       404: {
         headers: {
           [name: string]: unknown;
@@ -10752,7 +10752,7 @@ export interface operations {
       };
     };
   };
-  delete_player_achievement_by_id: {
+  update_player_award_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -10760,13 +10760,87 @@ export interface operations {
         /** @description Id of entity */
         player_id: string;
         /** @description Id of entity */
-        achievement_id: string;
+        award_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreatePlayerAwardSchema"];
+      };
+    };
+    responses: {
+      /** @description Updated player_award by id successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PlayerAwardModel"];
+        };
+      };
+      /** @description Invalid parameters/request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description No player_award found with specified id */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  delete_player_award_by_id: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Id of entity */
+        player_id: string;
+        /** @description Id of entity */
+        award_id: string;
       };
       cookie?: never;
     };
     requestBody?: never;
     responses: {
-      /** @description Deleted player_achievement by id successfully */
+      /** @description Deleted player_award by id successfully */
       204: {
         headers: {
           [name: string]: unknown;
@@ -10800,7 +10874,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description No player_achievement found with specified id */
+      /** @description No player_award found with specified id */
       404: {
         headers: {
           [name: string]: unknown;
@@ -10820,7 +10894,7 @@ export interface operations {
       };
     };
   };
-  update_player_achievement_by_id: {
+  retrieve_player_award_relations_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -10828,93 +10902,19 @@ export interface operations {
         /** @description Id of entity */
         player_id: string;
         /** @description Id of entity */
-        achievement_id: string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreatePlayerAchievementSchema"];
-      };
-    };
-    responses: {
-      /** @description Updated player_achievement by id successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["PlayerAchievementModel"];
-        };
-      };
-      /** @description Invalid parameters/request body format */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User does not have sufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description No player_achievement found with specified id */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
-  retrieve_player_achievement_relations_by_id: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description Id of entity */
-        player_id: string;
-        /** @description Id of entity */
-        achievement_id: string;
+        award_id: string;
       };
       cookie?: never;
     };
     requestBody?: never;
     responses: {
-      /** @description Retrieved player_achievement relations by id successfully */
+      /** @description Retrieved player_award relations by id successfully */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["PlayerAchievementRelations"];
+          "application/json": components["schemas"]["PlayerAwardRelations"];
         };
       };
       /** @description Action is permissible after login */
@@ -10935,7 +10935,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description No player_achievement found with specified id */
+      /** @description No player_award found with specified id */
       404: {
         headers: {
           [name: string]: unknown;
@@ -11391,7 +11391,7 @@ export interface operations {
       };
     };
   };
-  delete_submission_by_id: {
+  update_submission_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -11403,16 +11403,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateSubmissionSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted submission by id successfully */
-      204: {
+      /** @description Updated submission by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["SubmissionModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -11459,7 +11465,7 @@ export interface operations {
       };
     };
   };
-  update_submission_by_id: {
+  delete_submission_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -11471,22 +11477,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateSubmissionSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated submission by id successfully */
-      200: {
+      /** @description Deleted submission by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["SubmissionModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -11879,7 +11879,7 @@ export interface operations {
       };
     };
   };
-  delete_tag_by_id: {
+  update_tag_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -11889,16 +11889,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTagSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted tag by id successfully */
-      204: {
+      /** @description Updated tag by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["TagModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -11945,7 +11951,7 @@ export interface operations {
       };
     };
   };
-  update_tag_by_id: {
+  delete_tag_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -11955,22 +11961,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateTagSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated tag by id successfully */
-      200: {
+      /** @description Deleted tag by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["TagModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -12361,7 +12361,7 @@ export interface operations {
       };
     };
   };
-  delete_team_by_id: {
+  update_team_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -12371,16 +12371,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTeamSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted team by id successfully */
-      204: {
+      /** @description Updated team by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["TeamModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -12427,7 +12433,7 @@ export interface operations {
       };
     };
   };
-  update_team_by_id: {
+  delete_team_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -12437,22 +12443,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateTeamSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated team by id successfully */
-      200: {
+      /** @description Deleted team by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["TeamModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -12843,7 +12843,7 @@ export interface operations {
       };
     };
   };
-  delete_ticket_by_id: {
+  update_ticket_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -12853,16 +12853,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTicketSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted ticket by id successfully */
-      204: {
+      /** @description Updated ticket by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["TicketModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -12909,7 +12915,7 @@ export interface operations {
       };
     };
   };
-  update_ticket_by_id: {
+  delete_ticket_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -12919,22 +12925,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateTicketSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated ticket by id successfully */
-      200: {
+      /** @description Deleted ticket by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["TicketModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -13327,7 +13327,7 @@ export interface operations {
       };
     };
   };
-  delete_unlock_by_id: {
+  update_unlock_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -13339,16 +13339,22 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateUnlockSchema"];
+      };
+    };
     responses: {
-      /** @description Deleted unlock by id successfully */
-      204: {
+      /** @description Updated unlock by id successfully */
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["UnlockModel"];
+        };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -13395,7 +13401,7 @@ export interface operations {
       };
     };
   };
-  update_unlock_by_id: {
+  delete_unlock_by_id: {
     parameters: {
       query?: never;
       header?: never;
@@ -13407,22 +13413,16 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateUnlockSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Updated unlock by id successfully */
-      200: {
+      /** @description Deleted unlock by id successfully */
+      204: {
         headers: {
           [name: string]: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["UnlockModel"];
-        };
+        content?: never;
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;

@@ -81,9 +81,9 @@ pub async fn start(settings: Settings) -> Result<()> {
         settings.ctf.domain.clone(),
     )?;
 
-    if !tasks::verify_achievements(&db_conn).await? {
-        tracing::error!("Add base achievements before starting server.");
-        return Err(Error::InvalidConfig("Achievements".to_owned()));
+    if !tasks::verify_awards(&db_conn).await? {
+        tracing::error!("Add base awards before starting server.");
+        return Err(Error::InvalidConfig("Awards".to_owned()));
     }
 
     let txn = db_conn.begin().await?;

@@ -241,7 +241,7 @@ fn gen_update_fn(entity: &Ident, on_update_hook: Option<Block>) -> impl ToTokens
     quote! {
         #[doc = #doc]
         #[utoipa::path(
-            patch,
+            put,
             path = #path,
             operation_id = #operation_id,
             request_body = #request_body,
@@ -590,7 +590,7 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
                 .route(
                     #route_id,
                     get(retrieve_by_id)
-                        .patch(update_by_id)
+                        .put(update_by_id)
                         .delete(delete_by_id),
                 )
                 .route(#route_relations, get(retrieve_relations_by_id))

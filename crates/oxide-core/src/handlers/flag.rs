@@ -6,9 +6,9 @@ use sea_orm::sea_query::OnConflict;
 use sea_orm::{Iterable, TransactionTrait};
 
 use crate::schemas::{
-    Achievement, AuthPlayer, Challenge, ChallengeKindEnum, ChallengeModel, CreateFlagSchema, Flag,
-    FlagModel, FlagVerificationResult, JsonResponse, Player, PlayerAchievement,
-    PlayerAchievementModel, PlayerModel, Submission, SubmissionModel, VerifyFlagSchema,
+    AuthPlayer, Award, Challenge, ChallengeKindEnum, ChallengeModel, CreateFlagSchema, Flag,
+    FlagModel, FlagVerificationResult, JsonResponse, Player, PlayerAward, PlayerAwardModel,
+    PlayerModel, Submission, SubmissionModel, VerifyFlagSchema,
 };
 
 oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: []);
@@ -154,26 +154,26 @@ pub async fn verify(
             )
             .await?;
 
-        let achievement_model = match solves {
+        let award_model = match solves {
             1 => Some(
-                Achievement::find()
-                    .filter(entity::achievement::Column::Value.eq("First Blood"))
+                Award::find()
+                    .filter(entity::award::Column::Value.eq("First Blood"))
                     .one(&txn)
                     .await?
                     .unwrap(),
             ),
 
             2 => Some(
-                Achievement::find()
-                    .filter(entity::achievement::Column::Value.eq("Second Blood"))
+                Award::find()
+                    .filter(entity::award::Column::Value.eq("Second Blood"))
                     .one(&txn)
                     .await?
                     .unwrap(),
             ),
 
             3 => Some(
-                Achievement::find()
-                    .filter(entity::achievement::Column::Value.eq("Third Blood"))
+                Award::find()
+                    .filter(entity::award::Column::Value.eq("Third Blood"))
                     .one(&txn)
                     .await?
                     .unwrap(),
@@ -181,17 +181,16 @@ pub async fn verify(
             _ => None,
         };
 
-        if let Some(achievement_model) = achievement_model {
-            PlayerAchievement::insert(
-                PlayerAchievementModel::new(player_model.id, achievement_model.id, 1)
-                    .into_active_model(),
+        if let Some(award_model) = award_model {
+            PlayerAward::insert(
+                PlayerAwardModel::new(player_model.id, award_model.id, 1).into_active_model(),
             )
             .on_conflict(
-                OnConflict::columns(entity::player_achievement::PrimaryKey::iter())
-                    .update_column(entity::player_achievement::Column::Count)
+                OnConflict::columns(entity::player_award::PrimaryKey::iter())
+                    .update_column(entity::player_award::Column::Count)
                     .value(
-                        entity::player_achievement::Column::Count,
-                        Expr::col(entity::player_achievement::Column::Count).add(1),
+                        entity::player_award::Column::Count,
+                        Expr::col(entity::player_award::Column::Count).add(1),
                     )
                     .to_owned(),
             )

@@ -1,12 +1,12 @@
 use crate::schemas::{
-    Achievement, AchievementModel, AuthPlayer, Ban, BanModel, Challenge, ChallengeModel,
-    CreatePlayerSchema, Deployment, DeploymentModel, Flag, FlagModel, Hint, HintModel,
-    JsonResponse, Notification, NotificationModel, Player, PlayerAchievement,
-    PlayerAchievementModel, PlayerDetails, PlayerModel, PlayerProfile, Submission, SubmissionModel,
-    Team, TeamModel, Ticket, TicketModel, Unlock, UnlockModel, UpdateProfileSchema,
+    AuthPlayer, Award, AwardModel, Ban, BanModel, Challenge, ChallengeModel, CreatePlayerSchema,
+    Deployment, DeploymentModel, Flag, FlagModel, Hint, HintModel, JsonResponse, Notification,
+    NotificationModel, Player, PlayerAward, PlayerAwardModel, PlayerDetails, PlayerModel,
+    PlayerProfile, Submission, SubmissionModel, Team, TeamModel, Ticket, TicketModel, Unlock,
+    UnlockModel, UpdateProfileSchema,
 };
 
-oxide_macros::crud!(Player, single: [Team], optional: [Deployment, Ban], multiple: [Flag, Achievement, PlayerAchievement, Notification, Submission, Unlock, Challenge, Hint, Ticket]);
+oxide_macros::crud!(Player, single: [Team], optional: [Deployment, Ban], multiple: [Flag, Award, PlayerAward, Notification, Submission, Unlock, Challenge, Hint, Ticket]);
 
 #[utoipa::path(
     get,

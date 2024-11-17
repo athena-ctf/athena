@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use entity::links::{TeamToAchievement, TeamToChallenge, TeamToSubmission, TeamToUnlock};
+use entity::links::{TeamToAward, TeamToChallenge, TeamToSubmission, TeamToUnlock};
 
 use crate::schemas::{
     AuthPlayer, CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Tag,
@@ -197,8 +197,8 @@ pub async fn retrieve_summary(
             .find_linked(TeamToUnlock)
             .all(&state.db_conn)
             .await?,
-        achievements: team_model
-            .find_linked(TeamToAchievement)
+        awards: team_model
+            .find_linked(TeamToAward)
             .all(&state.db_conn)
             .await?,
         profile: get_team_profile(team_model, &state.persistent_client, &state.db_conn).await?,

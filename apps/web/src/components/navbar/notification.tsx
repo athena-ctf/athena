@@ -10,7 +10,7 @@ import {
 import { ScrollArea } from "@repo/ui/components/scroll-area";
 import { formatDistance } from "date-fns";
 import { Bell, RefreshCcw } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export function PlayerNotification() {
@@ -18,7 +18,7 @@ export function PlayerNotification() {
     [],
   );
 
-  useEffect(() => {
+  const refreshNotifications = useCallback(() => {
     fetchClient.GET("/player/notifications").then((resp) => {
       if (resp.error) {
         toast.error(resp.error.message);
@@ -27,6 +27,10 @@ export function PlayerNotification() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    refreshNotifications();
+  }, [refreshNotifications]);
 
   return (
     <DropdownMenu>
@@ -39,7 +43,7 @@ export function PlayerNotification() {
         <DropdownMenuLabel>
           <span className="flex w-full flex-row items-center justify-between">
             Notifications
-            <Button className="p-[10px]" variant="outline">
+            <Button className="p-[10px]" variant="outline" onClick={refreshNotifications}>
               <RefreshCcw size={16} />
             </Button>
           </span>

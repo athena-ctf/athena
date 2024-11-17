@@ -1,68 +1,120 @@
-import type { components } from "@repo/api";
+"use client";
+
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Pencil } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import { Label } from "@repo/ui/components/label";
-import { Pencil } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+import { fetchClient } from "@repo/api";
+import { useAuthStore } from "@/stores/auth";
 
-export default function UserUpdateDialog({
-  player,
-}: {
-  player: components["schemas"]["PlayerModel"];
-}) {
-  const [displayName, setDisplayName] = useState("");
+const schema = z.object({
+  username: z.string().min(3, {
+    message: "Username must be at least 3 characters.",
+  }),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  discord_id: z.string().optional(),
+});
+
+export function EditProfileButton() {
+  const [open, setOpen] = useState(false);
+  const { player } = useAuthStore();
+
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      username: "",
+      email: "",
+      discord_id: "",
+    },
+  });
+
+  const onSubmit = async (body: z.infer<typeof schema>) => {
+    fetchClient.PATCH("/player/{id}/update-profile", {
+      body,
+      params: {
+        path: { id: player?.id ?? "" },
+      },
+    });
+  };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
-          <Pencil size={16} />
+        <Button variant="outline" size="icon">
+          <Pencil className="h-4 w-4" />
+          <span className="sr-only">Edit profile</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="displayName" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="displayName"
-              defaultValue={player.display_name}
-              className="col-span-3"
-              value={displayName}
-              onChange={(ev) => setDisplayName(ev.target.value)}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input placeholder="johndoe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button
-            type="submit"
-            onClick={() =>
-              updateProfile(player.id, player.team_id ?? "", displayName).then((res) => {
-                if (res.error) toast.error(res.error.message);
-                else toast.success("Updated profile successfully");
-              })
-            }
-          >
-            Save changes
-          </Button>
-        </DialogFooter>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="john@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="discord_id"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Discord ID (optional)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="johndoe#1234" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">
+              {form.formState.isSubmitting ? "Saving..." : "Save changes"}
+            </Button>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

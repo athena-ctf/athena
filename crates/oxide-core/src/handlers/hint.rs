@@ -1,3 +1,4 @@
+use chrono::Local;
 use sea_orm::TransactionTrait;
 
 use crate::schemas::{
@@ -16,6 +17,11 @@ oxide_macros::crud!(
                 "leaderboard:player",
                 -f64::from(model.cost),
                 player_model.id.simple().to_string()
+            ).await?;
+
+            state.persistent_client.lpush::<(), _, _>(
+                format!("player:{}:history", player_model.id.simple()),
+                vec![format!("{}:{}", Local::now().timestamp_millis(), -f64::from(model.cost))]
             ).await?;
         }
     },

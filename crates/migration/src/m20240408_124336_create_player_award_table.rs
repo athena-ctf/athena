@@ -9,52 +9,40 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(PlayerAchievement::Table)
+                    .table(PlayerAward::Table)
                     .if_not_exists()
                     .primary_key(
                         Index::create()
-                            .name("pk-player_achievement")
-                            .col(PlayerAchievement::PlayerId)
-                            .col(PlayerAchievement::AchievementId),
+                            .name("pk-player_award")
+                            .col(PlayerAward::PlayerId)
+                            .col(PlayerAward::AwardId),
                     )
                     .col(
-                        ColumnDef::new(PlayerAchievement::CreatedAt)
+                        ColumnDef::new(PlayerAward::CreatedAt)
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(PlayerAchievement::UpdatedAt)
+                        ColumnDef::new(PlayerAward::UpdatedAt)
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
-                    .col(
-                        ColumnDef::new(PlayerAchievement::PlayerId)
-                            .uuid()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(PlayerAchievement::AchievementId)
-                            .uuid()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(PlayerAchievement::Count)
-                            .integer()
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(PlayerAward::PlayerId).uuid().not_null())
+                    .col(ColumnDef::new(PlayerAward::AwardId).uuid().not_null())
+                    .col(ColumnDef::new(PlayerAward::Count).integer().not_null())
                     .foreign_key(
                         ForeignKey::create()
-                            .name("fk-player_achievement-player_id")
-                            .from(PlayerAchievement::Table, PlayerAchievement::PlayerId)
+                            .name("fk-player_award-player_id")
+                            .from(PlayerAward::Table, PlayerAward::PlayerId)
                             .to(Player::Table, Player::Id)
                             .on_delete(ForeignKeyAction::Cascade)
                             .on_update(ForeignKeyAction::Cascade),
                     )
                     .foreign_key(
                         ForeignKey::create()
-                            .name("fk-player_achievement-achievement_id")
-                            .from(PlayerAchievement::Table, PlayerAchievement::AchievementId)
-                            .to(Achievement::Table, Achievement::Id)
+                            .name("fk-player_award-award_id")
+                            .from(PlayerAward::Table, PlayerAward::AwardId)
+                            .to(Award::Table, Award::Id)
                             .on_delete(ForeignKeyAction::Cascade)
                             .on_update(ForeignKeyAction::Cascade),
                     )
@@ -65,23 +53,23 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(PlayerAchievement::Table).to_owned())
+            .drop_table(Table::drop().table(PlayerAward::Table).to_owned())
             .await
     }
 }
 
 #[derive(DeriveIden)]
-enum PlayerAchievement {
+enum PlayerAward {
     Table,
     PlayerId,
-    AchievementId,
+    AwardId,
     CreatedAt,
     UpdatedAt,
     Count,
 }
 
 #[derive(DeriveIden)]
-enum Achievement {
+enum Award {
     Table,
     Id,
 }

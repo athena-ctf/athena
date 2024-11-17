@@ -2,8 +2,8 @@
 
 pub mod prelude;
 
-pub mod achievement;
 pub mod admin;
+pub mod award;
 pub mod ban;
 pub mod challenge;
 pub mod challenge_file;
@@ -17,7 +17,7 @@ pub mod instance;
 pub mod invite;
 pub mod notification;
 pub mod player;
-pub mod player_achievement;
+pub mod player_award;
 pub mod sea_orm_active_enums;
 pub mod submission;
 pub mod tag;

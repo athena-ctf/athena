@@ -60,17 +60,17 @@ impl Linked for TeamToHint {
     }
 }
 
-pub struct TeamToAchievement;
+pub struct TeamToAward;
 
-impl Linked for TeamToAchievement {
+impl Linked for TeamToAward {
     type FromEntity = super::team::Entity;
-    type ToEntity = super::achievement::Entity;
+    type ToEntity = super::award::Entity;
 
     fn link(&self) -> Vec<sea_orm::LinkDef> {
         vec![
             super::player::Relation::Team.def().rev(),
-            super::player_achievement::Relation::Player.def().rev(),
-            super::player_achievement::Relation::Achievement.def(),
+            super::player_award::Relation::Player.def().rev(),
+            super::player_award::Relation::Award.def(),
         ]
     }
 }

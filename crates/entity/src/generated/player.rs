@@ -51,8 +51,8 @@ pub enum Relation {
     Flag,
     #[sea_orm(has_many = "super::notification::Entity")]
     Notification,
-    #[sea_orm(has_many = "super::player_achievement::Entity")]
-    PlayerAchievement,
+    #[sea_orm(has_many = "super::player_award::Entity")]
+    PlayerAward,
     #[sea_orm(has_many = "super::submission::Entity")]
     Submission,
     #[sea_orm(
@@ -93,9 +93,9 @@ impl Related<super::notification::Entity> for Entity {
     }
 }
 
-impl Related<super::player_achievement::Entity> for Entity {
+impl Related<super::player_award::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::PlayerAchievement.def()
+        Relation::PlayerAward.def()
     }
 }
 
@@ -123,13 +123,13 @@ impl Related<super::unlock::Entity> for Entity {
     }
 }
 
-impl Related<super::achievement::Entity> for Entity {
+impl Related<super::award::Entity> for Entity {
     fn to() -> RelationDef {
-        super::player_achievement::Relation::Achievement.def()
+        super::player_award::Relation::Award.def()
     }
 
     fn via() -> Option<RelationDef> {
-        Some(super::player_achievement::Relation::Player.def().rev())
+        Some(super::player_award::Relation::Player.def().rev())
     }
 }
 

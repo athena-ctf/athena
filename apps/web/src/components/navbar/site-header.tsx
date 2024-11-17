@@ -1,39 +1,56 @@
 import type { components } from "@repo/api";
-import { Nav } from "./nav";
-import { ModeToggle } from "./mode-toggle";
+import { ThemeToggle } from "./theme-toggle";
 import { PlayerNotification } from "./notification";
 import { ProfileDropdown } from "./profile-dropdown";
 import { Button } from "@repo/ui/components/button";
 import { Link, useLocation } from "@tanstack/react-router";
-import type { ReactNode } from "react";
 import { CountdownTimer } from "@ui/components/ui/countdown";
 import { parseISO } from "date-fns";
 import { useCtfStore } from "@/stores/ctf";
 
 export function SiteHeader({
   playerProfile,
-  logout,
 }: {
-  playerProfile?: components["schemas"]["UserModel"];
-  logout?: ReactNode;
+  playerProfile?: components["schemas"]["PlayerProfile"];
 }) {
   const location = useLocation({ select: (path) => path.pathname });
   const ctf = useCtfStore();
 
+  const navLinks = [
+    { to: "/challenges", text: "Challenges" },
+    { to: "/scoreboard/team", text: "Scoreboard" },
+  ];
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex justify-between h-14 max-w-screen-2xl items-center">
-        <Nav />
-        <nav className="flex items-center justify-end space-x-2">
+      <div className="container flex h-14 max-w-screen-2xl items-center justify-between">
+        <div className="flex items-center">
+          <Link to="/" className="mr-6 flex items-center space-x-2">
+            <img src="/logo.jpeg" alt="CTF Logo" width={16} height={16} />
+            <span className="font-bold">{ctf.name}</span>
+          </Link>
+          <nav className="flex items-center gap-4 text-sm lg:gap-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-foreground/60 transition-colors hover:text-foreground/80"
+              >
+                {link.text}
+              </Link>
+            ))}
+          </nav>
+        </div>
+        <nav className="flex items-center space-x-2">
           <CountdownTimer targetDate={parseISO(ctf.time.end)} />
-          <ModeToggle />
-          {playerProfile && logout ? (
+          <ThemeToggle />
+          {playerProfile ? (
             <>
               <PlayerNotification />
-              <ProfileDropdown user={playerProfile} logout={logout} />
+              <ProfileDropdown playerProfile={playerProfile} />
             </>
           ) : (
-            <Button variant="outline" asChild>
+            <Button>
               <Link to="/auth/login" search={{ next: location }}>
                 Login
               </Link>

@@ -9,32 +9,27 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(Achievement::Table)
+                    .table(Award::Table)
                     .if_not_exists()
+                    .col(ColumnDef::new(Award::Id).uuid().not_null().primary_key())
                     .col(
-                        ColumnDef::new(Achievement::Id)
-                            .uuid()
-                            .not_null()
-                            .primary_key(),
-                    )
-                    .col(
-                        ColumnDef::new(Achievement::CreatedAt)
+                        ColumnDef::new(Award::CreatedAt)
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(Achievement::UpdatedAt)
+                        ColumnDef::new(Award::UpdatedAt)
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(Achievement::Value)
+                        ColumnDef::new(Award::Value)
                             .string()
                             .not_null()
                             .unique_key(),
                     )
-                    .col(ColumnDef::new(Achievement::Prize).integer().not_null())
-                    .col(ColumnDef::new(Achievement::LogoUrl).string().not_null())
+                    .col(ColumnDef::new(Award::Prize).integer().not_null())
+                    .col(ColumnDef::new(Award::LogoUrl).string().not_null())
                     .to_owned(),
             )
             .await?;
@@ -44,7 +39,7 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(Achievement::Table).to_owned())
+            .drop_table(Table::drop().table(Award::Table).to_owned())
             .await?;
 
         Ok(())
@@ -52,7 +47,7 @@ impl MigrationTrait for Migration {
 }
 
 #[derive(DeriveIden)]
-enum Achievement {
+enum Award {
     Table,
     Id,
     CreatedAt,

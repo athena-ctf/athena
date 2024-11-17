@@ -5,9 +5,9 @@ mod m20240408_124022_create_ban_table;
 mod m20240408_124042_create_team_table;
 mod m20240408_124136_create_player_table;
 mod m20240408_124245_create_challenge_table;
-mod m20240408_124310_create_achievement_table;
+mod m20240408_124310_create_award_table;
 mod m20240408_124319_create_file_table;
-mod m20240408_124336_create_player_achievement_table;
+mod m20240408_124336_create_player_award_table;
 mod m20240408_124342_create_flag_table;
 mod m20240408_124400_create_tag_table;
 mod m20240408_124410_create_deployment_table;
@@ -35,9 +35,9 @@ impl MigratorTrait for Migrator {
             Box::new(m20240408_124042_create_team_table::Migration),
             Box::new(m20240408_124136_create_player_table::Migration),
             Box::new(m20240408_124245_create_challenge_table::Migration),
-            Box::new(m20240408_124310_create_achievement_table::Migration),
+            Box::new(m20240408_124310_create_award_table::Migration),
             Box::new(m20240408_124319_create_file_table::Migration),
-            Box::new(m20240408_124336_create_player_achievement_table::Migration),
+            Box::new(m20240408_124336_create_player_award_table::Migration),
             Box::new(m20240408_124342_create_flag_table::Migration),
             Box::new(m20240408_124400_create_tag_table::Migration),
             Box::new(m20240408_124410_create_deployment_table::Migration),

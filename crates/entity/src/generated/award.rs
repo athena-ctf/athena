@@ -14,8 +14,8 @@ use serde::{Deserialize, Serialize};
     utoipa::ToSchema,
     oxide_macros::Details,
 )]
-#[sea_orm(table_name = "achievement")]
-#[schema(as = AchievementModel)]
+#[sea_orm(table_name = "award")]
+#[schema(as = AwardModel)]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
@@ -29,23 +29,23 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::player_achievement::Entity")]
-    PlayerAchievement,
+    #[sea_orm(has_many = "super::player_award::Entity")]
+    PlayerAward,
 }
 
-impl Related<super::player_achievement::Entity> for Entity {
+impl Related<super::player_award::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::PlayerAchievement.def()
+        Relation::PlayerAward.def()
     }
 }
 
 impl Related<super::player::Entity> for Entity {
     fn to() -> RelationDef {
-        super::player_achievement::Relation::Player.def()
+        super::player_award::Relation::Player.def()
     }
 
     fn via() -> Option<RelationDef> {
-        Some(super::player_achievement::Relation::Achievement.def().rev())
+        Some(super::player_award::Relation::Award.def().rev())
     }
 }
 

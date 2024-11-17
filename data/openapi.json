@@ -14,581 +14,6 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/admin/achievement": {
-      "get": {
-        "tags": [
-          "achievement"
-        ],
-        "summary": "List achievements",
-        "operationId": "list_achievements",
-        "responses": {
-          "200": {
-            "description": "Listed achievements successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AchievementModel"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "achievement"
-        ],
-        "summary": "Create achievement",
-        "operationId": "create_achievement",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAchievementSchema"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created achievement successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AchievementModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No achievement found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/achievement/export": {
-      "get": {
-        "tags": [
-          "achievement"
-        ],
-        "summary": "Export achievements",
-        "operationId": "export_achievements",
-        "responses": {
-          "200": {
-            "description": "Exported achievements successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/achievement/import": {
-      "get": {
-        "tags": [
-          "achievement"
-        ],
-        "summary": "Import achievements",
-        "operationId": "import_achievements",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "csv_file"
-                ],
-                "properties": {
-                  "csv_file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Imported achievements successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/achievement/{id}": {
-      "get": {
-        "tags": [
-          "achievement"
-        ],
-        "summary": "Retrieve achievement by id",
-        "operationId": "retrieve_achievement_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved achievement by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AchievementModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No achievement found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "achievement"
-        ],
-        "summary": "Delete achievement by id",
-        "operationId": "delete_achievement_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted achievement by id successfully"
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No achievement found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "achievement"
-        ],
-        "summary": "Update achievement by id",
-        "operationId": "update_achievement_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAchievementSchema"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Updated achievement by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AchievementModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters/request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No achievement found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/achievement/{id}/relations": {
-      "get": {
-        "tags": [
-          "achievement"
-        ],
-        "summary": "Retrieve achievement relations by id",
-        "operationId": "retrieve_achievement_relations_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved achievement relations by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AchievementRelations"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No achievement found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/admin/admin": {
       "get": {
         "tags": [
@@ -925,12 +350,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "admin"
         ],
-        "summary": "Delete admin by id",
-        "operationId": "delete_admin_by_id",
+        "summary": "Update admin by id",
+        "operationId": "update_admin_by_id",
         "parameters": [
           {
             "name": "id",
@@ -943,12 +368,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAdminSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted admin by id successfully"
+          "200": {
+            "description": "Updated admin by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -999,12 +441,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "admin"
         ],
-        "summary": "Update admin by id",
-        "operationId": "update_admin_by_id",
+        "summary": "Delete admin by id",
+        "operationId": "delete_admin_by_id",
         "parameters": [
           {
             "name": "id",
@@ -1017,29 +459,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAdminSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated admin by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AdminModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted admin by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -1143,6 +568,581 @@
           },
           "404": {
             "description": "No admin found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/award": {
+      "get": {
+        "tags": [
+          "award"
+        ],
+        "summary": "List awards",
+        "operationId": "list_awards",
+        "responses": {
+          "200": {
+            "description": "Listed awards successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AwardModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "award"
+        ],
+        "summary": "Create award",
+        "operationId": "create_award",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAwardSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created award successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AwardModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No award found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/award/export": {
+      "get": {
+        "tags": [
+          "award"
+        ],
+        "summary": "Export awards",
+        "operationId": "export_awards",
+        "responses": {
+          "200": {
+            "description": "Exported awards successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/award/import": {
+      "get": {
+        "tags": [
+          "award"
+        ],
+        "summary": "Import awards",
+        "operationId": "import_awards",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "csv_file"
+                ],
+                "properties": {
+                  "csv_file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Imported awards successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/award/{id}": {
+      "get": {
+        "tags": [
+          "award"
+        ],
+        "summary": "Retrieve award by id",
+        "operationId": "retrieve_award_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved award by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AwardModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No award found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "award"
+        ],
+        "summary": "Update award by id",
+        "operationId": "update_award_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAwardSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated award by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AwardModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No award found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "award"
+        ],
+        "summary": "Delete award by id",
+        "operationId": "delete_award_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted award by id successfully"
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No award found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/award/{id}/relations": {
+      "get": {
+        "tags": [
+          "award"
+        ],
+        "summary": "Retrieve award relations by id",
+        "operationId": "retrieve_award_relations_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved award relations by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AwardRelations"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No award found with specified id",
             "content": {
               "application/json": {
                 "schema": {
@@ -1593,12 +1593,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "ban"
         ],
-        "summary": "Delete ban by id",
-        "operationId": "delete_ban_by_id",
+        "summary": "Update ban by id",
+        "operationId": "update_ban_by_id",
         "parameters": [
           {
             "name": "id",
@@ -1611,12 +1611,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBanSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted ban by id successfully"
+          "200": {
+            "description": "Updated ban by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BanModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -1667,12 +1684,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "ban"
         ],
-        "summary": "Update ban by id",
-        "operationId": "update_ban_by_id",
+        "summary": "Delete ban by id",
+        "operationId": "delete_ban_by_id",
         "parameters": [
           {
             "name": "id",
@@ -1685,29 +1702,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateBanSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated ban by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BanModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted ban by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -2168,12 +2168,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "challenge"
         ],
-        "summary": "Delete challenge by id",
-        "operationId": "delete_challenge_by_id",
+        "summary": "Update challenge by id",
+        "operationId": "update_challenge_by_id",
         "parameters": [
           {
             "name": "id",
@@ -2186,12 +2186,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChallengeSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted challenge by id successfully"
+          "200": {
+            "description": "Updated challenge by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -2242,12 +2259,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "challenge"
         ],
-        "summary": "Update challenge by id",
-        "operationId": "update_challenge_by_id",
+        "summary": "Delete challenge by id",
+        "operationId": "delete_challenge_by_id",
         "parameters": [
           {
             "name": "id",
@@ -2260,29 +2277,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateChallengeSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated challenge by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChallengeModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted challenge by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -2753,91 +2753,7 @@
           }
         }
       },
-      "delete": {
-        "tags": [
-          "challenge_file"
-        ],
-        "summary": "Delete challenge_file by id",
-        "operationId": "delete_challenge_file_by_id",
-        "parameters": [
-          {
-            "name": "challenge_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "file_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted challenge_file by id successfully"
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge_file found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
+      "put": {
         "tags": [
           "challenge_file"
         ],
@@ -2888,6 +2804,90 @@
           },
           "400": {
             "description": "Invalid parameters/request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge_file found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "challenge_file"
+        ],
+        "summary": "Delete challenge_file by id",
+        "operationId": "delete_challenge_file_by_id",
+        "parameters": [
+          {
+            "name": "challenge_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "file_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted challenge_file by id successfully"
+          },
+          "400": {
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -3368,91 +3368,7 @@
           }
         }
       },
-      "delete": {
-        "tags": [
-          "challenge_tag"
-        ],
-        "summary": "Delete challenge_tag by id",
-        "operationId": "delete_challenge_tag_by_id",
-        "parameters": [
-          {
-            "name": "challenge_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "tag_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted challenge_tag by id successfully"
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge_tag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
+      "put": {
         "tags": [
           "challenge_tag"
         ],
@@ -3503,6 +3419,90 @@
           },
           "400": {
             "description": "Invalid parameters/request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No challenge_tag found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "challenge_tag"
+        ],
+        "summary": "Delete challenge_tag by id",
+        "operationId": "delete_challenge_tag_by_id",
+        "parameters": [
+          {
+            "name": "challenge_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "tag_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted challenge_tag by id successfully"
+          },
+          "400": {
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -3973,12 +3973,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "container"
         ],
-        "summary": "Delete container by id",
-        "operationId": "delete_container_by_id",
+        "summary": "Update container by id",
+        "operationId": "update_container_by_id",
         "parameters": [
           {
             "name": "id",
@@ -3991,12 +3991,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContainerSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted container by id successfully"
+          "200": {
+            "description": "Updated container by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -4047,12 +4064,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "container"
         ],
-        "summary": "Update container by id",
-        "operationId": "update_container_by_id",
+        "summary": "Delete container by id",
+        "operationId": "delete_container_by_id",
         "parameters": [
           {
             "name": "id",
@@ -4065,29 +4082,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateContainerSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated container by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContainerModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted container by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -4599,12 +4599,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "deployment"
         ],
-        "summary": "Delete deployment by id",
-        "operationId": "delete_deployment_by_id",
+        "summary": "Update deployment by id",
+        "operationId": "update_deployment_by_id",
         "parameters": [
           {
             "name": "id",
@@ -4617,12 +4617,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDeploymentSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted deployment by id successfully"
+          "200": {
+            "description": "Updated deployment by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeploymentModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -4673,12 +4690,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "deployment"
         ],
-        "summary": "Update deployment by id",
-        "operationId": "update_deployment_by_id",
+        "summary": "Delete deployment by id",
+        "operationId": "delete_deployment_by_id",
         "parameters": [
           {
             "name": "id",
@@ -4691,29 +4708,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateDeploymentSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated deployment by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DeploymentModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted deployment by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -5174,12 +5174,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "file"
         ],
-        "summary": "Delete file by id",
-        "operationId": "delete_file_by_id",
+        "summary": "Update file by id",
+        "operationId": "update_file_by_id",
         "parameters": [
           {
             "name": "id",
@@ -5192,12 +5192,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFileSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted file by id successfully"
+          "200": {
+            "description": "Updated file by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -5248,12 +5265,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "file"
         ],
-        "summary": "Update file by id",
-        "operationId": "update_file_by_id",
+        "summary": "Delete file by id",
+        "operationId": "delete_file_by_id",
         "parameters": [
           {
             "name": "id",
@@ -5266,29 +5283,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateFileSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated file by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FileModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted file by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -5749,12 +5749,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "flag"
         ],
-        "summary": "Delete flag by id",
-        "operationId": "delete_flag_by_id",
+        "summary": "Update flag by id",
+        "operationId": "update_flag_by_id",
         "parameters": [
           {
             "name": "id",
@@ -5767,12 +5767,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFlagSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted flag by id successfully"
+          "200": {
+            "description": "Updated flag by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlagModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -5823,12 +5840,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "flag"
         ],
-        "summary": "Update flag by id",
-        "operationId": "update_flag_by_id",
+        "summary": "Delete flag by id",
+        "operationId": "delete_flag_by_id",
         "parameters": [
           {
             "name": "id",
@@ -5841,29 +5858,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateFlagSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated flag by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FlagModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted flag by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -6324,12 +6324,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "hint"
         ],
-        "summary": "Delete hint by id",
-        "operationId": "delete_hint_by_id",
+        "summary": "Update hint by id",
+        "operationId": "update_hint_by_id",
         "parameters": [
           {
             "name": "id",
@@ -6342,12 +6342,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHintSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted hint by id successfully"
+          "200": {
+            "description": "Updated hint by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HintModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -6398,12 +6415,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "hint"
         ],
-        "summary": "Update hint by id",
-        "operationId": "update_hint_by_id",
+        "summary": "Delete hint by id",
+        "operationId": "delete_hint_by_id",
         "parameters": [
           {
             "name": "id",
@@ -6416,29 +6433,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHintSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated hint by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HintModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted hint by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -6899,12 +6899,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "instance"
         ],
-        "summary": "Delete instance by id",
-        "operationId": "delete_instance_by_id",
+        "summary": "Update instance by id",
+        "operationId": "update_instance_by_id",
         "parameters": [
           {
             "name": "id",
@@ -6917,12 +6917,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInstanceSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted instance by id successfully"
+          "200": {
+            "description": "Updated instance by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -6973,12 +6990,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "instance"
         ],
-        "summary": "Update instance by id",
-        "operationId": "update_instance_by_id",
+        "summary": "Delete instance by id",
+        "operationId": "delete_instance_by_id",
         "parameters": [
           {
             "name": "id",
@@ -6991,29 +7008,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateInstanceSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated instance by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InviteModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted instance by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -7474,12 +7474,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "invite"
         ],
-        "summary": "Delete invite by id",
-        "operationId": "delete_invite_by_id",
+        "summary": "Update invite by id",
+        "operationId": "update_invite_by_id",
         "parameters": [
           {
             "name": "id",
@@ -7492,12 +7492,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInviteSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted invite by id successfully"
+          "200": {
+            "description": "Updated invite by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -7548,12 +7565,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "invite"
         ],
-        "summary": "Update invite by id",
-        "operationId": "update_invite_by_id",
+        "summary": "Delete invite by id",
+        "operationId": "delete_invite_by_id",
         "parameters": [
           {
             "name": "id",
@@ -7566,29 +7583,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateInviteSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated invite by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InviteModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted invite by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -8049,12 +8049,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "notification"
         ],
-        "summary": "Delete notification by id",
-        "operationId": "delete_notification_by_id",
+        "summary": "Update notification by id",
+        "operationId": "update_notification_by_id",
         "parameters": [
           {
             "name": "id",
@@ -8067,12 +8067,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNotificationSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted notification by id successfully"
+          "200": {
+            "description": "Updated notification by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -8123,12 +8140,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "notification"
         ],
-        "summary": "Update notification by id",
-        "operationId": "update_notification_by_id",
+        "summary": "Delete notification by id",
+        "operationId": "delete_notification_by_id",
         "parameters": [
           {
             "name": "id",
@@ -8141,29 +8158,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateNotificationSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated notification by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted notification by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -8624,12 +8624,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "player"
         ],
-        "summary": "Delete player by id",
-        "operationId": "delete_player_by_id",
+        "summary": "Update player by id",
+        "operationId": "update_player_by_id",
         "parameters": [
           {
             "name": "id",
@@ -8642,12 +8642,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlayerSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted player by id successfully"
+          "200": {
+            "description": "Updated player by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -8698,12 +8715,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "player"
         ],
-        "summary": "Update player by id",
-        "operationId": "update_player_by_id",
+        "summary": "Delete player by id",
+        "operationId": "delete_player_by_id",
         "parameters": [
           {
             "name": "id",
@@ -8716,29 +8733,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePlayerSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated player by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlayerModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted player by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -8863,22 +8863,22 @@
         }
       }
     },
-    "/admin/player_achievement": {
+    "/admin/player_award": {
       "get": {
         "tags": [
-          "player_achievement"
+          "player_award"
         ],
-        "summary": "List player_achievements",
-        "operationId": "list_player_achievements",
+        "summary": "List player_awards",
+        "operationId": "list_player_awards",
         "responses": {
           "200": {
-            "description": "Listed player_achievements successfully",
+            "description": "Listed player_awards successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PlayerAchievementModel"
+                    "$ref": "#/components/schemas/PlayerAwardModel"
                   }
                 }
               }
@@ -8918,15 +8918,15 @@
       },
       "post": {
         "tags": [
-          "player_achievement"
+          "player_award"
         ],
-        "summary": "Create player_achievement",
-        "operationId": "create_player_achievement",
+        "summary": "Create player_award",
+        "operationId": "create_player_award",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePlayerAchievementSchema"
+                "$ref": "#/components/schemas/CreatePlayerAwardSchema"
               }
             }
           },
@@ -8934,11 +8934,11 @@
         },
         "responses": {
           "201": {
-            "description": "Created player_achievement successfully",
+            "description": "Created player_award successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerAchievementModel"
+                  "$ref": "#/components/schemas/PlayerAwardModel"
                 }
               }
             }
@@ -8974,7 +8974,7 @@
             }
           },
           "404": {
-            "description": "No player_achievement found with specified id",
+            "description": "No player_award found with specified id",
             "content": {
               "application/json": {
                 "schema": {
@@ -8996,16 +8996,16 @@
         }
       }
     },
-    "/admin/player_achievement/export": {
+    "/admin/player_award/export": {
       "get": {
         "tags": [
-          "player_achievement"
+          "player_award"
         ],
-        "summary": "Export player_achievements",
-        "operationId": "export_player_achievements",
+        "summary": "Export player_awards",
+        "operationId": "export_player_awards",
         "responses": {
           "200": {
-            "description": "Exported player_achievements successfully",
+            "description": "Exported player_awards successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -9047,13 +9047,13 @@
         }
       }
     },
-    "/admin/player_achievement/import": {
+    "/admin/player_award/import": {
       "get": {
         "tags": [
-          "player_achievement"
+          "player_award"
         ],
-        "summary": "Import player_achievements",
-        "operationId": "import_player_achievements",
+        "summary": "Import player_awards",
+        "operationId": "import_player_awards",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -9075,7 +9075,7 @@
         },
         "responses": {
           "200": {
-            "description": "Imported player_achievements successfully",
+            "description": "Imported player_awards successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -9117,13 +9117,13 @@
         }
       }
     },
-    "/admin/player_achievement/{player_id}-{achievement_id}": {
+    "/admin/player_award/{player_id}-{award_id}": {
       "get": {
         "tags": [
-          "player_achievement"
+          "player_award"
         ],
-        "summary": "Retrieve player_achievement by id",
-        "operationId": "retrieve_player_achievement_by_id",
+        "summary": "Retrieve player_award by id",
+        "operationId": "retrieve_player_award_by_id",
         "parameters": [
           {
             "name": "player_id",
@@ -9136,7 +9136,7 @@
             }
           },
           {
-            "name": "achievement_id",
+            "name": "award_id",
             "in": "path",
             "description": "Id of entity",
             "required": true,
@@ -9148,11 +9148,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieved player_achievement by id successfully",
+            "description": "Retrieved player_award by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerAchievementModel"
+                  "$ref": "#/components/schemas/PlayerAwardModel"
                 }
               }
             }
@@ -9188,7 +9188,7 @@
             }
           },
           "404": {
-            "description": "No player_achievement found with specified id",
+            "description": "No player_award found with specified id",
             "content": {
               "application/json": {
                 "schema": {
@@ -9209,12 +9209,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
-          "player_achievement"
+          "player_award"
         ],
-        "summary": "Delete player_achievement by id",
-        "operationId": "delete_player_achievement_by_id",
+        "summary": "Update player_award by id",
+        "operationId": "update_player_award_by_id",
         "parameters": [
           {
             "name": "player_id",
@@ -9227,91 +9227,7 @@
             }
           },
           {
-            "name": "achievement_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted player_achievement by id successfully"
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No player_achievement found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "player_achievement"
-        ],
-        "summary": "Update player_achievement by id",
-        "operationId": "update_player_achievement_by_id",
-        "parameters": [
-          {
-            "name": "player_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "achievement_id",
+            "name": "award_id",
             "in": "path",
             "description": "Id of entity",
             "required": true,
@@ -9325,7 +9241,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePlayerAchievementSchema"
+                "$ref": "#/components/schemas/CreatePlayerAwardSchema"
               }
             }
           },
@@ -9333,11 +9249,11 @@
         },
         "responses": {
           "200": {
-            "description": "Updated player_achievement by id successfully",
+            "description": "Updated player_award by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerAchievementModel"
+                  "$ref": "#/components/schemas/PlayerAwardModel"
                 }
               }
             }
@@ -9373,7 +9289,7 @@
             }
           },
           "404": {
-            "description": "No player_achievement found with specified id",
+            "description": "No player_award found with specified id",
             "content": {
               "application/json": {
                 "schema": {
@@ -9393,15 +9309,13 @@
             }
           }
         }
-      }
-    },
-    "/admin/player_achievement/{player_id}-{achievement_id}/relations": {
-      "get": {
+      },
+      "delete": {
         "tags": [
-          "player_achievement"
+          "player_award"
         ],
-        "summary": "Retrieve player_achievement relations by id",
-        "operationId": "retrieve_player_achievement_relations_by_id",
+        "summary": "Delete player_award by id",
+        "operationId": "delete_player_award_by_id",
         "parameters": [
           {
             "name": "player_id",
@@ -9414,7 +9328,7 @@
             }
           },
           {
-            "name": "achievement_id",
+            "name": "award_id",
             "in": "path",
             "description": "Id of entity",
             "required": true,
@@ -9425,12 +9339,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Retrieved player_achievement relations by id successfully",
+          "204": {
+            "description": "Deleted player_award by id successfully"
+          },
+          "400": {
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerAchievementRelations"
+                  "$ref": "#/components/schemas/JsonResponse"
                 }
               }
             }
@@ -9456,7 +9373,90 @@
             }
           },
           "404": {
-            "description": "No player_achievement found with specified id",
+            "description": "No player_award found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/player_award/{player_id}-{award_id}/relations": {
+      "get": {
+        "tags": [
+          "player_award"
+        ],
+        "summary": "Retrieve player_award relations by id",
+        "operationId": "retrieve_player_award_relations_by_id",
+        "parameters": [
+          {
+            "name": "player_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "award_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved player_award relations by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerAwardRelations"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No player_award found with specified id",
             "content": {
               "application/json": {
                 "schema": {
@@ -9998,91 +9998,7 @@
           }
         }
       },
-      "delete": {
-        "tags": [
-          "submission"
-        ],
-        "summary": "Delete submission by id",
-        "operationId": "delete_submission_by_id",
-        "parameters": [
-          {
-            "name": "challenge_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "player_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted submission by id successfully"
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No submission found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
+      "put": {
         "tags": [
           "submission"
         ],
@@ -10133,6 +10049,90 @@
           },
           "400": {
             "description": "Invalid parameters/request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No submission found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "submission"
+        ],
+        "summary": "Delete submission by id",
+        "operationId": "delete_submission_by_id",
+        "parameters": [
+          {
+            "name": "challenge_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "player_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted submission by id successfully"
+          },
+          "400": {
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -10603,12 +10603,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "tag"
         ],
-        "summary": "Delete tag by id",
-        "operationId": "delete_tag_by_id",
+        "summary": "Update tag by id",
+        "operationId": "update_tag_by_id",
         "parameters": [
           {
             "name": "id",
@@ -10621,12 +10621,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTagSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted tag by id successfully"
+          "200": {
+            "description": "Updated tag by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -10677,12 +10694,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "tag"
         ],
-        "summary": "Update tag by id",
-        "operationId": "update_tag_by_id",
+        "summary": "Delete tag by id",
+        "operationId": "delete_tag_by_id",
         "parameters": [
           {
             "name": "id",
@@ -10695,29 +10712,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTagSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated tag by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted tag by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -11178,12 +11178,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "team"
         ],
-        "summary": "Delete team by id",
-        "operationId": "delete_team_by_id",
+        "summary": "Update team by id",
+        "operationId": "update_team_by_id",
         "parameters": [
           {
             "name": "id",
@@ -11196,12 +11196,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeamSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted team by id successfully"
+          "200": {
+            "description": "Updated team by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeamModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -11252,12 +11269,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "team"
         ],
-        "summary": "Update team by id",
-        "operationId": "update_team_by_id",
+        "summary": "Delete team by id",
+        "operationId": "delete_team_by_id",
         "parameters": [
           {
             "name": "id",
@@ -11270,29 +11287,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTeamSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated team by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TeamModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted team by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -11753,12 +11753,12 @@
           }
         }
       },
-      "delete": {
+      "put": {
         "tags": [
           "ticket"
         ],
-        "summary": "Delete ticket by id",
-        "operationId": "delete_ticket_by_id",
+        "summary": "Update ticket by id",
+        "operationId": "update_ticket_by_id",
         "parameters": [
           {
             "name": "id",
@@ -11771,12 +11771,29 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTicketSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Deleted ticket by id successfully"
+          "200": {
+            "description": "Updated ticket by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketModel"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -11827,12 +11844,12 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "ticket"
         ],
-        "summary": "Update ticket by id",
-        "operationId": "update_ticket_by_id",
+        "summary": "Delete ticket by id",
+        "operationId": "delete_ticket_by_id",
         "parameters": [
           {
             "name": "id",
@@ -11845,29 +11862,12 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTicketSchema"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "200": {
-            "description": "Updated ticket by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TicketModel"
-                }
-              }
-            }
+          "204": {
+            "description": "Deleted ticket by id successfully"
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -12338,91 +12338,7 @@
           }
         }
       },
-      "delete": {
-        "tags": [
-          "unlock"
-        ],
-        "summary": "Delete unlock by id",
-        "operationId": "delete_unlock_by_id",
-        "parameters": [
-          {
-            "name": "player_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "hint_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted unlock by id successfully"
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No unlock found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
+      "put": {
         "tags": [
           "unlock"
         ],
@@ -12473,6 +12389,90 @@
           },
           "400": {
             "description": "Invalid parameters/request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No unlock found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "unlock"
+        ],
+        "summary": "Delete unlock by id",
+        "operationId": "delete_unlock_by_id",
+        "parameters": [
+          {
+            "name": "player_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "hint_id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted unlock by id successfully"
+          },
+          "400": {
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -14606,96 +14606,6 @@
   },
   "components": {
     "schemas": {
-      "AchievementModel": {
-        "type": "object",
-        "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "value",
-          "prize",
-          "logo_url"
-        ],
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "logo_url": {
-            "type": "string"
-          },
-          "prize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
-      "AchievementRelations": {
-        "type": "object",
-        "required": [
-          "player",
-          "player_achievement"
-        ],
-        "properties": {
-          "player": {
-            "$ref": "#/components/schemas/PlayerModel"
-          },
-          "player_achievement": {
-            "$ref": "#/components/schemas/PlayerAchievementModel"
-          }
-        }
-      },
-      "AchievementsReceived": {
-        "type": "object",
-        "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "value",
-          "prize",
-          "logo_url",
-          "count"
-        ],
-        "properties": {
-          "count": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "logo_url": {
-            "type": "string"
-          },
-          "prize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
       "AdminModel": {
         "type": "object",
         "required": [
@@ -14737,6 +14647,96 @@
             "items": {
               "$ref": "#/components/schemas/TicketModel"
             }
+          }
+        }
+      },
+      "AwardModel": {
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "value",
+          "prize",
+          "logo_url"
+        ],
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "logo_url": {
+            "type": "string"
+          },
+          "prize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "AwardRelations": {
+        "type": "object",
+        "required": [
+          "player",
+          "player_award"
+        ],
+        "properties": {
+          "player": {
+            "$ref": "#/components/schemas/PlayerModel"
+          },
+          "player_award": {
+            "$ref": "#/components/schemas/PlayerAwardModel"
+          }
+        }
+      },
+      "AwardsReceived": {
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "value",
+          "prize",
+          "logo_url",
+          "count"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "logo_url": {
+            "type": "string"
+          },
+          "prize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "value": {
+            "type": "string"
           }
         }
       },
@@ -15128,26 +15128,6 @@
           }
         }
       },
-      "CreateAchievementSchema": {
-        "type": "object",
-        "required": [
-          "value",
-          "prize",
-          "logo_url"
-        ],
-        "properties": {
-          "logo_url": {
-            "type": "string"
-          },
-          "prize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
       "CreateAdminSchema": {
         "type": "object",
         "required": [
@@ -15163,6 +15143,26 @@
             "$ref": "#/components/schemas/RoleEnum"
           },
           "username": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateAwardSchema": {
+        "type": "object",
+        "required": [
+          "value",
+          "prize",
+          "logo_url"
+        ],
+        "properties": {
+          "logo_url": {
+            "type": "string"
+          },
+          "prize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "value": {
             "type": "string"
           }
         }
@@ -15466,15 +15466,15 @@
           }
         }
       },
-      "CreatePlayerAchievementSchema": {
+      "CreatePlayerAwardSchema": {
         "type": "object",
         "required": [
           "player_id",
-          "achievement_id",
+          "award_id",
           "count"
         ],
         "properties": {
-          "achievement_id": {
+          "award_id": {
             "type": "string",
             "format": "uuid"
           },
@@ -16086,17 +16086,17 @@
           }
         }
       },
-      "PlayerAchievementModel": {
+      "PlayerAwardModel": {
         "type": "object",
         "required": [
           "created_at",
           "updated_at",
           "player_id",
-          "achievement_id",
+          "award_id",
           "count"
         ],
         "properties": {
-          "achievement_id": {
+          "award_id": {
             "type": "string",
             "format": "uuid"
           },
@@ -16118,15 +16118,15 @@
           }
         }
       },
-      "PlayerAchievementRelations": {
+      "PlayerAwardRelations": {
         "type": "object",
         "required": [
           "player",
-          "achievement"
+          "award"
         ],
         "properties": {
-          "achievement": {
-            "$ref": "#/components/schemas/AchievementModel"
+          "award": {
+            "$ref": "#/components/schemas/AwardModel"
           },
           "player": {
             "$ref": "#/components/schemas/PlayerModel"
@@ -16244,16 +16244,16 @@
         "required": [
           "player",
           "solved_challenges",
-          "achievements",
+          "awards",
           "tag_solves",
           "rank",
           "score"
         ],
         "properties": {
-          "achievements": {
+          "awards": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AchievementsReceived"
+              "$ref": "#/components/schemas/AwardsReceived"
             }
           },
           "player": {
@@ -16288,8 +16288,8 @@
         "required": [
           "team",
           "flags",
-          "achievements",
-          "player_achievements",
+          "awards",
+          "player_awards",
           "notifications",
           "submissions",
           "unlocks",
@@ -16298,10 +16298,10 @@
           "tickets"
         ],
         "properties": {
-          "achievements": {
+          "awards": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AchievementModel"
+              "$ref": "#/components/schemas/AwardModel"
             }
           },
           "ban": {
@@ -16348,10 +16348,10 @@
               "$ref": "#/components/schemas/NotificationModel"
             }
           },
-          "player_achievements": {
+          "player_awards": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PlayerAchievementModel"
+              "$ref": "#/components/schemas/PlayerAwardModel"
             }
           },
           "submissions": {
@@ -16471,7 +16471,7 @@
       "StatSchema": {
         "type": "object",
         "required": [
-          "achievement",
+          "award",
           "admin",
           "ban",
           "challenge_tag",
@@ -16492,12 +16492,12 @@
           "unlocks"
         ],
         "properties": {
-          "achievement": {
+          "admin": {
             "type": "integer",
             "format": "int64",
             "minimum": 0
           },
-          "admin": {
+          "award": {
             "type": "integer",
             "format": "int64",
             "minimum": 0
@@ -16711,13 +16711,13 @@
           "profile",
           "submissions",
           "unlocks",
-          "achievements"
+          "awards"
         ],
         "properties": {
-          "achievements": {
+          "awards": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AchievementModel"
+              "$ref": "#/components/schemas/AwardModel"
             }
           },
           "profile": {

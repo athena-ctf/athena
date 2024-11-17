@@ -1,10 +1,10 @@
-use entity::links::{TeamToAchievement, TeamToChallenge, TeamToHint};
+use entity::links::{TeamToAward, TeamToChallenge, TeamToHint};
 use fred::prelude::*;
 use sea_orm::prelude::*;
 use sea_orm::{DatabaseTransaction, QuerySelect};
 
 use crate::errors::Result;
-use crate::schemas::{Achievement, Challenge, Hint, Player, Submission, Team};
+use crate::schemas::{Award, Challenge, Hint, Player, Submission, Team};
 
 pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Result<()> {
     let players = Player::find().all(db).await?;
@@ -35,12 +35,12 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
             .unwrap()
             .0;
 
-        let achievement_prizes = player
-            .find_related(Achievement)
+        let award_prizes = player
+            .find_related(Award)
             .select_only()
             .column_as(
-                Expr::col(entity::achievement::Column::Prize).sum(),
-                "achievement_prizes",
+                Expr::col(entity::award::Column::Prize).sum(),
+                "award_prizes",
             )
             .into_tuple::<(u64,)>()
             .one(db)
@@ -49,7 +49,7 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
             .0;
 
         leaderboard_player.push((
-            (challenge_points + achievement_prizes - hint_costs) as f64,
+            (challenge_points + award_prizes - hint_costs) as f64,
             player.id.simple().to_string(),
         ));
     }
@@ -92,12 +92,12 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
             .unwrap()
             .0;
 
-        let achievement_prizes = team
-            .find_linked(TeamToAchievement)
+        let award_prizes = team
+            .find_linked(TeamToAward)
             .select_only()
             .column_as(
-                Expr::col(entity::achievement::Column::Prize).sum(),
-                "achievement_prizes",
+                Expr::col(entity::award::Column::Prize).sum(),
+                "award_prizes",
             )
             .into_tuple::<(u64,)>()
             .one(db)
@@ -106,7 +106,7 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
             .0;
 
         leaderboard_team.push((
-            (challenge_points + achievement_prizes - hint_costs) as f64,
+            (challenge_points + award_prizes - hint_costs) as f64,
             team.id.simple().to_string(),
         ));
     }
@@ -143,19 +143,19 @@ pub async fn load_challenge_solves(db: &DatabaseTransaction, pool: &RedisPool) -
     Ok(())
 }
 
-pub async fn verify_achievements(db: &DbConn) -> Result<bool> {
-    let first_blood = Achievement::find()
-        .filter(entity::achievement::Column::Value.eq("First Blood"))
+pub async fn verify_awards(db: &DbConn) -> Result<bool> {
+    let first_blood = Award::find()
+        .filter(entity::award::Column::Value.eq("First Blood"))
         .count(db)
         .await?
         == 1;
-    let second_blood = Achievement::find()
-        .filter(entity::achievement::Column::Value.eq("Second Blood"))
+    let second_blood = Award::find()
+        .filter(entity::award::Column::Value.eq("Second Blood"))
         .count(db)
         .await?
         == 1;
-    let third_blood = Achievement::find()
-        .filter(entity::achievement::Column::Value.eq("Third Blood"))
+    let third_blood = Award::find()
+        .filter(entity::award::Column::Value.eq("Third Blood"))
         .count(db)
         .await?
         == 1;

@@ -24,10 +24,7 @@ export function ProfileDropdown({
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarImage
-            src={`https://gravatar.com/avatar/${sha256(user.email)}?d=robohash`}
-            alt={user.username}
-          />
+          <AvatarImage src={`https://gravatar.com/avatar/${sha256(user.email)}?d=robohash`} />
           <AvatarFallback>{user.username}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

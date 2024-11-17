@@ -41,7 +41,7 @@ impl Parse for JoinCrudMacroInput {
                 "on_delete" if macro_input.on_delete_hook.is_none() => {
                     macro_input.on_delete_hook = Some(input.parse::<Block>()?);
                 }
-                "on_update" if macro_input.on_delete_hook.is_none() => {
+                "on_update" if macro_input.on_update_hook.is_none() => {
                     macro_input.on_update_hook = Some(input.parse::<Block>()?);
                 }
                 "on_delete" | "on_update" => {
@@ -207,15 +207,39 @@ fn gen_join_update_fn(
     let entity_model = format_ident!("{entity}Model");
     let request_body = format_ident!("Create{entity}Schema");
 
-    let hook = on_update_hook.map(|hook| {
-        let stmts = hook.stmts;
-        quote! { #(#stmts)* }
-    });
+    let hook = on_update_hook.map_or_else(
+        || {
+            quote! {
+                let mut active_model = body.into_active_model();
+                active_model.#related_from_snake = ActiveValue::Set(id.0);
+                active_model.#related_to_snake = ActiveValue::Set(id.1);
+                let model = active_model.update(&state.db_conn).await?;
+                state.cache_client.del::<(), _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
+            }
+        },
+        |hook| {
+            let stmts = hook.stmts;
+            quote! {
+                let Some(old_model) = #entity::find_by_id(id).one(&state.db_conn).await? else {
+                    return Err(Error::NotFound(#not_found.to_owned()))
+                };
+
+                let mut active_model = body.into_active_model();
+                active_model.#related_from_snake = ActiveValue::Set(id.0);
+                active_model.#related_to_snake = ActiveValue::Set(id.1);
+                let model = active_model.update(&state.db_conn).await?;
+
+                state.cache_client.del::<(), _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
+
+                #(#stmts)*
+            }
+        },
+    );
 
     quote! {
         #[doc = #doc]
         #[utoipa::path(
-            patch,
+            put,
             path = #path,
             operation_id = #operation_id,
             request_body = #request_body,
@@ -237,15 +261,8 @@ fn gen_join_update_fn(
             Path(id): Path<(Uuid, Uuid)>,
             Json(body): Json<#request_body>,
         ) -> Result<Json<#entity_model>> {
-            let mut model = body.into_active_model();
-            model.#related_from_snake = ActiveValue::Set(id.0);
-            model.#related_to_snake = ActiveValue::Set(id.1);
-
-            let model = model.update(&state.db_conn).await?;
-
             #hook
 
-            state.cache_client.del::<(), _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
             Ok(Json(model))
         }
     }
@@ -542,7 +559,7 @@ pub fn crud_join_impl(input: TokenStream) -> TokenStream {
                 .route(
                     #route_id,
                     get(retrieve_by_id)
-                        .patch(update_by_id)
+                        .put(update_by_id)
                         .delete(delete_by_id),
                 )
                 .route(#route_relations, get(retrieve_relations_by_id))

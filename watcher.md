@@ -14,7 +14,7 @@ A tokio task is run continuosly which listens to events and sends using `tokio::
 The schemas of the concerned tables are:
 
 ```rs
-// achievement
+// award
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,

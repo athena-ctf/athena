@@ -14,28 +14,28 @@ use serde::{Deserialize, Serialize};
     utoipa::ToSchema,
     oxide_macros::Details,
 )]
-#[sea_orm(table_name = "player_achievement")]
-#[schema(as = PlayerAchievementModel)]
+#[sea_orm(table_name = "player_award")]
+#[schema(as = PlayerAwardModel)]
 pub struct Model {
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
     #[sea_orm(primary_key, auto_increment = false)]
     pub player_id: Uuid,
     #[sea_orm(primary_key, auto_increment = false)]
-    pub achievement_id: Uuid,
+    pub award_id: Uuid,
     pub count: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
     #[sea_orm(
-        belongs_to = "super::achievement::Entity",
-        from = "Column::AchievementId",
-        to = "super::achievement::Column::Id",
+        belongs_to = "super::award::Entity",
+        from = "Column::AwardId",
+        to = "super::award::Column::Id",
         on_update = "Cascade",
         on_delete = "Cascade"
     )]
-    Achievement,
+    Award,
     #[sea_orm(
         belongs_to = "super::player::Entity",
         from = "Column::PlayerId",
@@ -46,9 +46,9 @@ pub enum Relation {
     Player,
 }
 
-impl Related<super::achievement::Entity> for Entity {
+impl Related<super::award::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Achievement.def()
+        Relation::Award.def()
     }
 }
 

@@ -100,7 +100,7 @@ pub struct DetailedChallenge {
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct StatSchema {
-    pub achievement: u64,
+    pub award: u64,
     pub admin: u64,
     pub ban: u64,
     pub challenge_tag: u64,
@@ -128,8 +128,8 @@ pub struct TagSolves {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema, FromQueryResult)]
-#[sea_orm(entity = "Achievement")]
-pub struct AchievementsReceived {
+#[sea_orm(entity = "Award")]
+pub struct AwardsReceived {
     pub id: Uuid,
     pub created_at: DateTime<FixedOffset>,
     pub updated_at: DateTime<FixedOffset>,
@@ -143,7 +143,7 @@ pub struct AchievementsReceived {
 pub struct PlayerProfile {
     pub player: PlayerModel,
     pub solved_challenges: Vec<ChallengeModel>,
-    pub achievements: Vec<AchievementsReceived>,
+    pub awards: Vec<AwardsReceived>,
     pub tag_solves: Vec<TagSolves>,
     pub rank: u64,
     pub score: u64,
@@ -171,7 +171,7 @@ pub struct TeamDetails {
     pub profile: TeamProfile,
     pub submissions: Vec<SubmissionModel>,
     pub unlocks: Vec<UnlockModel>,
-    pub achievements: Vec<AchievementModel>,
+    pub awards: Vec<AwardModel>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
