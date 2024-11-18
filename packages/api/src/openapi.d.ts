@@ -2796,6 +2796,8 @@ export interface components {
     };
     InviteVerificationResult: {
       /** Format: uuid */
+      invite_id: string;
+      /** Format: uuid */
       team_id: string;
     };
     JsonResponse: {
@@ -2874,6 +2876,7 @@ export interface components {
     };
     PlayerProfile: {
       awards: components["schemas"]["AwardsReceived"][];
+      history: components["schemas"]["PointsHistory"][];
       player: components["schemas"]["PlayerModel"];
       /** Format: int64 */
       rank: number;
@@ -2895,6 +2898,12 @@ export interface components {
       team: components["schemas"]["TeamModel"];
       tickets: components["schemas"]["TicketModel"][];
       unlocks: components["schemas"]["UnlockModel"][];
+    };
+    PointsHistory: {
+      /** Format: double */
+      points: number;
+      /** Format: int64 */
+      timestamp: number;
     };
     Ranking: {
       member: string;
@@ -3021,7 +3030,6 @@ export interface components {
     };
     TeamRegister:
       | {
-          /** Format: uuid */
           invite_id: string;
           /** @enum {string} */
           kind: "join";
@@ -13897,8 +13905,8 @@ export interface operations {
       query: {
         /** @description Team name to check */
         team_name: string;
-        /** @description Invite ID to verify */
-        invite_id: string;
+        /** @description Invite code to verify */
+        invite_code: string;
       };
       header?: never;
       path?: never;

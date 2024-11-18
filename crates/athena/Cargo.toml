@@ -1,0 +1,12 @@
+[package]
+name = "athena"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+argh = "0.1.12"
+config = { path = "../config" }
+oxide = { path = "../oxide" }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }

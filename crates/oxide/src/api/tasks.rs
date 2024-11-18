@@ -19,7 +19,7 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
                 "challenge_points",
             )
             .filter(entity::submission::Column::IsCorrect.eq(true))
-            .into_tuple::<(u64,)>()
+            .into_tuple::<(i32,)>()
             .one(db)
             .await?
             .unwrap()
@@ -29,7 +29,7 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
             .find_related(Hint)
             .select_only()
             .column_as(Expr::col(entity::hint::Column::Cost).sum(), "hint_costs")
-            .into_tuple::<(u64,)>()
+            .into_tuple::<(i32,)>()
             .one(db)
             .await?
             .unwrap()
@@ -42,14 +42,14 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
                 Expr::col(entity::award::Column::Prize).sum(),
                 "award_prizes",
             )
-            .into_tuple::<(u64,)>()
+            .into_tuple::<(i32,)>()
             .one(db)
             .await?
             .unwrap()
             .0;
 
         leaderboard_player.push((
-            (challenge_points + award_prizes - hint_costs) as f64,
+            f64::from(challenge_points + award_prizes - hint_costs),
             player.id.simple().to_string(),
         ));
     }
@@ -76,7 +76,7 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
                 "challenge_points",
             )
             .filter(entity::submission::Column::IsCorrect.eq(true))
-            .into_tuple::<(u64,)>()
+            .into_tuple::<(i32,)>()
             .one(db)
             .await?
             .unwrap()
@@ -86,7 +86,7 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
             .find_linked(TeamToHint)
             .select_only()
             .column_as(Expr::col(entity::hint::Column::Cost).sum(), "hint_costs")
-            .into_tuple::<(u64,)>()
+            .into_tuple::<(i32,)>()
             .one(db)
             .await?
             .unwrap()
@@ -99,14 +99,14 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
                 Expr::col(entity::award::Column::Prize).sum(),
                 "award_prizes",
             )
-            .into_tuple::<(u64,)>()
+            .into_tuple::<(i32,)>()
             .one(db)
             .await?
             .unwrap()
             .0;
 
         leaderboard_team.push((
-            (challenge_points + award_prizes - hint_costs) as f64,
+            f64::from(challenge_points + award_prizes - hint_costs),
             team.id.simple().to_string(),
         ));
     }

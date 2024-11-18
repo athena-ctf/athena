@@ -17,26 +17,69 @@ oxide_macros::crud!(
     multiple: [Container, File, Hint, Deployment, Tag, Submission, ChallengeTag, ChallengeFile, Flag, Player],
     on_delete: {
         for player_model in model.find_related(Player).all(&state.db_conn).await? {
-            state.persistent_client.zincrby::<(), _, _>(
-                "leaderboard:player",
-                -f64::from(model.points),
-                player_model.id.simple().to_string()
-            ).await?;
+            state
+                .persistent_client
+                .zincrby::<(), _, _>(
+                    "leaderboard:player",
+                    -f64::from(model.points),
+                    player_model.id.simple().to_string()
+                )
+                .await?;
 
-            state.persistent_client.lpush::<(), _, _>(
-                format!("player:{}:history", player_model.id.simple()),
-                vec![format!("{}:{}", Local::now().timestamp_millis(), -f64::from(model.points))]
-            ).await?;
+            state
+                .persistent_client
+                .lpush::<(), _, _>(
+                    format!("player:{}:history", player_model.id.simple()),
+                    vec![format!(
+                        "{}:{}",
+                        Local::now().timestamp_millis(),
+                        -f64::from(model.points)
+                    )]
+                )
+                .await?;
+
+            state
+                .persistent_client
+                .zincrby::<(), _, _>(
+                    "leaderboard:team",
+                    -f64::from(model.points),
+                    player_model.team_id.simple().to_string(),
+                )
+                .await?;
         }
     },
     on_update: {
         if model.points != old_model.points {
             for player_model in model.find_related(Player).all(&state.db_conn).await? {
-                state.persistent_client.zincrby::<(), _, _>(
-                    "leaderboard:player",
-                    f64::from(model.points - old_model.points),
-                    player_model.id.simple().to_string()
-                ).await?;
+                state
+                    .persistent_client
+                    .zincrby::<(), _, _>(
+                        "leaderboard:player",
+                        f64::from(model.points - old_model.points),
+                        player_model.id.simple().to_string()
+                    )
+                    .await?;
+
+                state
+                    .persistent_client
+                    .lpush::<(), _, _>(
+                        format!("player:{}:history", player_model.id.simple()),
+                        vec![format!(
+                            "{}:{}",
+                            Local::now().timestamp_millis(),
+                            f64::from(model.points - old_model.points)
+                        )]
+                    )
+                    .await?;
+
+                state
+                    .persistent_client
+                    .zincrby::<(), _, _>(
+                        "leaderboard:team",
+                        f64::from(model.points - old_model.points),
+                        player_model.team_id.simple().to_string(),
+                    )
+                    .await?;
             }
         }
     }

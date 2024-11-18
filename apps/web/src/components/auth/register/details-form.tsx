@@ -16,10 +16,15 @@ import { Link } from "@tanstack/react-router";
 import { fetchClient } from "@repo/api";
 import { toast } from "sonner";
 import { PasswordInput } from "@repo/ui/components/password-input";
+import { useState } from "react";
+import { ImageIcon, Loader2 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
+import { useCtfStore } from "@/stores/ctf";
 
 const detailsSchema = z
   .object({
-    display_name: z.string().max(100),
+    avatarUrl: z.string(),
+    displayName: z.string().max(100),
     username: z.string().min(2).max(100),
     password: z.string().min(8),
     confirmPassword: z.string().min(8),
@@ -30,12 +35,58 @@ const detailsSchema = z
   });
 
 export function DetailsForm({ next }: { next: () => void }) {
+  const [uploading, setUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState("");
+
   const form = useForm<z.infer<typeof detailsSchema>>({
     resolver: zodResolver(detailsSchema),
     mode: "onChange",
   });
 
-  const { setDisplayName, setEmail, setPassword, setUsername } = useRegisterStore();
+  const ctf = useCtfStore();
+  const { setAvatarUrl, setDisplayName, setEmail, setPassword, setUsername } = useRegisterStore();
+
+  const uploadFile = async (file: File) => {
+    createPreview(file);
+    setUploading(true);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch(`static.${ctf.domain}/upload/local`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      form.setValue("avatarUrl", data.url);
+      return data.url;
+    } catch (error) {
+      console.error("Upload failed:", error);
+      form.setError("avatarUrl", {
+        type: "manual",
+        message: "File upload failed. Please try again.",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      await uploadFile(file);
+    }
+  };
+
+  const createPreview = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPreviewUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const onSubmit = async (values: z.infer<typeof detailsSchema>) => {
     const resp = await fetchClient.GET("/auth/player/register/verify/email", {
@@ -45,7 +96,8 @@ export function DetailsForm({ next }: { next: () => void }) {
     if (resp.error) {
       toast.error(resp.error.message);
     } else {
-      setDisplayName(values.display_name);
+      setAvatarUrl(values.avatarUrl);
+      setDisplayName(values.displayName);
       setEmail(values.email);
       setPassword(values.password);
       setUsername(values.username);
@@ -57,6 +109,37 @@ export function DetailsForm({ next }: { next: () => void }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <FormField
+          control={form.control}
+          name="avatarUrl"
+          render={() => (
+            <FormItem>
+              <FormLabel>Avatar</FormLabel>
+              <FormControl>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-16 w-16">
+                      <AvatarImage src={previewUrl} />
+                      <AvatarFallback>
+                        <ImageIcon className="h-8 w-8 text-muted-foreground" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 space-y-2">
+                      <Input
+                        type="file"
+                        accept="image/jpeg,image/jpg,image/png"
+                        onChange={handleFileChange}
+                        className="flex-1"
+                      />
+                    </div>
+                  </div>
+                  {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="username"
@@ -72,7 +155,7 @@ export function DetailsForm({ next }: { next: () => void }) {
         />
         <FormField
           control={form.control}
-          name="display_name"
+          name="displayName"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Display Name</FormLabel>

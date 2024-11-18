@@ -19,7 +19,7 @@ import { toast } from "sonner";
 
 const joinTeamSchema = z.object({
   teamName: z.string(),
-  inviteId: z.string().length(8),
+  inviteCode: z.string(),
 });
 
 const createTeamSchema = z.object({
@@ -43,7 +43,7 @@ export function ChooseTeamForm({
   const onJoinFormSubmit = async (values: z.infer<typeof joinTeamSchema>) => {
     const resp = await fetchClient.GET("/auth/player/register/verify/invite", {
       params: {
-        query: { invite_id: values.inviteId, team_name: values.teamName },
+        query: { invite_code: values.inviteCode, team_name: values.teamName },
       },
     });
 
@@ -54,7 +54,7 @@ export function ChooseTeamForm({
       setTeam({
         kind: "join",
         team_id: resp.data.team_id,
-        invite_id: values.inviteId,
+        invite_id: resp.data.invite_id,
       });
 
       const respSendToken = await fetchClient.POST("/auth/player/register/send-token", {
@@ -146,10 +146,10 @@ export function ChooseTeamForm({
             />
             <FormField
               control={joinForm.control}
-              name="inviteId"
+              name="inviteCode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Team Name</FormLabel>
+                  <FormLabel>Invite Code</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>

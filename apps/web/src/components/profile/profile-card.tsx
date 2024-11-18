@@ -1,14 +1,19 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
-import { Card, CardContent } from "@repo/ui/components/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { Badge } from "@repo/ui/components/badge";
 import type { components } from "@repo/api";
 import { getOrdinal } from "@/utils/get-ordinal";
+import { cn } from "@ui/lib/utils";
 
-export default function PlayerProfileCard({
+export function PlayerProfileCard({
   playerProfile,
-}: { playerProfile: components["schemas"]["PlayerProfile"] }) {
+  className,
+}: { playerProfile: components["schemas"]["PlayerProfile"]; className?: string }) {
   return (
-    <Card className="w-full max-w-sm mx-auto">
+    <Card className={cn("w-full mx-auto", className)}>
+      <CardHeader>
+        <CardTitle>Profile</CardTitle>
+      </CardHeader>
       <CardContent className="flex flex-col items-center p-6 space-y-4">
         <Avatar className="w-24 h-24">
           <AvatarImage src={playerProfile.player.avatar_url} alt={playerProfile.player.username} />

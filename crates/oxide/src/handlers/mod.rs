@@ -37,7 +37,7 @@ use tokio_util::io::ReaderStream;
 
 use crate::errors::Result;
 use crate::schemas::{
-    Award, AwardsReceived, Challenge, PlayerModel, PlayerProfile, Tag, TagSolves,
+    Award, AwardsReceived, Challenge, PlayerModel, PlayerProfile, PointsHistory, Tag, TagSolves,
 };
 
 pub async fn retrieve_profile(
@@ -92,6 +92,12 @@ pub async fn retrieve_profile(
         .all(db)
         .await?;
     let tag_solves = tags_map.values().cloned().collect();
+    let history = pool
+        .lrange::<Vec<String>, _>(format!("player:{}:history", player.id.simple()), 0, -1)
+        .await?
+        .into_iter()
+        .map(|hist_entry| PointsHistory::parse(&hist_entry))
+        .collect();
 
     Ok(PlayerProfile {
         player,
@@ -100,6 +106,7 @@ pub async fn retrieve_profile(
         tag_solves,
         rank,
         score,
+        history,
     })
 }
 

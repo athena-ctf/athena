@@ -25,7 +25,7 @@ export function TeamProfileCard({
       <CardContent className="flex flex-col place-items-center justify-around space-y-10">
         <div className="flex w-full flex-col space-y-2">
           <div className="flex justify-between align-middle">
-            <span className="text-lg font-semibold">{player.display_name}</span>
+            <span className="text-lg font-semibold">{player.username}</span>
             <TeamUpdateDialog player={player} />
           </div>
           <span className="text-sm text-neutral-500">@{team.name}</span>

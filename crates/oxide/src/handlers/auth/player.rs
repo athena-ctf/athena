@@ -212,7 +212,7 @@ pub async fn register_send_token(
     path = "/auth/player/register/verify/invite",
     params(
         ("team_name" = String, Query, description = "Team name to check"),
-        ("invite_id" = String, Query, description = "Invite ID to verify")
+        ("invite_code" = String, Query, description = "Invite code to verify")
     ),
     operation_id = "player_register_verify_invite",
     responses(
@@ -236,9 +236,14 @@ pub async fn register_verify_invite(
         return Err(Error::NotFound("Team not found".to_owned()));
     };
 
+    let invite_id = Uuid::from_u128(
+        base62::decode(body.invite_code)
+            .map_err(|_| Error::BadRequest("Invalid invite code".to_owned()))?,
+    );
+
     let Some(invite_model) = team_model
         .find_related(Invite)
-        .filter(entity::invite::Column::Id.eq(body.invite_id))
+        .filter(entity::invite::Column::Id.eq(invite_id))
         .one(&state.db_conn)
         .await?
     else {
@@ -251,6 +256,7 @@ pub async fn register_verify_invite(
 
     Ok(Json(InviteVerificationResult {
         team_id: team_model.id,
+        invite_id,
     }))
 }
 

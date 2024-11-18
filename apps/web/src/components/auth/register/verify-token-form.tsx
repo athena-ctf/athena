@@ -37,6 +37,7 @@ export function VerifyTokenForm({ prev }: { prev: () => void }) {
   const onSubmit = async (values: z.infer<typeof verifyEmailSchema>) => {
     const resp = await fetchClient.POST("/auth/player/register", {
       body: {
+        avatar_url: store.avatarUrl,
         display_name: store.displayName,
         email: store.email,
         password: store.password,

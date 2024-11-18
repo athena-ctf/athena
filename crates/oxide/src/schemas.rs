@@ -43,6 +43,7 @@ pub struct FlagVerificationResult {
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
 pub struct InviteVerificationResult {
     pub team_id: Uuid,
+    pub invite_id: Uuid,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, ToSchema)]
@@ -64,7 +65,7 @@ pub struct RegisterPlayer {
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 #[serde(tag = "kind", rename_all = "lowercase")]
 pub enum TeamRegister {
-    Join { team_id: Uuid, invite_id: Uuid },
+    Join { team_id: Uuid, invite_id: String },
     Create { team_name: String },
 }
 
@@ -140,6 +141,23 @@ pub struct AwardsReceived {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct PointsHistory {
+    pub timestamp: i64,
+    pub points: f64,
+}
+
+impl PointsHistory {
+    pub fn parse(s: &str) -> Self {
+        let (x, y) = s.split_once(':').unwrap();
+
+        let timestamp = x.parse().unwrap();
+        let points = y.parse().unwrap();
+
+        PointsHistory { timestamp, points }
+    }
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct PlayerProfile {
     pub player: PlayerModel,
     pub solved_challenges: Vec<ChallengeModel>,
@@ -147,6 +165,7 @@ pub struct PlayerProfile {
     pub tag_solves: Vec<TagSolves>,
     pub rank: u64,
     pub score: u64,
+    pub history: Vec<PointsHistory>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -202,7 +221,7 @@ pub struct RegisterVerifyEmailQuery {
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct RegisterVerifyInviteQuery {
     pub team_name: String,
-    pub invite_id: Uuid,
+    pub invite_code: String,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

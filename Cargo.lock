@@ -258,6 +258,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "athena"
+version = "0.1.0"
+dependencies = [
+ "argh",
+ "config 0.1.0",
+ "oxide",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "atoi"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -354,6 +366,12 @@ dependencies = [
  "rustc-demangle",
  "windows-targets 0.52.6",
 ]
+
+[[package]]
+name = "base62"
+version = "2.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "48fa474cf7492f9a299ba6019fb99ec673e1739556d48e8a90eabaea282ef0e4"
 
 [[package]]
 name = "base64"
@@ -2037,21 +2055,10 @@ checksum = "b15813163c1d831bf4a13c3610c05c0d03b39feb07f7e09fa234dac9b15aaf39"
 name = "oxide"
 version = "0.1.0"
 dependencies = [
- "argh",
- "config 0.1.0",
- "oxide-core",
- "tokio",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "oxide-core"
-version = "0.1.0"
-dependencies = [
  "argon2",
  "askama",
  "axum",
+ "base62",
  "base64ct",
  "bollard",
  "bytes",

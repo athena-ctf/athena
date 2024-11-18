@@ -1,5 +1,6 @@
 use std::sync::LazyLock;
 
+use chrono::Local;
 use dashmap::DashMap;
 use regex::Regex;
 use sea_orm::sea_query::OnConflict;
@@ -133,6 +134,18 @@ pub async fn verify(
                 "leaderboard:player",
                 f64::from(points),
                 &player_model.id.simple().to_string(),
+            )
+            .await?;
+
+        state
+            .persistent_client
+            .lpush::<(), _, _>(
+                format!("player:{}:history", player_model.id.simple()),
+                vec![format!(
+                    "{}:{}",
+                    Local::now().timestamp_millis(),
+                    f64::from(points)
+                )],
             )
             .await?;
 

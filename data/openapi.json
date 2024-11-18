@@ -13054,9 +13054,9 @@
             }
           },
           {
-            "name": "invite_id",
+            "name": "invite_code",
             "in": "query",
-            "description": "Invite ID to verify",
+            "description": "Invite code to verify",
             "required": true,
             "schema": {
               "type": "string"
@@ -15970,9 +15970,14 @@
       "InviteVerificationResult": {
         "type": "object",
         "required": [
-          "team_id"
+          "team_id",
+          "invite_id"
         ],
         "properties": {
+          "invite_id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "team_id": {
             "type": "string",
             "format": "uuid"
@@ -16247,13 +16252,20 @@
           "awards",
           "tag_solves",
           "rank",
-          "score"
+          "score",
+          "history"
         ],
         "properties": {
           "awards": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AwardsReceived"
+            }
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PointsHistory"
             }
           },
           "player": {
@@ -16374,6 +16386,23 @@
             "items": {
               "$ref": "#/components/schemas/UnlockModel"
             }
+          }
+        }
+      },
+      "PointsHistory": {
+        "type": "object",
+        "required": [
+          "timestamp",
+          "points"
+        ],
+        "properties": {
+          "points": {
+            "type": "number",
+            "format": "double"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -16822,8 +16851,7 @@
             ],
             "properties": {
               "invite_id": {
-                "type": "string",
-                "format": "uuid"
+                "type": "string"
               },
               "kind": {
                 "type": "string",

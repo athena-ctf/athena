@@ -1,6 +1,12 @@
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 
-import { Card, CardContent, CardDescription, CardHeader } from "@repo/ui/components/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/card";
 import {
   type ChartConfig,
   ChartContainer,
@@ -20,10 +26,11 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function UserChallengeDiff({ data }: Data) {
+export function ChallengeDiff({ data }: Data) {
   return (
     <Card>
       <CardHeader className="items-center">
+        <CardTitle>Challenge Map</CardTitle>
         <CardDescription>Showing total solved challenges</CardDescription>
       </CardHeader>
       <CardContent className="pb-0">

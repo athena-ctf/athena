@@ -12,12 +12,14 @@ type Team =
     };
 
 export interface RegisterFormState {
+  avatarUrl: string;
   displayName: string;
   username: string;
   password: string;
   email: string;
   team: Team;
 
+  setAvatarUrl: (avatarUrl: string) => void;
   setDisplayName: (displayName: string) => void;
   setUsername: (username: string) => void;
   setPassword: (password: string) => void;
@@ -26,6 +28,7 @@ export interface RegisterFormState {
 }
 
 export const useRegisterStore = create<RegisterFormState>()((set) => ({
+  avatarUrl: "",
   displayName: "",
   username: "",
   password: "",
@@ -36,7 +39,8 @@ export const useRegisterStore = create<RegisterFormState>()((set) => ({
   },
   token: "",
 
-  setDisplayName: (displayName: string) => set({ displayName: displayName }),
+  setAvatarUrl: (avatarUrl: string) => set({ avatarUrl }),
+  setDisplayName: (displayName: string) => set({ displayName }),
   setUsername: (username: string) => set({ username }),
   setPassword: (password: string) => set({ password }),
   setEmail: (email: string) => set({ email }),
