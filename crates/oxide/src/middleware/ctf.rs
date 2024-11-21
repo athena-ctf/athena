@@ -7,14 +7,13 @@ use axum::middleware::Next;
 use axum::response::IntoResponse;
 use axum::Json;
 use chrono::Utc;
-use tower_sessions::Session;
+use fred::prelude::HashesInterface;
 
-use crate::schemas::{JsonResponse, PlayerModel};
+use crate::schemas::{JsonResponse, PlayerClaims};
 use crate::service::AppState;
 
 pub async fn middleware(
     state: State<Arc<AppState>>,
-    session: Session,
     req: Request<Body>,
     next: Next,
 ) -> Result<impl IntoResponse, (StatusCode, Json<JsonResponse>)> {
@@ -23,8 +22,21 @@ pub async fn middleware(
     let time = state.settings.read().await.ctf.time.clone();
 
     if req.uri().path().starts_with("/player") {
-        let player = session.get::<PlayerModel>("player").await.unwrap().unwrap();
-        if player.ban_id.is_some() {
+        let claims = req.extensions().get::<PlayerClaims>().unwrap();
+        let is_banned = state
+            .persistent_client
+            .hget::<Option<()>, _, _>("player:is_banned", claims.sub.simple().to_string())
+            .await
+            .map_err(|err| {
+                (
+                    StatusCode::BAD_REQUEST,
+                    Json(JsonResponse {
+                        message: err.to_string(),
+                    }),
+                )
+            })?;
+
+        if is_banned.is_some() {
             return Err((
                 StatusCode::FORBIDDEN,
                 Json(JsonResponse {

@@ -101,7 +101,7 @@ pub async fn unlock_by_id(
 ) -> Result<Json<HintModel>> {
     let txn = state.db_conn.begin().await?;
 
-    if let Some((_, Some(hint_model))) = Unlock::find_by_id((player_model.id, id))
+    if let Some((_, Some(hint_model))) = Unlock::find_by_id((player_model.sub, id))
         .find_also_related(Hint)
         .one(&txn)
         .await?
@@ -109,7 +109,7 @@ pub async fn unlock_by_id(
         return Ok(Json(hint_model));
     }
 
-    UnlockModel::new(player_model.id, id)
+    UnlockModel::new(player_model.sub, id)
         .into_active_model()
         .insert(&txn)
         .await?;
@@ -123,14 +123,14 @@ pub async fn unlock_by_id(
         .zincrby::<(), _, _>(
             "leaderboard:player",
             -f64::from(hint_model.cost),
-            &player_model.id.simple().to_string(),
+            &player_model.sub.simple().to_string(),
         )
         .await?;
 
     state
         .persistent_client
         .lpush::<(), _, _>(
-            format!("player:{}:history", player_model.id.simple()),
+            format!("player:{}:history", player_model.sub.simple()),
             vec![format!(
                 "{}:{}",
                 Local::now().timestamp_millis(),

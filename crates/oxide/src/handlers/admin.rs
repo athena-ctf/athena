@@ -16,6 +16,13 @@ oxide_macros::crud!(Admin, single: [], optional: [], multiple: [Ticket]);
     ),
 )]
 /// Return currently authenticated user
-pub async fn get_current_logged_in(AuthAdmin(admin): AuthAdmin) -> Result<Json<AdminModel>> {
-    Ok(Json(admin))
+pub async fn get_current_logged_in(
+    AuthAdmin(admin): AuthAdmin,
+    state: State<Arc<AppState>>,
+) -> Result<Json<AdminModel>> {
+    let Some(model) = Admin::find_by_id(admin.sub).one(&state.db_conn).await? else {
+        return Err(Error::NotFound("Admin not found".to_owned()));
+    };
+
+    Ok(Json(model))
 }

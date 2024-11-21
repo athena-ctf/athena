@@ -1,5 +1,6 @@
 mod cli;
 
+use clap::Parser;
 use config::Settings;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -10,7 +11,7 @@ pub async fn main() {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let command = argh::from_env::<cli::Command>();
+    let command = cli::Command::parse();
 
     match command.subcommand {
         cli::SubCommand::Generate(generate) => {
@@ -18,7 +19,7 @@ pub async fn main() {
                 &generate.out,
                 match generate.kind {
                     cli::GenerateKind::Config => Settings::default().default_json().unwrap(),
-                    cli::GenerateKind::OpenApiSchema => oxide::api::get_schema().unwrap(),
+                    cli::GenerateKind::OpenapiSchema => oxide::api::get_schema().unwrap(),
                     cli::GenerateKind::JsonSchema => Settings::json_schema().unwrap(),
                 },
             )
@@ -27,6 +28,8 @@ pub async fn main() {
 
             tracing::info!("successfully written {} to {}", generate.kind, generate.out);
         }
+
+        cli::SubCommand::Create(create) => {}
     }
 
     tracing::debug!("exited successfully");

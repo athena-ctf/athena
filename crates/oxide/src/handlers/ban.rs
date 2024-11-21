@@ -28,10 +28,25 @@ pub async fn add_player_by_id(
         }
 
         let ban_model = body.into_active_model().insert(&state.db_conn).await?;
-        let mut active_player = player.into_active_model();
+        let mut active_player = player.clone().into_active_model();
         active_player.ban_id = ActiveValue::Set(Some(ban_model.id));
 
         active_player.update(&state.db_conn).await?;
+
+        state
+            .persistent_client
+            .hset::<(), _, _>("player:is_banned", (player.id.simple().to_string(), 0))
+            .await?;
+
+        state
+            .persistent_client
+            .hexpire::<(), _, _>(
+                "player:is_banned",
+                15 * 60,
+                None,
+                player.id.simple().to_string(),
+            )
+            .await?; // TODO: add unban
 
         Ok(Json(ban_model))
     } else {

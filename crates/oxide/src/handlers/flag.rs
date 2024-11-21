@@ -38,7 +38,7 @@ pub async fn verify(
     let txn = state.db_conn.begin().await?;
 
     let prev_model = if let Some(submission_model) =
-        Submission::find_by_id((body.challenge_id, player_model.id))
+        Submission::find_by_id((body.challenge_id, player_model.sub))
             .one(&state.db_conn)
             .await?
     {
@@ -116,7 +116,7 @@ pub async fn verify(
         ChallengeKindEnum::Containerized => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
-                .filter(entity::flag::Column::PlayerId.eq(player_model.id))
+                .filter(entity::flag::Column::PlayerId.eq(player_model.sub))
                 .one(&state.db_conn)
                 .await?
             else {
@@ -133,14 +133,14 @@ pub async fn verify(
             .zincrby::<(), _, _>(
                 "leaderboard:player",
                 f64::from(points),
-                &player_model.id.simple().to_string(),
+                &player_model.sub.simple().to_string(),
             )
             .await?;
 
         state
             .persistent_client
             .lpush::<(), _, _>(
-                format!("player:{}:history", player_model.id.simple()),
+                format!("player:{}:history", player_model.sub.simple()),
                 vec![format!(
                     "{}:{}",
                     Local::now().timestamp_millis(),
@@ -196,7 +196,7 @@ pub async fn verify(
 
         if let Some(award_model) = award_model {
             PlayerAward::insert(
-                PlayerAwardModel::new(player_model.id, award_model.id, 1).into_active_model(),
+                PlayerAwardModel::new(player_model.sub, award_model.id, 1).into_active_model(),
             )
             .on_conflict(
                 OnConflict::columns(entity::player_award::PrimaryKey::iter())
@@ -218,7 +218,7 @@ pub async fn verify(
     } else {
         SubmissionModel::new(
             is_correct,
-            player_model.id,
+            player_model.sub,
             body.challenge_id,
             vec![body.flag],
         )

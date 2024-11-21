@@ -110,7 +110,7 @@ pub async fn player_challenges(
             entity::submission::Column::Flags,
             entity::submission::Column::IsCorrect,
         ])
-        .filter(entity::submission::Column::PlayerId.eq(player.id))
+        .filter(entity::submission::Column::PlayerId.eq(player.sub))
         .order_by_asc(entity::submission::Column::ChallengeId)
         .into_tuple::<(Uuid, Vec<String>, bool)>()
         .all(&state.db_conn)
@@ -139,7 +139,7 @@ pub async fn player_challenges(
         let deployment = if challenge.kind == ChallengeKindEnum::Containerized {
             Deployment::find()
                 .filter(entity::deployment::Column::ChallengeId.eq(challenge.id))
-                .filter(entity::deployment::Column::PlayerId.eq(player.id))
+                .filter(entity::deployment::Column::PlayerId.eq(player.sub))
                 .one(&state.db_conn)
                 .await?
         } else {
@@ -193,7 +193,7 @@ pub async fn detailed_challenge(
         .columns(entity::hint::Column::iter())
         .columns(entity::unlock::Column::iter())
         .filter(entity::hint::Column::ChallengeId.eq(id))
-        .filter(entity::unlock::Column::PlayerId.eq(player.id))
+        .filter(entity::unlock::Column::PlayerId.eq(player.sub))
         .into_model::<HintModel, UnlockModel>()
         .all(&state.db_conn)
         .await?
@@ -212,7 +212,7 @@ pub async fn detailed_challenge(
         .collect();
 
     let instances = if let Some(deployment_model) = Deployment::find()
-        .filter(entity::deployment::Column::PlayerId.eq(player.id))
+        .filter(entity::deployment::Column::PlayerId.eq(player.sub))
         .filter(entity::deployment::Column::ChallengeId.eq(id))
         .one(&state.db_conn)
         .await?
@@ -261,7 +261,7 @@ pub async fn start_challenge(
 ) -> Result<Json<DeploymentModel>> {
     state
         .docker_manager
-        .deploy_challenge(id, player.id)
+        .deploy_challenge(id, player.sub)
         .await
         .map(Json)
 }
@@ -287,5 +287,5 @@ pub async fn stop_challenge(
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
 ) -> Result<()> {
-    state.docker_manager.cleanup_challenge(id, player.id).await
+    state.docker_manager.cleanup_challenge(id, player.sub).await
 }

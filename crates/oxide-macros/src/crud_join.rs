@@ -400,8 +400,7 @@ fn gen_join_import_fn(entity: &Ident) -> impl ToTokens {
     let path = format!("/admin/{entity_snake}/import");
     let operation_id = format!("import_{entity_snake}s");
     let description = format!("Imported {entity_snake}s successfully");
-
-    let entity_model = format_ident!("{entity}Model");
+    let query = format!("COPY {entity_snake} FROM '{{}}' WITH (FORMAT CSV, HEADER);");
 
     quote! {
         #[doc = #doc]
@@ -423,13 +422,16 @@ fn gen_join_import_fn(entity: &Ident) -> impl ToTokens {
         pub async fn import(state: State<Arc<AppState>>, mut multipart: Multipart) -> Result<Json<JsonResponse>> {
             while let Some(field) = multipart.next_field().await.unwrap() {
                 if field.name().unwrap() == "csv_file" {
-                    let data = field.bytes().await.unwrap();
-                    let mut reader = Reader::from_reader(data.as_ref());
+                    let mut temp_file = NamedTempFile::new()?;
+                    let file_path = temp_file.path().to_str().unwrap().to_owned();
 
-                    for result in reader.deserialize() {
-                        let record: #entity_model = result?;
-                        #entity::insert(record.into_active_model()).exec(&state.db_conn).await?;
-                    }
+                    std::io::copy(&mut field.bytes().await?.reader(), &mut temp_file).map_err(|err| Error::Fs { source: err, path: file_path.to_owned() })?;
+
+                    let query = format!(#query, file_path);
+
+                    sqlx::query(&query)
+                        .execute(state.db_conn.get_postgres_connection_pool())
+                        .await?;
                 }
             }
 
@@ -446,7 +448,7 @@ fn gen_join_export_fn(entity: &Ident) -> impl ToTokens {
     let operation_id = format!("export_{entity_snake}s");
     let description = format!("Exported {entity_snake}s successfully");
     let query = format!("COPY {entity_snake} TO '{{}}' WITH (FORMAT CSV, HEADER);");
-    let header_value = format!("attachment; filename=\"{entity_snake}.csv\"");
+    let filename = format!("{entity_snake}.csv");
 
     quote! {
         #[doc = #doc]
@@ -461,9 +463,9 @@ fn gen_join_export_fn(entity: &Ident) -> impl ToTokens {
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]
-        async fn export(state: State<Arc<AppState>>) -> Result<impl IntoResponse> {
+        async fn export(state: State<Arc<AppState>>) -> Result<Attachment<Body>> {
             let temp_file = NamedTempFile::new()?;
-            let file_path = temp_file.path().to_str().unwrap();
+            let file_path = temp_file.path().to_str().unwrap().to_owned();
 
             let query = format!(#query, file_path);
 
@@ -471,22 +473,12 @@ fn gen_join_export_fn(entity: &Ident) -> impl ToTokens {
                 .execute(state.db_conn.get_postgres_connection_pool())
                 .await?;
 
-            let file_path = temp_file.path().display().to_string();
-
             let csv_stream = CsvStream::new(temp_file).await.map_err(|err| Error::Fs {
                 source: err,
                 path: file_path,
             })?;
 
-            let headers = [
-                (axum::http::header::CONTENT_TYPE, "text/csv"),
-                (
-                    axum::http::header::CONTENT_DISPOSITION,
-                    #header_value,
-                ),
-            ];
-
-            Ok((headers, Body::from_stream(csv_stream)))
+            Ok(Attachment::new(Body::from_stream(csv_stream)).content_type("text/csv").filename(#filename.to_owned()))
         }
     }
 }
@@ -518,6 +510,7 @@ pub fn crud_join_impl(input: TokenStream) -> TokenStream {
     let route_export = format!("{route_base}/export");
 
     quote! {
+        use std::io;
         use std::sync::Arc;
 
         use axum::body::Body;
@@ -525,11 +518,15 @@ pub fn crud_join_impl(input: TokenStream) -> TokenStream {
         use axum::response::IntoResponse;
         use axum::routing::{get, post};
         use axum::Router;
-        use csv::Reader;
+        use axum_extra::response::Attachment;
+        use bytes::Buf;
         use fred::prelude::*;
+        use futures::TryStreamExt;
         use sea_orm::prelude::*;
         use sea_orm::{sqlx, ActiveValue, IntoActiveModel};
         use tempfile::NamedTempFile;
+        use tokio::io::BufWriter;
+        use tokio_util::io::StreamReader;
         use uuid::Uuid;
 
         use super::CsvStream;

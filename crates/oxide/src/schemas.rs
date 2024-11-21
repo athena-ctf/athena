@@ -7,12 +7,11 @@ pub use entity::extensions::*;
 pub use entity::prelude::*;
 use sea_orm::FromQueryResult;
 use serde::{Deserialize, Serialize};
-use tower_sessions::Session;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
 #[derive(Clone, Debug, Serialize, Deserialize, ToSchema)]
-pub struct LoginModel {
+pub struct LoginRequest {
     pub username: String,
     pub password: String,
 }
@@ -238,7 +237,21 @@ pub struct HintSummary {
     pub status: UnlockStatus,
 }
 
-pub struct AuthAdmin(pub AdminModel);
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct LoginResponse<T> {
+    pub model: T,
+    pub access_token: String,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, Copy, ToSchema)]
+pub struct AdminClaims {
+    pub exp: i64,
+    pub iat: i64,
+    pub sub: Uuid,
+    pub role: RoleEnum,
+}
+
+pub struct AuthAdmin(pub AdminClaims);
 
 #[async_trait]
 impl<S> FromRequestParts<S> for AuthAdmin
@@ -247,21 +260,24 @@ where
 {
     type Rejection = (StatusCode, String);
 
-    async fn from_request_parts(req: &mut Parts, state: &S) -> Result<Self, Self::Rejection> {
-        let session = Session::from_request_parts(req, state)
-            .await
-            .map_err(|(code, err)| (code, err.to_string()))?;
-        let model = session
-            .get("admin")
-            .await
-            .map_err(|err| (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))?
-            .unwrap();
+    async fn from_request_parts(req: &mut Parts, _state: &S) -> Result<Self, Self::Rejection> {
+        let Some(claims) = req.extensions.get::<AdminClaims>() else {
+            return Err((StatusCode::UNAUTHORIZED, "Unauthorized".to_owned()));
+        };
 
-        Ok(Self(model))
+        Ok(Self(*claims))
     }
 }
 
-pub struct AuthPlayer(pub PlayerModel);
+#[derive(Serialize, Debug, Deserialize, Clone, Copy, ToSchema)]
+pub struct PlayerClaims {
+    pub exp: i64,
+    pub iat: i64,
+    pub sub: Uuid,
+    pub team_id: Uuid,
+}
+
+pub struct AuthPlayer(pub PlayerClaims);
 
 #[async_trait]
 impl<S> FromRequestParts<S> for AuthPlayer
@@ -270,17 +286,11 @@ where
 {
     type Rejection = (StatusCode, String);
 
-    async fn from_request_parts(req: &mut Parts, state: &S) -> Result<Self, Self::Rejection> {
-        let session = Session::from_request_parts(req, state)
-            .await
-            .map_err(|(code, err)| (code, err.to_string()))?;
-        let model = session
-            .get("player")
-            .await
-            .map_err(|err| (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))?
-            .unwrap();
-
-        Ok(Self(model))
+    async fn from_request_parts(req: &mut Parts, _state: &S) -> Result<Self, Self::Rejection> {
+        let Some(claims) = req.extensions.get::<PlayerClaims>() else {
+            return Err((StatusCode::UNAUTHORIZED, "Unauthorized".to_owned()));
+        };
+        Ok(Self(*claims))
     }
 }
 

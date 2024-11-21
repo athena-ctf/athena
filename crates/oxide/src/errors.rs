@@ -29,7 +29,7 @@ pub enum Error {
     Hash(#[from] argon2::password_hash::Error),
 
     #[error("Error while handling JWT token: {0}")]
-    Session(#[from] tower_sessions::session::Error),
+    Jwt(#[from] jsonwebtoken::errors::Error),
 
     #[error("Athena was not configured to handle {0}")]
     InvalidConfig(String),
@@ -66,8 +66,8 @@ pub enum Error {
     #[error("Temp file error: {0:?}")]
     Temp(#[from] std::io::Error),
 
-    #[error("CSV error: {0}")]
-    Csv(#[from] csv::Error),
+    #[error("Multipart error: {0:?}")]
+    Multipart(#[from] axum::extract::multipart::MultipartError),
 }
 
 pub type Result<T, E = Error> = std::result::Result<T, E>;

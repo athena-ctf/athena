@@ -149,7 +149,7 @@ pub async fn retrieve_summary(
 ) -> Result<Json<TeamDetails>> {
     let Some(team_model) = Team::find()
         .left_join(Player)
-        .filter(entity::player::Column::Id.eq(player.id))
+        .filter(entity::player::Column::Id.eq(player.sub))
         .one(&state.db_conn)
         .await?
     else {

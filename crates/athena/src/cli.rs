@@ -1,59 +1,55 @@
-use std::fmt::Display;
-use std::str::FromStr;
+use clap::{Parser, Subcommand, ValueEnum};
+use strum::{Display, EnumString};
 
-use argh::FromArgs;
-
-#[derive(FromArgs)]
+#[derive(Parser)]
 /// Main oxide command
 pub struct Command {
-    #[argh(subcommand)]
+    #[command(subcommand)]
     pub subcommand: SubCommand,
 }
 
-#[derive(FromArgs)]
-#[argh(subcommand)]
+#[derive(Subcommand)]
 pub enum SubCommand {
+    /// Generate artifacts
     Generate(GenerateSubCommand),
+
+    /// Create entities
+    Create(CreateSubCommand),
 }
 
-#[derive(FromArgs)]
-/// Generate artifacts.
-#[argh(subcommand, name = "generate")]
+#[derive(Parser)]
+/// Generate artifacts
 pub struct GenerateSubCommand {
-    #[argh(positional)]
-    /// kind of output to generate
+    /// Kind of output to generate
     pub kind: GenerateKind,
 
-    #[argh(positional)]
-    /// output file path
+    /// Output file path
     pub out: String,
 }
 
+#[derive(Parser)]
+pub struct CreateSubCommand {
+    #[arg(long, short)]
+    /// Path to config file
+    pub config: String,
+}
+
+#[derive(Clone, ValueEnum, Display, EnumString)]
+#[strum(serialize_all = "kebab-case")]
 pub enum GenerateKind {
     Config,
     JsonSchema,
-    OpenApiSchema,
+    OpenapiSchema,
 }
 
-impl Display for GenerateKind {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str(match self {
-            Self::Config => "config",
-            Self::JsonSchema => "json-schema",
-            Self::OpenApiSchema => "openapi-schema",
-        })
-    }
-}
-
-impl FromStr for GenerateKind {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "config" => Ok(Self::Config),
-            "json-schema" => Ok(Self::JsonSchema),
-            "openapi-schema" => Ok(Self::OpenApiSchema),
-            _ => Err("invalid generate kind".to_owned()),
-        }
-    }
+#[derive(Clone, Parser)]
+pub enum CreateKind {
+    Challenge {
+        #[arg(long, short)]
+        challenge_file: String,
+    },
+    Admin {
+        username: String,
+        // role: entity::sea_orm_active_enums::RoleEnum,
+    },
 }

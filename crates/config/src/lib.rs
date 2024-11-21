@@ -88,10 +88,9 @@ pub struct AwsS3 {
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
-pub struct Session {
-    pub key: String,
-    pub expiry_duration: u64,
-    pub cookie_name: String,
+pub struct Jwt {
+    pub secret: String,
+    pub access_expiry_duration: u64,
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, Copy, JsonPath)]
@@ -193,7 +192,7 @@ pub struct Settings {
     pub database: Database,
     pub redis: Redis,
     pub file_storage: FileStorage,
-    pub session: Session,
+    pub jwt: Jwt, // TODO: fix fields
     pub smtp: Smtp,
     pub docker: Docker,
     pub discord: Discord,
@@ -275,14 +274,13 @@ impl Default for Settings {
                     password: gen_random_password(),
                 },
             },
-            session: Session {
-                key: Base64::encode_string(
+            jwt: Jwt {
+                secret: Base64::encode_string(
                     &repeat_with(|| fastrand::u8(0..=255))
                         .take(32)
                         .collect::<Vec<_>>(),
                 ),
-                expiry_duration: 600,
-                cookie_name: "sessionid".to_owned(),
+                access_expiry_duration: 600,
             },
             file_storage: FileStorage {
                 remote_storage_options: None,

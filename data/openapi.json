@@ -12618,7 +12618,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginModel"
+                "$ref": "#/components/schemas/LoginRequest"
               }
             }
           },
@@ -12671,60 +12671,6 @@
         ]
       }
     },
-    "/auth/admin/logout": {
-      "get": {
-        "tags": [
-          "auth::admin"
-        ],
-        "summary": "Logout admin",
-        "operationId": "admin_logout",
-        "responses": {
-          "200": {
-            "description": "user logged in successfully"
-          },
-          "400": {
-            "description": "Invalid request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "User not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/auth/player/login": {
       "post": {
         "tags": [
@@ -12736,7 +12682,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginModel"
+                "$ref": "#/components/schemas/LoginRequest"
               }
             }
           },
@@ -12787,60 +12733,6 @@
         "security": [
           {}
         ]
-      }
-    },
-    "/auth/player/logout": {
-      "get": {
-        "tags": [
-          "auth::player"
-        ],
-        "summary": "Logout user",
-        "operationId": "player_logout",
-        "responses": {
-          "200": {
-            "description": "Refreshed token successfully"
-          },
-          "400": {
-            "description": "Invalid request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "User not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/auth/player/register": {
@@ -16024,7 +15916,7 @@
           }
         }
       },
-      "LoginModel": {
+      "LoginRequest": {
         "type": "object",
         "required": [
           "username",

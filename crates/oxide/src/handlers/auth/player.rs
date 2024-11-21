@@ -7,19 +7,21 @@ use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use askama::Template;
 use axum::extract::{Query, State};
 use axum::Json;
+use axum_extra::extract::cookie::Cookie;
+use axum_extra::extract::CookieJar;
 use fred::prelude::SortedSetsInterface;
+use jsonwebtoken::{EncodingKey, Header};
 use lettre::message::header::ContentType;
 use lettre::message::{Mailbox, MultiPart, SinglePart};
 use lettre::{AsyncTransport, Message};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, Condition, IntoActiveModel, TransactionTrait};
-use tower_sessions::Session;
 
 use crate::errors::{Error, Result};
 use crate::schemas::{
-    Invite, InviteVerificationResult, JsonResponse, LoginModel, Player, PlayerModel,
-    RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery, ResetPasswordSchema,
-    SendTokenSchema, Team, TeamModel, TeamRegister,
+    Invite, InviteVerificationResult, JsonResponse, LoginRequest, LoginResponse, Player,
+    PlayerClaims, PlayerModel, RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery,
+    ResetPasswordSchema, SendTokenSchema, Team, TeamModel, TeamRegister,
 };
 use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
@@ -373,7 +375,7 @@ pub async fn reset_password_send_token(
 #[utoipa::path(
     post,
     path = "/auth/player/login",
-    request_body = LoginModel,
+    request_body = LoginRequest,
     operation_id = "player_login",
     responses(
         (status = 200, description = "Player logged in successfully", body = PlayerModel),
@@ -386,9 +388,9 @@ pub async fn reset_password_send_token(
 /// Login user
 pub async fn login(
     state: State<Arc<AppState>>,
-    session: Session,
-    Json(body): Json<LoginModel>,
-) -> Result<Json<PlayerModel>> {
+    jar: CookieJar,
+    Json(body): Json<LoginRequest>,
+) -> Result<(CookieJar, Json<LoginResponse<PlayerModel>>)> {
     let Some(player_model) = Player::find()
         .filter(entity::admin::Column::Username.eq(&body.username))
         .one(&state.db_conn)
@@ -411,24 +413,31 @@ pub async fn login(
         return Err(Error::BadRequest("Player is banned".to_owned()));
     }
 
-    session.insert("player", player_model.clone()).await?;
+    let now = chrono::Utc::now();
 
-    Ok(Json(player_model))
-}
+    let access_token = jsonwebtoken::encode(
+        &Header::new(jsonwebtoken::Algorithm::HS256),
+        &PlayerClaims {
+            exp: now.timestamp(),
+            iat: (now + chrono::Duration::minutes(15)).timestamp(), // TODO: read from config
+            sub: player_model.id,
+            team_id: player_model.team_id,
+        },
+        &EncodingKey::from_base64_secret(&state.settings.read().await.jwt.secret)?,
+    )?;
 
-#[utoipa::path(
-    get,
-    path = "/auth/player/logout",
-    operation_id = "player_logout",
-    responses(
-        (status = 200, description = "Refreshed token successfully"),
-        (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
-        (status = 500, description = "Unexpected error", body = JsonResponse)
-    )
-)]
-/// Logout user
-pub async fn logout(session: Session) -> Result<()> {
-    Ok(session.delete().await?)
+    // TODO: add refresh token to cookie jar
+
+    let cookie = Cookie::build(("refresh_token", ""))
+        .secure(true)
+        .http_only(true)
+        .max_age(time::Duration::days(1));
+
+    Ok((
+        jar.add(cookie),
+        Json(LoginResponse {
+            model: player_model,
+            access_token,
+        }),
+    ))
 }

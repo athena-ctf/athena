@@ -25,7 +25,7 @@ pub async fn player_list(
         Notification::find()
             .filter(
                 entity::notification::Column::PlayerId
-                    .eq(player.id)
+                    .eq(player.sub)
                     .or(entity::notification::Column::PlayerId.is_null()),
             )
             .all(&state.db_conn)

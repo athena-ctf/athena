@@ -81,9 +81,13 @@ pub async fn update_profile_by_id(
 )]
 /// Retrieve player summary
 pub async fn retrieve_summary(
-    AuthPlayer(player_model): AuthPlayer,
+    AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
 ) -> Result<Json<PlayerDetails>> {
+    let Some(player_model) = Player::find_by_id(player.sub).one(&state.db_conn).await? else {
+        return Err(Error::NotFound("Player not found".to_owned()));
+    };
+
     Ok(Json(PlayerDetails {
         submissions: player_model
             .find_related(Submission)
@@ -110,6 +114,13 @@ pub async fn retrieve_summary(
     ),
 )]
 /// Return currently authenticated user
-pub async fn get_current_logged_in(AuthPlayer(player): AuthPlayer) -> Result<Json<PlayerModel>> {
-    Ok(Json(player))
+pub async fn get_current_logged_in(
+    AuthPlayer(player): AuthPlayer,
+    state: State<Arc<AppState>>,
+) -> Result<Json<PlayerModel>> {
+    let Some(model) = Player::find_by_id(player.sub).one(&state.db_conn).await? else {
+        return Err(Error::NotFound("Player not found".to_owned()));
+    };
+
+    Ok(Json(model))
 }
