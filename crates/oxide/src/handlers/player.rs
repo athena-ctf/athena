@@ -1,6 +1,8 @@
+use crate::jwt::AuthPlayer;
+use crate::redis_keys::PLAYER_LAST_UPDATED;
 use crate::schemas::{
-    AuthPlayer, Award, AwardModel, Ban, BanModel, Challenge, ChallengeModel, CreatePlayerSchema,
-    Deployment, DeploymentModel, Flag, FlagModel, Hint, HintModel, JsonResponse, Notification,
+    Award, AwardModel, Ban, BanModel, Challenge, ChallengeModel, CreatePlayerSchema, Deployment,
+    DeploymentModel, Flag, FlagModel, Hint, HintModel, JsonResponse, Notification,
     NotificationModel, Player, PlayerAward, PlayerAwardModel, PlayerDetails, PlayerModel,
     PlayerProfile, Submission, SubmissionModel, Team, TeamModel, Ticket, TicketModel, Unlock,
     UnlockModel, UpdateProfileSchema,
@@ -41,9 +43,8 @@ pub async fn retrieve_profile_by_username(
 
 #[utoipa::path(
     patch,
-    path = "/player/{id}/update-profile",
+    path = "/player/update-profile",
     request_body = UpdateProfileSchema,
-    params(("id" = Uuid, Path, description = "Id of entity")),
     operation_id = "update_player_profile",
     responses(
         (status = 200, description = "Updated player profile by id successfully", body = PlayerModel),
@@ -57,13 +58,26 @@ pub async fn retrieve_profile_by_username(
 /// Update player profile by id
 pub async fn update_profile_by_id(
     state: State<Arc<AppState>>,
-    Path(id): Path<Uuid>,
+    AuthPlayer(player_claims): AuthPlayer,
     Json(body): Json<UpdateProfileSchema>,
 ) -> Result<Json<PlayerModel>> {
-    let mut player = body.into_active_model();
-    player.id = ActiveValue::Set(id);
+    let mut active_player = body.into_active_model();
+    active_player.id = ActiveValue::Set(player_claims.sub);
 
-    Ok(Json(player.update(&state.db_conn).await?))
+    let player_model = active_player.update(&state.db_conn).await?;
+
+    state
+        .persistent_client
+        .hset::<(), _, _>(
+            PLAYER_LAST_UPDATED,
+            (
+                player_model.id.simple().to_string(),
+                player_model.updated_at.timestamp(),
+            ),
+        )
+        .await?;
+
+    Ok(Json(player_model))
 }
 
 #[utoipa::path(

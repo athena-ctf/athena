@@ -11992,6 +11992,89 @@
         }
       }
     },
+    "/admin/unban/player/{id}": {
+      "post": {
+        "tags": [
+          "ban"
+        ],
+        "summary": "Unban player by id",
+        "operationId": "remove_player_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Unbanned player by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BanModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No ban found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/unlock": {
       "get": {
         "tags": [
@@ -12607,13 +12690,13 @@
         }
       }
     },
-    "/auth/admin/login": {
+    "/auth/admin/token": {
       "post": {
         "tags": [
           "auth::admin"
         ],
-        "summary": "Login admin",
-        "operationId": "admin_login",
+        "summary": "Get admin access token",
+        "operationId": "admin_token",
         "requestBody": {
           "content": {
             "application/json": {
@@ -12671,13 +12754,13 @@
         ]
       }
     },
-    "/auth/player/login": {
+    "/auth/admin/token/refresh": {
       "post": {
         "tags": [
-          "auth::player"
+          "auth::admin"
         ],
-        "summary": "Login user",
-        "operationId": "player_login",
+        "summary": "Refresh admin token",
+        "operationId": "admin_token_refresh",
         "requestBody": {
           "content": {
             "application/json": {
@@ -12690,11 +12773,11 @@
         },
         "responses": {
           "200": {
-            "description": "Player logged in successfully",
+            "description": "user logged in successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerModel"
+                  "$ref": "#/components/schemas/AdminModel"
                 }
               }
             }
@@ -13087,6 +13170,134 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {}
+        ]
+      }
+    },
+    "/auth/player/token": {
+      "post": {
+        "tags": [
+          "auth::player"
+        ],
+        "summary": "Get player access token",
+        "operationId": "player_token",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Player logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {}
+        ]
+      }
+    },
+    "/auth/player/token/refresh": {
+      "post": {
+        "tags": [
+          "auth::player"
+        ],
+        "summary": "Refresh player token",
+        "operationId": "player_token_refresh",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Player logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerModel"
                 }
               }
             }
@@ -14074,26 +14285,48 @@
         }
       }
     },
-    "/player/team/summary": {
-      "get": {
+    "/player/team/profile": {
+      "patch": {
         "tags": [
           "team"
         ],
-        "summary": "Retrieve team summary",
-        "operationId": "retrieve_team_summary",
+        "summary": "Retrieve team details by teamname",
+        "operationId": "update_team_profile",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeamSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Retrieved team summary by id successfully",
+            "description": "Retrieved team details by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeamDetails"
+                  "$ref": "#/components/schemas/TeamModel"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -14145,48 +14378,26 @@
         }
       }
     },
-    "/player/team/{id}/profile": {
-      "patch": {
+    "/player/team/summary": {
+      "get": {
         "tags": [
           "team"
         ],
-        "summary": "Retrieve team details by teamname",
-        "operationId": "update_team_profile",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTeamSchema"
-              }
-            }
-          },
-          "required": true
-        },
+        "summary": "Retrieve team summary",
+        "operationId": "retrieve_team_summary",
         "responses": {
           "200": {
-            "description": "Retrieved team details by id successfully",
+            "description": "Retrieved team summary by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeamModel"
+                  "$ref": "#/components/schemas/TeamDetails"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -14320,25 +14531,13 @@
         }
       }
     },
-    "/player/{id}/update-profile": {
+    "/player/update-profile": {
       "patch": {
         "tags": [
           "player"
         ],
         "summary": "Update player profile by id",
         "operationId": "update_player_profile",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {

@@ -36,6 +36,7 @@ use tokio::io::BufReader;
 use tokio_util::io::ReaderStream;
 
 use crate::errors::Result;
+use crate::redis_keys::{player_history_key, PLAYER_LEADERBOARD};
 use crate::schemas::{
     Award, AwardsReceived, Challenge, PlayerModel, PlayerProfile, PointsHistory, Tag, TagSolves,
 };
@@ -46,11 +47,11 @@ pub async fn retrieve_profile(
     pool: &RedisPool,
 ) -> Result<PlayerProfile> {
     let rank = pool
-        .zrevrank("leaderboard:player", &player.id.simple().to_string())
+        .zrevrank(PLAYER_LEADERBOARD, &player.id.simple().to_string())
         .await?;
 
     let score = pool
-        .zscore("leaderboard:player", &player.id.simple().to_string())
+        .zscore(PLAYER_LEADERBOARD, &player.id.simple().to_string())
         .await?;
 
     let mut tags_map = Tag::find()
@@ -93,7 +94,7 @@ pub async fn retrieve_profile(
         .await?;
     let tag_solves = tags_map.values().cloned().collect();
     let history = pool
-        .lrange::<Vec<String>, _>(format!("player:{}:history", player.id.simple()), 0, -1)
+        .lrange::<Vec<String>, _>(player_history_key(player.id), 0, -1)
         .await?
         .into_iter()
         .map(|hist_entry| PointsHistory::parse(&hist_entry))

@@ -1,18 +1,22 @@
 use std::sync::LazyLock;
 
-use chrono::Local;
+use chrono::Utc;
 use dashmap::DashMap;
 use regex::Regex;
 use sea_orm::sea_query::OnConflict;
 use sea_orm::{Iterable, TransactionTrait};
 
+use crate::jwt::AuthPlayer;
+use crate::redis_keys::{
+    player_history_key, CHALLENGE_SOLVES, PLAYER_LEADERBOARD, TEAM_LEADERBOARD,
+};
 use crate::schemas::{
-    AuthPlayer, Award, Challenge, ChallengeKindEnum, ChallengeModel, CreateFlagSchema, Flag,
-    FlagModel, FlagVerificationResult, JsonResponse, Player, PlayerAward, PlayerAwardModel,
-    PlayerModel, Submission, SubmissionModel, VerifyFlagSchema,
+    Award, Challenge, ChallengeKindEnum, ChallengeModel, CreateFlagSchema, Flag, FlagModel,
+    FlagVerificationResult, JsonResponse, Player, PlayerAward, PlayerAwardModel, PlayerModel,
+    Submission, SubmissionModel, VerifyFlagSchema,
 };
 
-oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: []);
+oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: []); // TODO: add `on_update` and `on_delete`
 
 static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(DashMap::new);
 
@@ -31,14 +35,14 @@ static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(DashMap:
 )]
 /// Verify flag
 pub async fn verify(
-    AuthPlayer(player_model): AuthPlayer,
+    AuthPlayer(player_claimd): AuthPlayer,
     state: State<Arc<AppState>>,
     Json(body): Json<VerifyFlagSchema>,
 ) -> Result<Json<FlagVerificationResult>> {
     let txn = state.db_conn.begin().await?;
 
     let prev_model = if let Some(submission_model) =
-        Submission::find_by_id((body.challenge_id, player_model.sub))
+        Submission::find_by_id((body.challenge_id, player_claimd.sub))
             .one(&state.db_conn)
             .await?
     {
@@ -116,7 +120,7 @@ pub async fn verify(
         ChallengeKindEnum::Containerized => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
-                .filter(entity::flag::Column::PlayerId.eq(player_model.sub))
+                .filter(entity::flag::Column::PlayerId.eq(player_claimd.sub))
                 .one(&state.db_conn)
                 .await?
             else {
@@ -131,40 +135,32 @@ pub async fn verify(
         state
             .persistent_client
             .zincrby::<(), _, _>(
-                "leaderboard:player",
+                PLAYER_LEADERBOARD,
                 f64::from(points),
-                &player_model.sub.simple().to_string(),
+                &player_claimd.sub.simple().to_string(),
             )
             .await?;
 
         state
             .persistent_client
             .lpush::<(), _, _>(
-                format!("player:{}:history", player_model.sub.simple()),
-                vec![format!(
-                    "{}:{}",
-                    Local::now().timestamp_millis(),
-                    f64::from(points)
-                )],
+                player_history_key(player_claimd.sub),
+                vec![format!("{}:{}", Utc::now().timestamp(), f64::from(points))],
             )
             .await?;
 
         state
             .persistent_client
             .zincrby::<(), _, _>(
-                "leaderboard:team",
+                TEAM_LEADERBOARD,
                 f64::from(points),
-                &player_model.team_id.simple().to_string(),
+                &player_claimd.team_id.simple().to_string(),
             )
             .await?;
 
         let solves = state
             .persistent_client
-            .hincrby::<u64, _, _>(
-                "challenge:solves",
-                challenge_model.id.simple().to_string(),
-                1,
-            )
+            .hincrby::<u64, _, _>(CHALLENGE_SOLVES, challenge_model.id.simple().to_string(), 1)
             .await?;
 
         let award_model = match solves {
@@ -196,7 +192,7 @@ pub async fn verify(
 
         if let Some(award_model) = award_model {
             PlayerAward::insert(
-                PlayerAwardModel::new(player_model.sub, award_model.id, 1).into_active_model(),
+                PlayerAwardModel::new(player_claimd.sub, award_model.id, 1).into_active_model(),
             )
             .on_conflict(
                 OnConflict::columns(entity::player_award::PrimaryKey::iter())
@@ -218,7 +214,7 @@ pub async fn verify(
     } else {
         SubmissionModel::new(
             is_correct,
-            player_model.sub,
+            player_claimd.sub,
             body.challenge_id,
             vec![body.flag],
         )

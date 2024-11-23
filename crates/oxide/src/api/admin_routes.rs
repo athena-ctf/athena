@@ -9,6 +9,10 @@ use crate::service::AppState;
 pub fn utils_router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/ban/player/:id", post(handlers::ban::add_player_by_id))
+        .route(
+            "/unban/player/:id",
+            post(handlers::ban::remove_player_by_id),
+        )
         .route("/stats", get(handlers::stats::retrieve))
         .route("/current", get(handlers::admin::get_current_logged_in))
         .route(

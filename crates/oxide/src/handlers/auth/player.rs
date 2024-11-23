@@ -1,5 +1,6 @@
 use std::str::FromStr;
 use std::sync::Arc;
+use std::time::Duration;
 
 use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
@@ -9,8 +10,8 @@ use axum::extract::{Query, State};
 use axum::Json;
 use axum_extra::extract::cookie::Cookie;
 use axum_extra::extract::CookieJar;
-use fred::prelude::SortedSetsInterface;
-use jsonwebtoken::{EncodingKey, Header};
+use fred::prelude::*;
+use jsonwebtoken::{DecodingKey, Validation};
 use lettre::message::header::ContentType;
 use lettre::message::{Mailbox, MultiPart, SinglePart};
 use lettre::{AsyncTransport, Message};
@@ -18,9 +19,13 @@ use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, Condition, IntoActiveModel, TransactionTrait};
 
 use crate::errors::{Error, Result};
+use crate::jwt::{RefreshClaims, TokenPair};
+use crate::redis_keys::{
+    PLAYER_LAST_UPDATED, PLAYER_LEADERBOARD, REFRESH_TOKEN_BLACKLIST, TEAM_LEADERBOARD,
+};
 use crate::schemas::{
     Invite, InviteVerificationResult, JsonResponse, LoginRequest, LoginResponse, Player,
-    PlayerClaims, PlayerModel, RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery,
+    PlayerModel, RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery,
     ResetPasswordSchema, SendTokenSchema, Team, TeamModel, TeamRegister,
 };
 use crate::service::AppState;
@@ -96,18 +101,6 @@ pub async fn register(
         .hash_password(body.password.as_bytes(), &salt)?
         .to_string();
 
-    state
-        .persistent_client
-        .zadd::<(), _, _>(
-            "leaderboard",
-            None,
-            None,
-            false,
-            false,
-            (0.0, &body.display_name),
-        )
-        .await?;
-
     let team_id = match body.team {
         TeamRegister::Join { team_id, invite_id } => {
             Invite::update_many()
@@ -132,7 +125,7 @@ pub async fn register(
         }
     };
 
-    PlayerModel::new(
+    let player_model = PlayerModel::new(
         team_id,
         None,
         None,
@@ -146,6 +139,30 @@ pub async fn register(
     .await?;
 
     txn.commit().await?;
+
+    state
+        .persistent_client
+        .zadd::<(), _, _>(
+            PLAYER_LEADERBOARD,
+            None,
+            None,
+            false,
+            false,
+            (0.0, &player_model.id.simple().to_string()),
+        )
+        .await?;
+
+    state
+        .persistent_client
+        .zadd::<(), _, _>(
+            TEAM_LEADERBOARD,
+            None,
+            None,
+            false,
+            false,
+            (0.0, &team_id.simple().to_string()),
+        )
+        .await?;
 
     Ok(Json(JsonResponse {
         message: "Successfully registered".to_string(),
@@ -300,18 +317,29 @@ pub async fn reset_password(
         return Err(Error::NotFound("Player does not exist".to_owned()));
     };
 
-    let mut active_user = player_model.into_active_model();
+    let mut active_player = player_model.into_active_model();
     let salt = SaltString::generate(&mut OsRng);
 
-    active_user.password = ActiveValue::Set(
+    active_player.password = ActiveValue::Set(
         Argon2::default()
             .hash_password(body.new_password.as_bytes(), &salt)?
             .to_string(),
     );
 
-    active_user.update(&txn).await?;
+    let player_model = active_player.update(&txn).await?;
 
     txn.commit().await?;
+
+    state
+        .persistent_client
+        .hset::<(), _, _>(
+            PLAYER_LAST_UPDATED,
+            (
+                player_model.id.simple().to_string(),
+                player_model.updated_at.timestamp(),
+            ),
+        )
+        .await?;
 
     Ok(Json(JsonResponse {
         message: "Successfully reset password".to_owned(),
@@ -374,9 +402,9 @@ pub async fn reset_password_send_token(
 
 #[utoipa::path(
     post,
-    path = "/auth/player/login",
+    path = "/auth/player/token",
     request_body = LoginRequest,
-    operation_id = "player_login",
+    operation_id = "player_token",
     responses(
         (status = 200, description = "Player logged in successfully", body = PlayerModel),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
@@ -385,8 +413,8 @@ pub async fn reset_password_send_token(
     ),
     security(())
 )]
-/// Login user
-pub async fn login(
+/// Get player access token
+pub async fn token(
     state: State<Arc<AppState>>,
     jar: CookieJar,
     Json(body): Json<LoginRequest>,
@@ -413,25 +441,21 @@ pub async fn login(
         return Err(Error::BadRequest("Player is banned".to_owned()));
     }
 
-    let now = chrono::Utc::now();
-
-    let access_token = jsonwebtoken::encode(
-        &Header::new(jsonwebtoken::Algorithm::HS256),
-        &PlayerClaims {
-            exp: now.timestamp(),
-            iat: (now + chrono::Duration::minutes(15)).timestamp(), // TODO: read from config
-            sub: player_model.id,
-            team_id: player_model.team_id,
-        },
-        &EncodingKey::from_base64_secret(&state.settings.read().await.jwt.secret)?,
+    let TokenPair(access_token, refresh_token) = TokenPair::new_player(
+        &state.settings.read().await.jwt,
+        player_model.id,
+        player_model.team_id,
+        player_model.email.clone(),
     )?;
 
-    // TODO: add refresh token to cookie jar
-
-    let cookie = Cookie::build(("refresh_token", ""))
+    let cookie = Cookie::build(("refresh_token", refresh_token))
         .secure(true)
         .http_only(true)
-        .max_age(time::Duration::days(1));
+        .max_age(
+            Duration::from_secs(state.settings.read().await.jwt.refresh_expiry_duration)
+                .try_into()
+                .unwrap(),
+        );
 
     Ok((
         jar.add(cookie),
@@ -440,4 +464,105 @@ pub async fn login(
             access_token,
         }),
     ))
+}
+
+#[utoipa::path(
+    post,
+    path = "/auth/player/token/refresh",
+    request_body = LoginRequest,
+    operation_id = "player_token_refresh",
+    responses(
+        (status = 200, description = "Player logged in successfully", body = PlayerModel),
+        (status = 400, description = "Invalid request body format", body = JsonResponse),
+        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 500, description = "Unexpected error", body = JsonResponse)
+    ),
+    security(())
+)]
+/// Refresh player token
+pub async fn token_refresh(
+    state: State<Arc<AppState>>,
+    jar: CookieJar,
+) -> Result<(CookieJar, Json<String>)> {
+    let Some(refresh_token) = jar.get("refresh_token") else {
+        return Err(Error::Unauthorized(
+            None,
+            "No refresh token found".to_owned(),
+        ));
+    };
+
+    let refresh_claims = jsonwebtoken::decode::<RefreshClaims>(
+        refresh_token.value(),
+        &DecodingKey::from_base64_secret(&state.settings.read().await.jwt.secret)?,
+        &Validation::new(jsonwebtoken::Algorithm::HS256),
+    )?
+    .claims;
+
+    let is_blacklisted = state
+        .persistent_client
+        .hexists::<u8, _, _>(
+            REFRESH_TOKEN_BLACKLIST,
+            refresh_claims.jti.simple().to_string(),
+        )
+        .await?;
+
+    if is_blacklisted == 0 {
+        return Err(Error::Unauthorized(
+            Some(jar.remove("refresh_token")),
+            "Blacklisted refresh_token used".to_owned(),
+        ));
+    }
+
+    state
+        .persistent_client
+        .hset::<(), _, _>(
+            REFRESH_TOKEN_BLACKLIST,
+            (refresh_claims.jti.simple().to_string(), 0),
+        )
+        .await?;
+
+    state
+        .persistent_client
+        .hexpire::<(), _, _>(
+            REFRESH_TOKEN_BLACKLIST,
+            state
+                .settings
+                .read()
+                .await
+                .jwt
+                .refresh_expiry_duration
+                .try_into()
+                .unwrap(),
+            None,
+            refresh_claims.jti.simple().to_string(),
+        )
+        .await?;
+
+    let Some(player_model) = Player::find_by_id(refresh_claims.sub)
+        .one(&state.db_conn)
+        .await?
+    else {
+        return Err(Error::Unauthorized(
+            Some(jar.remove("refresh_token")),
+            "Invalid refresh_token".to_owned(),
+        ));
+    };
+
+    let TokenPair(access_token, refresh_token) = TokenPair::new_player(
+        &state.settings.read().await.jwt,
+        player_model.id,
+        player_model.team_id,
+        player_model.email,
+    )?;
+
+    let cookie = Cookie::build(("refresh_token", refresh_token))
+        .secure(true)
+        .http_only(true)
+        .max_age(
+            Duration::from_secs(state.settings.read().await.jwt.refresh_expiry_duration)
+                .try_into()
+                .unwrap(),
+        );
+
+    Ok((jar.add(cookie), Json(access_token)))
 }

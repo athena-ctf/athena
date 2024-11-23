@@ -59,7 +59,7 @@ pub fn derive_details_impl(input: TokenStream) -> TokenStream {
             ActiveModel {
                 #id_field_active_model
                 created_at: sea_orm::ActiveValue::NotSet,
-                updated_at: sea_orm::ActiveValue::Set(chrono::Local::now().fixed_offset()),
+                updated_at: sea_orm::ActiveValue::Set(chrono::Utc::now().fixed_offset()),
                 #(#field_names: sea_orm::ActiveValue::Set(self.#field_names),)*
             }
         }
@@ -68,7 +68,7 @@ pub fn derive_details_impl(input: TokenStream) -> TokenStream {
     let impl_new = quote! {
         impl Model {
             pub fn new(#(#field_names: impl Into<#field_types>,)*) -> Self {
-                let now = chrono::Local::now().fixed_offset();
+                let now = chrono::Utc::now().fixed_offset();
 
                 Self {
                     #id_field_impl_new

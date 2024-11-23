@@ -1,5 +1,6 @@
-use chrono::Local;
+use chrono::Utc;
 
+use crate::redis_keys::{player_history_key, PLAYER_LEADERBOARD, TEAM_LEADERBOARD};
 use crate::schemas::{
     Challenge, ChallengeModel, CreateSubmissionSchema, JsonResponse, Player, PlayerModel,
     Submission, SubmissionModel,
@@ -16,7 +17,7 @@ oxide_macros::crud_join!(
         state
             .persistent_client
             .zincrby::<(), _, _>(
-                "leaderboard:player",
+                PLAYER_LEADERBOARD,
                 -f64::from(challenge_model.points),
                 player_model.id.simple().to_string()
             )
@@ -25,10 +26,10 @@ oxide_macros::crud_join!(
         state
             .persistent_client
             .lpush::<(), _, _>(
-                format!("player:{}:history", player_model.id.simple()),
+                player_history_key(player_model.id),
                 vec![format!(
                     "{}:{}",
-                    Local::now().timestamp_millis(),
+                    Utc::now().timestamp(),
                     -f64::from(challenge_model.points)
                 )]
             )
@@ -37,7 +38,7 @@ oxide_macros::crud_join!(
         state
             .persistent_client
             .zincrby::<(), _, _>(
-                "leaderboard:team",
+                TEAM_LEADERBOARD,
                 -f64::from(challenge_model.points),
                 player_model.team_id.simple().to_string(),
             )
@@ -52,7 +53,7 @@ oxide_macros::crud_join!(
                 state
                     .persistent_client
                     .zincrby::<(), _, _>(
-                        "leaderboard:player",
+                        PLAYER_LEADERBOARD,
                         -f64::from(challenge_model.points),
                         player_model.id.simple().to_string()
                     )
@@ -61,10 +62,10 @@ oxide_macros::crud_join!(
                 state
                     .persistent_client
                     .lpush::<(), _, _>(
-                        format!("player:{}:history", player_model.id.simple()),
+                        player_history_key(player_model.id),
                         vec![format!(
                             "{}:{}",
-                            Local::now().timestamp_millis(),
+                            Utc::now().timestamp(),
                             -f64::from(challenge_model.points)
                         )]
                     )
@@ -73,7 +74,7 @@ oxide_macros::crud_join!(
                 state
                     .persistent_client
                     .zincrby::<(), _, _>(
-                        "leaderboard:team",
+                        TEAM_LEADERBOARD,
                         -f64::from(challenge_model.points),
                         player_model.team_id.simple().to_string(),
                     )
@@ -86,7 +87,7 @@ oxide_macros::crud_join!(
                 state
                     .persistent_client
                     .zincrby::<(), _, _>(
-                        "leaderboard:player",
+                        PLAYER_LEADERBOARD,
                         f64::from(challenge_model.points),
                         player_model.id.simple().to_string()
                     )
@@ -95,10 +96,10 @@ oxide_macros::crud_join!(
                 state
                     .persistent_client
                     .lpush::<(), _, _>(
-                        format!("player:{}:history", player_model.id.simple()),
+                        player_history_key(player_model.id),
                         vec![format!(
                             "{}:{}",
-                            Local::now().timestamp_millis(),
+                            Utc::now().timestamp(),
                             f64::from(challenge_model.points)
                         )]
                     )
@@ -107,7 +108,7 @@ oxide_macros::crud_join!(
                 state
                     .persistent_client
                     .zincrby::<(), _, _>(
-                        "leaderboard:team",
+                        TEAM_LEADERBOARD,
                         f64::from(challenge_model.points),
                         player_model.team_id.simple().to_string(),
                     )

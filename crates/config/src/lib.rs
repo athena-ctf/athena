@@ -91,6 +91,7 @@ pub struct AwsS3 {
 pub struct Jwt {
     pub secret: String,
     pub access_expiry_duration: u64,
+    pub refresh_expiry_duration: u64,
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, Copy, JsonPath)]
@@ -156,7 +157,7 @@ pub struct Challenge {
     pub container_registry: String,
     pub registry_username: String,
     pub registry_password: String,
-    pub container_timeout: i64,
+    pub container_timeout: u64,
     pub player_flag_len: usize,
 }
 
@@ -192,7 +193,7 @@ pub struct Settings {
     pub database: Database,
     pub redis: Redis,
     pub file_storage: FileStorage,
-    pub jwt: Jwt, // TODO: fix fields
+    pub jwt: Jwt,
     pub smtp: Smtp,
     pub docker: Docker,
     pub discord: Discord,
@@ -281,6 +282,7 @@ impl Default for Settings {
                         .collect::<Vec<_>>(),
                 ),
                 access_expiry_duration: 600,
+                refresh_expiry_duration: 86400,
             },
             file_storage: FileStorage {
                 remote_storage_options: None,

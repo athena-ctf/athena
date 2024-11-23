@@ -1833,6 +1833,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/admin/unban/player/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Unban player by id */
+    post: operations["remove_player_by_id"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/admin/unlock": {
     parameters: {
       query?: never;
@@ -1921,7 +1938,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/auth/admin/login": {
+  "/auth/admin/token": {
     parameters: {
       query?: never;
       header?: never;
@@ -1930,32 +1947,15 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Login admin */
-    post: operations["admin_login"];
+    /** Get admin access token */
+    post: operations["admin_token"];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/auth/admin/logout": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Logout admin */
-    get: operations["admin_logout"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/player/login": {
+  "/auth/admin/token/refresh": {
     parameters: {
       query?: never;
       header?: never;
@@ -1964,25 +1964,8 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Login user */
-    post: operations["player_login"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/player/logout": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Logout user */
-    get: operations["player_logout"];
-    put?: never;
-    post?: never;
+    /** Refresh admin token */
+    post: operations["admin_token_refresh"];
     delete?: never;
     options?: never;
     head?: never;
@@ -2085,6 +2068,40 @@ export interface paths {
     put?: never;
     /** Send reset token to email */
     post: operations["player_reset_password_send_token"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/player/token": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Get player access token */
+    post: operations["player_token"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/player/token/refresh": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Refresh player token */
+    post: operations["player_token_refresh"];
     delete?: never;
     options?: never;
     head?: never;
@@ -2312,6 +2329,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/player/team/profile": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Retrieve team details by teamname */
+    patch: operations["update_team_profile"];
+    trace?: never;
+  };
   "/player/team/summary": {
     parameters: {
       query?: never;
@@ -2327,23 +2361,6 @@ export interface paths {
     options?: never;
     head?: never;
     patch?: never;
-    trace?: never;
-  };
-  "/player/team/{id}/profile": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    /** Retrieve team details by teamname */
-    patch: operations["update_team_profile"];
     trace?: never;
   };
   "/player/team/{team_name}/profile": {
@@ -2363,7 +2380,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/player/{id}/update-profile": {
+  "/player/update-profile": {
     parameters: {
       query?: never;
       header?: never;
@@ -2812,7 +2829,7 @@ export interface components {
       /** Format: int64 */
       total: number;
     };
-    LoginModel: {
+    LoginRequest: {
       password: string;
       username: string;
     };
@@ -13048,6 +13065,74 @@ export interface operations {
       };
     };
   };
+  remove_player_by_id: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Id of entity */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Unbanned player by id successfully */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["BanModel"];
+        };
+      };
+      /** @description Invalid parameters format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description No ban found with specified id */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
   list_unlocks: {
     parameters: {
       query?: never;
@@ -13538,7 +13623,7 @@ export interface operations {
       };
     };
   };
-  admin_login: {
+  admin_token: {
     parameters: {
       query?: never;
       header?: never;
@@ -13547,7 +13632,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["LoginModel"];
+        "application/json": components["schemas"]["LoginRequest"];
       };
     };
     responses: {
@@ -13589,61 +13674,7 @@ export interface operations {
       };
     };
   };
-  admin_logout: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description user logged in successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description Invalid request body format */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User not found */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
-  player_login: {
+  admin_token_refresh: {
     parameters: {
       query?: never;
       header?: never;
@@ -13652,75 +13683,21 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["LoginModel"];
+        "application/json": components["schemas"]["LoginRequest"];
       };
     };
     responses: {
-      /** @description Player logged in successfully */
+      /** @description user logged in successfully */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["PlayerModel"];
+          "application/json": components["schemas"]["AdminModel"];
         };
       };
       /** @description Invalid request body format */
       400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User not found */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
-  player_logout: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Refreshed token successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description Invalid request body format */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
         headers: {
           [name: string]: unknown;
         };
@@ -14023,6 +14000,108 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  player_token: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginRequest"];
+      };
+    };
+    responses: {
+      /** @description Player logged in successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PlayerModel"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  player_token_refresh: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginRequest"];
+      };
+    };
+    responses: {
+      /** @description Player logged in successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PlayerModel"];
         };
       };
       /** @description Invalid request body format */
@@ -14851,25 +14930,32 @@ export interface operations {
       };
     };
   };
-  retrieve_team_summary: {
+  update_team_profile: {
     parameters: {
       query?: never;
       header?: never;
-      path?: never;
+      path: {
+        /** @description Id of entity */
+        id: string;
+      };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTeamSchema"];
+      };
+    };
     responses: {
-      /** @description Retrieved team summary by id successfully */
+      /** @description Retrieved team details by id successfully */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["TeamDetails"];
+          "application/json": components["schemas"]["TeamModel"];
         };
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -14916,32 +15002,25 @@ export interface operations {
       };
     };
   };
-  update_team_profile: {
+  retrieve_team_summary: {
     parameters: {
       query?: never;
       header?: never;
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
+      path?: never;
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateTeamSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Retrieved team details by id successfully */
+      /** @description Retrieved team summary by id successfully */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["TeamModel"];
+          "application/json": components["schemas"]["TeamDetails"];
         };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -15060,10 +15139,7 @@ export interface operations {
     parameters: {
       query?: never;
       header?: never;
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
+      path?: never;
       cookie?: never;
     };
     requestBody: {

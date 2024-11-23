@@ -143,7 +143,7 @@ impl<T: JsonPath + Clone> JsonPath for Vec<T> {
         }
 
         let first = &segments[0];
-        first.parse::<usize>().map_or(false, |index| {
+        first.parse::<usize>().is_ok_and(|index| {
             if index < self.len() {
                 self[index].update_at(&segments[1..], value)
             } else {
@@ -175,7 +175,7 @@ impl<V: JsonPath + Clone> JsonPath for IndexMap<String, V> {
         }
 
         let first = &segments[0];
-        self.get_mut(first).map_or(false, |existing_value| {
+        self.get_mut(first).is_some_and(|existing_value| {
             if segments.len() == 1 {
                 existing_value.update_at(&[], value)
             } else {
@@ -202,8 +202,7 @@ impl<V: JsonPath + Clone> JsonPath for IndexMap<i32, V> {
         }
 
         let first = segments[0].parse::<i32>().unwrap();
-        self.get_mut(&first).map_or(false, |existing_value| {
-            existing_value.update_at(&segments[1..], value)
-        })
+        self.get_mut(&first)
+            .is_some_and(|existing_value| existing_value.update_at(&segments[1..], value))
     }
 }

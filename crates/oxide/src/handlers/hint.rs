@@ -1,8 +1,10 @@
-use chrono::Local;
+use chrono::Utc;
 use sea_orm::TransactionTrait;
 
+use crate::jwt::AuthPlayer;
+use crate::redis_keys::{player_history_key, PLAYER_LEADERBOARD, TEAM_LEADERBOARD};
 use crate::schemas::{
-    AuthPlayer, Challenge, ChallengeModel, CreateHintSchema, Hint, HintModel, JsonResponse, Player,
+    Challenge, ChallengeModel, CreateHintSchema, Hint, HintModel, JsonResponse, Player,
     PlayerModel, Unlock, UnlockModel,
 };
 
@@ -16,7 +18,7 @@ oxide_macros::crud!(
             state
                 .persistent_client
                 .zincrby::<(), _, _>(
-                    "leaderboard:player",
+                    PLAYER_LEADERBOARD,
                     f64::from(model.cost),
                     player_model.id.simple().to_string()
                 ).await?;
@@ -24,10 +26,10 @@ oxide_macros::crud!(
             state
                 .persistent_client
                 .lpush::<(), _, _>(
-                    format!("player:{}:history", player_model.id.simple()),
+                    player_history_key(player_model.id),
                     vec![format!(
                         "{}:{}",
-                        Local::now().timestamp_millis(),
+                        Utc::now().timestamp(),
                         -f64::from(model.cost)
                     )]
                 )
@@ -36,7 +38,7 @@ oxide_macros::crud!(
             state
                 .persistent_client
                 .zincrby::<(), _, _>(
-                    "leaderboard:team",
+                    TEAM_LEADERBOARD,
                     f64::from(model.cost),
                     player_model.team_id.simple().to_string(),
                 )
@@ -49,7 +51,7 @@ oxide_macros::crud!(
                 state
                     .persistent_client
                     .zincrby::<(), _, _>(
-                        "leaderboard:player",
+                        PLAYER_LEADERBOARD,
                         f64::from(model.cost - old_model.cost),
                         player_model.id.simple().to_string()
                     )
@@ -58,10 +60,10 @@ oxide_macros::crud!(
                 state
                     .persistent_client
                     .lpush::<(), _, _>(
-                        format!("player:{}:history", player_model.id.simple()),
+                        player_history_key(player_model.id),
                         vec![format!(
                             "{}:{}",
-                            Local::now().timestamp_millis(),
+                            Utc::now().timestamp(),
                             f64::from(model.cost - old_model.cost),
                         )]
                     )
@@ -70,7 +72,7 @@ oxide_macros::crud!(
                 state
                     .persistent_client
                     .zincrby::<(), _, _>(
-                        "leaderboard:team",
+                        TEAM_LEADERBOARD,
                         f64::from(model.cost - old_model.cost),
                         player_model.team_id.simple().to_string(),
                     )
@@ -95,13 +97,13 @@ oxide_macros::crud!(
 )]
 /// Unlock hint by id
 pub async fn unlock_by_id(
-    AuthPlayer(player_model): AuthPlayer,
+    AuthPlayer(player_claims): AuthPlayer,
     state: State<Arc<AppState>>,
     Path(id): Path<Uuid>,
 ) -> Result<Json<HintModel>> {
     let txn = state.db_conn.begin().await?;
 
-    if let Some((_, Some(hint_model))) = Unlock::find_by_id((player_model.sub, id))
+    if let Some((_, Some(hint_model))) = Unlock::find_by_id((player_claims.sub, id))
         .find_also_related(Hint)
         .one(&txn)
         .await?
@@ -109,7 +111,7 @@ pub async fn unlock_by_id(
         return Ok(Json(hint_model));
     }
 
-    UnlockModel::new(player_model.sub, id)
+    UnlockModel::new(player_claims.sub, id)
         .into_active_model()
         .insert(&txn)
         .await?;
@@ -121,19 +123,19 @@ pub async fn unlock_by_id(
     state
         .persistent_client
         .zincrby::<(), _, _>(
-            "leaderboard:player",
+            PLAYER_LEADERBOARD,
             -f64::from(hint_model.cost),
-            &player_model.sub.simple().to_string(),
+            &player_claims.sub.simple().to_string(),
         )
         .await?;
 
     state
         .persistent_client
         .lpush::<(), _, _>(
-            format!("player:{}:history", player_model.sub.simple()),
+            player_history_key(player_claims.sub),
             vec![format!(
                 "{}:{}",
-                Local::now().timestamp_millis(),
+                Utc::now().timestamp(),
                 -f64::from(hint_model.cost)
             )],
         )
@@ -142,9 +144,9 @@ pub async fn unlock_by_id(
     state
         .persistent_client
         .zincrby::<(), _, _>(
-            "leaderboard:team",
+            TEAM_LEADERBOARD,
             -f64::from(hint_model.cost),
-            &player_model.team_id.simple().to_string(),
+            &player_claims.team_id.simple().to_string(),
         )
         .await?;
 

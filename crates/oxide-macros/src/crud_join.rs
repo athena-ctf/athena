@@ -130,7 +130,7 @@ fn gen_join_create_fn(entity: &Ident) -> impl ToTokens {
 }
 
 fn gen_join_retrieve_fn(entity: &Ident, related_from: &Ident, related_to: &Ident) -> impl ToTokens {
-    let entity_snake = heck::AsSnakeCase(entity.to_string());
+    let entity_snake = heck::AsSnakeCase(entity.to_string()).to_string();
     let related_from_snake_id = format!("{}_id", heck::AsSnakeCase(related_from.to_string()));
     let related_to_snake_id = format!("{}_id", heck::AsSnakeCase(related_to.to_string()));
 
@@ -140,7 +140,6 @@ fn gen_join_retrieve_fn(entity: &Ident, related_from: &Ident, related_to: &Ident
     let operation_id = format!("retrieve_{entity_snake}_by_id");
     let description = format!("Retrieved {entity_snake} by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
-    let redis_key = format!("{entity_snake}:{{}}:{{}}");
 
     let entity_model = format_ident!("{entity}Model");
 
@@ -167,13 +166,13 @@ fn gen_join_retrieve_fn(entity: &Ident, related_from: &Ident, related_to: &Ident
             state: State<Arc<AppState>>,
             Path(id): Path<(Uuid, Uuid)>,
         ) -> Result<CachedJson<#entity_model>> {
-            let cached = state.cache_client.get::<Option<String>, _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
+            let cached = state.cache_client.get::<Option<String>, _>(join_cache_key(#entity_snake, id)).await?;
 
             if let Some(value) = cached {
                 Ok(CachedJson::Cached(value))
             } else {
                 if let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? {
-                    state.cache_client.set::<(), _, _>(format!(#redis_key, id.0.simple(), id.1.simple()), serde_json::to_string(&model)?, Some(Expiration::EX(900)), None, false).await?;
+                    state.cache_client.set::<(), _, _>(join_cache_key(#entity_snake, id), serde_json::to_string(&model)?, Some(Expiration::EX(900)), None, false).await?;
                     Ok(CachedJson::New(Json(model)))
                 } else {
                     Err(Error::NotFound(#not_found.to_owned()))
@@ -189,7 +188,7 @@ fn gen_join_update_fn(
     related_to: &Ident,
     on_update_hook: Option<Block>,
 ) -> impl ToTokens {
-    let entity_snake = heck::AsSnakeCase(entity.to_string());
+    let entity_snake = heck::AsSnakeCase(entity.to_string()).to_string();
     let related_from_snake_id = format!("{}_id", heck::AsSnakeCase(related_from.to_string()));
     let related_to_snake_id = format!("{}_id", heck::AsSnakeCase(related_to.to_string()));
 
@@ -202,7 +201,6 @@ fn gen_join_update_fn(
     let operation_id = format!("update_{entity_snake}_by_id");
     let description = format!("Updated {entity_snake} by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
-    let redis_key = format!("{entity_snake}:{{}}:{{}}");
 
     let entity_model = format_ident!("{entity}Model");
     let request_body = format_ident!("Create{entity}Schema");
@@ -214,7 +212,7 @@ fn gen_join_update_fn(
                 active_model.#related_from_snake = ActiveValue::Set(id.0);
                 active_model.#related_to_snake = ActiveValue::Set(id.1);
                 let model = active_model.update(&state.db_conn).await?;
-                state.cache_client.del::<(), _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
+                state.cache_client.del::<(), _>(join_cache_key(#entity_snake, id)).await?;
             }
         },
         |hook| {
@@ -229,7 +227,7 @@ fn gen_join_update_fn(
                 active_model.#related_to_snake = ActiveValue::Set(id.1);
                 let model = active_model.update(&state.db_conn).await?;
 
-                state.cache_client.del::<(), _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
+                state.cache_client.del::<(), _>(join_cache_key(#entity_snake, id)).await?;
 
                 #(#stmts)*
             }
@@ -274,7 +272,7 @@ fn gen_join_delete_fn(
     related_to: &Ident,
     on_delete_hook: Option<Block>,
 ) -> impl ToTokens {
-    let entity_snake = heck::AsSnakeCase(entity.to_string());
+    let entity_snake = heck::AsSnakeCase(entity.to_string()).to_string();
     let related_from_snake_id = format!("{}_id", heck::AsSnakeCase(related_from.to_string()));
     let related_to_snake_id = format!("{}_id", heck::AsSnakeCase(related_to.to_string()));
 
@@ -284,7 +282,6 @@ fn gen_join_delete_fn(
     let operation_id = format!("delete_{entity_snake}_by_id");
     let description = format!("Deleted {entity_snake} by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
-    let redis_key = format!("{entity_snake}:{{}}.{{}}");
 
     let hook = on_delete_hook.map(|hook| {
         let stmts = hook.stmts;
@@ -318,7 +315,7 @@ fn gen_join_delete_fn(
             #hook
 
             #entity::delete_by_id(id).exec(&state.db_conn).await?;
-            state.cache_client.del::<(), _>(format!(#redis_key, id.0.simple(), id.1.simple())).await?;
+            state.cache_client.del::<(), _>(join_cache_key(#entity_snake, id)).await?;
 
             Ok(())
         }
@@ -531,6 +528,7 @@ pub fn crud_join_impl(input: TokenStream) -> TokenStream {
 
         use super::CsvStream;
         use crate::errors::{Error, Result};
+        use crate::redis_keys::join_cache_key;
         use crate::schemas::{ImportFile};
         use crate::service::{AppState, CachedJson};
 

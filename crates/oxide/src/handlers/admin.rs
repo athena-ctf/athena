@@ -1,6 +1,5 @@
-use crate::schemas::{
-    Admin, AdminModel, AuthAdmin, CreateAdminSchema, JsonResponse, Ticket, TicketModel,
-};
+use crate::jwt::AuthAdmin;
+use crate::schemas::{Admin, AdminModel, CreateAdminSchema, JsonResponse, Ticket, TicketModel};
 
 oxide_macros::crud!(Admin, single: [], optional: [], multiple: [Ticket]);
 

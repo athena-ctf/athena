@@ -1,12 +1,15 @@
 use entity::links::{TeamToAward, TeamToChallenge, TeamToHint};
 use fred::prelude::*;
 use sea_orm::prelude::*;
-use sea_orm::{DatabaseTransaction, QuerySelect};
+use sea_orm::QuerySelect;
 
 use crate::errors::Result;
+use crate::redis_keys::{
+    CHALLENGE_SOLVES, PLAYER_LAST_UPDATED, PLAYER_LEADERBOARD, TEAM_LEADERBOARD,
+};
 use crate::schemas::{Award, Challenge, Hint, Player, Submission, Team};
 
-pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Result<()> {
+pub async fn load_leaderboard(db: &DbConn, redis_pool: &RedisPool) -> Result<()> {
     let players = Player::find().all(db).await?;
     let mut leaderboard_player = Vec::with_capacity(players.len());
 
@@ -54,15 +57,16 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
         ));
     }
 
-    pool.zadd::<(), _, _>(
-        "leaderboard:player",
-        None,
-        None,
-        false,
-        false,
-        leaderboard_player,
-    )
-    .await?;
+    redis_pool
+        .zadd::<(), _, _>(
+            PLAYER_LEADERBOARD,
+            None,
+            None,
+            false,
+            false,
+            leaderboard_player,
+        )
+        .await?;
 
     let teams = Team::find().all(db).await?;
     let mut leaderboard_team = Vec::with_capacity(teams.len());
@@ -111,31 +115,46 @@ pub async fn load_leaderboard(db: &DatabaseTransaction, pool: &RedisPool) -> Res
         ));
     }
 
-    pool.zadd::<(), _, _>(
-        "leaderboard:team",
-        None,
-        None,
-        false,
-        false,
-        leaderboard_team,
-    )
-    .await?;
+    redis_pool
+        .zadd::<(), _, _>(TEAM_LEADERBOARD, None, None, false, false, leaderboard_team)
+        .await?;
 
     Ok(())
 }
 
-pub async fn load_challenge_solves(db: &DatabaseTransaction, pool: &RedisPool) -> Result<()> {
+pub async fn load_challenge_solves(db: &DbConn, pool: &RedisPool) -> Result<()> {
     for challenge in Challenge::find().all(db).await? {
         pool.hset::<(), _, _>(
-            "challenge:solves",
-            vec![(
+            CHALLENGE_SOLVES,
+            (
                 challenge.id.simple().to_string(),
                 challenge
                     .find_related(Submission)
                     .filter(entity::submission::Column::IsCorrect.eq(true))
                     .count(db)
                     .await?,
-            )],
+            ),
+        )
+        .await?;
+    }
+
+    Ok(())
+}
+
+pub async fn load_player_updates(db: &DbConn, pool: &RedisPool) -> Result<()> {
+    for (player_id, updated_at) in Player::find()
+        .select_only()
+        .columns([
+            entity::player::Column::Id,
+            entity::player::Column::UpdatedAt,
+        ])
+        .into_tuple::<(Uuid, DateTimeWithTimeZone)>()
+        .all(db)
+        .await?
+    {
+        pool.hset::<(), _, _>(
+            PLAYER_LAST_UPDATED,
+            (player_id.simple().to_string(), updated_at.timestamp()),
         )
         .await?;
     }

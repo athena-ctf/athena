@@ -7,9 +7,10 @@ use axum::middleware::Next;
 use axum::response::IntoResponse;
 use axum::Json;
 use chrono::Utc;
-use fred::prelude::HashesInterface;
+use fred::prelude::*;
 
-use crate::schemas::{JsonResponse, PlayerClaims};
+use crate::jwt::PlayerAccessClaims;
+use crate::schemas::JsonResponse;
 use crate::service::AppState;
 
 pub async fn middleware(
@@ -22,7 +23,7 @@ pub async fn middleware(
     let time = state.settings.read().await.ctf.time.clone();
 
     if req.uri().path().starts_with("/player") {
-        let claims = req.extensions().get::<PlayerClaims>().unwrap();
+        let claims = req.extensions().get::<PlayerAccessClaims>().unwrap();
         let is_banned = state
             .persistent_client
             .hget::<Option<()>, _, _>("player:is_banned", claims.sub.simple().to_string())

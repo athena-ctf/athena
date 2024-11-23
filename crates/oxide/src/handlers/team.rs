@@ -2,9 +2,11 @@ use std::collections::HashMap;
 
 use entity::links::{TeamToAward, TeamToChallenge, TeamToSubmission, TeamToUnlock};
 
+use crate::jwt::AuthPlayer;
+use crate::redis_keys::TEAM_LEADERBOARD;
 use crate::schemas::{
-    AuthPlayer, CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Tag,
-    TagSolves, Team, TeamDetails, TeamModel, TeamProfile,
+    CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Tag, TagSolves, Team,
+    TeamDetails, TeamModel, TeamProfile,
 };
 
 oxide_macros::crud!(Team, single: [], optional: [], multiple: [Invite, Player]);
@@ -15,11 +17,11 @@ async fn get_team_profile(
     db: &DbConn,
 ) -> Result<TeamProfile> {
     let rank = pool
-        .zrevrank("leaderboard:team", &team_model.id.simple().to_string())
+        .zrevrank(TEAM_LEADERBOARD, &team_model.id.simple().to_string())
         .await?;
 
     let score = pool
-        .zscore("leaderboard:team", &team_model.id.simple().to_string())
+        .zscore(TEAM_LEADERBOARD, &team_model.id.simple().to_string())
         .await?;
 
     let players = team_model.find_related(Player).all(db).await?;
@@ -105,7 +107,7 @@ pub async fn retrieve_team_by_teamname(
 
 #[utoipa::path(
     patch,
-    path = "/player/team/{id}/profile",
+    path = "/player/team/profile",
     params(("id" = Uuid, Path, description = "Id of entity")),
     operation_id = "update_team_profile",
     responses(
@@ -120,13 +122,26 @@ pub async fn retrieve_team_by_teamname(
 /// Retrieve team details by teamname
 pub async fn update_details(
     state: State<Arc<AppState>>,
-    Path(id): Path<Uuid>,
+    AuthPlayer(player_claims): AuthPlayer,
     Json(details): Json<CreateTeamSchema>,
 ) -> Result<Json<TeamModel>> {
-    let mut model = details.into_active_model();
-    model.id = ActiveValue::Set(id);
+    let Some(team_model) = Team::find_by_id(player_claims.team_id)
+        .one(&state.db_conn)
+        .await?
+    else {
+        return Err(Error::NotFound("Team not found".to_owned()));
+    };
 
-    Ok(model.update(&state.db_conn).await.map(Json)?)
+    if team_model.email != player_claims.email {
+        return Err(Error::Forbidden(
+            "Cannot edit team if not team owner".to_owned(),
+        ));
+    }
+
+    let mut active_team = details.into_active_model();
+    active_team.id = ActiveValue::Set(player_claims.team_id);
+
+    Ok(active_team.update(&state.db_conn).await.map(Json)?)
 }
 
 #[utoipa::path(

@@ -1,4 +1,4 @@
-use chrono::Local;
+use chrono::Utc;
 use sea_orm::{ActiveValue, IntoActiveModel, IntoActiveValue};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -35,7 +35,7 @@ impl IntoActiveModel<super::player::ActiveModel> for UpdateProfileSchema {
         super::player::ActiveModel {
             id: ActiveValue::NotSet,
             created_at: ActiveValue::NotSet,
-            updated_at: ActiveValue::Set(Local::now().fixed_offset()),
+            updated_at: ActiveValue::Set(Utc::now().fixed_offset()),
             email: ActiveValue::Set(self.email),
             username: ActiveValue::Set(self.username),
             password: ActiveValue::NotSet,

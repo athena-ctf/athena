@@ -144,6 +144,19 @@ type FileStorage struct {
 
 type Gcp map[string]interface{}
 
+type Jwt struct {
+	// AccessExpiryDuration corresponds to the JSON schema field
+	// "access_expiry_duration".
+	AccessExpiryDuration int `json:"access_expiry_duration"`
+
+	// RefreshExpiryDuration corresponds to the JSON schema field
+	// "refresh_expiry_duration".
+	RefreshExpiryDuration int `json:"refresh_expiry_duration"`
+
+	// Secret corresponds to the JSON schema field "secret".
+	Secret string `json:"secret"`
+}
+
 type Level struct {
 	// Color corresponds to the JSON schema field "color".
 	Color string `json:"color"`
@@ -190,17 +203,6 @@ type RemoteStorageOptions struct {
 	Expires int `json:"expires"`
 }
 
-type Session struct {
-	// CookieName corresponds to the JSON schema field "cookie_name".
-	CookieName string `json:"cookie_name"`
-
-	// ExpiryDuration corresponds to the JSON schema field "expiry_duration".
-	ExpiryDuration int `json:"expiry_duration"`
-
-	// Key corresponds to the JSON schema field "key".
-	Key string `json:"key"`
-}
-
 type Settings struct {
 	// Challenge corresponds to the JSON schema field "challenge".
 	Challenge Challenge `json:"challenge"`
@@ -220,14 +222,14 @@ type Settings struct {
 	// FileStorage corresponds to the JSON schema field "file_storage".
 	FileStorage FileStorage `json:"file_storage"`
 
+	// Jwt corresponds to the JSON schema field "jwt".
+	Jwt Jwt `json:"jwt"`
+
 	// Location corresponds to the JSON schema field "location".
 	Location *string `json:"location,omitempty"`
 
 	// Redis corresponds to the JSON schema field "redis".
 	Redis Redis `json:"redis"`
-
-	// Session corresponds to the JSON schema field "session".
-	Session Session `json:"session"`
 
 	// Smtp corresponds to the JSON schema field "smtp".
 	Smtp Smtp `json:"smtp"`

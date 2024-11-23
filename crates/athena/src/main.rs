@@ -29,7 +29,7 @@ pub async fn main() {
             tracing::info!("successfully written {} to {}", generate.kind, generate.out);
         }
 
-        cli::SubCommand::Create(create) => {}
+        cli::SubCommand::Create(_create) => {}
     }
 
     tracing::debug!("exited successfully");

@@ -1,8 +1,15 @@
-use chrono::Local;
-use sea_orm::{Iterable, QueryFilter, QueryOrder, QuerySelect};
+use std::time::Duration;
 
+use chrono::Utc;
+use sea_orm::{Iterable, QueryFilter, QueryOrder, QuerySelect};
+use tokio_cron_scheduler::Job;
+
+use crate::jwt::AuthPlayer;
+use crate::redis_keys::{
+    player_history_key, CHALLENGE_SOLVES, PLAYER_LEADERBOARD, TEAM_LEADERBOARD,
+};
 use crate::schemas::{
-    AuthPlayer, Challenge, ChallengeFile, ChallengeFileModel, ChallengeKindEnum, ChallengeModel,
+    Challenge, ChallengeFile, ChallengeFileModel, ChallengeKindEnum, ChallengeModel,
     ChallengeSummary, ChallengeTag, ChallengeTagModel, Container, ContainerModel,
     CreateChallengeSchema, Deployment, DeploymentModel, DetailedChallenge, File, FileModel, Flag,
     FlagModel, Hint, HintModel, HintSummary, Instance, JsonResponse, Player, PlayerChallengeState,
@@ -20,7 +27,7 @@ oxide_macros::crud!(
             state
                 .persistent_client
                 .zincrby::<(), _, _>(
-                    "leaderboard:player",
+                    PLAYER_LEADERBOARD,
                     -f64::from(model.points),
                     player_model.id.simple().to_string()
                 )
@@ -29,10 +36,10 @@ oxide_macros::crud!(
             state
                 .persistent_client
                 .lpush::<(), _, _>(
-                    format!("player:{}:history", player_model.id.simple()),
+                    player_history_key(player_model.id),
                     vec![format!(
                         "{}:{}",
-                        Local::now().timestamp_millis(),
+                        Utc::now().timestamp(),
                         -f64::from(model.points)
                     )]
                 )
@@ -41,7 +48,7 @@ oxide_macros::crud!(
             state
                 .persistent_client
                 .zincrby::<(), _, _>(
-                    "leaderboard:team",
+                    TEAM_LEADERBOARD,
                     -f64::from(model.points),
                     player_model.team_id.simple().to_string(),
                 )
@@ -54,7 +61,7 @@ oxide_macros::crud!(
                 state
                     .persistent_client
                     .zincrby::<(), _, _>(
-                        "leaderboard:player",
+                        PLAYER_LEADERBOARD,
                         f64::from(model.points - old_model.points),
                         player_model.id.simple().to_string()
                     )
@@ -63,10 +70,10 @@ oxide_macros::crud!(
                 state
                     .persistent_client
                     .lpush::<(), _, _>(
-                        format!("player:{}:history", player_model.id.simple()),
+                        player_history_key(player_model.id),
                         vec![format!(
                             "{}:{}",
-                            Local::now().timestamp_millis(),
+                            Utc::now().timestamp(),
                             f64::from(model.points - old_model.points)
                         )]
                     )
@@ -75,7 +82,7 @@ oxide_macros::crud!(
                 state
                     .persistent_client
                     .zincrby::<(), _, _>(
-                        "leaderboard:team",
+                        TEAM_LEADERBOARD,
                         f64::from(model.points - old_model.points),
                         player_model.team_id.simple().to_string(),
                     )
@@ -148,7 +155,7 @@ pub async fn player_challenges(
 
         let solves = state
             .persistent_client
-            .hget("challenge:solves", challenge.id.simple().to_string())
+            .hget(CHALLENGE_SOLVES, challenge.id.simple().to_string())
             .await?;
 
         summaries.push(ChallengeSummary {
@@ -255,15 +262,38 @@ pub async fn detailed_challenge(
 )]
 /// Start challenge containers by id
 pub async fn start_challenge(
-    AuthPlayer(player): AuthPlayer,
+    AuthPlayer(player_claims): AuthPlayer,
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<DeploymentModel>> {
-    state
+    let deployment_model = state
         .docker_manager
-        .deploy_challenge(id, player.sub)
-        .await
-        .map(Json)
+        .deploy_challenge(id, player_claims.sub)
+        .await?;
+
+    let state_cloned = state.clone();
+
+    state
+        .scheduler
+        .add(Job::new_one_shot_async(
+            Duration::from_secs(state.settings.read().await.challenge.container_timeout),
+            move |_uuid, _l| {
+                let state_cloned = state_cloned.clone();
+                let challenge_id = id;
+                let player_id = player_claims.sub;
+
+                Box::pin(async move {
+                    state_cloned
+                        .docker_manager
+                        .cleanup_challenge(challenge_id, player_id)
+                        .await
+                        .unwrap();
+                })
+            },
+        )?)
+        .await?;
+
+    Ok(Json(deployment_model))
 }
 
 #[utoipa::path(
@@ -283,9 +313,12 @@ pub async fn start_challenge(
 )]
 /// Stop challenge containers by id
 pub async fn stop_challenge(
-    AuthPlayer(player): AuthPlayer,
+    AuthPlayer(player_claims): AuthPlayer,
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
 ) -> Result<()> {
-    state.docker_manager.cleanup_challenge(id, player.sub).await
+    state
+        .docker_manager
+        .cleanup_challenge(id, player_claims.sub)
+        .await
 }

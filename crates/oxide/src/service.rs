@@ -8,6 +8,7 @@ use lettre::Tokio1Executor;
 use sea_orm::DbConn;
 use serde::Serialize;
 use tokio::sync::RwLock;
+use tokio_cron_scheduler::JobScheduler;
 
 use crate::docker::Manager;
 use crate::token::TokenManager;
@@ -19,8 +20,8 @@ pub struct AppState {
     pub cache_client: RedisPool,
     pub persistent_client: RedisPool,
     pub docker_manager: Manager,
-
     pub token_manager: TokenManager,
+    pub scheduler: JobScheduler,
 
     #[cfg(feature = "file-transport")]
     pub mail_transport: lettre::AsyncFileTransport<Tokio1Executor>,

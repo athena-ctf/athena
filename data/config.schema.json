@@ -9,8 +9,8 @@
     "discord",
     "docker",
     "file_storage",
+    "jwt",
     "redis",
-    "session",
     "smtp",
     "token"
   ],
@@ -33,14 +33,14 @@
     "file_storage": {
       "$ref": "#/definitions/FileStorage"
     },
+    "jwt": {
+      "$ref": "#/definitions/Jwt"
+    },
     "location": {
       "type": "string"
     },
     "redis": {
       "$ref": "#/definitions/Redis"
-    },
-    "session": {
-      "$ref": "#/definitions/Session"
     },
     "smtp": {
       "$ref": "#/definitions/Smtp"
@@ -83,7 +83,8 @@
         },
         "container_timeout": {
           "type": "integer",
-          "format": "int64"
+          "format": "uint64",
+          "minimum": 0.0
         },
         "max_attempts": {
           "type": "integer",
@@ -271,6 +272,29 @@
     "Gcp": {
       "type": "object"
     },
+    "Jwt": {
+      "type": "object",
+      "required": [
+        "access_expiry_duration",
+        "refresh_expiry_duration",
+        "secret"
+      ],
+      "properties": {
+        "access_expiry_duration": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "refresh_expiry_duration": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "secret": {
+          "type": "string"
+        }
+      }
+    },
     "Level": {
       "type": "object",
       "required": [
@@ -353,27 +377,6 @@
         "expires": {
           "type": "integer",
           "format": "int32"
-        }
-      }
-    },
-    "Session": {
-      "type": "object",
-      "required": [
-        "cookie_name",
-        "expiry_duration",
-        "key"
-      ],
-      "properties": {
-        "cookie_name": {
-          "type": "string"
-        },
-        "expiry_duration": {
-          "type": "integer",
-          "format": "uint64",
-          "minimum": 0.0
-        },
-        "key": {
-          "type": "string"
         }
       }
     },

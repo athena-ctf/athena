@@ -1,6 +1,7 @@
 use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use axum::Json;
+use axum_extra::extract::CookieJar;
 use thiserror::Error as ThisError;
 
 use crate::schemas::JsonResponse;
@@ -54,12 +55,6 @@ pub enum Error {
     #[error("Could not send request: {0:?}")]
     Http(#[from] reqwest::Error),
 
-    #[error("Bad Request: {0}")]
-    BadRequest(String),
-
-    #[error("Not Found: {0}")]
-    NotFound(String),
-
     #[error("Export error: {0:?}")]
     Sqlx(#[from] sea_orm::sqlx::Error),
 
@@ -68,6 +63,21 @@ pub enum Error {
 
     #[error("Multipart error: {0:?}")]
     Multipart(#[from] axum::extract::multipart::MultipartError),
+
+    #[error("Scheduler error: {0}")]
+    Scheduler(#[from] tokio_cron_scheduler::JobSchedulerError),
+
+    #[error("Bad Request: {0}")]
+    BadRequest(String),
+
+    #[error("Not Found: {0}")]
+    NotFound(String),
+
+    #[error("Unauthorized: {1}")]
+    Unauthorized(Option<CookieJar>, String),
+
+    #[error("Forbidden: {0}")]
+    Forbidden(String),
 }
 
 pub type Result<T, E = Error> = std::result::Result<T, E>;
@@ -78,12 +88,25 @@ impl IntoResponse for Error {
 
         match self {
             Self::BadRequest(message) => {
-                { (StatusCode::BAD_REQUEST, Json(JsonResponse { message })).into_response() }
-                    .into_response()
+                (StatusCode::BAD_REQUEST, Json(JsonResponse { message })).into_response()
             }
-
             Self::NotFound(message) => {
                 (StatusCode::NOT_FOUND, Json(JsonResponse { message })).into_response()
+            }
+            Self::Unauthorized(jar, message) => {
+                if let Some(jar) = jar {
+                    (
+                        StatusCode::UNAUTHORIZED,
+                        jar,
+                        Json(JsonResponse { message }),
+                    )
+                        .into_response()
+                } else {
+                    (StatusCode::UNAUTHORIZED, Json(JsonResponse { message })).into_response()
+                }
+            }
+            Self::Forbidden(message) => {
+                (StatusCode::FORBIDDEN, Json(JsonResponse { message })).into_response()
             }
 
             _ => (

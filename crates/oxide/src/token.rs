@@ -3,9 +3,10 @@ use fred::types::RedisMap;
 use ring::digest::{digest, SHA256};
 
 use crate::errors::Result;
+use crate::redis_keys::token_key;
 
 pub struct TokenManager {
-    pub redis: RedisPool,
+    pub redis_pool: RedisPool,
     pub max_retries: u8,
     pub expiration_duration: i64,
 }
@@ -65,9 +66,9 @@ impl TokenManager {
 
         let hashed_token = digest(&SHA256, token.as_bytes()).as_ref().to_vec();
 
-        self.redis
+        self.redis_pool
             .hset::<(), _, _>(
-                format!("{key}:{email}"),
+                token_key(key, email),
                 TokenValue {
                     token: hashed_token,
                     retries: self.max_retries.into(),
@@ -75,8 +76,8 @@ impl TokenManager {
             )
             .await?;
 
-        self.redis
-            .expire::<(), _>(format!("{key}:{email}"), self.expiration_duration)
+        self.redis_pool
+            .expire::<(), _>(token_key(key, email), self.expiration_duration)
             .await?;
 
         Ok(token)
@@ -89,23 +90,23 @@ impl TokenManager {
         token: &str,
     ) -> Result<TokenVerificationResult> {
         if let Some(token_value) = self
-            .redis
-            .hgetall::<Option<TokenValue>, _>(format!("{key}:{email}"))
+            .redis_pool
+            .hgetall::<Option<TokenValue>, _>(token_key(key, email))
             .await?
         {
             if token_value.retries == 0 {
-                self.redis.del::<(), _>(format!("{key}:{email}")).await?;
+                self.redis_pool.del::<(), _>(token_key(key, email)).await?;
                 return Ok(TokenVerificationResult::RetiesExceeded);
             }
 
             Ok(
                 if token_value.token == digest(&SHA256, token.as_bytes()).as_ref() {
-                    self.redis.del::<(), _>(format!("{key}:{email}")).await?;
+                    self.redis_pool.del::<(), _>(token_key(key, email)).await?;
 
                     TokenVerificationResult::Valid
                 } else {
-                    self.redis
-                        .hincrby::<(), _, _>(format!("{key}:{email}"), "retries", -1)
+                    self.redis_pool
+                        .hincrby::<(), _, _>(token_key(key, email), "retries", -1)
                         .await?;
 
                     TokenVerificationResult::Invalid

@@ -5,6 +5,7 @@ use axum::Json;
 use fred::prelude::*;
 
 use crate::errors::Result;
+use crate::redis_keys::{PLAYER_LEADERBOARD, TEAM_LEADERBOARD};
 use crate::schemas::{JsonResponse, LeaderboardRankings, Ranking, RankingQuery};
 use crate::service::AppState;
 
@@ -24,7 +25,7 @@ pub async fn player_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranki
     Ok(Json(
         state
             .persistent_client
-            .zrevrange::<Vec<(String, f64)>, _>("leaderboard:player", 0, 10, true)
+            .zrevrange::<Vec<(String, f64)>, _>(PLAYER_LEADERBOARD, 0, 10, true)
             .await?
             .into_iter()
             .map(|(k, v)| Ranking {
@@ -58,7 +59,7 @@ pub async fn player_rankings(
     let rankings = state
         .persistent_client
         .zrange::<Vec<(String, f64)>, _, _, _>(
-            "leaderboard:player",
+            PLAYER_LEADERBOARD,
             0,
             -1,
             None,
@@ -76,7 +77,7 @@ pub async fn player_rankings(
 
     let total = state
         .persistent_client
-        .zcard::<i64, _>("leaderboard:player")
+        .zcard::<i64, _>(PLAYER_LEADERBOARD)
         .await?;
 
     Ok(Json(LeaderboardRankings {
@@ -103,7 +104,7 @@ pub async fn team_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranking
     Ok(Json(
         state
             .persistent_client
-            .zrevrange::<Vec<(String, f64)>, _>("leaderboard:team", 0, 10, true)
+            .zrevrange::<Vec<(String, f64)>, _>(TEAM_LEADERBOARD, 0, 10, true)
             .await?
             .into_iter()
             .map(|(k, v)| Ranking {
@@ -137,7 +138,7 @@ pub async fn team_rankings(
     let rankings = state
         .persistent_client
         .zrange::<Vec<(String, f64)>, _, _, _>(
-            "leaderboard:team",
+            TEAM_LEADERBOARD,
             0,
             -1,
             None,
@@ -155,7 +156,7 @@ pub async fn team_rankings(
 
     let total = state
         .persistent_client
-        .zcard::<i64, _>("leaderboard:team")
+        .zcard::<i64, _>(TEAM_LEADERBOARD)
         .await?;
 
     Ok(Json(LeaderboardRankings {

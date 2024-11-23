@@ -13,7 +13,7 @@ pub enum Action {
 }
 
 pub fn can_do_action(action: Action, object: &str, role: usize) -> bool {
-    OBJECT_NAMES.binary_search(&object).map_or(false, |idx| {
+    OBJECT_NAMES.binary_search(&object).is_ok_and(|idx| {
         let required = REQUIREMENTS[idx][action as usize];
         role >= required
     })
