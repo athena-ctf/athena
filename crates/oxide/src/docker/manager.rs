@@ -4,6 +4,7 @@ use bollard::auth::DockerCredentials;
 use bollard::container::{Config, CreateContainerOptions, StartContainerOptions};
 use bollard::image::CreateImageOptions;
 use bollard::network::{ConnectNetworkOptions, CreateNetworkOptions};
+use bollard::secret::ContainerStateStatusEnum;
 use bollard::Docker;
 use chrono::{Duration, Utc};
 use entity::prelude::*;
@@ -92,11 +93,10 @@ impl Manager {
 
         let expires_at = Utc::now().fixed_offset()
             + Duration::seconds(self.container_timeout.try_into().unwrap());
-        let hostname = crate::gen_random(10);
 
         let txn = self.db.begin().await?;
 
-        let deployment_model = DeploymentModel::new(expires_at, challenge_id, &hostname, player_id)
+        let deployment_model = DeploymentModel::new(expires_at, challenge_id, player_id)
             .into_active_model()
             .insert(&txn)
             .await?;
@@ -113,7 +113,7 @@ impl Manager {
             }
         }
 
-        let flag = crate::gen_random(self.flag_len);
+        let flag = crate::utils::gen_random(self.flag_len);
 
         FlagModel::new(&flag, challenge_id, Some(player_id), false)
             .into_active_model()
@@ -169,10 +169,6 @@ impl Manager {
                             ),
                             exposed_ports: Some(exposed_ports),
                             cmd: Some(container.command.clone()),
-                            labels: Some(HashMap::from([(
-                                "caddy".to_owned(),
-                                format!("{hostname}.{}", ""),
-                            )])),
                             host_config: Some(bollard::models::HostConfig {
                                 port_bindings: Some(port_bindings),
                                 memory: Some(i64::from(container.memory_limit) * 1024 * 1024),
@@ -214,7 +210,7 @@ impl Manager {
 
                                         self.caddy_api
                                             .register(
-                                                &hostname,
+                                                &base62::encode(deployment_model.id.as_u128()),
                                                 &host_port,
                                                 &container.name,
                                                 &container_port,
@@ -248,45 +244,45 @@ impl Manager {
         Ok(deployment_model)
     }
 
-    pub async fn cleanup_expired_deployments(&self) -> Result<()> {
-        let txn = self.db.begin().await?;
+    // pub async fn cleanup_expired_deployments(&self) -> Result<()> {
+    //     let txn = self.db.begin().await?;
 
-        let expired_deployments = Deployment::find()
-            .filter(entity::deployment::Column::ExpiresAt.lt(Utc::now()))
-            .all(&txn)
-            .await?;
+    //     let expired_deployments = Deployment::find()
+    //         .filter(entity::deployment::Column::ExpiresAt.lt(Utc::now()))
+    //         .all(&txn)
+    //         .await?;
 
-        for deployment in expired_deployments {
-            let instances = deployment.find_related(Instance).all(&txn).await?;
+    //     for deployment in expired_deployments {
+    //         let instances = deployment.find_related(Instance).all(&txn).await?;
 
-            for instance in instances {
-                self.docker
-                    .stop_container(&instance.container_id, None)
-                    .await?;
+    //         for instance in instances {
+    //             self.docker
+    //                 .stop_container(&instance.container_id, None)
+    //                 .await?;
 
-                self.docker
-                    .remove_container(
-                        &instance.container_id,
-                        Some(bollard::container::RemoveContainerOptions {
-                            force: true,
-                            ..Default::default()
-                        }),
-                    )
-                    .await?;
+    //             self.docker
+    //                 .remove_container(
+    //                     &instance.container_id,
+    //                     Some(bollard::container::RemoveContainerOptions {
+    //                         force: true,
+    //                         ..Default::default()
+    //                     }),
+    //                 )
+    //                 .await?;
 
-                Instance::delete_by_id(instance.id).exec(&txn).await?;
-            }
-        }
+    //             Instance::delete_by_id(instance.id).exec(&txn).await?;
+    //         }
+    //     }
 
-        txn.commit().await?;
+    //     txn.commit().await?;
 
-        Ok(())
-    }
+    //     Ok(())
+    // }
 
     pub async fn cleanup_challenge(&self, challenge_id: Uuid, player_id: Uuid) -> Result<()> {
         let txn = self.db.begin().await?;
 
-        let Some(deployment) = Deployment::find()
+        let Some(deployment_model) = Deployment::find()
             .filter(entity::deployment::Column::ChallengeId.eq(challenge_id))
             .filter(entity::deployment::Column::PlayerId.eq(player_id))
             .one(&txn)
@@ -295,15 +291,15 @@ impl Manager {
             return Err(Error::NotFound("Deployment not found".to_owned()));
         };
 
-        let instances = deployment.find_related(Instance).all(&txn).await?;
-        for instance in instances {
+        let instance_models = deployment_model.find_related(Instance).all(&txn).await?;
+        for instance_model in instance_models {
             self.docker
-                .stop_container(&instance.container_id, None)
+                .stop_container(&instance_model.container_id, None)
                 .await?;
 
             self.docker
                 .remove_container(
-                    &instance.container_id,
+                    &instance_model.container_id,
                     Some(bollard::container::RemoveContainerOptions {
                         force: true,
                         ..Default::default()
@@ -311,10 +307,13 @@ impl Manager {
                 )
                 .await?;
 
-            Instance::delete_by_id(instance.id).exec(&txn).await?;
+            Instance::delete_by_id(instance_model.id).exec(&txn).await?;
 
             self.caddy_api
-                .remove(&deployment.hostname, &instance.container_name)
+                .remove(
+                    &base62::encode(deployment_model.id.as_u128()),
+                    &instance_model.container_name,
+                )
                 .await?;
         }
 
@@ -334,5 +333,19 @@ impl Manager {
         txn.commit().await?;
 
         Ok(())
+    }
+
+    pub async fn get_container_status(
+        &self,
+        container_id: &str,
+    ) -> Result<ContainerStateStatusEnum> {
+        let container_details = self.docker.inspect_container(container_id, None).await?;
+
+        Ok(container_details
+            .state
+            .and_then(|state| state.status)
+            .ok_or(Error::BadRequest(
+                "Could not get state of container".to_owned(),
+            ))?)
     }
 }

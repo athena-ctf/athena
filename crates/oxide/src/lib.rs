@@ -29,10 +29,12 @@ use crate::errors::{Error, Result};
 use crate::service::{AppState, Settings};
 use crate::token::TokenManager;
 
-pub fn gen_random(size: usize) -> String {
-    std::iter::repeat_with(fastrand::alphanumeric)
-        .take(size)
-        .collect()
+pub mod utils {
+    pub fn gen_random(size: usize) -> String {
+        std::iter::repeat_with(fastrand::alphanumeric)
+            .take(size)
+            .collect()
+    }
 }
 
 pub async fn start(settings: Settings) -> Result<()> {

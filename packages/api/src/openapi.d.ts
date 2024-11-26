@@ -2227,6 +2227,57 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/player/invite/destroy/{value}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Destroy invite */
+    delete: operations["destroy_invite"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/player/invite/new": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create new invite */
+    post: operations["create_new_invite"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/player/invite/update/{value}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Update invite */
+    patch: operations["update_invite"];
+    trace?: never;
+  };
   "/player/leaderboard/rankings": {
     parameters: {
       query?: never;
@@ -2329,23 +2380,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/player/team/profile": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    /** Retrieve team details by teamname */
-    patch: operations["update_team_profile"];
-    trace?: never;
-  };
   "/player/team/summary": {
     parameters: {
       query?: never;
@@ -2361,6 +2395,23 @@ export interface paths {
     options?: never;
     head?: never;
     patch?: never;
+    trace?: never;
+  };
+  "/player/team/update-profile": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Retrieve team details by teamname */
+    patch: operations["update_team_profile"];
     trace?: never;
   };
   "/player/team/{team_name}/profile": {
@@ -2489,6 +2540,10 @@ export interface components {
       challenge: components["schemas"]["ChallengeModel"];
       file: components["schemas"]["FileModel"];
     };
+    ChallengeInstance: {
+      instance_model: components["schemas"]["InstanceModel"];
+      state: components["schemas"]["ContainerStateEnum"];
+    };
     /** @enum {string} */
     ChallengeKindEnum: "containerized" | "regex_flag" | "static_flag";
     ChallengeModel: {
@@ -2564,6 +2619,16 @@ export interface components {
     ContainerRelations: {
       challenge: components["schemas"]["ChallengeModel"];
     };
+    /** @enum {string} */
+    ContainerStateEnum:
+      | "empty"
+      | "created"
+      | "running"
+      | "paused"
+      | "restarting"
+      | "removing"
+      | "exited"
+      | "dead";
     CreateAdminSchema: {
       password: string;
       role: components["schemas"]["RoleEnum"];
@@ -2621,7 +2686,6 @@ export interface components {
       challenge_id: string;
       /** Format: date-time */
       expires_at: string;
-      hostname: string;
       /** Format: uuid */
       player_id: string;
     };
@@ -2651,6 +2715,8 @@ export interface components {
       port_mapping: string[];
     };
     CreateInviteSchema: {
+      /** Format: date-time */
+      expires_at: string;
       /** Format: int32 */
       remaining: number;
       /** Format: uuid */
@@ -2717,7 +2783,6 @@ export interface components {
       created_at: string;
       /** Format: date-time */
       expires_at: string;
-      hostname: string;
       /** Format: uuid */
       id: string;
       /** Format: uuid */
@@ -2727,13 +2792,13 @@ export interface components {
     };
     DeploymentRelations: {
       challenge: components["schemas"]["ChallengeModel"];
-      instances: components["schemas"]["InviteModel"][];
+      instances: components["schemas"]["InstanceModel"][];
       player: components["schemas"]["PlayerModel"];
     };
     DetailedChallenge: {
       files: components["schemas"]["FileModel"][];
       hints: components["schemas"]["HintSummary"][];
-      instances?: components["schemas"]["InviteModel"][] | null;
+      instances?: components["schemas"]["ChallengeInstance"][] | null;
     };
     FileModel: {
       /** Format: date-time */
@@ -2793,12 +2858,27 @@ export interface components {
       id: string;
       status: components["schemas"]["UnlockStatus"];
     };
+    InstanceModel: {
+      container_id: string;
+      container_name: string;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: uuid */
+      deployment_id: string;
+      /** Format: uuid */
+      id: string;
+      port_mapping: string[];
+      /** Format: date-time */
+      updated_at: string;
+    };
     InstanceRelations: {
       deployment: components["schemas"]["DeploymentModel"];
     };
     InviteModel: {
       /** Format: date-time */
       created_at: string;
+      /** Format: date-time */
+      expires_at: string;
       /** Format: uuid */
       id: string;
       /** Format: int32 */
@@ -2832,6 +2912,38 @@ export interface components {
     LoginRequest: {
       password: string;
       username: string;
+    };
+    LoginResponse_AdminModel: {
+      access_token: string;
+      model: {
+        /** Format: date-time */
+        created_at: string;
+        /** Format: uuid */
+        id: string;
+        role: components["schemas"]["RoleEnum"];
+        /** Format: date-time */
+        updated_at: string;
+        username: string;
+      };
+    };
+    LoginResponse_PlayerModel: {
+      access_token: string;
+      model: {
+        avatar_url: string;
+        /** Format: uuid */
+        ban_id?: string | null;
+        /** Format: date-time */
+        created_at: string;
+        discord_id?: string | null;
+        email: string;
+        /** Format: uuid */
+        id: string;
+        /** Format: uuid */
+        team_id: string;
+        /** Format: date-time */
+        updated_at: string;
+        username: string;
+      };
     };
     NotificationModel: {
       content: string;
@@ -3021,6 +3133,7 @@ export interface components {
     };
     TeamDetails: {
       awards: components["schemas"]["AwardModel"][];
+      invites: components["schemas"]["InviteModel"][];
       profile: components["schemas"]["TeamProfile"];
       submissions: components["schemas"]["SubmissionModel"][];
       unlocks: components["schemas"]["UnlockModel"][];
@@ -3106,6 +3219,12 @@ export interface components {
           kind: "unlocked";
           value: string;
         };
+    UpdateInviteSchema: {
+      /** Format: date-time */
+      expires_at?: string | null;
+      /** Format: int32 */
+      remaining?: number | null;
+    };
     UpdateProfileSchema: {
       discord_id?: string | null;
       email: string;
@@ -8577,7 +8696,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["InviteModel"][];
+          "application/json": components["schemas"]["InstanceModel"][];
         };
       };
       /** @description Action is permissible after login */
@@ -8628,7 +8747,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["InviteModel"];
+          "application/json": components["schemas"]["InstanceModel"];
         };
       };
       /** @description Invalid request body format */
@@ -8797,7 +8916,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["InviteModel"];
+          "application/json": components["schemas"]["InstanceModel"];
         };
       };
       /** @description Invalid parameters format */
@@ -8869,7 +8988,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["InviteModel"];
+          "application/json": components["schemas"]["InstanceModel"];
         };
       };
       /** @description Invalid parameters/request body format */
@@ -13642,7 +13761,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["AdminModel"];
+          "application/json": components["schemas"]["LoginResponse_AdminModel"];
         };
       };
       /** @description Invalid request body format */
@@ -13681,11 +13800,7 @@ export interface operations {
       path?: never;
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["LoginRequest"];
-      };
-    };
+    requestBody?: never;
     responses: {
       /** @description user logged in successfully */
       200: {
@@ -13693,7 +13808,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["AdminModel"];
+          "application/json": components["schemas"]["JsonResponse"];
         };
       };
       /** @description Invalid request body format */
@@ -14050,7 +14165,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["PlayerModel"];
+          "application/json": components["schemas"]["LoginResponse_PlayerModel"];
         };
       };
       /** @description Invalid request body format */
@@ -14089,11 +14204,7 @@ export interface operations {
       path?: never;
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["LoginRequest"];
-      };
-    };
+    requestBody?: never;
     responses: {
       /** @description Player logged in successfully */
       200: {
@@ -14101,7 +14212,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["PlayerModel"];
+          "application/json": components["schemas"]["JsonResponse"];
         };
       };
       /** @description Invalid request body format */
@@ -14575,6 +14686,186 @@ export interface operations {
       };
     };
   };
+  destroy_invite: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description The id of invite */
+        value: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Destroyed invite successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  create_new_invite: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateInviteSchema"];
+      };
+    };
+    responses: {
+      /** @description Created new invite successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["InviteModel"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  update_invite: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description The value of invite */
+        value: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateInviteSchema"];
+      };
+    };
+    responses: {
+      /** @description Updated invite successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["InviteModel"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
   player_rankings: {
     parameters: {
       query: {
@@ -14930,32 +15221,25 @@ export interface operations {
       };
     };
   };
-  update_team_profile: {
+  retrieve_team_summary: {
     parameters: {
       query?: never;
       header?: never;
-      path: {
-        /** @description Id of entity */
-        id: string;
-      };
+      path?: never;
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateTeamSchema"];
-      };
-    };
+    requestBody?: never;
     responses: {
-      /** @description Retrieved team details by id successfully */
+      /** @description Retrieved team summary by id successfully */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["TeamModel"];
+          "application/json": components["schemas"]["TeamDetails"];
         };
       };
-      /** @description Invalid parameters format */
+      /** @description Invalid parameters/request body format */
       400: {
         headers: {
           [name: string]: unknown;
@@ -15002,25 +15286,32 @@ export interface operations {
       };
     };
   };
-  retrieve_team_summary: {
+  update_team_profile: {
     parameters: {
       query?: never;
       header?: never;
-      path?: never;
+      path: {
+        /** @description Id of entity */
+        id: string;
+      };
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTeamSchema"];
+      };
+    };
     responses: {
-      /** @description Retrieved team summary by id successfully */
+      /** @description Retrieved team details by id successfully */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["TeamDetails"];
+          "application/json": components["schemas"]["TeamModel"];
         };
       };
-      /** @description Invalid parameters/request body format */
+      /** @description Invalid parameters format */
       400: {
         headers: {
           [name: string]: unknown;

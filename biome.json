@@ -14,7 +14,8 @@
         "all": false
       },
       "style": {
-        "useNodejsImportProtocol": "off"
+        "useNodejsImportProtocol": "off",
+        "noParameterAssign": "off"
       },
       "suspicious": {
         "noExplicitAny": "off"

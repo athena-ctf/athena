@@ -10,15 +10,19 @@ oxide_macros::crud_join!(
     Player,
     Hint,
     on_delete: {
-        let player_model = Player::find_by_id(model.player_id).one(&state.db_conn).await?.unwrap(); // TODO: remove unwrap
-        let hint_model = Hint::find_by_id(model.hint_id).one(&state.db_conn).await?.unwrap();
+        let Some(player_model) = Player::find_by_id(model.player_id).one(&state.db_conn).await? else {
+            return Err(Error::NotFound("Player not found".to_owned()))
+        };
+        let Some(hint_model) = Hint::find_by_id(model.hint_id).one(&state.db_conn).await? else {
+            return Err(Error::NotFound("Hint not found".to_owned()))
+        };
 
         state
             .persistent_client
             .zincrby::<(), _, _>(
                 PLAYER_LEADERBOARD,
                 f64::from(hint_model.cost),
-                player_model.id.simple().to_string()
+                player_model.id.to_string()
             )
             .await?;
 
@@ -39,7 +43,7 @@ oxide_macros::crud_join!(
             .zincrby::<(), _, _>(
                 TEAM_LEADERBOARD,
                 f64::from(hint_model.cost),
-                player_model.team_id.simple().to_string(),
+                player_model.team_id.to_string(),
             )
             .await?;
     }

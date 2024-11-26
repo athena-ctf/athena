@@ -6578,7 +6578,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/InviteModel"
+                    "$ref": "#/components/schemas/InstanceModel"
                   }
                 }
               }
@@ -6638,7 +6638,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InviteModel"
+                  "$ref": "#/components/schemas/InstanceModel"
                 }
               }
             }
@@ -6842,7 +6842,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InviteModel"
+                  "$ref": "#/components/schemas/InstanceModel"
                 }
               }
             }
@@ -6933,7 +6933,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InviteModel"
+                  "$ref": "#/components/schemas/InstanceModel"
                 }
               }
             }
@@ -12713,7 +12713,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdminModel"
+                  "$ref": "#/components/schemas/LoginResponse_AdminModel"
                 }
               }
             }
@@ -12761,23 +12761,13 @@
         ],
         "summary": "Refresh admin token",
         "operationId": "admin_token_refresh",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "user logged in successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdminModel"
+                  "$ref": "#/components/schemas/JsonResponse"
                 }
               }
             }
@@ -13233,7 +13223,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerModel"
+                  "$ref": "#/components/schemas/LoginResponse_PlayerModel"
                 }
               }
             }
@@ -13281,23 +13271,13 @@
         ],
         "summary": "Refresh player token",
         "operationId": "player_token_refresh",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "Player logged in successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerModel"
+                  "$ref": "#/components/schemas/JsonResponse"
                 }
               }
             }
@@ -13856,6 +13836,224 @@
         }
       }
     },
+    "/player/invite/destroy/{value}": {
+      "delete": {
+        "tags": [
+          "invite"
+        ],
+        "summary": "Destroy invite",
+        "operationId": "destroy_invite",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "path",
+            "description": "The id of invite",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Destroyed invite successfully"
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/player/invite/new": {
+      "post": {
+        "tags": [
+          "invite"
+        ],
+        "summary": "Create new invite",
+        "operationId": "create_new_invite",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInviteSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Created new invite successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/player/invite/update/{value}": {
+      "patch": {
+        "tags": [
+          "invite"
+        ],
+        "summary": "Update invite",
+        "operationId": "update_invite",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "path",
+            "description": "The value of invite",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInviteSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated invite successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/player/leaderboard/rankings": {
       "post": {
         "tags": [
@@ -14285,48 +14483,26 @@
         }
       }
     },
-    "/player/team/profile": {
-      "patch": {
+    "/player/team/summary": {
+      "get": {
         "tags": [
           "team"
         ],
-        "summary": "Retrieve team details by teamname",
-        "operationId": "update_team_profile",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTeamSchema"
-              }
-            }
-          },
-          "required": true
-        },
+        "summary": "Retrieve team summary",
+        "operationId": "retrieve_team_summary",
         "responses": {
           "200": {
-            "description": "Retrieved team details by id successfully",
+            "description": "Retrieved team summary by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeamModel"
+                  "$ref": "#/components/schemas/TeamDetails"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid parameters format",
+            "description": "Invalid parameters/request body format",
             "content": {
               "application/json": {
                 "schema": {
@@ -14378,26 +14554,48 @@
         }
       }
     },
-    "/player/team/summary": {
-      "get": {
+    "/player/team/update-profile": {
+      "patch": {
         "tags": [
           "team"
         ],
-        "summary": "Retrieve team summary",
-        "operationId": "retrieve_team_summary",
+        "summary": "Retrieve team details by teamname",
+        "operationId": "update_team_profile",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of entity",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeamSchema"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Retrieved team summary by id successfully",
+            "description": "Retrieved team details by id successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeamDetails"
+                  "$ref": "#/components/schemas/TeamModel"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid parameters/request body format",
+            "description": "Invalid parameters format",
             "content": {
               "application/json": {
                 "schema": {
@@ -14915,6 +15113,21 @@
           }
         }
       },
+      "ChallengeInstance": {
+        "type": "object",
+        "required": [
+          "instance_model",
+          "state"
+        ],
+        "properties": {
+          "instance_model": {
+            "$ref": "#/components/schemas/InstanceModel"
+          },
+          "state": {
+            "$ref": "#/components/schemas/ContainerStateEnum"
+          }
+        }
+      },
       "ChallengeKindEnum": {
         "type": "string",
         "enum": [
@@ -15219,6 +15432,19 @@
           }
         }
       },
+      "ContainerStateEnum": {
+        "type": "string",
+        "enum": [
+          "empty",
+          "created",
+          "running",
+          "paused",
+          "restarting",
+          "removing",
+          "exited",
+          "dead"
+        ]
+      },
       "CreateAdminSchema": {
         "type": "object",
         "required": [
@@ -15411,7 +15637,6 @@
         "required": [
           "expires_at",
           "challenge_id",
-          "hostname",
           "player_id"
         ],
         "properties": {
@@ -15422,9 +15647,6 @@
           "expires_at": {
             "type": "string",
             "format": "date-time"
-          },
-          "hostname": {
-            "type": "string"
           },
           "player_id": {
             "type": "string",
@@ -15522,9 +15744,14 @@
         "type": "object",
         "required": [
           "remaining",
+          "expires_at",
           "team_id"
         ],
         "properties": {
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
           "remaining": {
             "type": "integer",
             "format": "int32"
@@ -15726,7 +15953,6 @@
           "updated_at",
           "expires_at",
           "challenge_id",
-          "hostname",
           "player_id"
         ],
         "properties": {
@@ -15741,9 +15967,6 @@
           "expires_at": {
             "type": "string",
             "format": "date-time"
-          },
-          "hostname": {
-            "type": "string"
           },
           "id": {
             "type": "string",
@@ -15773,7 +15996,7 @@
           "instances": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/InviteModel"
+              "$ref": "#/components/schemas/InstanceModel"
             }
           },
           "player": {
@@ -15806,7 +16029,7 @@
               "null"
             ],
             "items": {
-              "$ref": "#/components/schemas/InviteModel"
+              "$ref": "#/components/schemas/ChallengeInstance"
             }
           }
         }
@@ -16004,6 +16227,48 @@
           }
         }
       },
+      "InstanceModel": {
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "container_id",
+          "container_name",
+          "port_mapping",
+          "deployment_id"
+        ],
+        "properties": {
+          "container_id": {
+            "type": "string"
+          },
+          "container_name": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deployment_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "port_mapping": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "InstanceRelations": {
         "type": "object",
         "required": [
@@ -16022,10 +16287,15 @@
           "created_at",
           "updated_at",
           "remaining",
+          "expires_at",
           "team_id"
         ],
         "properties": {
           "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires_at": {
             "type": "string",
             "format": "date-time"
           },
@@ -16127,6 +16397,112 @@
           },
           "username": {
             "type": "string"
+          }
+        }
+      },
+      "LoginResponse_AdminModel": {
+        "type": "object",
+        "required": [
+          "model",
+          "access_token"
+        ],
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "model": {
+            "type": "object",
+            "required": [
+              "id",
+              "created_at",
+              "updated_at",
+              "role",
+              "username"
+            ],
+            "properties": {
+              "created_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "role": {
+                "$ref": "#/components/schemas/RoleEnum"
+              },
+              "updated_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "username": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "LoginResponse_PlayerModel": {
+        "type": "object",
+        "required": [
+          "model",
+          "access_token"
+        ],
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "model": {
+            "type": "object",
+            "required": [
+              "id",
+              "created_at",
+              "updated_at",
+              "team_id",
+              "username",
+              "email",
+              "avatar_url"
+            ],
+            "properties": {
+              "avatar_url": {
+                "type": "string"
+              },
+              "ban_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uuid"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "discord_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "email": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "team_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "updated_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "username": {
+                "type": "string"
+              }
+            }
           }
         }
       },
@@ -16831,13 +17207,20 @@
           "profile",
           "submissions",
           "unlocks",
-          "awards"
+          "awards",
+          "invites"
         ],
         "properties": {
           "awards": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AwardModel"
+            }
+          },
+          "invites": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InviteModel"
             }
           },
           "profile": {
@@ -17139,6 +17522,25 @@
             }
           }
         ]
+      },
+      "UpdateInviteSchema": {
+        "type": "object",
+        "properties": {
+          "expires_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "remaining": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32"
+          }
+        }
       },
       "UpdateProfileSchema": {
         "type": "object",

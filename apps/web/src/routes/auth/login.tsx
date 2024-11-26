@@ -21,9 +21,9 @@ import { PasswordInput } from "@repo/ui/components/password-input";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { fetchClient } from "@repo/api";
 import { useAuthStore } from "@/stores/auth";
 import { Loader2 } from "lucide-react";
+import { apiClient } from "@/utils/api-client";
 
 const loginSearchSchema = z.object({
   next: z.string().url().catch(""),
@@ -47,16 +47,16 @@ export default function Index() {
 
   const navigate = useNavigate();
   const { next } = Route.useSearch();
-  const { login } = useAuthStore();
+  const { setTokens } = useAuthStore.getState();
 
   const onSubmit = async (body: z.infer<typeof loginSchema>) => {
-    const resp = await fetchClient.POST("/auth/player/login", { body });
+    const resp = await apiClient.POST("/auth/player/token", { body });
 
     if (resp.error) {
       toast.error("Could not login");
       console.error(resp.error.message);
     } else {
-      login(resp.data);
+      setTokens(resp.data.access_token); // TODO: store player model also
       toast.success("Logged in successfully");
       navigate({ to: next });
     }

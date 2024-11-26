@@ -26,7 +26,7 @@ pub async fn middleware(
         let claims = req.extensions().get::<PlayerAccessClaims>().unwrap();
         let is_banned = state
             .persistent_client
-            .hget::<Option<()>, _, _>("player:is_banned", claims.sub.simple().to_string())
+            .hget::<Option<()>, _, _>("player:is_banned", claims.sub.to_string())
             .await
             .map_err(|err| {
                 (

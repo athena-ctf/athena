@@ -148,7 +148,7 @@ pub async fn register(
             None,
             false,
             false,
-            (0.0, &player_model.id.simple().to_string()),
+            (0.0, &player_model.id.to_string()),
         )
         .await?;
 
@@ -160,7 +160,7 @@ pub async fn register(
             None,
             false,
             false,
-            (0.0, &team_id.simple().to_string()),
+            (0.0, &team_id.to_string()),
         )
         .await?;
 
@@ -335,7 +335,7 @@ pub async fn reset_password(
         .hset::<(), _, _>(
             PLAYER_LAST_UPDATED,
             (
-                player_model.id.simple().to_string(),
+                player_model.id.to_string(),
                 player_model.updated_at.timestamp(),
             ),
         )
@@ -406,7 +406,7 @@ pub async fn reset_password_send_token(
     request_body = LoginRequest,
     operation_id = "player_token",
     responses(
-        (status = 200, description = "Player logged in successfully", body = PlayerModel),
+        (status = 200, description = "Player logged in successfully", body = LoginResponse<PlayerModel>),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 404, description = "User not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
@@ -469,10 +469,9 @@ pub async fn token(
 #[utoipa::path(
     post,
     path = "/auth/player/token/refresh",
-    request_body = LoginRequest,
     operation_id = "player_token_refresh",
     responses(
-        (status = 200, description = "Player logged in successfully", body = PlayerModel),
+        (status = 200, description = "Player logged in successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 404, description = "User not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
@@ -483,7 +482,7 @@ pub async fn token(
 pub async fn token_refresh(
     state: State<Arc<AppState>>,
     jar: CookieJar,
-) -> Result<(CookieJar, Json<String>)> {
+) -> Result<(CookieJar, Json<JsonResponse>)> {
     let Some(refresh_token) = jar.get("refresh_token") else {
         return Err(Error::Unauthorized(
             None,
@@ -502,7 +501,7 @@ pub async fn token_refresh(
         .persistent_client
         .hexists::<u8, _, _>(
             REFRESH_TOKEN_BLACKLIST,
-            refresh_claims.jti.simple().to_string(),
+            refresh_claims.jti.to_string(),
         )
         .await?;
 
@@ -517,7 +516,7 @@ pub async fn token_refresh(
         .persistent_client
         .hset::<(), _, _>(
             REFRESH_TOKEN_BLACKLIST,
-            (refresh_claims.jti.simple().to_string(), 0),
+            (refresh_claims.jti.to_string(), 0),
         )
         .await?;
 
@@ -534,7 +533,7 @@ pub async fn token_refresh(
                 .try_into()
                 .unwrap(),
             None,
-            refresh_claims.jti.simple().to_string(),
+            refresh_claims.jti.to_string(),
         )
         .await?;
 
@@ -564,5 +563,10 @@ pub async fn token_refresh(
                 .unwrap(),
         );
 
-    Ok((jar.add(cookie), Json(access_token)))
+    Ok((
+        jar.add(cookie),
+        Json(JsonResponse {
+            message: access_token,
+        }),
+    ))
 }

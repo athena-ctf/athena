@@ -9,8 +9,8 @@ use crate::redis_keys::{
     player_history_key, CHALLENGE_SOLVES, PLAYER_LEADERBOARD, TEAM_LEADERBOARD,
 };
 use crate::schemas::{
-    Challenge, ChallengeFile, ChallengeFileModel, ChallengeKindEnum, ChallengeModel,
-    ChallengeSummary, ChallengeTag, ChallengeTagModel, Container, ContainerModel,
+    Challenge, ChallengeFile, ChallengeFileModel, ChallengeInstance, ChallengeKindEnum,
+    ChallengeModel, ChallengeSummary, ChallengeTag, ChallengeTagModel, Container, ContainerModel,
     CreateChallengeSchema, Deployment, DeploymentModel, DetailedChallenge, File, FileModel, Flag,
     FlagModel, Hint, HintModel, HintSummary, Instance, JsonResponse, Player, PlayerChallengeState,
     PlayerChallenges, PlayerModel, Submission, SubmissionModel, Tag, TagModel, Unlock, UnlockModel,
@@ -29,7 +29,7 @@ oxide_macros::crud!(
                 .zincrby::<(), _, _>(
                     PLAYER_LEADERBOARD,
                     -f64::from(model.points),
-                    player_model.id.simple().to_string()
+                    player_model.id.to_string()
                 )
                 .await?;
 
@@ -50,7 +50,7 @@ oxide_macros::crud!(
                 .zincrby::<(), _, _>(
                     TEAM_LEADERBOARD,
                     -f64::from(model.points),
-                    player_model.team_id.simple().to_string(),
+                    player_model.team_id.to_string(),
                 )
                 .await?;
         }
@@ -63,7 +63,7 @@ oxide_macros::crud!(
                     .zincrby::<(), _, _>(
                         PLAYER_LEADERBOARD,
                         f64::from(model.points - old_model.points),
-                        player_model.id.simple().to_string()
+                        player_model.id.to_string()
                     )
                     .await?;
 
@@ -84,7 +84,7 @@ oxide_macros::crud!(
                     .zincrby::<(), _, _>(
                         TEAM_LEADERBOARD,
                         f64::from(model.points - old_model.points),
-                        player_model.team_id.simple().to_string(),
+                        player_model.team_id.to_string(),
                     )
                     .await?;
             }
@@ -155,7 +155,7 @@ pub async fn player_challenges(
 
         let solves = state
             .persistent_client
-            .hget(CHALLENGE_SOLVES, challenge.id.simple().to_string())
+            .hget(CHALLENGE_SOLVES, challenge.id.to_string())
             .await?;
 
         summaries.push(ChallengeSummary {
@@ -224,12 +224,24 @@ pub async fn detailed_challenge(
         .one(&state.db_conn)
         .await?
     {
-        Some(
-            deployment_model
-                .find_related(Instance)
-                .all(&state.db_conn)
-                .await?,
-        )
+        let mut instances = Vec::new();
+
+        for instance_model in deployment_model
+            .find_related(Instance)
+            .all(&state.db_conn)
+            .await?
+        {
+            instances.push(ChallengeInstance {
+                state: state
+                    .docker_manager
+                    .get_container_status(&instance_model.container_id)
+                    .await?
+                    .into(),
+                instance_model,
+            });
+        }
+
+        Some(instances)
     } else {
         None
     };

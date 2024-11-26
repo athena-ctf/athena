@@ -1,6 +1,5 @@
 import { useResetStore } from "@/stores/reset";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fetchClient } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import {
   Form,
@@ -15,6 +14,7 @@ import { PasswordInput } from "@repo/ui/components/password-input";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { apiClient } from "@/utils/api-client";
 
 const schema = z
   .object({
@@ -38,7 +38,7 @@ export function NewPasswordForm({
   const navigate = useNavigate();
 
   const onFormSubmit = async (values: z.infer<typeof schema>) => {
-    const resp = await fetchClient.POST("/auth/player/reset-password", {
+    const resp = await apiClient.POST("/auth/player/reset-password", {
       body: {
         email,
         token,

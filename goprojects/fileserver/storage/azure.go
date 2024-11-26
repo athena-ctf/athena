@@ -15,11 +15,18 @@ type AzPresigner struct {
 	Client *azblob.Client
 }
 
-func (presigner AzPresigner) Download(ctx context.Context, filename, displayName string) (string, error) {
-	blobClient := presigner.Client.ServiceClient().NewContainerClient(config.Config.FileStorage.RemoteStorageOptions.BucketName).NewBlobClient(filename)
+func (presigner AzPresigner) Download(
+	ctx context.Context,
+	filename, displayName string,
+) (string, error) {
+	blobClient := presigner.Client.ServiceClient().
+		NewContainerClient(config.Config.FileStorage.RemoteStorageOptions.BucketName).
+		NewBlobClient(filename)
 
 	permissions := sas.BlobPermissions{Read: true}
-	expiry := time.Now().Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)).UTC()
+	expiry := time.Now().
+		Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)).
+		UTC()
 
 	urlParts, err := azblob.ParseURL(blobClient.URL())
 	if err != nil {
@@ -31,7 +38,10 @@ func (presigner AzPresigner) Download(ctx context.Context, filename, displayName
 		t = time.Time{}
 	}
 
-	creds, err := azblob.NewSharedKeyCredential(config.Config.FileStorage.Azure.AccountName, config.Config.FileStorage.Azure.AccountKey)
+	creds, err := azblob.NewSharedKeyCredential(
+		config.Config.FileStorage.Azure.AccountName,
+		config.Config.FileStorage.Azure.AccountKey,
+	)
 	if err != nil {
 		return "", err
 	}
@@ -56,10 +66,14 @@ func (presigner AzPresigner) Download(ctx context.Context, filename, displayName
 }
 
 func (presigner AzPresigner) Upload(ctx context.Context, filename string) (string, error) {
-	blobClient := presigner.Client.ServiceClient().NewContainerClient(config.Config.FileStorage.RemoteStorageOptions.BucketName).NewBlobClient(filename)
+	blobClient := presigner.Client.ServiceClient().
+		NewContainerClient(config.Config.FileStorage.RemoteStorageOptions.BucketName).
+		NewBlobClient(filename)
 
 	permissions := sas.BlobPermissions{Write: true}
-	expiry := time.Now().Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)).UTC()
+	expiry := time.Now().
+		Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)).
+		UTC()
 
 	sasURL, err := blobClient.GetSASURL(permissions, expiry, nil)
 	if err != nil {
@@ -69,11 +83,15 @@ func (presigner AzPresigner) Upload(ctx context.Context, filename string) (strin
 	return sasURL, nil
 }
 
-func (presigner AzPresigner) Delete(ctx context.Context, objectKey string) (string, error) {
-	blobClient := presigner.Client.ServiceClient().NewContainerClient(config.Config.FileStorage.RemoteStorageOptions.BucketName).NewBlobClient(objectKey)
+func (presigner AzPresigner) Delete(ctx context.Context, filename string) (string, error) {
+	blobClient := presigner.Client.ServiceClient().
+		NewContainerClient(config.Config.FileStorage.RemoteStorageOptions.BucketName).
+		NewBlobClient(filename)
 
 	permissions := sas.BlobPermissions{Delete: true}
-	expiry := time.Now().Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)).UTC()
+	expiry := time.Now().
+		Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)).
+		UTC()
 
 	sasURL, err := blobClient.GetSASURL(permissions, expiry, nil)
 	if err != nil {
@@ -83,20 +101,19 @@ func (presigner AzPresigner) Delete(ctx context.Context, objectKey string) (stri
 	return sasURL, nil
 }
 
-func NewAz() (*AzPresigner, error) {
-	if azure := config.Config.FileStorage.Azure; azure != nil {
-		serviceUrl := fmt.Sprintf("https://%s.blob.core.windows.net/", azure.AccountName)
-		cred, err := azblob.NewSharedKeyCredential(config.Config.FileStorage.Azure.AccountName, config.Config.FileStorage.Azure.AccountKey)
-		if err != nil {
-			return nil, err
-		}
-
-		client, err := azblob.NewClientWithSharedKeyCredential(serviceUrl, cred, nil)
-		if err != nil {
-			return nil, err
-		}
-		return &AzPresigner{Client: client}, nil
+func NewAz(azure *config.Azure) (*AzPresigner, error) {
+	serviceUrl := fmt.Sprintf("https://%s.blob.core.windows.net/", azure.AccountName)
+	cred, err := azblob.NewSharedKeyCredential(
+		config.Config.FileStorage.Azure.AccountName,
+		config.Config.FileStorage.Azure.AccountKey,
+	)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil, nil
+	client, err := azblob.NewClientWithSharedKeyCredential(serviceUrl, cred, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &AzPresigner{Client: client}, nil
 }

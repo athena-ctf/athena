@@ -62,7 +62,7 @@ impl TokenVerificationResult {
 
 impl TokenManager {
     pub async fn generate(&self, key: &str, email: &str) -> Result<String> {
-        let token = crate::gen_random(8);
+        let token = crate::utils::gen_random(8);
 
         let hashed_token = digest(&SHA256, token.as_bytes()).as_ref().to_vec();
 

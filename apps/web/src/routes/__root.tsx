@@ -4,15 +4,13 @@ import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/navbar/site-header";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { useCtfStore } from "@/stores/ctf";
+import { ctf } from "@/utils/ctf-data";
 
 export const Route = createRootRoute({
   component: Index,
 });
 
 function Index() {
-  const ctf = useCtfStore();
-
   useEffect(() => {
     const eventSource = new EventSource(`events.${ctf.domain}`);
     eventSource.onmessage = (event) => {
@@ -22,7 +20,7 @@ function Index() {
     };
 
     return () => eventSource.close();
-  }, [ctf.domain]);
+  }, []);
 
   return (
     <>

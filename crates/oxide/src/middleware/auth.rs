@@ -17,6 +17,8 @@ use crate::permissions::has_permission;
 use crate::redis_keys::{ADMIN_LAST_UPDATED, PLAYER_LAST_UPDATED};
 use crate::service::AppState;
 
+// TODO: check for invalid jwt in all the errors and return instead of simply returning
+
 pub async fn middleware(
     state: State<Arc<AppState>>,
     header: TypedHeader<Authorization<Bearer>>,
@@ -51,7 +53,7 @@ pub async fn middleware(
 
         let timestamp = state
             .persistent_client
-            .hget::<u64, _, _>(ADMIN_LAST_UPDATED, claims.sub.simple().to_string())
+            .hget::<u64, _, _>(ADMIN_LAST_UPDATED, claims.sub.to_string())
             .await?;
 
         if claims.iat < timestamp || refresh_claims.iat < timestamp {
@@ -82,7 +84,7 @@ pub async fn middleware(
 
         let timestamp = state
             .persistent_client
-            .hget::<u64, _, _>(PLAYER_LAST_UPDATED, claims.sub.simple().to_string())
+            .hget::<u64, _, _>(PLAYER_LAST_UPDATED, claims.sub.to_string())
             .await?;
 
         if claims.iat < timestamp || refresh_claims.iat < timestamp {

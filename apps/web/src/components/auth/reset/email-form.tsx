@@ -1,6 +1,6 @@
 import { useResetStore } from "@/stores/reset";
+import { apiClient } from "@/utils/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fetchClient } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import {
   Form,
@@ -27,7 +27,7 @@ export function EmailForm({ next }: { next: () => void }) {
   const { setEmail } = useResetStore();
 
   const onSubmit = async (values: z.infer<typeof schema>) => {
-    const resp = await fetchClient.POST("/auth/player/reset-password/send-token", {
+    const resp = await apiClient.POST("/auth/player/reset-password/send-token", {
       body: {
         email: values.email,
       },

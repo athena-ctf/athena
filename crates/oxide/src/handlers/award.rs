@@ -18,7 +18,7 @@ oxide_macros::crud!(
                 .zincrby::<(), _, _>(
                     PLAYER_LEADERBOARD,
                     -f64::from(model.prize),
-                    player_model.id.simple().to_string()
+                    player_model.id.to_string()
                 )
                 .await?;
 
@@ -39,7 +39,7 @@ oxide_macros::crud!(
                 .zincrby::<(), _, _>(
                     TEAM_LEADERBOARD,
                     -f64::from(model.prize),
-                    player_model.team_id.simple().to_string(),
+                    player_model.team_id.to_string(),
                 )
                 .await?;
         }
@@ -52,7 +52,7 @@ oxide_macros::crud!(
                     .zincrby::<(), _, _>(
                         PLAYER_LEADERBOARD,
                         f64::from(model.prize - old_model.prize),
-                        player_model.id.simple().to_string()
+                        player_model.id.to_string()
                     )
                     .await?;
 
@@ -72,7 +72,7 @@ oxide_macros::crud!(
                     .zincrby::<(), _, _>(
                         TEAM_LEADERBOARD,
                         f64::from(model.prize - old_model.prize),
-                        player_model.team_id.simple().to_string(),
+                        player_model.team_id.to_string(),
                     )
                     .await?;
             }

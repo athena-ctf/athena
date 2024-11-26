@@ -53,7 +53,7 @@ pub async fn load_leaderboard(db: &DbConn, redis_pool: &RedisPool) -> Result<()>
 
         leaderboard_player.push((
             f64::from(challenge_points + award_prizes - hint_costs),
-            player.id.simple().to_string(),
+            player.id.to_string(),
         ));
     }
 
@@ -111,7 +111,7 @@ pub async fn load_leaderboard(db: &DbConn, redis_pool: &RedisPool) -> Result<()>
 
         leaderboard_team.push((
             f64::from(challenge_points + award_prizes - hint_costs),
-            team.id.simple().to_string(),
+            team.id.to_string(),
         ));
     }
 
@@ -127,7 +127,7 @@ pub async fn load_challenge_solves(db: &DbConn, pool: &RedisPool) -> Result<()> 
         pool.hset::<(), _, _>(
             CHALLENGE_SOLVES,
             (
-                challenge.id.simple().to_string(),
+                challenge.id.to_string(),
                 challenge
                     .find_related(Submission)
                     .filter(entity::submission::Column::IsCorrect.eq(true))
@@ -154,7 +154,7 @@ pub async fn load_player_updates(db: &DbConn, pool: &RedisPool) -> Result<()> {
     {
         pool.hset::<(), _, _>(
             PLAYER_LAST_UPDATED,
-            (player_id.simple().to_string(), updated_at.timestamp()),
+            (player_id.to_string(), updated_at.timestamp()),
         )
         .await?;
     }

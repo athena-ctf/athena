@@ -33,12 +33,6 @@ impl MigrationTrait for Migration {
                             .not_null(),
                     )
                     .col(ColumnDef::new(Deployment::ChallengeId).uuid().not_null())
-                    .col(
-                        ColumnDef::new(Deployment::Hostname)
-                            .string()
-                            .not_null()
-                            .unique_key(),
-                    )
                     .col(ColumnDef::new(Deployment::PlayerId).uuid().not_null())
                     .foreign_key(
                         ForeignKey::create()
@@ -80,7 +74,6 @@ enum Deployment {
     UpdatedAt,
     ChallengeId,
     PlayerId,
-    Hostname,
     ExpiresAt,
 }
 

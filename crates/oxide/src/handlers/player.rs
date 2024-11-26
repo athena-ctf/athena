@@ -71,7 +71,7 @@ pub async fn update_profile_by_id(
         .hset::<(), _, _>(
             PLAYER_LAST_UPDATED,
             (
-                player_model.id.simple().to_string(),
+                player_model.id.to_string(),
                 player_model.updated_at.timestamp(),
             ),
         )

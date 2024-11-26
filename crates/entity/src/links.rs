@@ -1,7 +1,5 @@
 use sea_orm::{Linked, RelationTrait};
 
-// TODO: check links
-
 pub struct TeamToChallenge;
 
 impl Linked for TeamToChallenge {

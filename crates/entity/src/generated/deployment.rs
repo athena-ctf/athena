@@ -23,8 +23,6 @@ pub struct Model {
     pub updated_at: DateTimeWithTimeZone,
     pub expires_at: DateTimeWithTimeZone,
     pub challenge_id: Uuid,
-    #[sea_orm(unique)]
-    pub hostname: String,
     pub player_id: Uuid,
 }
 

@@ -16,7 +16,7 @@ use crate::schemas::{
     Submission, SubmissionModel, VerifyFlagSchema,
 };
 
-oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: []); // TODO: add `on_update` and `on_delete`
+oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: []);
 
 static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(DashMap::new);
 
@@ -137,7 +137,7 @@ pub async fn verify(
             .zincrby::<(), _, _>(
                 PLAYER_LEADERBOARD,
                 f64::from(points),
-                &player_claimd.sub.simple().to_string(),
+                &player_claimd.sub.to_string(),
             )
             .await?;
 
@@ -154,13 +154,13 @@ pub async fn verify(
             .zincrby::<(), _, _>(
                 TEAM_LEADERBOARD,
                 f64::from(points),
-                &player_claimd.team_id.simple().to_string(),
+                &player_claimd.team_id.to_string(),
             )
             .await?;
 
         let solves = state
             .persistent_client
-            .hincrby::<u64, _, _>(CHALLENGE_SOLVES, challenge_model.id.simple().to_string(), 1)
+            .hincrby::<u64, _, _>(CHALLENGE_SOLVES, challenge_model.id.to_string(), 1)
             .await?;
 
         let award_model = match solves {

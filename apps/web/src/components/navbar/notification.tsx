@@ -1,4 +1,5 @@
-import { fetchClient, type components } from "@repo/api";
+import { apiClient } from "@/utils/api-client";
+import type { components } from "@repo/api";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/alert";
 import { Button } from "@repo/ui/components/button";
 import {
@@ -19,7 +20,7 @@ export function PlayerNotification() {
   );
 
   const refreshNotifications = useCallback(() => {
-    fetchClient.GET("/player/notifications").then((resp) => {
+    apiClient.GET("/player/notifications").then((resp) => {
       if (resp.error) {
         toast.error(resp.error.message);
       } else {

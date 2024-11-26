@@ -2,11 +2,11 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 
 import { ChallengeCard } from "@/components/challenge/card";
 import { ChallengeSearch } from "@/components/challenge/search";
-import { type components, fetchClient } from "@repo/api";
+import type { components } from "@repo/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import ChallengesFilter from "@/components/challenge/filter";
-import { useCtfStore } from "@/stores/ctf";
+import { ctf } from "@/utils/ctf-data";
 
 export const Route = createLazyFileRoute("/challenges")({
   component: Index,
@@ -29,8 +29,6 @@ function Index() {
       }
     });
   }, []);
-
-  const ctf = useCtfStore();
 
   return (
     <div className="m-2">

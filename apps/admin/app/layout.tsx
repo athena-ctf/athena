@@ -9,7 +9,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const jetbrains_mono = JetBrains_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-jetbrains-mono",
@@ -17,7 +17,7 @@ const jetbrains_mono = JetBrains_Mono({
 
 export default function Layout({ children }: { children: React.ReactNode }): JSX.Element {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrains_mono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body>
         <ThemeProvider
           attribute="class"

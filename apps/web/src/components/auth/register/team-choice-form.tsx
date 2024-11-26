@@ -14,8 +14,8 @@ import { Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRegisterStore } from "@/stores/register";
-import { fetchClient } from "@repo/api";
 import { toast } from "sonner";
+import { apiClient } from "@/utils/api-client";
 
 const joinTeamSchema = z.object({
   teamName: z.string(),
@@ -41,7 +41,7 @@ export function ChooseTeamForm({
   const { setTeam, email } = useRegisterStore();
 
   const onJoinFormSubmit = async (values: z.infer<typeof joinTeamSchema>) => {
-    const resp = await fetchClient.GET("/auth/player/register/verify/invite", {
+    const resp = await apiClient.GET("/auth/player/register/verify/invite", {
       params: {
         query: { invite_code: values.inviteCode, team_name: values.teamName },
       },
@@ -57,7 +57,7 @@ export function ChooseTeamForm({
         invite_id: resp.data.invite_id,
       });
 
-      const respSendToken = await fetchClient.POST("/auth/player/register/send-token", {
+      const respSendToken = await apiClient.POST("/auth/player/register/send-token", {
         body: { email },
       });
 
@@ -81,7 +81,7 @@ export function ChooseTeamForm({
       team_name: values.teamName,
     });
 
-    const resp = await fetchClient.POST("/auth/player/register/send-token", {
+    const resp = await apiClient.POST("/auth/player/register/send-token", {
       body: { email },
     });
 

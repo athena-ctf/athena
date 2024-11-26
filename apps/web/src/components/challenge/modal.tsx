@@ -1,4 +1,4 @@
-import { fetchClient, type components } from "@repo/api";
+import type { components } from "@repo/api";
 import {
   Accordion,
   AccordionContent,
@@ -35,6 +35,9 @@ import { Link } from "@tanstack/react-router";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { apiClient } from "@/utils/api-client";
+import { ctf } from "@/utils/ctf-data";
+import { InstanceCard } from "./instance-card";
 
 export function ChallengeModal({
   challengeSummary,
@@ -47,7 +50,7 @@ export function ChallengeModal({
   const [flag, setFlag] = useState("");
 
   const handleVerify = () => {
-    fetchClient
+    apiClient
       .POST("/player/flag/verify", {
         body: { challenge_id: challengeSummary.challenge.id, flag },
       })
@@ -67,7 +70,7 @@ export function ChallengeModal({
   };
 
   const unlockHint = (id: string, index: number) => {
-    fetchClient.GET("/player/hint/unlock/{id}", { params: { path: { id } } }).then((resp) => {
+    apiClient.GET("/player/hint/unlock/{id}", { params: { path: { id } } }).then((resp) => {
       if (resp.error) {
         toast.error("Could not unlock hint");
         console.error(resp.error.message);
@@ -91,7 +94,7 @@ export function ChallengeModal({
     useState<components["schemas"]["DetailedChallenge"]>();
 
   useEffect(() => {
-    fetchClient
+    apiClient
       .GET("/player/challenge/details/{id}", {
         params: { path: { id: challengeSummary.challenge.id } },
       })
@@ -183,13 +186,24 @@ export function ChallengeModal({
             <ScrollArea className="h-max">{challengeSummary.challenge.description}</ScrollArea>
           </VerticalTabsContent>
           <VerticalTabsContent value="deployment">
-            {challengeSummary.deployment && challengeDetails?.instances ? <></> : <></>}
+            {challengeSummary.deployment && Array.isArray(challengeDetails?.instances) ? (
+              challengeDetails.instances.map((instance) => (
+                <InstanceCard
+                  // biome-ignore lint/style/noNonNullAssertion: <explanation>
+                  deploymentId={challengeSummary.deployment!.id}
+                  challengeInstance={instance}
+                  key={instance.instance_model.id}
+                />
+              ))
+            ) : (
+              <></>
+            )}
           </VerticalTabsContent>
           <VerticalTabsContent value="files">
             <div className="flex flex-col justify-between space-y-2">
               {challengeDetails?.files.map((file) => (
                 <Button key={file.name} variant="default" asChild>
-                  <Link href={file.url}>
+                  <Link href={`static.${ctf.domain}/download/${file.id}`}>
                     <Download /> {file.name}
                   </Link>
                 </Button>

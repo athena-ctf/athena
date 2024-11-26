@@ -1,7 +1,0 @@
-{
-  "name": "oxide",
-  "scripts": {
-    "build": "cargo build --release",
-    "dev": "cargo run"
-  }
-}

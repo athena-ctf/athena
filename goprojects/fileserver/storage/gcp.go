@@ -16,14 +16,20 @@ type GcpPresigner struct {
 	Client *storage.Client
 }
 
-func (presigner GcpPresigner) Download(ctx context.Context, filename, displayName string) (string, error) {
+func (presigner GcpPresigner) Download(
+	ctx context.Context,
+	filename, displayName string,
+) (string, error) {
 	bucket := presigner.Client.Bucket(config.Config.FileStorage.RemoteStorageOptions.BucketName)
 
 	opts := &storage.SignedURLOptions{
-		Method:  "GET",
-		Expires: time.Now().Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)),
+		Method: "GET",
+		Expires: time.Now().
+			Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)),
 		QueryParameters: url.Values{
-			"response-content-disposition": []string{fmt.Sprintf("attachment; filename=\"%s\"", displayName)},
+			"response-content-disposition": []string{
+				fmt.Sprintf("attachment; filename=\"%s\"", displayName),
+			},
 		},
 	}
 
@@ -39,8 +45,9 @@ func (presigner GcpPresigner) Upload(ctx context.Context, filename string) (stri
 	bucket := presigner.Client.Bucket(config.Config.FileStorage.RemoteStorageOptions.BucketName)
 
 	opts := &storage.SignedURLOptions{
-		Method:  "PUT",
-		Expires: time.Now().Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)),
+		Method: "PUT",
+		Expires: time.Now().
+			Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)),
 	}
 
 	url, err := bucket.SignedURL(filename, opts)
@@ -54,8 +61,9 @@ func (presigner GcpPresigner) Delete(ctx context.Context, filename string) (stri
 	bucket := presigner.Client.Bucket(config.Config.FileStorage.RemoteStorageOptions.BucketName)
 
 	opts := &storage.SignedURLOptions{
-		Method:  "DELETE",
-		Expires: time.Now().Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)),
+		Method: "DELETE",
+		Expires: time.Now().
+			Add(time.Minute * time.Duration(config.Config.FileStorage.RemoteStorageOptions.Expires)),
 	}
 
 	url, err := bucket.SignedURL(filename, opts)
@@ -66,15 +74,11 @@ func (presigner GcpPresigner) Delete(ctx context.Context, filename string) (stri
 	return url, nil
 }
 
-func NewGCP() (*GcpPresigner, error) {
-	if gcp := config.Config.FileStorage.Gcp; gcp != nil {
-		client, err := storage.NewClient(context.TODO(), option.WithCredentials(&google.Credentials{}))
-		if err != nil {
-			return nil, err
-		}
-
-		return &GcpPresigner{Client: client}, nil
+func NewGCP(gcp *config.Gcp) (*GcpPresigner, error) {
+	client, err := storage.NewClient(context.TODO(), option.WithCredentials(&google.Credentials{}))
+	if err != nil {
+		return nil, err
 	}
 
-	return nil, nil
+	return &GcpPresigner{Client: client}, nil
 }

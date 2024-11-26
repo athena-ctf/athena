@@ -1,3 +1,4 @@
+use bollard::secret::ContainerStateStatusEnum;
 use chrono::{DateTime, FixedOffset};
 pub use entity::extensions::*;
 pub use entity::prelude::*;
@@ -82,6 +83,40 @@ pub struct ChallengeSummary {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+#[serde(rename_all = "lowercase")]
+pub enum ContainerStateEnum {
+    EMPTY,
+    CREATED,
+    RUNNING,
+    PAUSED,
+    RESTARTING,
+    REMOVING,
+    EXITED,
+    DEAD,
+}
+
+impl From<ContainerStateStatusEnum> for ContainerStateEnum {
+    fn from(value: ContainerStateStatusEnum) -> Self {
+        match value {
+            ContainerStateStatusEnum::EMPTY => Self::EMPTY,
+            ContainerStateStatusEnum::CREATED => Self::CREATED,
+            ContainerStateStatusEnum::RUNNING => Self::RUNNING,
+            ContainerStateStatusEnum::PAUSED => Self::PAUSED,
+            ContainerStateStatusEnum::RESTARTING => Self::RESTARTING,
+            ContainerStateStatusEnum::REMOVING => Self::REMOVING,
+            ContainerStateStatusEnum::EXITED => Self::EXITED,
+            ContainerStateStatusEnum::DEAD => Self::DEAD,
+        }
+    }
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct ChallengeInstance {
+    pub instance_model: InstanceModel,
+    pub state: ContainerStateEnum,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct PlayerChallenges {
     pub summaries: Vec<ChallengeSummary>,
     pub tags: Vec<TagModel>,
@@ -91,7 +126,7 @@ pub struct PlayerChallenges {
 pub struct DetailedChallenge {
     pub files: Vec<FileModel>,
     pub hints: Vec<HintSummary>,
-    pub instances: Option<Vec<InstanceModel>>,
+    pub instances: Option<Vec<ChallengeInstance>>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -181,11 +216,18 @@ pub struct TeamProfile {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct UpdateInviteSchema {
+    pub remaining: Option<i32>,
+    pub expires_at: Option<DateTime<FixedOffset>>,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct TeamDetails {
     pub profile: TeamProfile,
     pub submissions: Vec<SubmissionModel>,
     pub unlocks: Vec<UnlockModel>,
     pub awards: Vec<AwardModel>,
+    pub invites: Vec<InviteModel>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

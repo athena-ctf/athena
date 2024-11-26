@@ -3,7 +3,7 @@ import "@fontsource-variable/jetbrains-mono/index.css";
 import "@repo/ui/globals.css";
 
 import { StrictMode } from "react";
-import ReactDOM from "react-dom/client";
+import reactDom from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 
 import { routeTree } from "./routeTree.gen";
@@ -23,7 +23,7 @@ declare module "@tanstack/react-router" {
 // biome-ignore lint/style/noNonNullAssertion: <explanation>
 const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
+  const root = reactDom.createRoot(rootElement);
   root.render(
     <StrictMode>
       <RouterProvider router={router} />

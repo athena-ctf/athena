@@ -1,32 +1,21 @@
-import type { components } from "@repo/api";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-export interface AuthState {
-  is_logged_in: boolean;
-  player?: components["schemas"]["PlayerModel"];
-
-  login: (player: components["schemas"]["PlayerModel"]) => void;
-  logout: () => void;
+interface AuthState {
+  accessToken: string | null;
+  setTokens: (access: string | null) => void;
+  clearTokens: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, _) => ({
-      is_logged_in: false,
-
-      login: (player: components["schemas"]["PlayerModel"]) => {
-        set({ is_logged_in: true, player });
-      },
-      logout: () => {
-        set({
-          is_logged_in: false,
-          player: undefined,
-        });
-      },
+    (set) => ({
+      accessToken: null as string | null,
+      setTokens: (access) => set({ accessToken: access }),
+      clearTokens: () => set({ accessToken: null }),
     }),
     {
-      name: "auth-store",
+      name: "auth-storage",
       storage: createJSONStorage(() => localStorage),
     },
   ),

@@ -1,7 +1,0 @@
-{
-  "name": "fileserver",
-  "scripts": {
-    "build": "go build ./cmd/main.go",
-    "dev": "go run ."
-  }
-}

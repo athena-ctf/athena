@@ -13,13 +13,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRegisterStore } from "@/stores/register";
 import { Link } from "@tanstack/react-router";
-import { fetchClient } from "@repo/api";
 import { toast } from "sonner";
 import { PasswordInput } from "@repo/ui/components/password-input";
 import { useState } from "react";
 import { ImageIcon, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
-import { useCtfStore } from "@/stores/ctf";
+import { apiClient } from "@/utils/api-client";
+import { ctf } from "@/utils/ctf-data";
 
 const detailsSchema = z
   .object({
@@ -43,7 +43,6 @@ export function DetailsForm({ next }: { next: () => void }) {
     mode: "onChange",
   });
 
-  const ctf = useCtfStore();
   const { setAvatarUrl, setDisplayName, setEmail, setPassword, setUsername } = useRegisterStore();
 
   const uploadFile = async (file: File) => {
@@ -89,7 +88,7 @@ export function DetailsForm({ next }: { next: () => void }) {
   };
 
   const onSubmit = async (values: z.infer<typeof detailsSchema>) => {
-    const resp = await fetchClient.GET("/auth/player/register/verify/email", {
+    const resp = await apiClient.GET("/auth/player/register/verify/email", {
       params: { query: { email: values.email } },
     });
 

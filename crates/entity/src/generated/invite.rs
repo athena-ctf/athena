@@ -22,6 +22,7 @@ pub struct Model {
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
     pub remaining: i32,
+    pub expires_at: DateTimeWithTimeZone,
     pub team_id: Uuid,
 }
 

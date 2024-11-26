@@ -5,8 +5,7 @@ import { ProfileDropdown } from "./profile-dropdown";
 import { Button } from "@repo/ui/components/button";
 import { Link, useLocation } from "@tanstack/react-router";
 import { CountdownTimer } from "@ui/components/ui/countdown";
-import { parseISO } from "date-fns";
-import { useCtfStore } from "@/stores/ctf";
+import { ctf } from "@/utils/ctf-data";
 
 export function SiteHeader({
   playerProfile,
@@ -14,7 +13,6 @@ export function SiteHeader({
   playerProfile?: components["schemas"]["PlayerProfile"];
 }) {
   const location = useLocation({ select: (path) => path.pathname });
-  const ctf = useCtfStore();
 
   const navLinks = [
     { to: "/challenges", text: "Challenges" },
@@ -42,7 +40,7 @@ export function SiteHeader({
           </nav>
         </div>
         <nav className="flex items-center space-x-2">
-          <CountdownTimer targetDate={parseISO(ctf.time.end)} />
+          <CountdownTimer targetDate={ctf.time.end} />
           <ThemeToggle />
           {playerProfile ? (
             <>

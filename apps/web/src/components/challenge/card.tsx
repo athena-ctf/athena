@@ -10,8 +10,8 @@ import {
   CardTitle,
 } from "@repo/ui/components/card";
 import { Circle } from "lucide-react";
-import { useCtfStore } from "@/stores/ctf";
 import { parseISO } from "date-fns";
+import { ctf } from "@/utils/ctf-data";
 
 const stateColor = {
   solved: "",
@@ -24,8 +24,6 @@ export function ChallengeCard({
 }: {
   challengeSummary: components["schemas"]["ChallengeSummary"];
 }) {
-  const ctf = useCtfStore();
-
   return (
     <div className="mx-[7%] my-2 cursor-pointer">
       <ChallengeModal challengeSummary={challengeSummary}>

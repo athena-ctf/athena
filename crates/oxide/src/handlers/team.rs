@@ -17,11 +17,11 @@ async fn get_team_profile(
     db: &DbConn,
 ) -> Result<TeamProfile> {
     let rank = pool
-        .zrevrank(TEAM_LEADERBOARD, &team_model.id.simple().to_string())
+        .zrevrank(TEAM_LEADERBOARD, &team_model.id.to_string())
         .await?;
 
     let score = pool
-        .zscore(TEAM_LEADERBOARD, &team_model.id.simple().to_string())
+        .zscore(TEAM_LEADERBOARD, &team_model.id.to_string())
         .await?;
 
     let players = team_model.find_related(Player).all(db).await?;
@@ -107,7 +107,7 @@ pub async fn retrieve_team_by_teamname(
 
 #[utoipa::path(
     patch,
-    path = "/player/team/profile",
+    path = "/player/team/update-profile",
     params(("id" = Uuid, Path, description = "Id of entity")),
     operation_id = "update_team_profile",
     responses(
@@ -203,6 +203,8 @@ pub async fn retrieve_summary(
         }
     }
 
+    let invites = team_model.find_related(Invite).all(&state.db_conn).await?;
+
     Ok(Json(TeamDetails {
         submissions: team_model
             .find_linked(TeamToSubmission)
@@ -217,5 +219,6 @@ pub async fn retrieve_summary(
             .all(&state.db_conn)
             .await?,
         profile: get_team_profile(team_model, &state.persistent_client, &state.db_conn).await?,
+        invites,
     }))
 }

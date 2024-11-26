@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
     oxide_macros::Details,
 )]
 #[sea_orm(table_name = "instance")]
-#[schema(as = InviteModel)]
+#[schema(as = InstanceModel)]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,

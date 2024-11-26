@@ -1,9 +1,4 @@
-import createFetchClient from "openapi-fetch";
+import createFetchClient, { type Middleware } from "openapi-fetch";
 
-import type { paths } from "./openapi.d";
-
-export const fetchClient = createFetchClient<paths>({
-  baseUrl: "http://localhost:3000",
-});
-
+export { createFetchClient, type Middleware };
 export * from "./openapi.d";

@@ -39,7 +39,7 @@ pub async fn add_player_by_id(
             .hset::<(), _, _>(
                 PLAYER_LAST_UPDATED,
                 (
-                    player_model.id.simple().to_string(),
+                    player_model.id.to_string(),
                     player_model.updated_at.timestamp(),
                 ),
             )
@@ -83,7 +83,7 @@ pub async fn remove_player_by_id(state: State<Arc<AppState>>, Path(id): Path<Uui
             .hset::<(), _, _>(
                 PLAYER_LAST_UPDATED,
                 (
-                    player_model.id.simple().to_string(),
+                    player_model.id.to_string(),
                     player_model.updated_at.timestamp(),
                 ),
             )

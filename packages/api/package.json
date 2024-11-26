@@ -10,7 +10,7 @@
     "check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@types/node": "^20.17.7",
+    "@types/node": "^20.17.8",
     "openapi-typescript": "^7.4.3",
     "typescript": "^5.7.2"
   },

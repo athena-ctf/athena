@@ -2,7 +2,6 @@ import type { components } from "@repo/api";
 import { Card, CardContent } from "@repo/ui/components/card";
 import { Mail } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import TeamUpdateDialog from "./update-dialog";
 import { ScrollArea } from "@repo/ui/components/scroll-area";
 import {
   Table,
@@ -14,27 +13,21 @@ import {
 } from "@repo/ui/components/table";
 
 export function TeamProfileCard({
-  player,
-  team,
+  profile,
 }: {
-  player: components["schemas"]["PlayerModel"];
-  team: components["schemas"]["TeamModel"];
+  profile: components["schemas"]["TeamProfile"];
 }) {
   return (
     <Card className="h-full">
       <CardContent className="flex flex-col place-items-center justify-around space-y-10">
         <div className="flex w-full flex-col space-y-2">
-          <div className="flex justify-between align-middle">
-            <span className="text-lg font-semibold">{player.username}</span>
-            <TeamUpdateDialog player={player} />
-          </div>
-          <span className="text-sm text-neutral-500">@{team.name}</span>
+          <span className="text-lg font-semibold">{profile.team.name}</span>
         </div>
         <div className="flex w-full flex-col space-y-3">
           <div className="flex">
             <Mail />
-            <Link to={`mailto:${team.email}`} className="mx-2">
-              {team.email}
+            <Link to={`mailto:${profile.team.email}`} className="mx-2">
+              {profile.team.email}
             </Link>
           </div>
         </div>
@@ -48,11 +41,11 @@ export function TeamProfileCard({
               </TableRow>
             </TableHeader>
             <TableBody className="items-center">
-              {team.map((name, idx) => (
-                <TableRow className="items-center" key={name.rank}>
+              {profile.members.map((member, idx) => (
+                <TableRow className="items-center" key={member.player.id}>
                   <TableCell>{idx + 1}</TableCell>
-                  <TableCell>{name.teamname}</TableCell>
-                  <TableCell>{name.score}</TableCell>
+                  <TableCell>{member.player.username}</TableCell>
+                  <TableCell>{member.score}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

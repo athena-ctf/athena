@@ -11,7 +11,6 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRegisterStore } from "@/stores/register";
-import { fetchClient } from "@repo/api";
 import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
 import {
@@ -20,6 +19,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@ui/components/ui/input-otp";
+import { apiClient } from "@/utils/api-client";
 
 const verifyEmailSchema = z.object({
   token: z.string().length(8),
@@ -35,7 +35,7 @@ export function VerifyTokenForm({ prev }: { prev: () => void }) {
   const navigate = useNavigate();
 
   const onSubmit = async (values: z.infer<typeof verifyEmailSchema>) => {
-    const resp = await fetchClient.POST("/auth/player/register", {
+    const resp = await apiClient.POST("/auth/player/register", {
       body: {
         avatar_url: store.avatarUrl,
         display_name: store.displayName,

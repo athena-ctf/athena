@@ -47,11 +47,11 @@ pub async fn retrieve_profile(
     pool: &RedisPool,
 ) -> Result<PlayerProfile> {
     let rank = pool
-        .zrevrank(PLAYER_LEADERBOARD, &player.id.simple().to_string())
+        .zrevrank(PLAYER_LEADERBOARD, &player.id.to_string())
         .await?;
 
     let score = pool
-        .zscore(PLAYER_LEADERBOARD, &player.id.simple().to_string())
+        .zscore(PLAYER_LEADERBOARD, &player.id.to_string())
         .await?;
 
     let mut tags_map = Tag::find()

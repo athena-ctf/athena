@@ -20,7 +20,7 @@ oxide_macros::crud!(
                 .zincrby::<(), _, _>(
                     PLAYER_LEADERBOARD,
                     f64::from(model.cost),
-                    player_model.id.simple().to_string()
+                    player_model.id.to_string()
                 ).await?;
 
             state
@@ -40,7 +40,7 @@ oxide_macros::crud!(
                 .zincrby::<(), _, _>(
                     TEAM_LEADERBOARD,
                     f64::from(model.cost),
-                    player_model.team_id.simple().to_string(),
+                    player_model.team_id.to_string(),
                 )
                 .await?;
         }
@@ -53,7 +53,7 @@ oxide_macros::crud!(
                     .zincrby::<(), _, _>(
                         PLAYER_LEADERBOARD,
                         f64::from(model.cost - old_model.cost),
-                        player_model.id.simple().to_string()
+                        player_model.id.to_string()
                     )
                     .await?;
 
@@ -74,7 +74,7 @@ oxide_macros::crud!(
                     .zincrby::<(), _, _>(
                         TEAM_LEADERBOARD,
                         f64::from(model.cost - old_model.cost),
-                        player_model.team_id.simple().to_string(),
+                        player_model.team_id.to_string(),
                     )
                     .await?;
             }
@@ -125,7 +125,7 @@ pub async fn unlock_by_id(
         .zincrby::<(), _, _>(
             PLAYER_LEADERBOARD,
             -f64::from(hint_model.cost),
-            &player_claims.sub.simple().to_string(),
+            &player_claims.sub.to_string(),
         )
         .await?;
 
@@ -146,7 +146,7 @@ pub async fn unlock_by_id(
         .zincrby::<(), _, _>(
             TEAM_LEADERBOARD,
             -f64::from(hint_model.cost),
-            &player_claims.team_id.simple().to_string(),
+            &player_claims.team_id.to_string(),
         )
         .await?;
 
