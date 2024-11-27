@@ -35,24 +35,48 @@ pub fn derive_details_impl(input: TokenStream) -> TokenStream {
         .any(|f| f.ident.as_ref().is_some_and(|ident| ident == "id"));
 
     let detail_fields = binding.fields.iter().filter(|f| {
-        f.ident
-            .as_ref()
-            .is_some_and(|ident| ident != "id" && ident != "created_at" && ident != "updated_at")
+        f.ident.as_ref().is_some_and(|ident| {
+            (if join {
+                !ident.to_string().ends_with("_id")
+            } else {
+                ident != "id"
+            }) && ident != "created_at"
+                && ident != "updated_at"
+        })
     });
+
+    let join_id_fields = &binding
+        .fields
+        .iter()
+        .filter_map(|f| {
+            f.ident
+                .as_ref()
+                .and_then(|ident| (join && ident.to_string().ends_with("_id")).then_some(ident))
+        })
+        .collect::<Vec<_>>();
 
     let field_names = &detail_fields.clone().map(|f| &f.ident).collect::<Vec<_>>();
     let field_types = &detail_fields.clone().map(|f| &f.ty).collect::<Vec<_>>();
 
-    let (id_field_active_model, id_field_impl_new) = (!join)
-        .then_some((
+    let (id_field_active_model, id_field_impl_new) = if join {
+        (
+            quote! {
+                #(#join_id_fields: sea_orm::ActiveValue::NotSet,)*
+            },
+            quote! {
+                #(#join_id_fields: #join_id_fields.into(),)*
+            },
+        )
+    } else {
+        (
             quote! {
                 id: sea_orm::ActiveValue::NotSet,
             },
             quote! {
                 id: Uuid::now_v7(),
             },
-        ))
-        .unzip();
+        )
+    };
 
     let into_active_model = quote! {
         fn into_active_model(self) -> ActiveModel {
@@ -67,7 +91,7 @@ pub fn derive_details_impl(input: TokenStream) -> TokenStream {
 
     let impl_new = quote! {
         impl Model {
-            pub fn new(#(#field_names: impl Into<#field_types>,)*) -> Self {
+            pub fn new(#(#join_id_fields: impl Into<Uuid>,)* #(#field_names: impl Into<#field_types>,)*) -> Self {
                 let now = chrono::Utc::now().fixed_offset();
 
                 Self {

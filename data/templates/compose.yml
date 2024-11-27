@@ -1,4 +1,4 @@
-name: "{{ ctf.name }}"
+name: "{{ ctf.name|slugify }}"
 volumes:
     postgres_data:
     redis_data:
@@ -13,7 +13,7 @@ services:
         environment:
             POSTGRES_USER: "{{ database.username }}"
             POSTGRES_PASSWORD: "{{ database.password }}"
-            POSTGRES_DB: "{{ ctf.name }}_db"
+            POSTGRES_DB: "{{ ctf.name|slugify }}_db"
             PGDATA: /data/postgres
         volumes:
             - postgres_data:/data/postgres
@@ -45,6 +45,7 @@ services:
     oxide:
         container_name: "{{ services.api_server_host }}"
         build:
+            dockerfile: dockerfiles/oxide.Dockerfile
             context: oxide
             additional_contexts:
                 - parent=.
@@ -56,21 +57,21 @@ services:
             - emails:/oxide/emails
             - data/config.json:/data/config.json:ro
 
-    codex:
+    web:
         container_name: codex
         build:
-            context: frontend
+            dockerfile: dockerfiles/web.Dockerfile
+            context: web
             additional_contexts:
                 - parent=.
             args:
-                - PROJECT=codex
-            tags: ["athena-ctf/codex"]
+                - PROJECT=web
+            tags: ["athena-ctf/web"]
         restart: unless-stopped
         depends_on:
             - oxide
         ports:
             - "3000:3000"
-        entrypoint: ["node", "apps/codex/server.js"]
 
     admin:
         container_name: admin

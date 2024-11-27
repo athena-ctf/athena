@@ -213,9 +213,9 @@ pub async fn verify(
         submission_model.into_active_model().update(&txn).await?;
     } else {
         SubmissionModel::new(
-            is_correct,
             player_claimd.sub,
             body.challenge_id,
+            is_correct,
             vec![body.flag],
         )
         .into_active_model()

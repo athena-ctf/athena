@@ -1935,26 +1935,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "notifier"
-version = "0.1.0"
-dependencies = [
- "async-stream",
- "axum",
- "config 0.1.0",
- "dashmap",
- "entity",
- "futures",
- "sea-orm",
- "serde",
- "serde_json",
- "tokio",
- "tower-http",
- "tracing",
- "tracing-subscriber",
- "uuid",
-]
-
-[[package]]
 name = "nu-ansi-term"
 version = "0.46.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4131,6 +4111,26 @@ name = "wasm-bindgen-shared"
 version = "0.2.95"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "65fc09f10666a9f147042251e0dda9c18f166ff7de300607007e96bdebc1068d"
+
+[[package]]
+name = "watcher"
+version = "0.1.0"
+dependencies = [
+ "async-stream",
+ "axum",
+ "config 0.1.0",
+ "dashmap",
+ "entity",
+ "futures",
+ "sea-orm",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tower-http",
+ "tracing",
+ "tracing-subscriber",
+ "uuid",
+]
 
 [[package]]
 name = "web-sys"

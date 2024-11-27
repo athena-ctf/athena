@@ -17,7 +17,7 @@ use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 use uuid::Uuid;
 
-mod pg;
+mod db;
 
 static CONNECTED_CLIENTS: LazyLock<DashMap<Uuid, Sender<NotificationModel>>> =
     LazyLock::new(DashMap::new);
@@ -47,7 +47,7 @@ pub async fn start_listening(
             );
 
             let payload = pg_notification.payload().to_owned();
-            let payload = serde_json::from_str::<pg::Notification>(&payload)
+            let payload = serde_json::from_str::<db::Notification>(&payload)
                 .unwrap()
                 .into_model(&db_conn)
                 .await;

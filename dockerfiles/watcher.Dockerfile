@@ -2,7 +2,7 @@ FROM rust:slim-bookworm AS builder
 RUN apt-get -y update
 
 COPY . .
-RUN cargo build --bin notifier --release
+RUN cargo build --bin watcher --release
 RUN cp ./target/release/oxide /
 
 FROM debian:bookworm-slim AS final
