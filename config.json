@@ -4,9 +4,9 @@
     "domain": "athena.io",
     "description": "Athena is a hosted platform for CTFs",
     "time": {
-      "end": "2024-11-25T19:09:19.555549497Z",
-      "start": "2024-11-23T19:09:19.555564189Z",
-      "freeze": "2024-11-26T19:09:19.555563707Z"
+      "end": "2024-11-29T06:25:29.063251378Z",
+      "start": "2024-11-27T06:25:29.063260953Z",
+      "freeze": "2024-11-30T06:25:29.063260546Z"
     },
     "sponsors": {},
     "prizes": {},
@@ -33,23 +33,15 @@
     "host": "postgres",
     "port": 5432,
     "username": "postgres",
-    "password": "aSNkrSIYXioZ",
+    "password": "R5QZF7L8cIBb",
     "listener_channel": "athena_db_modification",
     "database_name": "athena_db"
   },
   "redis": {
-    "cache": {
-      "host": "redis_cache",
-      "port": 6379,
-      "username": "redis_cache",
-      "password": "bCbXIbERk5Hs"
-    },
-    "persistent": {
-      "host": "redis_token",
-      "port": 6379,
-      "username": "redis_token",
-      "password": "ZqZgrkT0FkY2"
-    }
+    "host": "redis",
+    "port": 6379,
+    "username": "redis",
+    "password": "n5PSWCSngO1L"
   },
   "file_storage": {
     "local": {
@@ -58,7 +50,7 @@
     }
   },
   "jwt": {
-    "secret": "US7MG2m3+NHo5hbb4U7N+L5ymyZjOLoNO0aa/GofZOg=",
+    "secret": "x2eK5SywNphlIbCBFbunyN7tnyJEFZhiUMLTVIBL1Tw=",
     "access_expiry_duration": 600,
     "refresh_expiry_duration": 86400
   },
@@ -66,13 +58,13 @@
     "from": "noreply@athena.io",
     "reply_to": "admin@athena.io",
     "username": "athena_smtp",
-    "password": "Dq1ihrvFImQL",
+    "password": "OobitIx47NKp",
     "server_url": "smtp.athena.io"
   },
   "docker": {
     "registry_url": "registry.athena.io",
     "registry_username": "athena",
-    "registry_password": "LhAUDij1gRjr"
+    "registry_password": "vYvBjnolsbal"
   },
   "discord": {
     "welcome_channel_id": "",
@@ -90,7 +82,7 @@
   "challenge": {
     "container_registry": "registry.athena.io",
     "registry_username": "athena",
-    "registry_password": "TizOwqLoxtoa",
+    "registry_password": "8g4GYlMDBQ1N",
     "container_timeout": 900,
     "player_flag_len": 20
   }

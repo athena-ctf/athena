@@ -83,29 +83,27 @@ pub struct ChallengeSummary {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-#[serde(rename_all = "lowercase")]
 pub enum ContainerStateEnum {
-    EMPTY,
-    CREATED,
-    RUNNING,
-    PAUSED,
-    RESTARTING,
-    REMOVING,
-    EXITED,
-    DEAD,
+    Created,
+    Running,
+    Paused,
+    Restarting,
+    Removing,
+    Exited,
+    Dead,
 }
 
 impl From<ContainerStateStatusEnum> for ContainerStateEnum {
     fn from(value: ContainerStateStatusEnum) -> Self {
         match value {
-            ContainerStateStatusEnum::EMPTY => Self::EMPTY,
-            ContainerStateStatusEnum::CREATED => Self::CREATED,
-            ContainerStateStatusEnum::RUNNING => Self::RUNNING,
-            ContainerStateStatusEnum::PAUSED => Self::PAUSED,
-            ContainerStateStatusEnum::RESTARTING => Self::RESTARTING,
-            ContainerStateStatusEnum::REMOVING => Self::REMOVING,
-            ContainerStateStatusEnum::EXITED => Self::EXITED,
-            ContainerStateStatusEnum::DEAD => Self::DEAD,
+            ContainerStateStatusEnum::CREATED => Self::Created,
+            ContainerStateStatusEnum::RUNNING => Self::Running,
+            ContainerStateStatusEnum::PAUSED => Self::Paused,
+            ContainerStateStatusEnum::RESTARTING => Self::Restarting,
+            ContainerStateStatusEnum::REMOVING => Self::Removing,
+            ContainerStateStatusEnum::EXITED => Self::Exited,
+            ContainerStateStatusEnum::DEAD => Self::Dead,
+            ContainerStateStatusEnum::EMPTY => unreachable!(),
         }
     }
 }

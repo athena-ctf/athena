@@ -61,17 +61,11 @@ fn athena_db() -> String {
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
-pub struct RedisInner {
+pub struct Redis {
     pub host: String,
     pub port: u16,
     pub username: String,
     pub password: String,
-}
-
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
-pub struct Redis {
-    pub cache: RedisInner,
-    pub persistent: RedisInner,
 }
 
 fn default_region() -> String {
@@ -262,18 +256,10 @@ impl Default for Settings {
                 database_name: "athena_db".to_owned(),
             },
             redis: Redis {
-                cache: RedisInner {
-                    host: "redis_cache".to_owned(),
-                    port: 6379,
-                    username: "redis_cache".to_owned(),
-                    password: gen_random_password(),
-                },
-                persistent: RedisInner {
-                    host: "redis_token".to_owned(),
-                    port: 6379,
-                    username: "redis_token".to_owned(),
-                    password: gen_random_password(),
-                },
+                host: "redis".to_owned(),
+                port: 6379,
+                username: "redis".to_owned(),
+                password: gen_random_password(),
             },
             jwt: Jwt {
                 secret: Base64::encode_string(
@@ -365,7 +351,7 @@ impl Database {
     }
 }
 
-impl RedisInner {
+impl Redis {
     pub fn url(&self) -> String {
         format!(
             "redis://{}:{}@{}:{}",

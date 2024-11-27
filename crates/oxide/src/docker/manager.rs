@@ -1,7 +1,9 @@
 use std::collections::HashMap;
 
 use bollard::auth::DockerCredentials;
-use bollard::container::{Config, CreateContainerOptions, StartContainerOptions};
+use bollard::container::{
+    Config, CreateContainerOptions, RestartContainerOptions, StartContainerOptions,
+};
 use bollard::image::CreateImageOptions;
 use bollard::network::{ConnectNetworkOptions, CreateNetworkOptions};
 use bollard::secret::ContainerStateStatusEnum;
@@ -244,41 +246,6 @@ impl Manager {
         Ok(deployment_model)
     }
 
-    // pub async fn cleanup_expired_deployments(&self) -> Result<()> {
-    //     let txn = self.db.begin().await?;
-
-    //     let expired_deployments = Deployment::find()
-    //         .filter(entity::deployment::Column::ExpiresAt.lt(Utc::now()))
-    //         .all(&txn)
-    //         .await?;
-
-    //     for deployment in expired_deployments {
-    //         let instances = deployment.find_related(Instance).all(&txn).await?;
-
-    //         for instance in instances {
-    //             self.docker
-    //                 .stop_container(&instance.container_id, None)
-    //                 .await?;
-
-    //             self.docker
-    //                 .remove_container(
-    //                     &instance.container_id,
-    //                     Some(bollard::container::RemoveContainerOptions {
-    //                         force: true,
-    //                         ..Default::default()
-    //                     }),
-    //                 )
-    //                 .await?;
-
-    //             Instance::delete_by_id(instance.id).exec(&txn).await?;
-    //         }
-    //     }
-
-    //     txn.commit().await?;
-
-    //     Ok(())
-    // }
-
     pub async fn cleanup_challenge(&self, challenge_id: Uuid, player_id: Uuid) -> Result<()> {
         let txn = self.db.begin().await?;
 
@@ -315,6 +282,8 @@ impl Manager {
                     &instance_model.container_name,
                 )
                 .await?;
+
+            instance_model.delete(&txn).await?;
         }
 
         let networks = self
@@ -330,6 +299,8 @@ impl Manager {
             }
         }
 
+        deployment_model.delete(&txn).await?;
+
         txn.commit().await?;
 
         Ok(())
@@ -341,11 +312,19 @@ impl Manager {
     ) -> Result<ContainerStateStatusEnum> {
         let container_details = self.docker.inspect_container(container_id, None).await?;
 
-        Ok(container_details
+        container_details
             .state
             .and_then(|state| state.status)
             .ok_or(Error::BadRequest(
                 "Could not get state of container".to_owned(),
-            ))?)
+            ))
+    }
+
+    pub async fn restart_container(&self, container_id: &str) -> Result<()> {
+        self.docker
+            .restart_container(container_id, Some(RestartContainerOptions { t: 30 }))
+            .await?;
+
+        Ok(())
     }
 }

@@ -2227,6 +2227,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/player/instance/restart/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Restart instance by id */
+    put: operations["restart"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/player/invite/destroy/{value}": {
     parameters: {
       query?: never;
@@ -2621,14 +2638,13 @@ export interface components {
     };
     /** @enum {string} */
     ContainerStateEnum:
-      | "empty"
-      | "created"
-      | "running"
-      | "paused"
-      | "restarting"
-      | "removing"
-      | "exited"
-      | "dead";
+      | "Created"
+      | "Running"
+      | "Paused"
+      | "Restarting"
+      | "Removing"
+      | "Exited"
+      | "Dead";
     CreateAdminSchema: {
       password: string;
       role: components["schemas"]["RoleEnum"];
@@ -14637,6 +14653,74 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["HintModel"];
+        };
+      };
+      /** @description Invalid parameters format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description User does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description No hint found with specified id */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  restart: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Id of instance */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Restarted instance by id successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
         };
       };
       /** @description Invalid parameters format */

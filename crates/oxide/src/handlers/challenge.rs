@@ -1,13 +1,10 @@
 use std::time::Duration;
 
-use chrono::Utc;
 use sea_orm::{Iterable, QueryFilter, QueryOrder, QuerySelect};
 use tokio_cron_scheduler::Job;
 
 use crate::jwt::AuthPlayer;
-use crate::redis_keys::{
-    player_history_key, CHALLENGE_SOLVES, PLAYER_LEADERBOARD, TEAM_LEADERBOARD,
-};
+use crate::redis_keys::CHALLENGE_SOLVES;
 use crate::schemas::{
     Challenge, ChallengeFile, ChallengeFileModel, ChallengeInstance, ChallengeKindEnum,
     ChallengeModel, ChallengeSummary, ChallengeTag, ChallengeTagModel, Container, ContainerModel,
@@ -21,75 +18,7 @@ oxide_macros::crud!(
     Challenge,
     single: [],
     optional: [],
-    multiple: [Container, File, Hint, Deployment, Tag, Submission, ChallengeTag, ChallengeFile, Flag, Player],
-    on_delete: {
-        for player_model in model.find_related(Player).all(&state.db_conn).await? {
-            state
-                .persistent_client
-                .zincrby::<(), _, _>(
-                    PLAYER_LEADERBOARD,
-                    -f64::from(model.points),
-                    player_model.id.to_string()
-                )
-                .await?;
-
-            state
-                .persistent_client
-                .lpush::<(), _, _>(
-                    player_history_key(player_model.id),
-                    vec![format!(
-                        "{}:{}",
-                        Utc::now().timestamp(),
-                        -f64::from(model.points)
-                    )]
-                )
-                .await?;
-
-            state
-                .persistent_client
-                .zincrby::<(), _, _>(
-                    TEAM_LEADERBOARD,
-                    -f64::from(model.points),
-                    player_model.team_id.to_string(),
-                )
-                .await?;
-        }
-    },
-    on_update: {
-        if model.points != old_model.points {
-            for player_model in model.find_related(Player).all(&state.db_conn).await? {
-                state
-                    .persistent_client
-                    .zincrby::<(), _, _>(
-                        PLAYER_LEADERBOARD,
-                        f64::from(model.points - old_model.points),
-                        player_model.id.to_string()
-                    )
-                    .await?;
-
-                state
-                    .persistent_client
-                    .lpush::<(), _, _>(
-                        player_history_key(player_model.id),
-                        vec![format!(
-                            "{}:{}",
-                            Utc::now().timestamp(),
-                            f64::from(model.points - old_model.points)
-                        )]
-                    )
-                    .await?;
-
-                state
-                    .persistent_client
-                    .zincrby::<(), _, _>(
-                        TEAM_LEADERBOARD,
-                        f64::from(model.points - old_model.points),
-                        player_model.team_id.to_string(),
-                    )
-                    .await?;
-            }
-        }
-    }
+    multiple: [Container, File, Hint, Deployment, Tag, Submission, ChallengeTag, ChallengeFile, Flag, Player]
 );
 
 #[utoipa::path(
@@ -154,7 +83,7 @@ pub async fn player_challenges(
         };
 
         let solves = state
-            .persistent_client
+            .redis_client
             .hget(CHALLENGE_SOLVES, challenge.id.to_string())
             .await?;
 

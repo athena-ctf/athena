@@ -13836,6 +13836,89 @@
         }
       }
     },
+    "/player/instance/restart/{id}": {
+      "put": {
+        "tags": [
+          "instance"
+        ],
+        "summary": "Restart instance by id",
+        "operationId": "restart",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of instance",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restarted instance by id successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No hint found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/player/invite/destroy/{value}": {
       "delete": {
         "tags": [
@@ -15435,14 +15518,13 @@
       "ContainerStateEnum": {
         "type": "string",
         "enum": [
-          "empty",
-          "created",
-          "running",
-          "paused",
-          "restarting",
-          "removing",
-          "exited",
-          "dead"
+          "Created",
+          "Running",
+          "Paused",
+          "Restarting",
+          "Removing",
+          "Exited",
+          "Dead"
         ]
       },
       "CreateAdminSchema": {

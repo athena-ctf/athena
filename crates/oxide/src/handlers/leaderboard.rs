@@ -24,7 +24,7 @@ use crate::service::AppState;
 pub async fn player_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranking>>> {
     Ok(Json(
         state
-            .persistent_client
+            .redis_client
             .zrevrange::<Vec<(String, f64)>, _>(PLAYER_LEADERBOARD, 0, 10, true)
             .await?
             .into_iter()
@@ -57,7 +57,7 @@ pub async fn player_rankings(
     state: State<Arc<AppState>>,
 ) -> Result<Json<LeaderboardRankings>> {
     let rankings = state
-        .persistent_client
+        .redis_client
         .zrange::<Vec<(String, f64)>, _, _, _>(
             PLAYER_LEADERBOARD,
             0,
@@ -76,7 +76,7 @@ pub async fn player_rankings(
         .collect();
 
     let total = state
-        .persistent_client
+        .redis_client
         .zcard::<i64, _>(PLAYER_LEADERBOARD)
         .await?;
 
@@ -103,7 +103,7 @@ pub async fn player_rankings(
 pub async fn team_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranking>>> {
     Ok(Json(
         state
-            .persistent_client
+            .redis_client
             .zrevrange::<Vec<(String, f64)>, _>(TEAM_LEADERBOARD, 0, 10, true)
             .await?
             .into_iter()
@@ -136,7 +136,7 @@ pub async fn team_rankings(
     state: State<Arc<AppState>>,
 ) -> Result<Json<LeaderboardRankings>> {
     let rankings = state
-        .persistent_client
+        .redis_client
         .zrange::<Vec<(String, f64)>, _, _, _>(
             TEAM_LEADERBOARD,
             0,
@@ -154,10 +154,7 @@ pub async fn team_rankings(
         })
         .collect();
 
-    let total = state
-        .persistent_client
-        .zcard::<i64, _>(TEAM_LEADERBOARD)
-        .await?;
+    let total = state.redis_client.zcard::<i64, _>(TEAM_LEADERBOARD).await?;
 
     Ok(Json(LeaderboardRankings {
         total,

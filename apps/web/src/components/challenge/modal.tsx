@@ -185,48 +185,54 @@ export function ChallengeModal({
           <VerticalTabsContent value="description">
             <ScrollArea className="h-max">{challengeSummary.challenge.description}</ScrollArea>
           </VerticalTabsContent>
-          <VerticalTabsContent value="deployment">
-            {challengeSummary.deployment && Array.isArray(challengeDetails?.instances) ? (
-              challengeDetails.instances.map((instance) => (
-                <InstanceCard
-                  // biome-ignore lint/style/noNonNullAssertion: <explanation>
-                  deploymentId={challengeSummary.deployment!.id}
-                  challengeInstance={instance}
-                  key={instance.instance_model.id}
-                />
-              ))
-            ) : (
-              <></>
-            )}
-          </VerticalTabsContent>
-          <VerticalTabsContent value="files">
-            <div className="flex flex-col justify-between space-y-2">
-              {challengeDetails?.files.map((file) => (
-                <Button key={file.name} variant="default" asChild>
-                  <Link href={`static.${ctf.domain}/download/${file.id}`}>
-                    <Download /> {file.name}
-                  </Link>
-                </Button>
-              ))}
-            </div>
-          </VerticalTabsContent>
-          <VerticalTabsContent value="hints">
-            <Accordion type="single" collapsible className="w-full">
-              {challengeDetails?.hints.map((hint, index) => (
-                <AccordionItem value={hint.id} key={hint.id}>
-                  <AccordionTrigger>
-                    {hint.status.kind === "unlocked" ? <LockOpen /> : <Lock />} Hint #{index} (
-                    {hint.cost} Points)
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    {hint.status.kind === "unlocked"
-                      ? hint.status.value
-                      : unlockHint(hint.id, index)}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </VerticalTabsContent>
+          {challengeSummary.challenge.kind === "containerized" && (
+            <VerticalTabsContent value="deployment">
+              {Array.isArray(challengeDetails?.instances) ? (
+                challengeDetails.instances.map((instance) => (
+                  <InstanceCard
+                    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+                    deploymentId={challengeSummary.deployment!.id}
+                    challengeInstance={instance}
+                    key={instance.instance_model.id}
+                  />
+                ))
+              ) : (
+                <>Not Started</> // TODO: add proper messages
+              )}
+            </VerticalTabsContent>
+          )}
+          {challengeDetails?.files.length && (
+            <VerticalTabsContent value="files">
+              <div className="flex flex-col justify-between space-y-2">
+                {challengeDetails.files.map((file) => (
+                  <Button key={file.name} variant="default" asChild>
+                    <Link href={`static.${ctf.domain}/download/${file.id}`}>
+                      <Download /> {file.name}
+                    </Link>
+                  </Button>
+                ))}
+              </div>
+            </VerticalTabsContent>
+          )}
+          {challengeDetails?.hints.length && (
+            <VerticalTabsContent value="hints">
+              <Accordion type="single" collapsible className="w-full">
+                {challengeDetails.hints.map((hint, index) => (
+                  <AccordionItem value={hint.id} key={hint.id}>
+                    <AccordionTrigger>
+                      {hint.status.kind === "unlocked" ? <LockOpen /> : <Lock />} Hint #{index} (
+                      {hint.cost} Points)
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      {hint.status.kind === "unlocked"
+                        ? hint.status.value
+                        : unlockHint(hint.id, index)}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </VerticalTabsContent>
+          )}
         </VerticalTabs>
         <DialogFooter className="flex-row space-x-4 px-8">
           <Input

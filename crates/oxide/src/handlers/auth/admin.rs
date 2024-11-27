@@ -114,7 +114,7 @@ pub async fn token_refresh(
     .claims;
 
     let is_blacklisted = state
-        .persistent_client
+        .redis_client
         .hexists::<u8, _, _>(
             REFRESH_TOKEN_BLACKLIST,
             refresh_claims.jti.to_string(),
@@ -129,7 +129,7 @@ pub async fn token_refresh(
     }
 
     state
-        .persistent_client
+        .redis_client
         .hset::<(), _, _>(
             REFRESH_TOKEN_BLACKLIST,
             (refresh_claims.jti.to_string(), 0),
@@ -137,7 +137,7 @@ pub async fn token_refresh(
         .await?;
 
     state
-        .persistent_client
+        .redis_client
         .hexpire::<(), _, _>(
             REFRESH_TOKEN_BLACKLIST,
             state

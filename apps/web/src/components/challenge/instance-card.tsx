@@ -1,9 +1,19 @@
 import { Card, CardContent } from "@repo/ui/components/card";
 import { Badge } from "@repo/ui/components/badge";
-import { Server, Globe, Anchor } from "lucide-react";
+import { Server, Link2, Anchor } from "lucide-react";
 import type { components } from "@repo/api";
 import { ctf } from "@/utils/ctf-data";
 import { uuidToBase62 } from "@/utils/base62";
+
+const stateColorMap = {
+  Created: "bg-blue-200 text-blue-800",
+  Running: "bg-green-200 text-green-800",
+  Paused: "bg-yellow-200 text-yellow-800",
+  Restarting: "bg-amber-200 text-amber-800",
+  Removing: "bg-orange-200 text-orange-800",
+  Exited: "bg-red-200 text-red-800",
+  Dead: "bg-gray-200 text-gray-800",
+} as const;
 
 export function InstanceCard({
   deploymentId,
@@ -21,9 +31,7 @@ export function InstanceCard({
               <Server className="mr-2 h-4 w-4 opacity-70" />
               <span className="text-sm font-semibold">{container_name}</span>
             </div>
-            <Badge variant={state === "running" ? "default" : "secondary"} className="text-xs">
-              {state === "running" ? "Running" : "Stopped"}
-            </Badge>
+            <Badge className={`text-xs ${stateColorMap[state]}`}>{state}</Badge>
           </div>
           {port_mapping.map((port) => {
             const [containerPort, hostPort] = port.split(":");
@@ -36,7 +44,7 @@ export function InstanceCard({
                   <span className="text-sm">Port: {containerPort}</span>
                 </div>
                 <div className="flex items-center" key={hostPort}>
-                  <Globe className="mr-2 h-4 w-4 opacity-70" />
+                  <Link2 className="mr-2 h-4 w-4 opacity-70" />
                   <a
                     href={url}
                     target="_blank"

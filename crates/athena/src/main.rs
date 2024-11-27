@@ -20,7 +20,7 @@ pub async fn main() {
                 match generate.kind {
                     cli::GenerateKind::Config => Settings::default().default_json().unwrap(),
                     cli::GenerateKind::OpenapiSchema => oxide::api::get_schema().unwrap(),
-                    cli::GenerateKind::JsonSchema => Settings::json_schema().unwrap(),
+                    cli::GenerateKind::ConfigSchema => Settings::json_schema().unwrap(),
                 },
             )
             .await

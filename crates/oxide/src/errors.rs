@@ -90,9 +90,11 @@ impl IntoResponse for Error {
             Self::BadRequest(message) => {
                 (StatusCode::BAD_REQUEST, Json(JsonResponse { message })).into_response()
             }
+
             Self::NotFound(message) => {
                 (StatusCode::NOT_FOUND, Json(JsonResponse { message })).into_response()
             }
+
             Self::Unauthorized(jar, message) => {
                 if let Some(jar) = jar {
                     (
@@ -105,6 +107,7 @@ impl IntoResponse for Error {
                     (StatusCode::UNAUTHORIZED, Json(JsonResponse { message })).into_response()
                 }
             }
+
             Self::Forbidden(message) => {
                 (StatusCode::FORBIDDEN, Json(JsonResponse { message })).into_response()
             }

@@ -2,15 +2,13 @@ use proc_macro::TokenStream;
 use quote::{format_ident, quote, ToTokens};
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
-use syn::{bracketed, parse_macro_input, Block, Ident, Token};
+use syn::{bracketed, parse_macro_input, Ident, Token};
 
 struct CrudMacroInput {
     entity: Ident,
     single: Vec<Ident>,
     multiple: Vec<Ident>,
     optional: Vec<Ident>,
-    on_update_hook: Option<Block>,
-    on_delete_hook: Option<Block>,
 }
 
 impl Parse for CrudMacroInput {
@@ -41,43 +39,12 @@ impl Parse for CrudMacroInput {
         let multiple: Punctuated<Ident, Token![,]> =
             content.parse_terminated(Ident::parse, Token![,])?;
 
-        let mut macro_input = Self {
+        Ok(Self {
             entity,
             single: single.into_iter().collect(),
             multiple: multiple.into_iter().collect(),
             optional: optional.into_iter().collect(),
-            on_delete_hook: None,
-            on_update_hook: None,
-        };
-
-        while !input.is_empty()
-            && (macro_input.on_delete_hook.is_none() || macro_input.on_update_hook.is_none())
-        {
-            input.parse::<Token![,]>()?;
-
-            let hook_fn = input.parse::<Ident>()?;
-            input.parse::<Token![:]>()?;
-
-            match hook_fn.to_string().as_str() {
-                "on_delete" if macro_input.on_delete_hook.is_none() => {
-                    macro_input.on_delete_hook = Some(input.parse::<Block>()?);
-                }
-                "on_update" if macro_input.on_update_hook.is_none() => {
-                    macro_input.on_update_hook = Some(input.parse::<Block>()?);
-                }
-                "on_delete" | "on_update" => {
-                    return Err(syn::Error::new(hook_fn.span(), "This hook is already specified once. It cannot be mentioned more than once"));
-                }
-                _ => {
-                    return Err(syn::Error::new(
-                        hook_fn.span(),
-                        "This only accepts 'on_update' or 'on_delete' hook",
-                    ))
-                }
-            }
-        }
-
-        Ok(macro_input)
+        })
     }
 }
 
@@ -181,24 +148,17 @@ fn gen_retrieve_fn(entity: &Ident) -> impl ToTokens {
         pub async fn retrieve_by_id(
             state: State<Arc<AppState>>,
             Path(id): Path<Uuid>,
-        ) -> Result<CachedJson<#entity_model>> {
-            let cached = state.cache_client.get::<Option<String>, _>(cache_key(#entity_snake, id)).await?;
-
-            if let Some(value) = cached {
-                Ok(CachedJson::Cached(value))
+        ) -> Result<Json<#entity_model>> {
+            if let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? {
+                Ok(Json(model))
             } else {
-                if let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? {
-                    state.cache_client.set::<(), _, _>(cache_key(#entity_snake, id), serde_json::to_string(&model)?, Some(Expiration::EX(900)), None, false).await?;
-                    Ok(CachedJson::New(Json(model)))
-                } else {
-                    Err(Error::NotFound(#not_found.to_owned()))
-                }
+                Err(Error::NotFound(#not_found.to_owned()))
             }
         }
     }
 }
 
-fn gen_update_fn(entity: &Ident, on_update_hook: Option<Block>) -> impl ToTokens {
+fn gen_update_fn(entity: &Ident) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string()).to_string();
 
     let doc = format!("Update {entity_snake} by id");
@@ -209,32 +169,6 @@ fn gen_update_fn(entity: &Ident, on_update_hook: Option<Block>) -> impl ToTokens
 
     let entity_model = format_ident!("{entity}Model");
     let request_body = format_ident!("Create{entity}Schema");
-
-    let hook = on_update_hook.map_or_else(
-        || {
-            quote! {
-                let mut active_model = body.into_active_model();
-                active_model.id = ActiveValue::Set(id);
-                let model = active_model.update(&state.db_conn).await?;
-                state.cache_client.del::<(), _>(cache_key(#entity_snake, id)).await?;
-            }
-        },
-        |hook| {
-            let stmts = hook.stmts;
-            quote! {
-                let Some(old_model) = #entity::find_by_id(id).one(&state.db_conn).await? else {
-                    return Err(Error::NotFound(#not_found.to_owned()))
-                };
-
-                let mut active_model = body.into_active_model();
-                active_model.id = ActiveValue::Set(id);
-                let model = active_model.update(&state.db_conn).await?;
-                state.cache_client.del::<(), _>(cache_key(#entity_snake, id)).await?;
-
-                #(#stmts)*
-            }
-        },
-    );
 
     quote! {
         #[doc = #doc]
@@ -258,14 +192,16 @@ fn gen_update_fn(entity: &Ident, on_update_hook: Option<Block>) -> impl ToTokens
             Path(id): Path<Uuid>,
             Json(body): Json<#request_body>,
         ) -> Result<Json<#entity_model>> {
-            #hook
+            let mut active_model = body.into_active_model();
+            active_model.id = ActiveValue::Set(id);
+            let model = active_model.update(&state.db_conn).await?;
 
             Ok(Json(model))
         }
     }
 }
 
-fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<Block>) -> impl ToTokens {
+fn gen_delete_fn(entity: &Ident) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string()).to_string();
 
     let doc = format!("Delete {entity_snake} by id");
@@ -273,17 +209,6 @@ fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<Block>) -> impl ToTokens
     let operation_id = format!("delete_{entity_snake}_by_id");
     let description = format!("Deleted {entity_snake} by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
-
-    let hook = on_delete_hook.map(|hook| {
-        let stmts = hook.stmts;
-        quote! {
-            let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? else {
-                return Err(Error::NotFound(#not_found.to_owned()));
-            };
-
-            #(#stmts)*
-        }
-    });
 
     quote! {
         #[doc = #doc]
@@ -302,10 +227,7 @@ fn gen_delete_fn(entity: &Ident, on_delete_hook: Option<Block>) -> impl ToTokens
             )
         )]
         pub async fn delete_by_id(state: State<Arc<AppState>>, Path(id): Path<Uuid>) -> Result<()> {
-            #hook
-
             #entity::delete_by_id(id).exec(&state.db_conn).await?;
-            state.cache_client.del::<(), _>(cache_key(#entity_snake, id)).await?;
 
             Ok(())
         }
@@ -518,15 +440,13 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
         single,
         multiple,
         optional,
-        on_delete_hook,
-        on_update_hook,
     } = parse_macro_input!(input as CrudMacroInput);
 
     let list_fn = gen_list_fn(&entity);
     let create_fn = gen_create_fn(&entity);
     let retrieve_fn = gen_retrieve_fn(&entity);
-    let update_fn = gen_update_fn(&entity, on_update_hook);
-    let delete_fn = gen_delete_fn(&entity, on_delete_hook);
+    let update_fn = gen_update_fn(&entity);
+    let delete_fn = gen_delete_fn(&entity);
     let relations_fn = gen_relations_fn(&entity, &single, &multiple, &optional);
     let import_fn = gen_import_fn(&entity);
     let export_fn = gen_export_fn(&entity);
@@ -561,9 +481,8 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
 
         use super::CsvStream;
         use crate::errors::{Error, Result};
-        use crate::redis_keys::cache_key;
         use crate::schemas::{ImportFile};
-        use crate::service::{AppState, CachedJson};
+        use crate::service::AppState;
 
         #list_fn
 

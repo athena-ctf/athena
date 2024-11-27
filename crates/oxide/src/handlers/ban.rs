@@ -35,7 +35,7 @@ pub async fn add_player_by_id(
         let player_model = active_player.update(&state.db_conn).await?;
 
         state
-            .persistent_client
+            .redis_client
             .hset::<(), _, _>(
                 PLAYER_LAST_UPDATED,
                 (
@@ -79,7 +79,7 @@ pub async fn remove_player_by_id(state: State<Arc<AppState>>, Path(id): Path<Uui
         Ban::delete_by_id(ban_id).exec(&state.db_conn).await?;
 
         state
-            .persistent_client
+            .redis_client
             .hset::<(), _, _>(
                 PLAYER_LAST_UPDATED,
                 (

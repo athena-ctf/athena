@@ -18,9 +18,9 @@ services:
         volumes:
             - postgres_data:/data/postgres
 
-    redis_cache:
+    redis:
         restart: unless-stopped
-        container_name: "redis_cache"
+        container_name: "redis"
         image: redis
         command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
         volumes:

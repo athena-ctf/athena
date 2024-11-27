@@ -174,14 +174,6 @@ type Local struct {
 }
 
 type Redis struct {
-	// Cache corresponds to the JSON schema field "cache".
-	Cache RedisInner `json:"cache"`
-
-	// Persistent corresponds to the JSON schema field "persistent".
-	Persistent RedisInner `json:"persistent"`
-}
-
-type RedisInner struct {
 	// Host corresponds to the JSON schema field "host".
 	Host string `json:"host"`
 

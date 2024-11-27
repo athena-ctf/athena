@@ -52,7 +52,7 @@ pub async fn middleware(
         .claims;
 
         let timestamp = state
-            .persistent_client
+            .redis_client
             .hget::<u64, _, _>(ADMIN_LAST_UPDATED, claims.sub.to_string())
             .await?;
 
@@ -83,7 +83,7 @@ pub async fn middleware(
         .claims;
 
         let timestamp = state
-            .persistent_client
+            .redis_client
             .hget::<u64, _, _>(PLAYER_LAST_UPDATED, claims.sub.to_string())
             .await?;
 

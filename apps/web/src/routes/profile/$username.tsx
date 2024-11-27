@@ -2,7 +2,8 @@ import { ChallengeDiff } from "@/components/profile/challenge-diff";
 import { PlayerProfileCard } from "@/components/profile/profile-card";
 import { ScoreChart } from "@/components/profile/score-chart";
 import { SolvedChallenge } from "@/components/profile/solved-challenge";
-import { type components, fetchClient } from "@repo/api";
+import { apiClient } from "@/utils/api-client";
+import type { components } from "@repo/api";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -17,15 +18,13 @@ function Index() {
   const [profile, setProfile] = useState<components["schemas"]["PlayerProfile"]>();
 
   useEffect(() => {
-    fetchClient
-      .GET("/player/{username}/profile", { params: { path: { username } } })
-      .then((resp) => {
-        if (resp.error) {
-          toast.error(resp.error.message);
-        } else {
-          setProfile(resp.data);
-        }
-      });
+    apiClient.GET("/player/{username}/profile", { params: { path: { username } } }).then((resp) => {
+      if (resp.error) {
+        toast.error(resp.error.message);
+      } else {
+        setProfile(resp.data);
+      }
+    });
   }, [username]);
 
   return (

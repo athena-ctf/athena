@@ -31,7 +31,7 @@ pub async fn new(
         return Err(Error::NotFound("Team not found".to_owned()));
     };
 
-    if team_model.email != player_claims.email || body.team_id != team_model.id {
+    if team_model.email != player_claims.email || body.team_id != player_claims.team_id {
         return Err(Error::Forbidden(
             "Cannot create invite for teams with no ownership".to_owned(),
         ));
@@ -81,7 +81,7 @@ pub async fn destroy(
         ));
     };
 
-    if team_model.email != player_claims.email || invite_model.team_id != team_model.id {
+    if team_model.email != player_claims.email || invite_model.team_id != player_claims.team_id {
         return Err(Error::Forbidden(
             "Cannot destroy invite for teams with no ownership".to_owned(),
         ));
@@ -133,18 +133,18 @@ pub async fn update(
         ));
     };
 
-    if team_model.email != player_claims.email || invite_model.team_id != team_model.id {
+    if team_model.email != player_claims.email || invite_model.team_id != player_claims.team_id {
         return Err(Error::Forbidden(
             "Cannot destroy invite for teams with no ownership".to_owned(),
         ));
     }
 
     if let Some(remaining) = body.remaining {
-        invite_model.remaining = remaining
+        invite_model.remaining = remaining;
     }
 
     if let Some(expires_at) = body.expires_at {
-        invite_model.expires_at = expires_at
+        invite_model.expires_at = expires_at;
     }
 
     let invite_model = invite_model

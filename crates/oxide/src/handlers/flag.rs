@@ -133,7 +133,7 @@ pub async fn verify(
 
     if is_correct {
         state
-            .persistent_client
+            .redis_client
             .zincrby::<(), _, _>(
                 PLAYER_LEADERBOARD,
                 f64::from(points),
@@ -142,7 +142,7 @@ pub async fn verify(
             .await?;
 
         state
-            .persistent_client
+            .redis_client
             .lpush::<(), _, _>(
                 player_history_key(player_claimd.sub),
                 vec![format!("{}:{}", Utc::now().timestamp(), f64::from(points))],
@@ -150,7 +150,7 @@ pub async fn verify(
             .await?;
 
         state
-            .persistent_client
+            .redis_client
             .zincrby::<(), _, _>(
                 TEAM_LEADERBOARD,
                 f64::from(points),
@@ -159,7 +159,7 @@ pub async fn verify(
             .await?;
 
         let solves = state
-            .persistent_client
+            .redis_client
             .hincrby::<u64, _, _>(CHALLENGE_SOLVES, challenge_model.id.to_string(), 1)
             .await?;
 

@@ -12,74 +12,7 @@ oxide_macros::crud!(
     Hint,
     single: [Challenge],
     optional: [],
-    multiple: [Unlock, Player],
-    on_delete: {
-        for player_model in model.find_related(Player).all(&state.db_conn).await? {
-            state
-                .persistent_client
-                .zincrby::<(), _, _>(
-                    PLAYER_LEADERBOARD,
-                    f64::from(model.cost),
-                    player_model.id.to_string()
-                ).await?;
-
-            state
-                .persistent_client
-                .lpush::<(), _, _>(
-                    player_history_key(player_model.id),
-                    vec![format!(
-                        "{}:{}",
-                        Utc::now().timestamp(),
-                        -f64::from(model.cost)
-                    )]
-                )
-                .await?;
-
-            state
-                .persistent_client
-                .zincrby::<(), _, _>(
-                    TEAM_LEADERBOARD,
-                    f64::from(model.cost),
-                    player_model.team_id.to_string(),
-                )
-                .await?;
-        }
-    },
-    on_update: {
-        if model.cost != old_model.cost {
-            for player_model in model.find_related(Player).all(&state.db_conn).await? {
-                state
-                    .persistent_client
-                    .zincrby::<(), _, _>(
-                        PLAYER_LEADERBOARD,
-                        f64::from(model.cost - old_model.cost),
-                        player_model.id.to_string()
-                    )
-                    .await?;
-
-                state
-                    .persistent_client
-                    .lpush::<(), _, _>(
-                        player_history_key(player_model.id),
-                        vec![format!(
-                            "{}:{}",
-                            Utc::now().timestamp(),
-                            f64::from(model.cost - old_model.cost),
-                        )]
-                    )
-                    .await?;
-
-                state
-                    .persistent_client
-                    .zincrby::<(), _, _>(
-                        TEAM_LEADERBOARD,
-                        f64::from(model.cost - old_model.cost),
-                        player_model.team_id.to_string(),
-                    )
-                    .await?;
-            }
-        }
-    }
+    multiple: [Unlock, Player]
 );
 
 #[utoipa::path(
@@ -121,7 +54,7 @@ pub async fn unlock_by_id(
     };
 
     state
-        .persistent_client
+        .redis_client
         .zincrby::<(), _, _>(
             PLAYER_LEADERBOARD,
             -f64::from(hint_model.cost),
@@ -130,7 +63,7 @@ pub async fn unlock_by_id(
         .await?;
 
     state
-        .persistent_client
+        .redis_client
         .lpush::<(), _, _>(
             player_history_key(player_claims.sub),
             vec![format!(
@@ -142,7 +75,7 @@ pub async fn unlock_by_id(
         .await?;
 
     state
-        .persistent_client
+        .redis_client
         .zincrby::<(), _, _>(
             TEAM_LEADERBOARD,
             -f64::from(hint_model.cost),

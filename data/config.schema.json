@@ -327,21 +327,6 @@
     "Redis": {
       "type": "object",
       "required": [
-        "cache",
-        "persistent"
-      ],
-      "properties": {
-        "cache": {
-          "$ref": "#/definitions/RedisInner"
-        },
-        "persistent": {
-          "$ref": "#/definitions/RedisInner"
-        }
-      }
-    },
-    "RedisInner": {
-      "type": "object",
-      "required": [
         "host",
         "password",
         "port",

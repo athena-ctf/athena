@@ -7,6 +7,7 @@ use crate::service::AppState;
 mod challenge;
 mod flag;
 mod hint;
+mod instance;
 mod invite;
 mod leaderboard;
 mod notification;
@@ -20,6 +21,7 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(challenge::router())
             .merge(flag::router())
             .merge(hint::router())
+            .merge(instance::router())
             .merge(invite::router())
             .merge(player::router())
             .merge(team::router())

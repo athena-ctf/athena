@@ -38,7 +38,7 @@ pub struct CreateSubCommand {
 #[strum(serialize_all = "kebab-case")]
 pub enum GenerateKind {
     Config,
-    JsonSchema,
+    ConfigSchema,
     OpenapiSchema,
 }
 

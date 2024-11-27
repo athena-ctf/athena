@@ -59,23 +59,14 @@ pub async fn start(settings: Settings) -> Result<()> {
     #[cfg(feature = "file-transport")]
     let mail_transport = lettre::AsyncFileTransport::<Tokio1Executor>::new("./emails");
 
-    let cache_config = RedisConfig::from_url(&settings.redis.cache.url())?;
-    let cache_client = Builder::from_config(cache_config)
+    let redis_config = RedisConfig::from_url(&settings.redis.url())?;
+    let redis_client = Builder::from_config(redis_config)
         .with_config(|config| {
             config.version = RespVersion::RESP3;
         })
         .set_policy(ReconnectPolicy::new_exponential(0, 100, 30_000, 2))
         .build_pool(8)?;
-    let cache_conn = cache_client.init().await?;
-
-    let persistent_config = RedisConfig::from_url(&settings.redis.persistent.url())?;
-    let persistent_client = Builder::from_config(persistent_config)
-        .with_config(|config| {
-            config.version = RespVersion::RESP3;
-        })
-        .set_policy(ReconnectPolicy::new_exponential(0, 100, 30_000, 2))
-        .build_pool(8)?;
-    let persistent_conn = persistent_client.init().await?;
+    let redis_conn = redis_client.init().await?;
 
     let docker_client = Manager::new(
         db_conn.clone(),
@@ -86,6 +77,8 @@ pub async fn start(settings: Settings) -> Result<()> {
 
     let scheduler = JobScheduler::new().await?;
 
+    scheduler.shutdown_on_ctrl_c();
+
     scheduler.start().await?;
 
     if !tasks::verify_awards(&db_conn).await? {
@@ -93,12 +86,12 @@ pub async fn start(settings: Settings) -> Result<()> {
         return Err(Error::InvalidConfig("Awards".to_owned()));
     }
 
-    tasks::load_leaderboard(&db_conn, &persistent_client).await?;
-    tasks::load_challenge_solves(&db_conn, &persistent_client).await?;
-    tasks::load_player_updates(&db_conn, &persistent_client).await?;
+    tasks::load_leaderboard(&db_conn, &redis_client).await?;
+    tasks::load_challenge_solves(&db_conn, &redis_client).await?;
+    tasks::load_player_updates(&db_conn, &redis_client).await?;
 
     let token_manager = TokenManager {
-        redis_pool: persistent_client.clone(),
+        redis_pool: redis_client.clone(),
         max_retries: settings.token.max_retries,
         expiration_duration: settings.token.token_expiry_in_secs,
     };
@@ -112,8 +105,7 @@ pub async fn start(settings: Settings) -> Result<()> {
             settings: settings.clone(),
             token_manager,
             scheduler,
-            cache_client: cache_client.clone(),
-            persistent_client: persistent_client.clone(),
+            redis_client: redis_client.clone(),
             docker_manager: docker_client,
             mail_transport,
         })),
@@ -124,11 +116,8 @@ pub async fn start(settings: Settings) -> Result<()> {
 
     tracing::info!("starting server on port 7000");
 
-    cache_client.quit().await?;
-    cache_conn.await.unwrap()?;
-
-    persistent_client.quit().await?;
-    persistent_conn.await.unwrap()?;
+    redis_client.quit().await?;
+    redis_conn.await.unwrap()?;
 
     let location = settings.read().await.location.clone().unwrap();
 

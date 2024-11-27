@@ -100,7 +100,7 @@ pub async fn retrieve_team_by_teamname(
         return Err(Error::NotFound("Team not found".to_owned()));
     };
 
-    get_team_profile(team_model, &state.persistent_client, &state.db_conn)
+    get_team_profile(team_model, &state.redis_client, &state.db_conn)
         .await
         .map(Json)
 }
@@ -218,7 +218,7 @@ pub async fn retrieve_summary(
             .find_linked(TeamToAward)
             .all(&state.db_conn)
             .await?,
-        profile: get_team_profile(team_model, &state.persistent_client, &state.db_conn).await?,
+        profile: get_team_profile(team_model, &state.redis_client, &state.db_conn).await?,
         invites,
     }))
 }

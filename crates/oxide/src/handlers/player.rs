@@ -37,7 +37,7 @@ pub async fn retrieve_profile_by_username(
     };
 
     Ok(Json(
-        super::retrieve_profile(player_model, &state.db_conn, &state.persistent_client).await?,
+        super::retrieve_profile(player_model, &state.db_conn, &state.redis_client).await?,
     ))
 }
 
@@ -67,7 +67,7 @@ pub async fn update_profile_by_id(
     let player_model = active_player.update(&state.db_conn).await?;
 
     state
-        .persistent_client
+        .redis_client
         .hset::<(), _, _>(
             PLAYER_LAST_UPDATED,
             (
@@ -111,7 +111,7 @@ pub async fn retrieve_summary(
             .find_related(Unlock)
             .all(&state.db_conn)
             .await?,
-        profile: super::retrieve_profile(player_model, &state.db_conn, &state.persistent_client)
+        profile: super::retrieve_profile(player_model, &state.db_conn, &state.redis_client)
             .await?,
     }))
 }

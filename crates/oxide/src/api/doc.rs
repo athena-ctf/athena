@@ -134,6 +134,7 @@ use crate::handlers::*;
         instance::retrieve_relations_by_id,
         instance::export,
         instance::import,
+        instance::restart,
         invite::list,
         invite::create,
         invite::retrieve_by_id,
