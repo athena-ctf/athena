@@ -18,7 +18,7 @@
     "@repo/api": "workspace:*",
     "@repo/ui": "workspace:*",
     "@stepperize/react": "^3.1.1",
-    "@tanstack/react-router": "^1.83.0",
+    "@tanstack/react-router": "^1.84.0",
     "class-variance-authority": "^0.7.1",
     "date-fns": "^3.6.0",
     "fuse.js": "^7.0.0",
@@ -32,9 +32,9 @@
     "zustand": "5.0.0-rc.2"
   },
   "devDependencies": {
-    "@tanstack/router-cli": "^1.83.0",
-    "@tanstack/router-devtools": "^1.83.0",
-    "@tanstack/router-plugin": "^1.83.0",
+    "@tanstack/router-cli": "^1.83.1",
+    "@tanstack/router-devtools": "^1.84.0",
+    "@tanstack/router-plugin": "^1.83.1",
     "@types/node": "^20.17.8",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
