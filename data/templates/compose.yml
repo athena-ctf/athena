@@ -1,10 +1,19 @@
 name: "{{ ctf.name|slugify }}"
 volumes:
     postgres_data:
+    registry_data:
     redis_data:
     caddy_data:
         external: true
     caddy_config:
+    emails:
+    local_storage:
+        external: true
+
+networks:
+    ctf_network:
+        driver: bridge
+
 services:
     postgres:
         restart: unless-stopped
@@ -17,6 +26,8 @@ services:
             PGDATA: /data/postgres
         volumes:
             - postgres_data:/data/postgres
+        networks:
+            - ctf_network
 
     redis:
         restart: unless-stopped
@@ -25,10 +36,15 @@ services:
         command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
         volumes:
             - redis_data:/data/redis
-            - redis.conf:/usr/local/etc/redis/redis.conf
+            - ./conf/redis.conf:/usr/local/etc/redis/redis.conf
+        networks:
+            - ctf_network
 
     caddy:
-        image: caddy
+        container_name: caddy
+        build:
+            dockerfile: dockerfiles/caddy.Dockerfile
+            context: .
         restart: unless-stopped
         cap_add:
             - NET_ADMIN
@@ -37,54 +53,108 @@ services:
             - "443:443"
             - "443:443/udp"
         volumes:
-            - Caddyfile:/etc/caddy/Caddyfile
-            - site:/srv
+            - ./conf/Caddyfile:/etc/caddy/Caddyfile
             - caddy_data:/data
             - caddy_config:/config
+        networks:
+            - ctf_network
 
     oxide:
         container_name: "{{ services.api_server_host }}"
         build:
             dockerfile: dockerfiles/oxide.Dockerfile
-            context: oxide
-            additional_contexts:
-                - parent=.
+            context: .
             tags: ["athena-ctf/oxide"]
         restart: unless-stopped
         depends_on:
             - postgres
+            - caddy
+            - redis
         volumes:
             - emails:/oxide/emails
-            - data/config.json:/data/config.json:ro
+            - ./conf/config.json:/data/config.json
+        networks:
+            - ctf_network
+
+    fileserver:
+        container_name: fileserver
+        build:
+            dockerfile: dockerfiles/fileserver.Dockerfile
+            context: .
+            tags: ["athena-ctf/fileserver"]
+        restart: unless-stopped
+        volumes:
+            - ./conf/config.json:/data/config.json
+        networks:
+            - ctf_network
 
     web:
-        container_name: codex
+        container_name: web
         build:
             dockerfile: dockerfiles/web.Dockerfile
-            context: web
-            additional_contexts:
-                - parent=.
-            args:
-                - PROJECT=web
+            context: .
             tags: ["athena-ctf/web"]
         restart: unless-stopped
         depends_on:
             - oxide
-        ports:
-            - "3000:3000"
+        networks:
+            - ctf_network
 
     admin:
         container_name: admin
         build:
-            context: frontend
-            additional_contexts:
-                - parent=.
-            args:
-                - PROJECT=admin
+            dockerfile: dockerfiles/admin.Dockerfile
+            context: .
             tags: ["athena-ctf/admin"]
         restart: unless-stopped
         depends_on:
             - oxide
+        networks:
+            - ctf_network
+
+    stalwart-mail:
+        image: stalwartlabs/mail-server:latest
+        container_name: stalwart-mail
+        restart: unless-stopped
         ports:
-            - "3001:3000"
-        entrypoint: ["node", "apps/admin/server.js"]
+            - "8081:8080"
+        volumes:
+            - ./config/stalwart-mail:/opt/stalwart-mail/etc
+        networks:
+            - ctf_network
+
+    registry:
+        image: registry:2
+        container_name: registry
+        restart: unless-stopped
+        ports:
+            - "5001:5000"
+        environment:
+            REGISTRY_AUTH: htpasswd
+            REGISTRY_AUTH_HTPASSWD_REALM: Registry-Realm
+            REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.passwd
+            REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+        volumes:
+            - registry_data:/data
+            - ./auth:/auth
+        networks:
+            - ctf_network
+
+    bot:
+        container_name: bot
+        build:
+            dockerfile: dockerfiles/bot.Dockerfile
+            context: .
+            tags: ["athena-ctf/bot"]
+        restart: unless-stopped
+        environment:
+            DISCORD_TOKEN: "{{ discord.bot_token }}"
+            DISCORD_PREFIX: "!"
+        volumes:
+            - discord_bot_data:/bot/data
+            - ./conf/bot-config.json:/bot/config.json
+        depends_on:
+            - redis
+            - postgres
+        networks:
+            - ctf_network
