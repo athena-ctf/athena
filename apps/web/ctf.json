@@ -3,9 +3,9 @@
     "domain": "athena.io",
     "description": "Athena is a hosted platform for CTFs",
     "time": {
-        "end": "2024-11-16T20:05:56.172493675Z",
-        "start": "2024-11-14T20:05:56.172563261Z",
-        "freeze": "2024-11-17T20:05:56.172561500Z"
+        "end": "2024-11-29T06:25:29.063251378Z",
+        "start": "2024-11-27T06:25:29.063260953Z",
+        "freeze": "2024-11-30T06:25:29.063260546Z"
     },
     "sponsors": {},
     "prizes": {},

@@ -10,7 +10,7 @@ export const Route = createFileRoute("/auth/logout")({
 
 export default function Index() {
   const { logout } = useAuthStore();
-  const [message, setMessage] = useState("Loggin out...");
+  const [message, setMessage] = useState("Logging out...");
 
   useEffect(() => {
     fetchClient.GET("/auth/player/logout").then((resp) => {

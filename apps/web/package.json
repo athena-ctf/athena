@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "generate": "tsr generate",
-    "watch": "tsr watch"
+    "watch": "tsr watch",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.1.0",
@@ -18,7 +20,7 @@
     "@repo/api": "workspace:*",
     "@repo/ui": "workspace:*",
     "@stepperize/react": "^3.1.1",
-    "@tanstack/react-router": "^1.84.0",
+    "@tanstack/react-router": "^1.85.0",
     "class-variance-authority": "^0.7.1",
     "date-fns": "^3.6.0",
     "fuse.js": "^7.0.0",
@@ -32,18 +34,33 @@
     "zustand": "5.0.0-rc.2"
   },
   "devDependencies": {
-    "@tanstack/router-cli": "^1.83.1",
-    "@tanstack/router-devtools": "^1.84.0",
-    "@tanstack/router-plugin": "^1.83.1",
-    "@types/node": "^20.17.8",
+    "@chromatic-com/storybook": "^3.2.2",
+    "@storybook/addon-essentials": "^8.4.6",
+    "@storybook/addon-interactions": "^8.4.6",
+    "@storybook/blocks": "^8.4.6",
+    "@storybook/react": "^8.4.6",
+    "@storybook/react-vite": "^8.4.6",
+    "@storybook/test": "^8.4.6",
+    "@tanstack/router-cli": "^1.84.4",
+    "@tanstack/router-devtools": "^1.85.0",
+    "@tanstack/router-plugin": "^1.84.4",
+    "@types/node": "^20.17.9",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react-swc": "^3.7.2",
     "autoprefixer": "^10.4.20",
     "globals": "^15.12.0",
+    "msw": "^2.6.6",
+    "msw-storybook-addon": "^2.0.4",
     "postcss": "^8.4.49",
+    "storybook": "^8.4.6",
     "tailwindcss": "^3.4.15",
     "typescript": "^5.7.2",
     "vite": "^5.4.11"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

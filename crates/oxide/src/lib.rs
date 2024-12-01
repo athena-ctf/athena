@@ -15,6 +15,7 @@ mod token;
 
 use std::net::{Ipv4Addr, SocketAddrV4};
 use std::sync::Arc;
+use std::time::Duration;
 
 use fred::prelude::*;
 use fred::types::RespVersion;
@@ -22,7 +23,7 @@ use lettre::Tokio1Executor;
 use sea_orm::Database;
 use tokio::signal;
 use tokio::sync::RwLock;
-use tokio_cron_scheduler::JobScheduler;
+use tokio_cron_scheduler::{Job, JobScheduler};
 
 use crate::docker::Manager;
 use crate::errors::{Error, Result};
@@ -59,7 +60,7 @@ pub async fn start(settings: Settings) -> Result<()> {
     #[cfg(feature = "file-transport")]
     let mail_transport = lettre::AsyncFileTransport::<Tokio1Executor>::new("./emails");
 
-    let redis_config = RedisConfig::from_url(&settings.redis.url())?;
+    let redis_config = Config::from_url(&settings.redis.url())?;
     let redis_client = Builder::from_config(redis_config)
         .with_config(|config| {
             config.version = RespVersion::RESP3;
@@ -68,17 +69,16 @@ pub async fn start(settings: Settings) -> Result<()> {
         .build_pool(8)?;
     let redis_conn = redis_client.init().await?;
 
-    let docker_client = Manager::new(
+    let docker_manager = Arc::new(Manager::new(
         db_conn.clone(),
         settings.challenge.clone(),
         "caddy:2019".to_owned(),
         settings.ctf.domain.clone(),
-    )?;
+    )?);
 
     let scheduler = JobScheduler::new().await?;
 
     scheduler.shutdown_on_ctrl_c();
-
     scheduler.start().await?;
 
     if !tasks::verify_awards(&db_conn).await? {
@@ -89,6 +89,26 @@ pub async fn start(settings: Settings) -> Result<()> {
     tasks::load_leaderboard(&db_conn, &redis_client).await?;
     tasks::load_challenge_solves(&db_conn, &redis_client).await?;
     tasks::load_player_updates(&db_conn, &redis_client).await?;
+    tasks::load_static_deployments(&db_conn, &docker_manager).await?;
+
+    let manager_clone = docker_manager.clone();
+    let db_clone = db_conn.clone();
+
+    scheduler
+        .add(Job::new_repeated_async(
+            Duration::from_secs(300),
+            move |_, _| {
+                let manager_clone = manager_clone.clone();
+                let db_clone = db_clone.clone();
+
+                Box::pin(async move {
+                    tasks::watch_static_deployments(&db_clone, &manager_clone)
+                        .await
+                        .unwrap();
+                })
+            },
+        )?)
+        .await?;
 
     let token_manager = TokenManager {
         redis_pool: redis_client.clone(),
@@ -98,6 +118,11 @@ pub async fn start(settings: Settings) -> Result<()> {
 
     let settings = Arc::new(RwLock::new(settings));
 
+    let manager_clone = docker_manager.clone();
+    let db_clone = db_conn.clone();
+
+    tracing::info!("starting server on port 7000");
+
     axum::serve(
         listener,
         api::router(Arc::new(AppState {
@@ -106,7 +131,7 @@ pub async fn start(settings: Settings) -> Result<()> {
             token_manager,
             scheduler,
             redis_client: redis_client.clone(),
-            docker_manager: docker_client,
+            docker_manager,
             mail_transport,
         })),
     )
@@ -114,7 +139,7 @@ pub async fn start(settings: Settings) -> Result<()> {
     .await
     .map_err(Error::Serve)?;
 
-    tracing::info!("starting server on port 7000");
+    tasks::unload_deployments(&db_clone, &manager_clone).await?;
 
     redis_client.quit().await?;
     redis_conn.await.unwrap()?;

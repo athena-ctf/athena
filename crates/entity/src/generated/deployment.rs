@@ -23,7 +23,7 @@ pub struct Model {
     pub updated_at: DateTimeWithTimeZone,
     pub expires_at: DateTimeWithTimeZone,
     pub challenge_id: Uuid,
-    pub player_id: Uuid,
+    pub player_id: Option<Uuid>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

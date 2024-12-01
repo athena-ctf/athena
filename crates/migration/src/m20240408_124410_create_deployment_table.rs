@@ -33,7 +33,7 @@ impl MigrationTrait for Migration {
                             .not_null(),
                     )
                     .col(ColumnDef::new(Deployment::ChallengeId).uuid().not_null())
-                    .col(ColumnDef::new(Deployment::PlayerId).uuid().not_null())
+                    .col(ColumnDef::new(Deployment::PlayerId).uuid())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-deployment-challenge_id")

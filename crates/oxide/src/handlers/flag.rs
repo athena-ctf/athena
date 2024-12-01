@@ -74,13 +74,13 @@ pub async fn verify(
     let points = challenge_model.points;
 
     let is_correct = match challenge_model.kind {
-        ChallengeKindEnum::StaticFlag => {
+        ChallengeKindEnum::StaticFlag | ChallengeKindEnum::StaticContainerized => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
                 .one(&state.db_conn)
                 .await?
             else {
-                return Err(Error::NotFound("Flag".to_owned()));
+                return Err(Error::NotFound("Flag not found".to_owned()));
             };
 
             if flag_model.ignore_case {
@@ -117,7 +117,7 @@ pub async fn verify(
             }
         }
 
-        ChallengeKindEnum::Containerized => {
+        ChallengeKindEnum::DynamicContainerized => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
                 .filter(entity::flag::Column::PlayerId.eq(player_claimd.sub))

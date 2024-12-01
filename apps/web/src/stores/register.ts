@@ -37,7 +37,6 @@ export const useRegisterStore = create<RegisterFormState>()((set) => ({
     kind: "create",
     team_name: "",
   },
-  token: "",
 
   setAvatarUrl: (avatarUrl: string) => set({ avatarUrl }),
   setDisplayName: (displayName: string) => set({ displayName }),

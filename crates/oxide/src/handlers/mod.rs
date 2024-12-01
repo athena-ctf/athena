@@ -44,14 +44,10 @@ use crate::schemas::{
 pub async fn retrieve_profile(
     player: PlayerModel,
     db: &DbConn,
-    pool: &RedisPool,
+    pool: &Pool,
 ) -> Result<PlayerProfile> {
-    let rank = pool
-        .zrevrank(PLAYER_LEADERBOARD, &player.id.to_string())
-        .await?;
-
-    let score = pool
-        .zscore(PLAYER_LEADERBOARD, &player.id.to_string())
+    let (rank, score) = pool
+        .zrevrank(PLAYER_LEADERBOARD, &player.id.to_string(), true)
         .await?;
 
     let mut tags_map = Tag::find()

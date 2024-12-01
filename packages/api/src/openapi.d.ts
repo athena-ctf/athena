@@ -2562,7 +2562,11 @@ export interface components {
       state: components["schemas"]["ContainerStateEnum"];
     };
     /** @enum {string} */
-    ChallengeKindEnum: "containerized" | "regex_flag" | "static_flag";
+    ChallengeKindEnum:
+      | "dynamic_containerized"
+      | "regex_flag"
+      | "static_containerized"
+      | "static_flag";
     ChallengeModel: {
       author_name: string;
       /** Format: date-time */
@@ -2661,12 +2665,7 @@ export interface components {
       duration: number;
       reason: string;
     };
-    CreateChallengeFileSchema: {
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: uuid */
-      file_id: string;
-    };
+    CreateChallengeFileSchema: Record<string, never>;
     CreateChallengeSchema: {
       author_name: string;
       description: string;
@@ -2677,12 +2676,7 @@ export interface components {
       points: number;
       title: string;
     };
-    CreateChallengeTagSchema: {
-      /** Format: uuid */
-      challenge_id: string;
-      /** Format: uuid */
-      tag_id: string;
-    };
+    CreateChallengeTagSchema: Record<string, never>;
     CreateContainerSchema: {
       /** Format: uuid */
       challenge_id: string;
@@ -2703,7 +2697,7 @@ export interface components {
       /** Format: date-time */
       expires_at: string;
       /** Format: uuid */
-      player_id: string;
+      player_id?: string | null;
     };
     CreateFileSchema: {
       name: string;
@@ -2745,12 +2739,8 @@ export interface components {
       title: string;
     };
     CreatePlayerAwardSchema: {
-      /** Format: uuid */
-      award_id: string;
       /** Format: int32 */
       count: number;
-      /** Format: uuid */
-      player_id: string;
     };
     CreatePlayerSchema: {
       avatar_url: string;
@@ -2764,12 +2754,8 @@ export interface components {
       username: string;
     };
     CreateSubmissionSchema: {
-      /** Format: uuid */
-      challenge_id: string;
       flags: string[];
       is_correct: boolean;
-      /** Format: uuid */
-      player_id: string;
     };
     CreateTagSchema: {
       value: string;
@@ -2786,12 +2772,7 @@ export interface components {
       status: components["schemas"]["TicketStatusEnum"];
       title: string;
     };
-    CreateUnlockSchema: {
-      /** Format: uuid */
-      hint_id: string;
-      /** Format: uuid */
-      player_id: string;
-    };
+    CreateUnlockSchema: Record<string, never>;
     DeploymentModel: {
       /** Format: uuid */
       challenge_id: string;
@@ -2802,7 +2783,7 @@ export interface components {
       /** Format: uuid */
       id: string;
       /** Format: uuid */
-      player_id: string;
+      player_id?: string | null;
       /** Format: date-time */
       updated_at: string;
     };

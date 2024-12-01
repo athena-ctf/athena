@@ -14,11 +14,9 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { Route as rootRoute } from "./routes/__root";
 import { Route as TeamImport } from "./routes/team";
-import { Route as RulesImport } from "./routes/rules";
+import { Route as ScoreboardImport } from "./routes/scoreboard";
 import { Route as ProfileImport } from "./routes/profile";
 import { Route as TeamTeamnameImport } from "./routes/team/$teamname";
-import { Route as ScoreboardTeamImport } from "./routes/scoreboard/team";
-import { Route as ScoreboardPlayerImport } from "./routes/scoreboard/player";
 import { Route as ProfileUsernameImport } from "./routes/profile/$username";
 import { Route as AuthResetImport } from "./routes/auth/reset";
 import { Route as AuthRegisterImport } from "./routes/auth/register";
@@ -44,9 +42,9 @@ const TeamRoute = TeamImport.update({
   getParentRoute: () => rootRoute,
 } as any);
 
-const RulesRoute = RulesImport.update({
-  id: "/rules",
-  path: "/rules",
+const ScoreboardRoute = ScoreboardImport.update({
+  id: "/scoreboard",
+  path: "/scoreboard",
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -66,18 +64,6 @@ const TeamTeamnameRoute = TeamTeamnameImport.update({
   id: "/$teamname",
   path: "/$teamname",
   getParentRoute: () => TeamRoute,
-} as any);
-
-const ScoreboardTeamRoute = ScoreboardTeamImport.update({
-  id: "/scoreboard/team",
-  path: "/scoreboard/team",
-  getParentRoute: () => rootRoute,
-} as any);
-
-const ScoreboardPlayerRoute = ScoreboardPlayerImport.update({
-  id: "/scoreboard/player",
-  path: "/scoreboard/player",
-  getParentRoute: () => rootRoute,
 } as any);
 
 const ProfileUsernameRoute = ProfileUsernameImport.update({
@@ -128,11 +114,11 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ProfileImport;
       parentRoute: typeof rootRoute;
     };
-    "/rules": {
-      id: "/rules";
-      path: "/rules";
-      fullPath: "/rules";
-      preLoaderRoute: typeof RulesImport;
+    "/scoreboard": {
+      id: "/scoreboard";
+      path: "/scoreboard";
+      fullPath: "/scoreboard";
+      preLoaderRoute: typeof ScoreboardImport;
       parentRoute: typeof rootRoute;
     };
     "/team": {
@@ -184,20 +170,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ProfileUsernameImport;
       parentRoute: typeof ProfileImport;
     };
-    "/scoreboard/player": {
-      id: "/scoreboard/player";
-      path: "/scoreboard/player";
-      fullPath: "/scoreboard/player";
-      preLoaderRoute: typeof ScoreboardPlayerImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/scoreboard/team": {
-      id: "/scoreboard/team";
-      path: "/scoreboard/team";
-      fullPath: "/scoreboard/team";
-      preLoaderRoute: typeof ScoreboardTeamImport;
-      parentRoute: typeof rootRoute;
-    };
     "/team/$teamname": {
       id: "/team/$teamname";
       path: "/$teamname";
@@ -233,7 +205,7 @@ const TeamRouteWithChildren = TeamRoute._addFileChildren(TeamRouteChildren);
 export interface FileRoutesByFullPath {
   "/": typeof IndexLazyRoute;
   "/profile": typeof ProfileRouteWithChildren;
-  "/rules": typeof RulesRoute;
+  "/scoreboard": typeof ScoreboardRoute;
   "/team": typeof TeamRouteWithChildren;
   "/challenges": typeof ChallengesLazyRoute;
   "/auth/login": typeof AuthLoginRoute;
@@ -241,15 +213,13 @@ export interface FileRoutesByFullPath {
   "/auth/register": typeof AuthRegisterRoute;
   "/auth/reset": typeof AuthResetRoute;
   "/profile/$username": typeof ProfileUsernameRoute;
-  "/scoreboard/player": typeof ScoreboardPlayerRoute;
-  "/scoreboard/team": typeof ScoreboardTeamRoute;
   "/team/$teamname": typeof TeamTeamnameRoute;
 }
 
 export interface FileRoutesByTo {
   "/": typeof IndexLazyRoute;
   "/profile": typeof ProfileRouteWithChildren;
-  "/rules": typeof RulesRoute;
+  "/scoreboard": typeof ScoreboardRoute;
   "/team": typeof TeamRouteWithChildren;
   "/challenges": typeof ChallengesLazyRoute;
   "/auth/login": typeof AuthLoginRoute;
@@ -257,8 +227,6 @@ export interface FileRoutesByTo {
   "/auth/register": typeof AuthRegisterRoute;
   "/auth/reset": typeof AuthResetRoute;
   "/profile/$username": typeof ProfileUsernameRoute;
-  "/scoreboard/player": typeof ScoreboardPlayerRoute;
-  "/scoreboard/team": typeof ScoreboardTeamRoute;
   "/team/$teamname": typeof TeamTeamnameRoute;
 }
 
@@ -266,7 +234,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute;
   "/": typeof IndexLazyRoute;
   "/profile": typeof ProfileRouteWithChildren;
-  "/rules": typeof RulesRoute;
+  "/scoreboard": typeof ScoreboardRoute;
   "/team": typeof TeamRouteWithChildren;
   "/challenges": typeof ChallengesLazyRoute;
   "/auth/login": typeof AuthLoginRoute;
@@ -274,8 +242,6 @@ export interface FileRoutesById {
   "/auth/register": typeof AuthRegisterRoute;
   "/auth/reset": typeof AuthResetRoute;
   "/profile/$username": typeof ProfileUsernameRoute;
-  "/scoreboard/player": typeof ScoreboardPlayerRoute;
-  "/scoreboard/team": typeof ScoreboardTeamRoute;
   "/team/$teamname": typeof TeamTeamnameRoute;
 }
 
@@ -284,7 +250,7 @@ export interface FileRouteTypes {
   fullPaths:
     | "/"
     | "/profile"
-    | "/rules"
+    | "/scoreboard"
     | "/team"
     | "/challenges"
     | "/auth/login"
@@ -292,14 +258,12 @@ export interface FileRouteTypes {
     | "/auth/register"
     | "/auth/reset"
     | "/profile/$username"
-    | "/scoreboard/player"
-    | "/scoreboard/team"
     | "/team/$teamname";
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/"
     | "/profile"
-    | "/rules"
+    | "/scoreboard"
     | "/team"
     | "/challenges"
     | "/auth/login"
@@ -307,14 +271,12 @@ export interface FileRouteTypes {
     | "/auth/register"
     | "/auth/reset"
     | "/profile/$username"
-    | "/scoreboard/player"
-    | "/scoreboard/team"
     | "/team/$teamname";
   id:
     | "__root__"
     | "/"
     | "/profile"
-    | "/rules"
+    | "/scoreboard"
     | "/team"
     | "/challenges"
     | "/auth/login"
@@ -322,8 +284,6 @@ export interface FileRouteTypes {
     | "/auth/register"
     | "/auth/reset"
     | "/profile/$username"
-    | "/scoreboard/player"
-    | "/scoreboard/team"
     | "/team/$teamname";
   fileRoutesById: FileRoutesById;
 }
@@ -331,29 +291,25 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute;
   ProfileRoute: typeof ProfileRouteWithChildren;
-  RulesRoute: typeof RulesRoute;
+  ScoreboardRoute: typeof ScoreboardRoute;
   TeamRoute: typeof TeamRouteWithChildren;
   ChallengesLazyRoute: typeof ChallengesLazyRoute;
   AuthLoginRoute: typeof AuthLoginRoute;
   AuthLogoutRoute: typeof AuthLogoutRoute;
   AuthRegisterRoute: typeof AuthRegisterRoute;
   AuthResetRoute: typeof AuthResetRoute;
-  ScoreboardPlayerRoute: typeof ScoreboardPlayerRoute;
-  ScoreboardTeamRoute: typeof ScoreboardTeamRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   ProfileRoute: ProfileRouteWithChildren,
-  RulesRoute: RulesRoute,
+  ScoreboardRoute: ScoreboardRoute,
   TeamRoute: TeamRouteWithChildren,
   ChallengesLazyRoute: ChallengesLazyRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthLogoutRoute: AuthLogoutRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetRoute: AuthResetRoute,
-  ScoreboardPlayerRoute: ScoreboardPlayerRoute,
-  ScoreboardTeamRoute: ScoreboardTeamRoute,
 };
 
 export const routeTree = rootRoute
@@ -368,15 +324,13 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/profile",
-        "/rules",
+        "/scoreboard",
         "/team",
         "/challenges",
         "/auth/login",
         "/auth/logout",
         "/auth/register",
-        "/auth/reset",
-        "/scoreboard/player",
-        "/scoreboard/team"
+        "/auth/reset"
       ]
     },
     "/": {
@@ -388,8 +342,8 @@ export const routeTree = rootRoute
         "/profile/$username"
       ]
     },
-    "/rules": {
-      "filePath": "rules.tsx"
+    "/scoreboard": {
+      "filePath": "scoreboard.tsx"
     },
     "/team": {
       "filePath": "team.tsx",
@@ -415,12 +369,6 @@ export const routeTree = rootRoute
     "/profile/$username": {
       "filePath": "profile/$username.tsx",
       "parent": "/profile"
-    },
-    "/scoreboard/player": {
-      "filePath": "scoreboard/player.tsx"
-    },
-    "/scoreboard/team": {
-      "filePath": "scoreboard/team.tsx"
     },
     "/team/$teamname": {
       "filePath": "team/$teamname.tsx",

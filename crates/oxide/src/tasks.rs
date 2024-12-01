@@ -1,15 +1,19 @@
+use bollard::secret::ContainerStateStatusEnum;
 use entity::links::{TeamToAward, TeamToChallenge, TeamToHint};
 use fred::prelude::*;
 use sea_orm::prelude::*;
-use sea_orm::QuerySelect;
+use sea_orm::{Condition, QuerySelect};
 
+use crate::docker::Manager;
 use crate::errors::Result;
 use crate::redis_keys::{
     CHALLENGE_SOLVES, PLAYER_LAST_UPDATED, PLAYER_LEADERBOARD, TEAM_LEADERBOARD,
 };
-use crate::schemas::{Award, Challenge, Hint, Player, Submission, Team};
+use crate::schemas::{
+    Award, Challenge, ChallengeKindEnum, Deployment, Hint, Instance, Player, Submission, Team,
+};
 
-pub async fn load_leaderboard(db: &DbConn, redis_pool: &RedisPool) -> Result<()> {
+pub async fn load_leaderboard(db: &DbConn, redis_pool: &Pool) -> Result<()> {
     let players = Player::find().all(db).await?;
     let mut leaderboard_player = Vec::with_capacity(players.len());
 
@@ -122,7 +126,7 @@ pub async fn load_leaderboard(db: &DbConn, redis_pool: &RedisPool) -> Result<()>
     Ok(())
 }
 
-pub async fn load_challenge_solves(db: &DbConn, pool: &RedisPool) -> Result<()> {
+pub async fn load_challenge_solves(db: &DbConn, pool: &Pool) -> Result<()> {
     for challenge in Challenge::find().all(db).await? {
         pool.hset::<(), _, _>(
             CHALLENGE_SOLVES,
@@ -141,7 +145,7 @@ pub async fn load_challenge_solves(db: &DbConn, pool: &RedisPool) -> Result<()> 
     Ok(())
 }
 
-pub async fn load_player_updates(db: &DbConn, pool: &RedisPool) -> Result<()> {
+pub async fn load_player_updates(db: &DbConn, pool: &Pool) -> Result<()> {
     for (player_id, updated_at) in Player::find()
         .select_only()
         .columns([
@@ -180,4 +184,60 @@ pub async fn verify_awards(db: &DbConn) -> Result<bool> {
         == 1;
 
     Ok(first_blood && second_blood && third_blood)
+}
+
+pub async fn load_static_deployments(db: &DbConn, manager: &Manager) -> Result<()> {
+    for challenge_model in Challenge::find()
+        .filter(entity::challenge::Column::Kind.eq(ChallengeKindEnum::StaticContainerized))
+        .all(db)
+        .await?
+    {
+        manager.deploy_challenge(&challenge_model, None).await?;
+    }
+
+    Ok(())
+}
+
+pub async fn unload_deployments(db: &DbConn, manager: &Manager) -> Result<()> {
+    for challenge_model in Challenge::find()
+        .filter(
+            Condition::any()
+                .add(entity::challenge::Column::Kind.eq(ChallengeKindEnum::StaticContainerized))
+                .add(entity::challenge::Column::Kind.eq(ChallengeKindEnum::DynamicContainerized)),
+        )
+        .all(db)
+        .await?
+    {
+        manager.cleanup_challenge(challenge_model.id, None).await?;
+    }
+
+    Ok(())
+}
+
+pub async fn watch_static_deployments(db: &DbConn, manager: &Manager) -> Result<()> {
+    for (challenge_model, deployment_model) in Challenge::find()
+        .filter(entity::challenge::Column::Kind.eq(ChallengeKindEnum::StaticContainerized))
+        .find_also_related(Deployment)
+        .all(db)
+        .await?
+    {
+        if let Some(deployment_model) = deployment_model {
+            for instance_model in deployment_model.find_related(Instance).all(db).await? {
+                if !matches!(
+                    manager
+                        .get_container_status(&instance_model.container_id)
+                        .await?,
+                    ContainerStateStatusEnum::RUNNING | ContainerStateStatusEnum::RESTARTING
+                ) {
+                    manager
+                        .restart_container(&instance_model.container_id)
+                        .await?;
+                }
+            }
+        } else {
+            manager.deploy_challenge(&challenge_model, None).await?;
+        }
+    }
+
+    Ok(())
 }

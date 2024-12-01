@@ -9,7 +9,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.5.0
 	github.com/andybalholm/brotli v1.1.1
 	github.com/aws/aws-sdk-go-v2 v1.32.5
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.68.0
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.69.0
 	github.com/danielgtaylor/huma/v2 v2.26.0
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/google/uuid v1.6.0
@@ -23,7 +23,7 @@ replace athena.io/config => ../config
 replace athena.io/ent => ../ent
 
 require (
-	ariga.io/atlas v0.28.1 // indirect
+	ariga.io/atlas v0.29.0 // indirect
 	cel.dev/expr v0.18.0 // indirect
 	cloud.google.com/go v0.116.0 // indirect
 	cloud.google.com/go/auth v0.11.0 // indirect
@@ -60,7 +60,7 @@ require (
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-openapi/inflect v0.21.0 // indirect
-	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
+	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/s2a-go v0.1.8 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.4 // indirect
@@ -76,7 +76,7 @@ require (
 	github.com/valyala/fasthttp v1.57.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
-	github.com/zclconf/go-cty v1.15.0 // indirect
+	github.com/zclconf/go-cty v1.15.1 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.32.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.57.0 // indirect

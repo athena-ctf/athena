@@ -89,5 +89,6 @@ struct ChallengeKindEnum;
 enum ChallengeKindVariants {
     StaticFlag,
     RegexFlag,
-    Containerized,
+    StaticContainerized,
+    DynamicContainerized,
 }

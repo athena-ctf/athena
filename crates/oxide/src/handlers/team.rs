@@ -11,17 +11,9 @@ use crate::schemas::{
 
 oxide_macros::crud!(Team, single: [], optional: [], multiple: [Invite, Player]);
 
-async fn get_team_profile(
-    team_model: TeamModel,
-    pool: &RedisPool,
-    db: &DbConn,
-) -> Result<TeamProfile> {
-    let rank = pool
-        .zrevrank(TEAM_LEADERBOARD, &team_model.id.to_string())
-        .await?;
-
-    let score = pool
-        .zscore(TEAM_LEADERBOARD, &team_model.id.to_string())
+async fn get_team_profile(team_model: TeamModel, pool: &Pool, db: &DbConn) -> Result<TeamProfile> {
+    let (rank, score) = pool
+        .zrevrank(TEAM_LEADERBOARD, &team_model.id.to_string(), true)
         .await?;
 
     let players = team_model.find_related(Player).all(db).await?;

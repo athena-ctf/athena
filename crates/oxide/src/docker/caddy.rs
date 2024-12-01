@@ -3,17 +3,17 @@ use serde_json::json;
 
 use crate::errors::Result;
 
-pub struct CaddyApi {
+pub struct Api {
     client: HttpClient,
-    api_url: String,
+    url: String,
     base_url: String,
 }
 
-impl CaddyApi {
-    pub fn new(caddy_api_url: String, base_url: String) -> Self {
+impl Api {
+    pub fn new(url: String, base_url: String) -> Self {
         Self {
             client: reqwest::Client::new(),
-            api_url: caddy_api_url,
+            url,
             base_url,
         }
     }
@@ -32,7 +32,7 @@ impl CaddyApi {
                     "handler": "subroute",
                     "routes": [{
                         "handle": [{
-                            "handler": "reverse_proxy",
+                            "handler": "proxy",
                             "upstreams": [{
                                 "dial": format!("{container_name}:{container_port}")
                             }]
@@ -48,8 +48,8 @@ impl CaddyApi {
 
         self.client
             .put(format!(
-                "{}/config/apps/http/servers/{host_name}_{container_name}",
-                self.api_url
+                "{}/config/apps/layer4/servers/{host_name}_{container_name}",
+                self.url
             ))
             .json(&route_config)
             .send()
@@ -61,8 +61,8 @@ impl CaddyApi {
     pub async fn remove(&self, hostname: &str, container_name: &str) -> Result<()> {
         self.client
             .delete(format!(
-                "{}/config/apps/http/servers/{hostname}_{container_name}",
-                self.api_url
+                "{}/config/apps/layer4/servers/{hostname}_{container_name}",
+                self.url
             ))
             .send()
             .await?;

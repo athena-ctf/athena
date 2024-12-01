@@ -15,12 +15,12 @@ use sea_orm::prelude::*;
 use sea_orm::{DbConn, IntoActiveModel, TransactionTrait};
 use uuid::Uuid;
 
-use super::caddy::CaddyApi;
+use super::caddy;
 use crate::errors::{Error, Result};
 
 pub struct Manager {
     docker: Docker,
-    caddy_api: CaddyApi,
+    caddy_api: caddy::Api,
     db: DbConn,
     registry: String,
     credentials: DockerCredentials,
@@ -42,7 +42,7 @@ impl Manager {
             ..Default::default()
         };
 
-        let caddy_api = CaddyApi::new(caddy_api_url, base_url);
+        let caddy_api = caddy::Api::new(caddy_api_url, base_url);
 
         Ok(Self {
             docker,
@@ -76,19 +76,39 @@ impl Manager {
 
     pub async fn deploy_challenge(
         &self,
-        challenge_id: Uuid,
-        player_id: Uuid,
+        challenge_model: &ChallengeModel,
+        player_id: Option<Uuid>,
     ) -> Result<DeploymentModel> {
         let txn = self.db.begin().await?;
 
-        let Some(challenge_model) = Challenge::find_by_id(challenge_id).one(&txn).await? else {
-            return Err(Error::NotFound("Challenge not found".to_owned()));
-        };
-
-        if challenge_model.kind != ChallengeKindEnum::Containerized {
-            return Err(Error::BadRequest(
-                "Challenge cannot be instantiated".to_owned(),
-            ));
+        match challenge_model.kind {
+            ChallengeKindEnum::StaticContainerized => {
+                if Deployment::find()
+                    .filter(entity::deployment::Column::ChallengeId.eq(challenge_model.id))
+                    .filter(entity::deployment::Column::PlayerId.is_null())
+                    .one(&txn)
+                    .await?
+                    .is_some()
+                {
+                    return Err(Error::BadRequest(
+                        "Challenge is already deployed".to_owned(),
+                    ));
+                }
+            }
+            ChallengeKindEnum::DynamicContainerized => {
+                if Deployment::find()
+                    .filter(entity::deployment::Column::ChallengeId.eq(challenge_model.id))
+                    .filter(entity::deployment::Column::PlayerId.eq(player_id))
+                    .one(&txn)
+                    .await?
+                    .is_some()
+                {
+                    return Err(Error::BadRequest(
+                        "Challenge is already deployed".to_owned(),
+                    ));
+                }
+            }
+            _ => return Err(Error::BadRequest("Challenge cannot be deployed".to_owned())),
         }
 
         let container_models = challenge_model.find_related(Container).all(&txn).await?;
@@ -98,7 +118,7 @@ impl Manager {
 
         let txn = self.db.begin().await?;
 
-        let deployment_model = DeploymentModel::new(expires_at, challenge_id, player_id)
+        let deployment_model = DeploymentModel::new(expires_at, challenge_model.id, player_id)
             .into_active_model()
             .insert(&txn)
             .await?;
@@ -117,7 +137,7 @@ impl Manager {
 
         let flag = crate::utils::gen_random(self.flag_len);
 
-        FlagModel::new(&flag, challenge_id, Some(player_id), false)
+        FlagModel::new(&flag, challenge_model.id, player_id, false)
             .into_active_model()
             .insert(&txn)
             .await?;
@@ -246,7 +266,11 @@ impl Manager {
         Ok(deployment_model)
     }
 
-    pub async fn cleanup_challenge(&self, challenge_id: Uuid, player_id: Uuid) -> Result<()> {
+    pub async fn cleanup_challenge(
+        &self,
+        challenge_id: Uuid,
+        player_id: Option<Uuid>,
+    ) -> Result<()> {
         let txn = self.db.begin().await?;
 
         let Some(deployment_model) = Deployment::find()
@@ -294,12 +318,21 @@ impl Manager {
             .filter(|n| n.name.as_ref().is_some_and(|name| name.starts_with("ctf_")));
 
         for network in networks {
-            if let Some(id) = network.id {
-                self.docker.remove_network(&id).await?;
+            if let Some(name) = network.name {
+                self.docker.remove_network(&name).await?;
             }
         }
 
         deployment_model.delete(&txn).await?;
+
+        Flag::find()
+            .filter(entity::flag::Column::ChallengeId.eq(challenge_id))
+            .filter(entity::flag::Column::PlayerId.eq(player_id))
+            .one(&txn)
+            .await?
+            .unwrap()
+            .delete(&txn)
+            .await?;
 
         txn.commit().await?;
 

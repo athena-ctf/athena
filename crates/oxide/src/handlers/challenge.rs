@@ -72,7 +72,7 @@ pub async fn player_challenges(
                 }
             });
 
-        let deployment = if challenge.kind == ChallengeKindEnum::Containerized {
+        let deployment = if challenge.kind == ChallengeKindEnum::DynamicContainerized {
             Deployment::find()
                 .filter(entity::deployment::Column::ChallengeId.eq(challenge.id))
                 .filter(entity::deployment::Column::PlayerId.eq(player.sub))
@@ -207,9 +207,13 @@ pub async fn start_challenge(
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
 ) -> Result<Json<DeploymentModel>> {
+    let Some(challenge_model) = Challenge::find_by_id(id).one(&state.db_conn).await? else {
+        return Err(Error::NotFound("Challenge not found".to_owned()));
+    };
+
     let deployment_model = state
         .docker_manager
-        .deploy_challenge(id, player_claims.sub)
+        .deploy_challenge(&challenge_model, Some(player_claims.sub))
         .await?;
 
     let state_cloned = state.clone();
@@ -226,7 +230,7 @@ pub async fn start_challenge(
                 Box::pin(async move {
                     state_cloned
                         .docker_manager
-                        .cleanup_challenge(challenge_id, player_id)
+                        .cleanup_challenge(challenge_id, Some(player_id))
                         .await
                         .unwrap();
                 })
@@ -260,6 +264,6 @@ pub async fn stop_challenge(
 ) -> Result<()> {
     state
         .docker_manager
-        .cleanup_challenge(id, player_claims.sub)
+        .cleanup_challenge(id, Some(player_claims.sub))
         .await
 }

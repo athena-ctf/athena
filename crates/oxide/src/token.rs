@@ -1,12 +1,12 @@
 use fred::prelude::*;
-use fred::types::RedisMap;
+use fred::types::Map;
 use ring::digest::{digest, SHA256};
 
 use crate::errors::Result;
 use crate::redis_keys::token_key;
 
 pub struct TokenManager {
-    pub redis_pool: RedisPool,
+    pub redis_pool: Pool,
     pub max_retries: u8,
     pub expiration_duration: i64,
 }
@@ -16,20 +16,20 @@ pub struct TokenValue {
     retries: i64,
 }
 
-impl TryInto<RedisMap> for TokenValue {
-    type Error = RedisError;
+impl TryInto<Map> for TokenValue {
+    type Error = Error;
 
-    fn try_into(self) -> std::result::Result<RedisMap, Self::Error> {
-        let mut map = RedisMap::new();
-        map.insert("token".into(), RedisValue::Bytes(self.token.into()));
+    fn try_into(self) -> std::result::Result<Map, Self::Error> {
+        let mut map = Map::new();
+        map.insert("token".into(), Value::Bytes(self.token.into()));
         map.insert("retries".into(), self.retries.into());
 
         Ok(map)
     }
 }
 
-impl FromRedis for TokenValue {
-    fn from_value(value: RedisValue) -> std::result::Result<Self, RedisError> {
+impl FromValue for TokenValue {
+    fn from_value(value: Value) -> std::result::Result<Self, Error> {
         let value = value.into_map()?;
 
         Ok(Self {
@@ -77,7 +77,7 @@ impl TokenManager {
             .await?;
 
         self.redis_pool
-            .expire::<(), _>(token_key(key, email), self.expiration_duration)
+            .expire::<(), _>(token_key(key, email), self.expiration_duration, None)
             .await?;
 
         Ok(token)

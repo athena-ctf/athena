@@ -8,7 +8,7 @@ require (
 )
 
 require (
-	ariga.io/atlas v0.28.1 // indirect
+	ariga.io/atlas v0.29.0 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
@@ -22,7 +22,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/stretchr/testify v1.9.0 // indirect
-	github.com/zclconf/go-cty v1.15.0 // indirect
+	github.com/zclconf/go-cty v1.15.1 // indirect
 	golang.org/x/mod v0.22.0 // indirect
 	golang.org/x/sync v0.9.0 // indirect
 	golang.org/x/text v0.20.0 // indirect

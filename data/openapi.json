@@ -15214,8 +15214,9 @@
       "ChallengeKindEnum": {
         "type": "string",
         "enum": [
-          "containerized",
+          "dynamic_containerized",
           "regex_flag",
+          "static_containerized",
           "static_flag"
         ]
       },
@@ -15583,21 +15584,7 @@
         }
       },
       "CreateChallengeFileSchema": {
-        "type": "object",
-        "required": [
-          "challenge_id",
-          "file_id"
-        ],
-        "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "file_id": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
+        "type": "object"
       },
       "CreateChallengeSchema": {
         "type": "object",
@@ -15633,21 +15620,7 @@
         }
       },
       "CreateChallengeTagSchema": {
-        "type": "object",
-        "required": [
-          "challenge_id",
-          "tag_id"
-        ],
-        "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "tag_id": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
+        "type": "object"
       },
       "CreateContainerSchema": {
         "type": "object",
@@ -15718,8 +15691,7 @@
         "type": "object",
         "required": [
           "expires_at",
-          "challenge_id",
-          "player_id"
+          "challenge_id"
         ],
         "properties": {
           "challenge_id": {
@@ -15731,7 +15703,10 @@
             "format": "date-time"
           },
           "player_id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uuid"
           }
         }
@@ -15869,22 +15844,12 @@
       "CreatePlayerAwardSchema": {
         "type": "object",
         "required": [
-          "player_id",
-          "award_id",
           "count"
         ],
         "properties": {
-          "award_id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "count": {
             "type": "integer",
             "format": "int32"
-          },
-          "player_id": {
-            "type": "string",
-            "format": "uuid"
           }
         }
       },
@@ -15933,15 +15898,9 @@
         "type": "object",
         "required": [
           "is_correct",
-          "player_id",
-          "challenge_id",
           "flags"
         ],
         "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "flags": {
             "type": "array",
             "items": {
@@ -15950,10 +15909,6 @@
           },
           "is_correct": {
             "type": "boolean"
-          },
-          "player_id": {
-            "type": "string",
-            "format": "uuid"
           }
         }
       },
@@ -16011,21 +15966,7 @@
         }
       },
       "CreateUnlockSchema": {
-        "type": "object",
-        "required": [
-          "player_id",
-          "hint_id"
-        ],
-        "properties": {
-          "hint_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "player_id": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
+        "type": "object"
       },
       "DeploymentModel": {
         "type": "object",
@@ -16034,8 +15975,7 @@
           "created_at",
           "updated_at",
           "expires_at",
-          "challenge_id",
-          "player_id"
+          "challenge_id"
         ],
         "properties": {
           "challenge_id": {
@@ -16055,7 +15995,10 @@
             "format": "uuid"
           },
           "player_id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uuid"
           },
           "updated_at": {

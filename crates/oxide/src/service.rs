@@ -14,8 +14,8 @@ pub struct AppState {
     pub db_conn: DbConn,
     pub settings: Arc<RwLock<Settings>>,
 
-    pub redis_client: RedisPool,
-    pub docker_manager: Manager,
+    pub redis_client: Pool,
+    pub docker_manager: Arc<Manager>,
     pub token_manager: TokenManager,
     pub scheduler: JobScheduler,
 

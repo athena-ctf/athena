@@ -22,10 +22,12 @@ use serde::{Deserialize, Serialize};
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ChallengeKindEnum {
-    #[sea_orm(string_value = "containerized")]
-    Containerized,
+    #[sea_orm(string_value = "dynamic_containerized")]
+    DynamicContainerized,
     #[sea_orm(string_value = "regex_flag")]
     RegexFlag,
+    #[sea_orm(string_value = "static_containerized")]
+    StaticContainerized,
     #[sea_orm(string_value = "static_flag")]
     StaticFlag,
 }
