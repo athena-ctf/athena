@@ -12,7 +12,7 @@ oxide_macros::crud!(Ban, single: [Player], optional: [], multiple: []);
         (status = 201, description = "Banned player by id successfully", body = BanModel),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No ban found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
@@ -56,16 +56,19 @@ pub async fn add_player_by_id(
     path = "/admin/unban/player/{id}",
     params(("id" = Uuid, Path, description = "Id of entity")),
     responses(
-        (status = 201, description = "Unbanned player by id successfully", body = BanModel),
+        (status = 201, description = "Unbanned player by id successfully", body = JsonResponse),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No ban found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
 /// Unban player by id
-pub async fn remove_player_by_id(state: State<Arc<AppState>>, Path(id): Path<Uuid>) -> Result<()> {
+pub async fn remove_player_by_id(
+    state: State<Arc<AppState>>,
+    Path(id): Path<Uuid>,
+) -> Result<Json<JsonResponse>> {
     if let Some(player) = Player::find_by_id(id).one(&state.db_conn).await? {
         let Some(ban_id) = player.ban_id else {
             return Err(Error::BadRequest("Player is not banned".to_owned()));
@@ -89,7 +92,9 @@ pub async fn remove_player_by_id(state: State<Arc<AppState>>, Path(id): Path<Uui
             )
             .await?;
 
-        Ok(())
+        Ok(Json(JsonResponse {
+            message: "successfully unbanned player".to_owned(),
+        }))
     } else {
         Err(Error::NotFound("Player does not exist".to_owned()))
     }

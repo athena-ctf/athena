@@ -26,7 +26,7 @@ pub enum Error {
     #[error("Error while doing db operations: {0:?}")]
     Db(#[from] sea_orm::DbErr),
 
-    #[error("Error occurred while user verification")]
+    #[error("Error occurred while password verification")]
     Hash(#[from] argon2::password_hash::Error),
 
     #[error("Error while handling JWT token: {0}")]

@@ -19,7 +19,7 @@ use crate::service::AppState;
     responses(
         (status = 200, description = "Retrieved settings successfully", body = Value),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
@@ -58,9 +58,9 @@ pub async fn retrieve(
     operation_id = "settings_update",
     request_body = Value,
     responses(
-        (status = 200, description = "Retrieved settings successfully"),
+        (status = 200, description = "Retrieved settings successfully", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
@@ -69,7 +69,7 @@ pub async fn update(
     state: State<Arc<AppState>>,
     Path(path): Path<String>,
     Json(value): Json<Value>,
-) -> Result<()> {
+) -> Result<Json<JsonResponse>> {
     if state.settings.write().await.update_at(
         &path
             .split('/')
@@ -78,7 +78,9 @@ pub async fn update(
             .collect::<Vec<_>>(),
         value,
     ) {
-        Ok(())
+        Ok(Json(JsonResponse {
+            message: "successfully updated settings".to_owned(),
+        }))
     } else {
         Err(Error::NotFound(
             "Could not update given settings".to_owned(),

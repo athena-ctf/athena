@@ -1,5 +1,6 @@
 import { useAuthStore } from "@/stores/auth";
 import { type paths, createFetchClient, type Middleware } from "@repo/api";
+import { ctf } from "./ctf-data";
 
 const middleware: Middleware = {
   onRequest: ({ request }) => {
@@ -26,7 +27,7 @@ const middleware: Middleware = {
 };
 
 export const apiClient = createFetchClient<paths>({
-  baseUrl: "",
+  baseUrl: `https://api.${ctf.domain}`,
 });
 
 apiClient.use(middleware);

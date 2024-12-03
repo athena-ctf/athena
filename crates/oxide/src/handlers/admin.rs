@@ -10,11 +10,11 @@ oxide_macros::crud!(Admin, single: [], optional: [], multiple: [Ticket]);
     responses(
         (status = 200, description = "Password reset email sent successful", body = AdminModel),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 404, description = "Admin not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
 )]
-/// Return currently authenticated user
+/// Return currently authenticated admin
 pub async fn get_current_logged_in(
     AuthAdmin(admin): AuthAdmin,
     state: State<Arc<AppState>>,

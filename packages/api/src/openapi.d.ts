@@ -644,7 +644,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Return currently authenticated user */
+    /** Return currently authenticated admin */
     get: operations["admin_get_current"];
     put?: never;
     post?: never;
@@ -1981,7 +1981,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Register user */
+    /** Register player */
     post: operations["player_register"];
     delete?: never;
     options?: never;
@@ -2013,7 +2013,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Verify user exists */
+    /** Verify player exists */
     get: operations["player_register_verify_email"];
     put?: never;
     post?: never;
@@ -2183,7 +2183,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Return currently authenticated user */
+    /** Return currently authenticated player */
     get: operations["player_get_current"];
     put?: never;
     post?: never;
@@ -3268,7 +3268,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3328,7 +3328,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3384,7 +3384,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3438,7 +3438,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3497,7 +3497,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3569,7 +3569,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3635,7 +3635,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3694,7 +3694,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3750,7 +3750,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3810,7 +3810,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3866,7 +3866,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3920,7 +3920,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3979,7 +3979,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4051,7 +4051,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4117,7 +4117,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4176,7 +4176,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4232,7 +4232,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4292,7 +4292,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4348,7 +4348,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4402,7 +4402,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4465,7 +4465,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4533,7 +4533,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4605,7 +4605,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4671,7 +4671,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4730,7 +4730,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4786,7 +4786,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4846,7 +4846,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4902,7 +4902,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -4956,7 +4956,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5015,7 +5015,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5087,7 +5087,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5153,7 +5153,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5212,7 +5212,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5268,7 +5268,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5328,7 +5328,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5384,7 +5384,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5438,7 +5438,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5499,7 +5499,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5573,7 +5573,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5641,7 +5641,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5702,7 +5702,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5758,7 +5758,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5818,7 +5818,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5874,7 +5874,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5928,7 +5928,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -5989,7 +5989,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6063,7 +6063,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6131,7 +6131,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6192,7 +6192,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6248,7 +6248,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6308,7 +6308,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6364,7 +6364,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6418,7 +6418,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6477,7 +6477,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6549,7 +6549,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6615,7 +6615,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6674,7 +6674,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6730,7 +6730,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User not found */
+      /** @description Admin not found */
       404: {
         headers: {
           [name: string]: unknown;
@@ -6777,7 +6777,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6837,7 +6837,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6893,7 +6893,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -6947,7 +6947,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7006,7 +7006,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7078,7 +7078,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7144,7 +7144,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7203,7 +7203,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7259,7 +7259,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7319,7 +7319,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7375,7 +7375,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7429,7 +7429,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7488,7 +7488,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7560,7 +7560,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7626,7 +7626,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7685,7 +7685,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7741,7 +7741,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7801,7 +7801,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7857,7 +7857,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7911,7 +7911,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -7970,7 +7970,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8042,7 +8042,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8108,7 +8108,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8167,7 +8167,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8223,7 +8223,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8283,7 +8283,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8339,7 +8339,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8393,7 +8393,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8452,7 +8452,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8524,7 +8524,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8590,7 +8590,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8649,7 +8649,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8705,7 +8705,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8765,7 +8765,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8821,7 +8821,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8875,7 +8875,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -8934,7 +8934,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9006,7 +9006,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9072,7 +9072,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9131,7 +9131,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9187,7 +9187,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9247,7 +9247,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9303,7 +9303,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9357,7 +9357,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9416,7 +9416,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9488,7 +9488,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9554,7 +9554,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9613,7 +9613,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9669,7 +9669,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9729,7 +9729,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9785,7 +9785,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9839,7 +9839,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9898,7 +9898,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -9970,7 +9970,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10036,7 +10036,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10095,7 +10095,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10151,7 +10151,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10211,7 +10211,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10267,7 +10267,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10321,7 +10321,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10380,7 +10380,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10452,7 +10452,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10518,7 +10518,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10577,7 +10577,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10633,7 +10633,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10693,7 +10693,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10749,7 +10749,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10803,7 +10803,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10864,7 +10864,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -10938,7 +10938,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11006,7 +11006,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11067,7 +11067,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11126,7 +11126,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11167,7 +11167,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Action is permissible after login */
       401: {
@@ -11178,7 +11180,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11225,7 +11227,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11272,7 +11274,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11332,7 +11334,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11388,7 +11390,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11442,7 +11444,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11503,7 +11505,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11577,7 +11579,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11645,7 +11647,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11706,7 +11708,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11762,7 +11764,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11822,7 +11824,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11878,7 +11880,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11932,7 +11934,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -11991,7 +11993,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12063,7 +12065,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12129,7 +12131,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12188,7 +12190,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12244,7 +12246,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12304,7 +12306,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12360,7 +12362,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12414,7 +12416,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12473,7 +12475,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12545,7 +12547,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12611,7 +12613,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12670,7 +12672,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12726,7 +12728,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12786,7 +12788,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12842,7 +12844,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12896,7 +12898,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -12955,7 +12957,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13027,7 +13029,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13093,7 +13095,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13152,7 +13154,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13199,7 +13201,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["BanModel"];
+          "application/json": components["schemas"]["JsonResponse"];
         };
       };
       /** @description Invalid parameters format */
@@ -13220,7 +13222,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13276,7 +13278,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13336,7 +13338,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13392,7 +13394,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13446,7 +13448,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13507,7 +13509,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13581,7 +13583,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13649,7 +13651,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13710,7 +13712,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -13752,7 +13754,7 @@ export interface operations {
       };
     };
     responses: {
-      /** @description user logged in successfully */
+      /** @description Admin logged in successfully */
       200: {
         headers: {
           [name: string]: unknown;
@@ -13770,7 +13772,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User not found */
+      /** @description Admin not found */
       404: {
         headers: {
           [name: string]: unknown;
@@ -13799,7 +13801,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
-      /** @description user logged in successfully */
+      /** @description Admin logged in successfully */
       200: {
         headers: {
           [name: string]: unknown;
@@ -13817,7 +13819,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User not found */
+      /** @description Admin not found */
       404: {
         headers: {
           [name: string]: unknown;
@@ -13850,7 +13852,7 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Registered user successfully */
+      /** @description Registered player successfully */
       200: {
         headers: {
           [name: string]: unknown;
@@ -13861,15 +13863,6 @@ export interface operations {
       };
       /** @description Invalid request body format */
       400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description User not found */
-      404: {
         headers: {
           [name: string]: unknown;
         };
@@ -13919,7 +13912,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User not found */
+      /** @description Player not found */
       404: {
         headers: {
           [name: string]: unknown;
@@ -13942,7 +13935,7 @@ export interface operations {
   player_register_verify_email: {
     parameters: {
       query: {
-        /** @description Email of user to check */
+        /** @description Email of player to check */
         email: string;
       };
       header?: never;
@@ -13951,7 +13944,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
-      /** @description User existence check successfully */
+      /** @description Player existence check successfully */
       200: {
         headers: {
           [name: string]: unknown;
@@ -13969,7 +13962,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User not found */
+      /** @description Player not found */
       404: {
         headers: {
           [name: string]: unknown;
@@ -14030,7 +14023,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -14123,7 +14116,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User not found */
+      /** @description Player not found */
       404: {
         headers: {
           [name: string]: unknown;
@@ -14174,7 +14167,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User not found */
+      /** @description Player not found */
       404: {
         headers: {
           [name: string]: unknown;
@@ -14221,7 +14214,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User not found */
+      /** @description Player not found */
       404: {
         headers: {
           [name: string]: unknown;
@@ -14280,7 +14273,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -14348,7 +14341,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -14394,7 +14387,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Invalid parameters format */
       400: {
@@ -14414,7 +14409,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -14479,7 +14474,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -14517,7 +14512,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
-      /** @description Retrieved current logged in user successfully */
+      /** @description Retrieved current logged in player successfully */
       200: {
         headers: {
           [name: string]: unknown;
@@ -14535,7 +14530,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User not found */
+      /** @description Player not found */
       404: {
         headers: {
           [name: string]: unknown;
@@ -14595,15 +14590,6 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
       /** @description Unexpected error */
       500: {
         headers: {
@@ -14654,7 +14640,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -14722,7 +14708,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -14768,7 +14754,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Invalid request body format */
       400: {
@@ -14788,7 +14776,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -14848,7 +14836,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -14911,7 +14899,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -14972,7 +14960,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -15033,7 +15021,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -15089,7 +15077,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -15145,7 +15133,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -15192,7 +15180,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -15257,7 +15245,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -15322,7 +15310,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -15394,7 +15382,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -15462,7 +15450,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -15531,7 +15519,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;
@@ -15565,7 +15553,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        /** @description Username of user */
+        /** @description Username of player */
         username: string;
       };
       cookie?: never;
@@ -15599,7 +15587,7 @@ export interface operations {
           "application/json": components["schemas"]["JsonResponse"];
         };
       };
-      /** @description User does not have sufficient permissions */
+      /** @description Admin does not have sufficient permissions */
       403: {
         headers: {
           [name: string]: unknown;

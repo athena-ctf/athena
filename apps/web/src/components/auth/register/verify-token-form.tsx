@@ -20,6 +20,7 @@ import {
   InputOTPSlot,
 } from "@ui/components/ui/input-otp";
 import { apiClient } from "@/utils/api-client";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@ui/components/ui/card";
 
 const verifyEmailSchema = z.object({
   token: z.string().length(8),
@@ -56,40 +57,48 @@ export function VerifyTokenForm({ prev }: { prev: () => void }) {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-        <FormField
-          control={form.control}
-          name="token"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Verification Token</FormLabel>
-              <FormControl>
-                <InputOTP maxLength={8} {...field}>
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                    <InputOTPSlot index={6} />
-                    <InputOTPSlot index={7} />
-                  </InputOTPGroup>
-                </InputOTP>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex flex-row w-full space-x-4">
-          <Button onClick={prev}>Back</Button>
-          <Button type="submit">Proceed</Button>
-        </div>
-      </form>
-    </Form>
+    <Card className="m-auto max-w-md">
+      <CardHeader>
+        <CardTitle className="text-2xl">Verify Account</CardTitle>
+        <CardDescription>Enter the verification token sent to your email</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <FormField
+              control={form.control}
+              name="token"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Verification Token</FormLabel>
+                  <FormControl>
+                    <InputOTP maxLength={8} {...field}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                      <InputOTPGroup>
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                        <InputOTPSlot index={6} />
+                        <InputOTPSlot index={7} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex flex-row w-full space-x-4">
+              <Button onClick={prev}>Back</Button>
+              <Button type="submit">Proceed</Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }

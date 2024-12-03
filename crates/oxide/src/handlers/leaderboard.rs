@@ -16,7 +16,7 @@ use crate::service::AppState;
         (status = 200, description = "Listed top 10 players successfully", body = [Ranking]),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
@@ -47,7 +47,7 @@ pub async fn player_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranki
         (status = 200, description = "Listed leaderboard rankings of players with offset and count successfully", body = LeaderboardRankings),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
@@ -95,7 +95,7 @@ pub async fn player_rankings(
         (status = 200, description = "Listed top 10 teams successfully", body = [Ranking]),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
@@ -126,7 +126,7 @@ pub async fn team_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranking
         (status = 200, description = "Listed leaderboard rankings of teams with offset and count successfully", body = LeaderboardRankings),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]

@@ -14,7 +14,7 @@ oxide_macros::crud!(Instance, single: [Deployment], optional: [], multiple: []);
         (status = 200, description = "Restarted instance by id successfully", body = JsonResponse),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No hint found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )

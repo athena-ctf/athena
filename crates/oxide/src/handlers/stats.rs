@@ -14,7 +14,7 @@ use crate::service::AppState;
     responses(
         (status = 200, description = "Retrieved stats successfully", body = StatSchema),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]

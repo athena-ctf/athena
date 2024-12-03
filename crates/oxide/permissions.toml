@@ -111,9 +111,3 @@ create = "analyst"
 update = "analyst"
 delete = "analyst"
 read = "analyst"
-
-[user]
-create = "analyst"
-update = "analyst"
-delete = "analyst"
-read = "analyst"

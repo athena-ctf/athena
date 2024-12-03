@@ -46,7 +46,7 @@ fn gen_join_list_fn(entity: &Ident) -> impl ToTokens {
             responses(
                 (status = 200, description = #description, body = [#entity_model]),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
-                (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]
@@ -79,7 +79,7 @@ fn gen_join_create_fn(entity: &Ident) -> impl ToTokens {
                 (status = 201, description = #description, body = #entity_model),
                 (status = 400, description = "Invalid request body format", body = JsonResponse),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
-                (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 404, description = #not_found, body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
@@ -124,7 +124,7 @@ fn gen_join_retrieve_fn(entity: &Ident, related_from: &Ident, related_to: &Ident
                 (status = 200, description = #description, body = #entity_model),
                 (status = 400, description = "Invalid parameters format", body = JsonResponse),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
-                (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 404, description = #not_found, body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
@@ -175,7 +175,7 @@ fn gen_join_update_fn(entity: &Ident, related_from: &Ident, related_to: &Ident) 
                 (status = 200, description = #description, body = #entity_model),
                 (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
-                (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 404, description = #not_found, body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
@@ -223,7 +223,7 @@ fn gen_join_delete_fn(entity: &Ident, related_from: &Ident, related_to: &Ident) 
                 (status = 204, description = #description),
                 (status = 400, description = "Invalid parameters format", body = JsonResponse),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
-                (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 404, description = #not_found, body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
@@ -283,7 +283,7 @@ fn gen_join_relations_fn(
             responses(
                 (status = 200, description = #description, body = #entity_relations),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
-                (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 404, description = #not_found, body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
@@ -326,7 +326,7 @@ fn gen_join_import_fn(entity: &Ident) -> impl ToTokens {
             responses(
                 (status = 200, description = #description, body = JsonResponse),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
-                (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]
@@ -370,7 +370,7 @@ fn gen_join_export_fn(entity: &Ident) -> impl ToTokens {
             responses(
                 (status = 200, description = #description, body = JsonResponse),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
-                (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+                (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]

@@ -143,7 +143,7 @@ export function ChallengeModal({
                 </Tooltip>
               </TooltipProvider>
             </VerticalTabsTrigger>
-            {challengeSummary.challenge.kind === "containerized" && (
+            {challengeSummary.challenge.kind === "dynamic_containerized" && (
               <VerticalTabsTrigger value="deployment">
                 <TooltipProvider>
                   <Tooltip>
@@ -206,7 +206,7 @@ export function ChallengeModal({
               <div className="flex flex-col justify-between space-y-2">
                 {challengeDetails.files.map((file) => (
                   <Button key={file.name} variant="default" asChild>
-                    <Link href={`static.${ctf.domain}/download/${file.id}`}>
+                    <Link href={`https://static.${ctf.domain}/download/${file.id}`}>
                       <Download /> {file.name}
                     </Link>
                   </Button>

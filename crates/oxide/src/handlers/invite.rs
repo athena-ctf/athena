@@ -14,7 +14,7 @@ oxide_macros::crud!(Invite, single: [Team], optional: [], multiple: []);
         (status = 200, description = "Created new invite successfully", body = InviteModel),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
@@ -50,10 +50,10 @@ pub async fn new(
     ),
     operation_id = "destroy_invite",
     responses(
-        (status = 200, description = "Destroyed invite successfully"),
+        (status = 200, description = "Destroyed invite successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
@@ -62,7 +62,7 @@ pub async fn destroy(
     state: State<Arc<AppState>>,
     AuthPlayer(player_claims): AuthPlayer,
     Path(value): Path<String>,
-) -> Result<()> {
+) -> Result<Json<JsonResponse>> {
     let Some(team_model) = Team::find_by_id(player_claims.team_id)
         .one(&state.db_conn)
         .await?
@@ -89,7 +89,9 @@ pub async fn destroy(
 
     invite_model.delete(&state.db_conn).await?;
 
-    Ok(())
+    Ok(Json(JsonResponse {
+        message: "successfully destroyed invite".to_owned(),
+    }))
 }
 
 #[utoipa::path(
@@ -104,7 +106,7 @@ pub async fn destroy(
         (status = 200, description = "Updated invite successfully", body = InviteModel),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]

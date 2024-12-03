@@ -29,7 +29,7 @@ ring = "0.17.8"
 sea-orm = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-thiserror = "2.0.3"
+thiserror = "2.0.4"
 tokio = { workspace = true }
 tower-http = { workspace = true }
 tracing = { workspace = true }

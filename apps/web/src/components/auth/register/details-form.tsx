@@ -20,6 +20,7 @@ import { ImageIcon, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
 import { apiClient } from "@/utils/api-client";
 import { ctf } from "@/utils/ctf-data";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/components/ui/card";
 
 const detailsSchema = z
   .object({
@@ -30,8 +31,9 @@ const detailsSchema = z
     confirmPassword: z.string().min(8),
     email: z.string().email(),
   })
-  .refine(({ confirmPassword, password }) => confirmPassword !== password, {
+  .refine(({ confirmPassword, password }) => confirmPassword === password, {
     message: "The passwords did not match",
+    path: ["confirmPassword"],
   });
 
 export function DetailsForm({ next }: { next: () => void }) {
@@ -53,7 +55,7 @@ export function DetailsForm({ next }: { next: () => void }) {
     formData.append("file", file);
 
     try {
-      const response = await fetch(`static.${ctf.domain}/upload/local`, {
+      const response = await fetch(`https://static.${ctf.domain}/upload/local`, {
         method: "POST",
         body: formData,
       });
@@ -106,112 +108,120 @@ export function DetailsForm({ next }: { next: () => void }) {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-        <FormField
-          control={form.control}
-          name="avatarUrl"
-          render={() => (
-            <FormItem>
-              <FormLabel>Avatar</FormLabel>
-              <FormControl>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <Avatar className="h-16 w-16">
-                      <AvatarImage src={previewUrl} />
-                      <AvatarFallback>
-                        <ImageIcon className="h-8 w-8 text-muted-foreground" />
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 space-y-2">
-                      <Input
-                        type="file"
-                        accept="image/jpeg,image/jpg,image/png"
-                        onChange={handleFileChange}
-                        className="flex-1"
-                      />
+    <Card className="m-auto max-w-sm">
+      <CardHeader>
+        <CardTitle className="text-2xl">Details</CardTitle>
+        <CardDescription>Enter your details below to register to your account</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <FormField
+              control={form.control}
+              name="avatarUrl"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Avatar</FormLabel>
+                  <FormControl>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-4">
+                        <Avatar className="h-16 w-16">
+                          <AvatarImage src={previewUrl} />
+                          <AvatarFallback>
+                            <ImageIcon className="h-8 w-8 text-muted-foreground" />
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 space-y-2">
+                          <Input
+                            type="file"
+                            accept="image/jpeg,image/jpg,image/png"
+                            onChange={handleFileChange}
+                            className="flex-1"
+                          />
+                        </div>
+                      </div>
+                      {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
                     </div>
-                  </div>
-                  {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="displayName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Display Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <PasswordInput {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <PasswordInput {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="mt-4 text-center text-sm">
-          Already have an account?{" "}
-          <Link to="/auth/login" search={{ next: "" }} className="underline">
-            Login
-          </Link>
-        </div>
-        <Button type="submit">Next</Button>
-      </form>
-    </Form>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="displayName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Display Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <PasswordInput {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <PasswordInput {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="mt-4 text-center text-sm">
+              Already have an account?{" "}
+              <Link to="/auth/login" search={{ next: "" }} className="underline">
+                Login
+              </Link>
+            </div>
+            <Button type="submit">Next</Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }

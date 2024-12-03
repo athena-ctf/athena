@@ -11,10 +11,10 @@
   },
   "devDependencies": {
     "@types/node": "^20.17.9",
-    "openapi-typescript": "^7.4.3",
+    "openapi-typescript": "^7.4.4",
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "openapi-fetch": "^0.13.0"
+    "openapi-fetch": "=0.13.1"
   }
 }

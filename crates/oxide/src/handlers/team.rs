@@ -74,7 +74,7 @@ async fn get_team_profile(team_model: TeamModel, pool: &Pool, db: &DbConn) -> Re
         (status = 200, description = "Retrieved team details by id successfully", body = TeamProfile),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No player found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
@@ -106,7 +106,7 @@ pub async fn retrieve_team_by_teamname(
         (status = 200, description = "Retrieved team details by id successfully", body = TeamModel),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No player found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
@@ -144,7 +144,7 @@ pub async fn update_details(
         (status = 200, description = "Retrieved team summary by id successfully", body = TeamDetails),
         (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No player found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )

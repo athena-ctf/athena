@@ -21,8 +21,9 @@ const schema = z
     password: z.string().min(8),
     confirmPassword: z.string().min(8),
   })
-  .refine(({ confirmPassword, password }) => confirmPassword !== password, {
+  .refine(({ confirmPassword, password }) => confirmPassword === password, {
     message: "The passwords did not match",
+    path: ["confirmPassword"],
   });
 
 export function NewPasswordForm({

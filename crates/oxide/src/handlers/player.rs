@@ -13,12 +13,12 @@ oxide_macros::crud!(Player, single: [Team], optional: [Deployment, Ban], multipl
 #[utoipa::path(
     get,
     path = "/player/{username}/profile",
-    params(("username" = String, Path, description = "Username of user")),
+    params(("username" = String, Path, description = "Username of player")),
     responses(
         (status = 200, description = "Retrieved player profile by id successfully", body = PlayerProfile),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No player found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
@@ -50,7 +50,7 @@ pub async fn retrieve_profile_by_username(
         (status = 200, description = "Updated player profile by id successfully", body = PlayerModel),
         (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No player found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
@@ -88,7 +88,7 @@ pub async fn update_profile_by_id(
         (status = 200, description = "Retrieved player summary by id successfully", body = PlayerDetails),
         (status = 400, description = "Invalid parameters/request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No player found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
@@ -111,8 +111,7 @@ pub async fn retrieve_summary(
             .find_related(Unlock)
             .all(&state.db_conn)
             .await?,
-        profile: super::retrieve_profile(player_model, &state.db_conn, &state.redis_client)
-            .await?,
+        profile: super::retrieve_profile(player_model, &state.db_conn, &state.redis_client).await?,
     }))
 }
 
@@ -121,13 +120,13 @@ pub async fn retrieve_summary(
     path = "/player/current",
     operation_id = "player_get_current",
     responses(
-        (status = 200, description = "Retrieved current logged in user successfully", body = PlayerModel),
+        (status = 200, description = "Retrieved current logged in player successfully", body = PlayerModel),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 404, description = "Player not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
 )]
-/// Return currently authenticated user
+/// Return currently authenticated player
 pub async fn get_current_logged_in(
     AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,

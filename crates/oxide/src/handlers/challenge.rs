@@ -28,7 +28,7 @@ oxide_macros::crud!(
         (status = 200, description = "Listed player challenges successfully", body = PlayerChallenges),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No challenge found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
@@ -112,7 +112,7 @@ pub async fn player_challenges(
         (status = 200, description = "Retrieved player challenge details successfully", body = DetailedChallenge),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No challenge found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
@@ -196,7 +196,7 @@ pub async fn detailed_challenge(
         (status = 200, description = "Started challenge containers successfully", body = DeploymentModel),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No challenge found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
@@ -248,10 +248,10 @@ pub async fn start_challenge(
         ("id" = Uuid, Path, description = "The id of the challenge")
     ),
     responses(
-        (status = 200, description = "Stopped challenge containers successfully"),
+        (status = 200, description = "Stopped challenge containers successfully", body = JsonResponse),
         (status = 400, description = "Invalid parameters format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No challenge found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
@@ -261,9 +261,13 @@ pub async fn stop_challenge(
     AuthPlayer(player_claims): AuthPlayer,
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
-) -> Result<()> {
+) -> Result<Json<JsonResponse>> {
     state
         .docker_manager
         .cleanup_challenge(id, Some(player_claims.sub))
-        .await
+        .await?;
+
+    Ok(Json(JsonResponse {
+        message: "successfully stopped challenge deployment".to_owned(),
+    }))
 }

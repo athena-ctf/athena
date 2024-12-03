@@ -23,9 +23,9 @@ use crate::service::AppState;
     request_body = LoginRequest,
     operation_id = "admin_token",
     responses(
-        (status = 200, description = "user logged in successfully", body = LoginResponse<AdminModel>),
+        (status = 200, description = "Admin logged in successfully", body = LoginResponse<AdminModel>),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 404, description = "Admin not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
@@ -87,9 +87,9 @@ pub async fn token(
     path = "/auth/admin/token/refresh",
     operation_id = "admin_token_refresh",
     responses(
-        (status = 200, description = "user logged in successfully", body = JsonResponse),
+        (status = 200, description = "Admin logged in successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 404, description = "Admin not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
@@ -115,10 +115,7 @@ pub async fn token_refresh(
 
     let is_blacklisted = state
         .redis_client
-        .hexists::<u8, _, _>(
-            REFRESH_TOKEN_BLACKLIST,
-            refresh_claims.jti.to_string(),
-        )
+        .hexists::<u8, _, _>(REFRESH_TOKEN_BLACKLIST, refresh_claims.jti.to_string())
         .await?;
 
     if is_blacklisted == 0 {
@@ -130,10 +127,7 @@ pub async fn token_refresh(
 
     state
         .redis_client
-        .hset::<(), _, _>(
-            REFRESH_TOKEN_BLACKLIST,
-            (refresh_claims.jti.to_string(), 0),
-        )
+        .hset::<(), _, _>(REFRESH_TOKEN_BLACKLIST, (refresh_claims.jti.to_string(), 0))
         .await?;
 
     state

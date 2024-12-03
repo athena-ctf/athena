@@ -11,7 +11,7 @@ oxide_macros::crud!(Notification, single: [], optional: [Player], multiple: []);
     responses(
         (status = 200, description = "Listed notifications successfully", body = [NotificationModel]),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 404, description = "No hint found with specified id", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )

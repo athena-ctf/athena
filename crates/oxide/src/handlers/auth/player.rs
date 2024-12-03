@@ -35,22 +35,22 @@ use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, V
     get,
     path = "/auth/player/register/verify/email",
     params(
-        ("email" = String, Query, description = "Email of user to check")
+        ("email" = String, Query, description = "Email of player to check")
     ),
     operation_id = "player_register_verify_email",
     responses(
-        (status = 200, description = "User existence check successfully", body = JsonResponse),
+        (status = 200, description = "Player existence check successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 404, description = "Player not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
 )]
-/// Verify user exists
+/// Verify player exists
 pub async fn register_verify_email(
     state: State<Arc<AppState>>,
     Query(query): Query<RegisterVerifyEmailQuery>,
-) -> Result<()> {
+) -> Result<Json<JsonResponse>> {
     if Player::find()
         .filter(Condition::any().add(entity::player::Column::Email.eq(query.email)))
         .one(&state.db_conn)
@@ -58,11 +58,13 @@ pub async fn register_verify_email(
         .is_some()
     {
         return Err(Error::BadRequest(
-            "User with username or email already exists".to_owned(),
+            "Player with username or email already exists".to_owned(),
         ));
     }
 
-    Ok(())
+    Ok(Json(JsonResponse {
+        message: "Player exists".to_owned(),
+    }))
 }
 
 #[utoipa::path(
@@ -71,14 +73,13 @@ pub async fn register_verify_email(
     request_body = RegisterPlayer,
     operation_id = "player_register",
     responses(
-        (status = 200, description = "Registered user successfully", body = JsonResponse),
+        (status = 200, description = "Registered player successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
 )]
-/// Register user
+/// Register player
 pub async fn register(
     state: State<Arc<AppState>>,
     Json(body): Json<RegisterPlayer>,
@@ -177,7 +178,7 @@ pub async fn register(
     responses(
         (status = 200, description = "Token sent successful", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 404, description = "Player not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
@@ -238,7 +239,7 @@ pub async fn register_send_token(
         (status = 200, description = "Verified invite successfully", body = InviteVerificationResult),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
-        (status = 403, description = "User does not have sufficient permissions", body = JsonResponse),
+        (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     )
 )]
@@ -354,7 +355,7 @@ pub async fn reset_password(
     responses(
         (status = 200, description = "Token sent successful", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 404, description = "Player not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
@@ -408,7 +409,7 @@ pub async fn reset_password_send_token(
     responses(
         (status = 200, description = "Player logged in successfully", body = LoginResponse<PlayerModel>),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 404, description = "Player not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
@@ -473,7 +474,7 @@ pub async fn token(
     responses(
         (status = 200, description = "Player logged in successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
-        (status = 404, description = "User not found", body = JsonResponse),
+        (status = 404, description = "Player not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
     security(())
@@ -499,10 +500,7 @@ pub async fn token_refresh(
 
     let is_blacklisted = state
         .redis_client
-        .hexists::<u8, _, _>(
-            REFRESH_TOKEN_BLACKLIST,
-            refresh_claims.jti.to_string(),
-        )
+        .hexists::<u8, _, _>(REFRESH_TOKEN_BLACKLIST, refresh_claims.jti.to_string())
         .await?;
 
     if is_blacklisted == 0 {
@@ -514,10 +512,7 @@ pub async fn token_refresh(
 
     state
         .redis_client
-        .hset::<(), _, _>(
-            REFRESH_TOKEN_BLACKLIST,
-            (refresh_claims.jti.to_string(), 0),
-        )
+        .hset::<(), _, _>(REFRESH_TOKEN_BLACKLIST, (refresh_claims.jti.to_string(), 0))
         .await?;
 
     state
