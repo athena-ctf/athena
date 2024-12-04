@@ -63,7 +63,7 @@ export default function Index() {
   };
 
   return (
-    <Card className="m-auto max-w-sm">
+    <Card className="m-auto">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>Enter your username below to login to your account</CardDescription>

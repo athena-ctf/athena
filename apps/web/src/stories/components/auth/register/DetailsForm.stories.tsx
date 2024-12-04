@@ -1,19 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { http, HttpResponse } from "msw";
+import { faker } from "@faker-js/faker";
 
-import { DetailsForm } from "@/components/auth/register/details-form";
+import { DetailsForm as Component } from "@/components/auth/register/details-form";
 import { routerDecorator } from "@/utils/routerDecorator";
+import { openapiHttp } from "@/utils/msw";
 
 const meta = {
   title: "Components/Auth/Register/DetailsForm",
-  component: DetailsForm,
+  component: Component,
   decorators: [routerDecorator],
-} satisfies Meta<typeof DetailsForm>;
+} satisfies Meta<typeof Component>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const DetailsForm: Story = {
   args: {
     next() {
       console.log("pressed next");
@@ -24,13 +26,11 @@ export const Default: Story = {
       handlers: [
         http.post("https://static.athena.io/upload/local", () => {
           return HttpResponse.json({
-            url: "https://static.athena.io/download/0000-000000-0000-000000",
+            url: `https://static.athena.io/download/${faker.string.uuid()}`,
           });
         }),
-        http.get("https://api.athena.io/auth/player/register/verify/email", () => {
-          return HttpResponse.json({
-            message: "Player exists",
-          });
+        openapiHttp.get("/auth/player/register/verify/email", ({ response }) => {
+          return response(200).json({ message: "verified email successfully" });
         }),
       ],
     },

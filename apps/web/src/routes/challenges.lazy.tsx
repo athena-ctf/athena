@@ -5,8 +5,9 @@ import { ChallengeSearch } from "@/components/challenge/search";
 import type { components } from "@repo/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import ChallengesFilter from "@/components/challenge/filter";
+import { ChallengesFilter } from "@/components/challenge/filter";
 import { ctf } from "@/utils/ctf-data";
+import { apiClient } from "@/utils/api-client";
 
 export const Route = createLazyFileRoute("/challenges")({
   component: Index,
@@ -20,7 +21,7 @@ function Index() {
   const [results, setResults] = useState<components["schemas"]["ChallengeSummary"][]>([]);
 
   useEffect(() => {
-    fetchClient.GET("/player/challenges").then((resp) => {
+    apiClient.GET("/player/challenges").then((resp) => {
       if (resp.error) {
         toast.error("Could not fetch challenges");
       } else {

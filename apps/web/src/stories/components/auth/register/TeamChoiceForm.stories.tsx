@@ -1,19 +1,20 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { http, HttpResponse } from "msw";
 
-import { TeamChoiceForm } from "@/components/auth/register/team-choice-form";
+import { TeamChoiceForm as Component } from "@/components/auth/register/team-choice-form";
 import { routerDecorator } from "@/utils/routerDecorator";
+import { openapiHttp } from "@/utils/msw";
+import { faker } from "@faker-js/faker";
 
 const meta = {
   title: "Components/Auth/Register/TeamChoiceForm",
-  component: TeamChoiceForm,
+  component: Component,
   decorators: [routerDecorator],
-} satisfies Meta<typeof TeamChoiceForm>;
+} satisfies Meta<typeof Component>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const TeamChoiceForm: Story = {
   args: {
     next() {
       console.log("pressed next");
@@ -25,15 +26,13 @@ export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.post("https://api.athena.io/auth/player/register/send-token", () => {
-          return HttpResponse.json({
-            message: "Successfully sent mail",
-          });
+        openapiHttp.post("/auth/player/register/send-token", ({ response }) => {
+          return response(200).json({ message: "Successfully send email" });
         }),
-        http.get("https://api.athena.io/auth/player/register/verify/invite", () => {
-          return HttpResponse.json({
-            invite_id: "0000-000000-0000-000000",
-            team_id: "0000-000000-0000-000000",
+        openapiHttp.get("/auth/player/register/verify/invite", ({ response }) => {
+          return response(200).json({
+            invite_id: faker.string.uuid(),
+            team_id: faker.string.uuid(),
           });
         }),
       ],

@@ -16,7 +16,13 @@ import { z } from "zod";
 import { useRegisterStore } from "@/stores/register";
 import { toast } from "sonner";
 import { apiClient } from "@/utils/api-client";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@ui/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@repo/ui/components/card";
 
 const joinTeamSchema = z.object({
   teamName: z.string(),
@@ -95,7 +101,7 @@ export function TeamChoiceForm({
   };
 
   return (
-    <Card className="m-auto max-w-sm">
+    <Card className="m-auto max-w-md">
       <CardHeader>
         <CardTitle className="text-2xl">Choose Team</CardTitle>
         <CardDescription>Create a team or join a team</CardDescription>

@@ -1,9 +1,11 @@
 import { X } from "lucide-react";
 
+type Category = "tag" | "difficulty" | "status";
+
 interface FilterBadgeProps {
   label: string;
   onRemove: () => void;
-  category: string;
+  category: Category;
 }
 
 export function FilterBadge({ label, onRemove, category }: FilterBadgeProps) {

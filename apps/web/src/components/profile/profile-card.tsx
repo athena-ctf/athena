@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ca
 import { Badge } from "@repo/ui/components/badge";
 import type { components } from "@repo/api";
 import { getOrdinal } from "@/utils/get-ordinal";
-import { cn } from "@ui/lib/utils";
+import { cn } from "@repo/ui/lib/utils";
 
 export function PlayerProfileCard({
   playerProfile,

@@ -222,7 +222,11 @@ type UploadResponse struct {
 	message string
 }
 
-func (handler Handler) Upload(ctx context.Context, location string, file *multipart.FileHeader) (*UploadResponse, error) {
+func (handler Handler) Upload(
+	ctx context.Context,
+	location string,
+	file *multipart.FileHeader,
+) (*UploadResponse, error) {
 	name, err := uuid.NewV7()
 	if err != nil {
 		return nil, err

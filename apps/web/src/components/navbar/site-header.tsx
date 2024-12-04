@@ -4,7 +4,7 @@ import { PlayerNotification } from "./notification";
 import { ProfileDropdown } from "./profile-dropdown";
 import { Button } from "@repo/ui/components/button";
 import { Link, useLocation } from "@tanstack/react-router";
-import { CountdownTimer } from "@ui/components/ui/countdown";
+import { CountdownTimer } from "@repo/ui/components/countdown";
 import { ctf } from "@/utils/ctf-data";
 
 export function SiteHeader({

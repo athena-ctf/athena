@@ -42,9 +42,6 @@ export function ChallengeCard({
                     <CountdownTimer targetDate={parseISO(challengeSummary.deployment.expires_at)} />
                   )}
                 </CardTitle>
-                <CardDescription className="flex flex-col items-center">
-                  @{challengeSummary.challenge.author_name}
-                </CardDescription>
               </div>
               <div className="flex flex-row space-x-2 py-3">
                 {challengeSummary.tags.map((tag) => (
@@ -54,6 +51,9 @@ export function ChallengeCard({
                 ))}
               </div>
             </div>
+            <CardDescription className="ml-9">
+              @{challengeSummary.challenge.author_name}
+            </CardDescription>
           </CardHeader>
           <CardContent className="px-10">
             <div className="flex justify-between text-ellipsis p-2 px-6 text-sm">

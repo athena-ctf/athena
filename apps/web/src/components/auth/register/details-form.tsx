@@ -20,7 +20,13 @@ import { ImageIcon, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
 import { apiClient } from "@/utils/api-client";
 import { ctf } from "@/utils/ctf-data";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/card";
 
 const detailsSchema = z
   .object({
@@ -108,7 +114,7 @@ export function DetailsForm({ next }: { next: () => void }) {
   };
 
   return (
-    <Card className="m-auto max-w-sm">
+    <Card className="m-auto max-w-md">
       <CardHeader>
         <CardTitle className="text-2xl">Details</CardTitle>
         <CardDescription>Enter your details below to register to your account</CardDescription>

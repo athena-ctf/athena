@@ -39,7 +39,6 @@ export function FilterPopover({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [inputValue, setInputValue] = useState("");
 
-  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && open) {
@@ -60,7 +59,7 @@ export function FilterPopover({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[130px] justify-between"
+          className="w-fit justify-between"
           onKeyDown={(e) => {
             if (e.key === "ArrowDown" || e.key === "Enter") {
               e.preventDefault();
@@ -72,7 +71,7 @@ export function FilterPopover({
           <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-fit p-0">
         <Command shouldFilter={false}>
           <CommandInput
             placeholder={placeholder}

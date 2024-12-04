@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@repo/ui/components/card";
 import { Badge } from "@repo/ui/components/badge";
-import { Server, Link2, Anchor } from "lucide-react";
+import { Server, Link2, EthernetPort } from "lucide-react";
 import type { components } from "@repo/api";
 import { ctf } from "@/utils/ctf-data";
 import { uuidToBase62 } from "@/utils/base62";
@@ -16,12 +16,9 @@ const stateColorMap = {
 } as const;
 
 export function InstanceCard({
-  deploymentId,
-  challengeInstance: {
-    instance_model: { container_name, port_mapping },
-    state,
-  },
-}: { deploymentId: string; challengeInstance: components["schemas"]["ChallengeInstance"] }) {
+  instance_model: { container_name, port_mapping, deployment_id },
+  state,
+}: components["schemas"]["ChallengeInstance"]) {
   return (
     <Card className="w-full max-w-md">
       <CardContent className="pt-6">
@@ -35,12 +32,12 @@ export function InstanceCard({
           </div>
           {port_mapping.map((port) => {
             const [containerPort, hostPort] = port.split(":");
-            const url = `${uuidToBase62(deploymentId)}.chall.${ctf.domain}:${hostPort}`;
+            const url = `${uuidToBase62(deployment_id)}.chall.${ctf.domain}:${hostPort}`;
 
             return (
               <>
                 <div className="flex items-center" key={containerPort}>
-                  <Anchor className="mr-2 h-4 w-4 opacity-70" />
+                  <EthernetPort className="mr-2 h-4 w-4 opacity-70" />
                   <span className="text-sm">Port: {containerPort}</span>
                 </div>
                 <div className="flex items-center" key={hostPort}>

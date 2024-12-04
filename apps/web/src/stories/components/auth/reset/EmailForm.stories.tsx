@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { VerifyTokenForm as Component } from "@/components/auth/register/verify-token-form";
+import { EmailForm as Component } from "@/components/auth/reset/email-form";
 import { routerDecorator } from "@/utils/routerDecorator";
 import { openapiHttp } from "@/utils/msw";
 
 const meta = {
-  title: "Components/Auth/Register/VerifyTokenForm",
+  title: "Components/Auth/Reset/EmailForm",
   component: Component,
   decorators: [routerDecorator],
 } satisfies Meta<typeof Component>;
@@ -13,18 +13,18 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const VerifyTokenForm: Story = {
+export const EmailForm: Story = {
   args: {
-    prev() {
-      console.log("pressed prev");
+    next() {
+      console.log("pressed next");
     },
   },
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/auth/player/register", ({ response }) => {
+        openapiHttp.post("/auth/player/reset-password/send-token", ({ response }) => {
           return response(200).json({
-            message: "Successfully sent mail",
+            message: "successfully sent token",
           });
         }),
       ],

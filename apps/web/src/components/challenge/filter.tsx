@@ -5,15 +5,16 @@ import { FilterPopover } from "./filter-popover";
 import { FilterBadge } from "./filter-badge";
 import type { components } from "@repo/api";
 
+type Category = "tag" | "difficulty" | "status";
 const STATUS_OPTIONS = ["solved", "unsolved", "challenge_limit_reached"];
 
-interface ChallengesFilterProps {
+interface FilterProps {
   tags: components["schemas"]["TagModel"][];
   difficulties: { level: string; value: string }[];
   onChange: (tags: string[], difficulties: string[], status: string[]) => void;
 }
 
-export function ChallengesFilter({ tags, difficulties, onChange }: ChallengesFilterProps) {
+export function ChallengesFilter({ tags, difficulties, onChange }: FilterProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
@@ -52,7 +53,7 @@ export function ChallengesFilter({ tags, difficulties, onChange }: ChallengesFil
   };
 
   const removeFilter = useCallback(
-    (category: string, value: string) => {
+    (category: Category, value: string) => {
       switch (category) {
         case "tag": {
           const newTags = selectedTags.filter((t) => t !== value);
@@ -155,5 +156,3 @@ export function ChallengesFilter({ tags, difficulties, onChange }: ChallengesFil
     </div>
   );
 }
-
-export default ChallengesFilter;

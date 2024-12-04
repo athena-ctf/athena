@@ -18,9 +18,15 @@ import {
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@ui/components/ui/input-otp";
+} from "@repo/ui/components/input-otp";
 import { apiClient } from "@/utils/api-client";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@ui/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@repo/ui/components/card";
 
 const verifyEmailSchema = z.object({
   token: z.string().length(8),

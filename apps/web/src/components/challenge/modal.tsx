@@ -185,16 +185,11 @@ export function ChallengeModal({
           <VerticalTabsContent value="description">
             <ScrollArea className="h-max">{challengeSummary.challenge.description}</ScrollArea>
           </VerticalTabsContent>
-          {challengeSummary.challenge.kind === "containerized" && (
+          {challengeSummary.challenge.kind === "dynamic_containerized" && ( // TODO
             <VerticalTabsContent value="deployment">
               {Array.isArray(challengeDetails?.instances) ? (
                 challengeDetails.instances.map((instance) => (
-                  <InstanceCard
-                    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-                    deploymentId={challengeSummary.deployment!.id}
-                    challengeInstance={instance}
-                    key={instance.instance_model.id}
-                  />
+                  <InstanceCard {...instance} key={instance.instance_model.id} />
                 ))
               ) : (
                 <>Not Started</> // TODO: add proper messages
