@@ -1,12 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { FilterBadge } from "@/components/challenge/filter-badge";
-import { routerDecorator } from "@/utils/routerDecorator";
 
 const meta = {
   title: "Components/Challenge/FilterBadge",
   component: FilterBadge,
-  decorators: [routerDecorator],
 } satisfies Meta<typeof FilterBadge>;
 
 export default meta;

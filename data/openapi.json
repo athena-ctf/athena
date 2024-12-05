@@ -16918,7 +16918,6 @@
       "RegisterPlayer": {
         "type": "object",
         "required": [
-          "display_name",
           "email",
           "username",
           "password",
@@ -16928,9 +16927,6 @@
         ],
         "properties": {
           "avatar_url": {
-            "type": "string"
-          },
-          "display_name": {
             "type": "string"
           },
           "email": {

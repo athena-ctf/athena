@@ -14,7 +14,7 @@ interface FilterProps {
   onChange: (tags: string[], difficulties: string[], status: string[]) => void;
 }
 
-export function ChallengesFilter({ tags, difficulties, onChange }: FilterProps) {
+export function Filter({ tags, difficulties, onChange }: FilterProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);

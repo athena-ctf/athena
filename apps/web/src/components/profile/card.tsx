@@ -5,12 +5,12 @@ import type { components } from "@repo/api";
 import { getOrdinal } from "@/utils/get-ordinal";
 import { cn } from "@repo/ui/lib/utils";
 
-export function PlayerProfileCard({
+export function ProfileCard({
   playerProfile,
   className,
 }: { playerProfile: components["schemas"]["PlayerProfile"]; className?: string }) {
   return (
-    <Card className={cn("w-full mx-auto", className)}>
+    <Card className={cn("w-full mx-auto max-w-md", className)}>
       <CardHeader>
         <CardTitle>Profile</CardTitle>
       </CardHeader>
@@ -25,7 +25,7 @@ export function PlayerProfileCard({
           <p className="text-sm text-muted-foreground">{playerProfile.player.email}</p>
         </div>
 
-        <div className="flex justify-between w-full text-sm min-h-[80px]">
+        <div className="flex justify-around w-full text-sm min-h-[80px]">
           <div>
             <p className="font-semibold">Rank</p>
             <p className="text-3xl font-bold text-primary">{getOrdinal(playerProfile.rank)}</p>
@@ -43,10 +43,10 @@ export function PlayerProfileCard({
           </div>
         </div>
 
-        <div className="flex justify-between w-full pt-4 border-t">
+        <div className="flex justify-start space-x-4 w-full pt-4 border-t">
           {playerProfile.awards.map((award) => (
             <div className="relative" key={award.id}>
-              <img src={award.logo_url} alt={award.value} className="w-10 h-10" />
+              <img src={award.logo_url} alt={award.value} className="w-10 h-10 rounded-full" />
               <Badge className="absolute -top-2 -right-2 h-5 min-w-[20px] px-1 flex items-center justify-center">
                 {award.count}
               </Badge>

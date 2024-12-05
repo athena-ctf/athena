@@ -1,12 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { FilterPopover as Component } from "@/components/challenge/filter-popover";
-import { routerDecorator } from "@/utils/routerDecorator";
 
 const meta = {
   title: "Components/Challenge/FilterPopover",
   component: Component,
-  decorators: [routerDecorator],
 } satisfies Meta<typeof Component>;
 
 export default meta;

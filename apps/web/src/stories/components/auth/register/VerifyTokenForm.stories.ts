@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { VerifyTokenForm as Component } from "@/components/auth/register/verify-token-form";
-import { routerDecorator } from "@/utils/routerDecorator";
+import { routerDecorator } from "@/utils/router-decorator";
 import { openapiHttp } from "@/utils/msw";
 
 const meta = {
@@ -22,11 +22,11 @@ export const VerifyTokenForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/auth/player/register", ({ response }) => {
-          return response(200).json({
+        openapiHttp.post("/auth/player/register", ({ response }) =>
+          response(200).json({
             message: "Successfully sent mail",
-          });
-        }),
+          }),
+        ),
       ],
     },
   },

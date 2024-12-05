@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { NewPasswordForm as Component } from "@/components/auth/reset/new-password-form";
-import { routerDecorator } from "@/utils/routerDecorator";
+import { routerDecorator } from "@/utils/router-decorator";
 import { openapiHttp } from "@/utils/msw";
 
 const meta = {
@@ -22,11 +22,11 @@ export const NewPasswordForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/auth/player/reset-password", ({ response }) => {
-          return response(200).json({
+        openapiHttp.post("/auth/player/reset-password", ({ response }) =>
+          response(200).json({
             message: "successfully sent token",
-          });
-        }),
+          }),
+        ),
       ],
     },
   },

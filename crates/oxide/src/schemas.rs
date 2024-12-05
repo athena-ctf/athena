@@ -49,7 +49,6 @@ pub struct SendTokenSchema {
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct RegisterPlayer {
-    pub display_name: String,
     pub email: String,
     pub username: String,
     pub password: String,

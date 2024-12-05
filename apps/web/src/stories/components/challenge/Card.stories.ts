@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { ChallengeCard as Component } from "@/components/challenge/card";
-import { routerDecorator } from "@/utils/routerDecorator";
+import { routerDecorator } from "@/utils/router-decorator";
 import { faker } from "@faker-js/faker";
 
 const meta = {

@@ -1,13 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { InstanceCard as Component } from "@/components/challenge/instance-card";
-import { routerDecorator } from "@/utils/routerDecorator";
 import { faker } from "@faker-js/faker";
 
 const meta = {
   title: "Components/Challenge/InstanceCard",
   component: Component,
-  decorators: [routerDecorator],
 } satisfies Meta<typeof Component>;
 
 export default meta;

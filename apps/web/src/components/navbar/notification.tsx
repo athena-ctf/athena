@@ -14,7 +14,7 @@ import { Bell, RefreshCcw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export function PlayerNotification() {
+export function Notification() {
   const [notifications, setNotifications] = useState<components["schemas"]["NotificationModel"][]>(
     [],
   );
@@ -40,7 +40,7 @@ export function PlayerNotification() {
           <Bell className="size-[1.2rem]" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mr-3 w-80">
+      <DropdownMenuContent className="mr-3 w-80 h-fit">
         <DropdownMenuLabel>
           <span className="flex w-full flex-row items-center justify-between">
             Notifications
@@ -49,22 +49,26 @@ export function PlayerNotification() {
             </Button>
           </span>
         </DropdownMenuLabel>
-        <ScrollArea className="h-[320px]">
-          {notifications.map((notification) => (
-            <Alert className="group my-1 p-2" key={notification.id}>
-              <AlertTitle className="m-1">{notification.title}</AlertTitle>
-              <AlertDescription>
-                <div className="text-ellipsis">{notification.content}</div>
-                <span className="text-xs text-muted-foreground">
-                  {formatDistance(notification.updated_at, new Date(), {
-                    addSuffix: true,
-                    includeSeconds: true,
-                  })}
-                </span>
-              </AlertDescription>
-            </Alert>
-          ))}
-        </ScrollArea>
+        {notifications.length === 0 ? (
+          <div className="text-lg text-gray-400 w-full mx-12 my-3">No notifications yet</div>
+        ) : (
+          <ScrollArea className="h-[320px]">
+            {notifications.map((notification) => (
+              <Alert className="group my-1 p-2" key={notification.id}>
+                <AlertTitle className="m-1">{notification.title}</AlertTitle>
+                <AlertDescription className="m-1">
+                  <div className="text-ellipsis">{notification.content}</div>
+                  <span className="text-xs text-muted-foreground">
+                    {formatDistance(notification.updated_at, new Date(), {
+                      addSuffix: true,
+                      includeSeconds: true,
+                    })}
+                  </span>
+                </AlertDescription>
+              </Alert>
+            ))}
+          </ScrollArea>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

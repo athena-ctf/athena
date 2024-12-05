@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { TeamChoiceForm as Component } from "@/components/auth/register/team-choice-form";
-import { routerDecorator } from "@/utils/routerDecorator";
+import { routerDecorator } from "@/utils/router-decorator";
 import { openapiHttp } from "@/utils/msw";
 import { faker } from "@faker-js/faker";
 
@@ -26,15 +26,15 @@ export const TeamChoiceForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/auth/player/register/send-token", ({ response }) => {
-          return response(200).json({ message: "Successfully send email" });
-        }),
-        openapiHttp.get("/auth/player/register/verify/invite", ({ response }) => {
-          return response(200).json({
+        openapiHttp.post("/auth/player/register/send-token", ({ response }) =>
+          response(200).json({ message: "Successfully send email" }),
+        ),
+        openapiHttp.get("/auth/player/register/verify/invite", ({ response }) =>
+          response(200).json({
             invite_id: faker.string.uuid(),
             team_id: faker.string.uuid(),
-          });
-        }),
+          }),
+        ),
       ],
     },
   },

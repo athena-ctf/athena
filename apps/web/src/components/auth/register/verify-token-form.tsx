@@ -45,7 +45,6 @@ export function VerifyTokenForm({ prev }: { prev: () => void }) {
     const resp = await apiClient.POST("/auth/player/register", {
       body: {
         avatar_url: store.avatarUrl,
-        display_name: store.displayName,
         email: store.email,
         password: store.password,
         username: store.username,

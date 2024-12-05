@@ -3,7 +3,7 @@ import { http, HttpResponse } from "msw";
 import { faker } from "@faker-js/faker";
 
 import { DetailsForm as Component } from "@/components/auth/register/details-form";
-import { routerDecorator } from "@/utils/routerDecorator";
+import { routerDecorator } from "@/utils/router-decorator";
 import { openapiHttp } from "@/utils/msw";
 
 const meta = {
@@ -29,9 +29,9 @@ export const DetailsForm: Story = {
             url: `https://static.athena.io/download/${faker.string.uuid()}`,
           });
         }),
-        openapiHttp.get("/auth/player/register/verify/email", ({ response }) => {
-          return response(200).json({ message: "verified email successfully" });
-        }),
+        openapiHttp.get("/auth/player/register/verify/email", ({ response }) =>
+          response(200).json({ message: "verified email successfully" }),
+        ),
       ],
     },
   },

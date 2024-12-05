@@ -5,7 +5,7 @@ import { ChallengeSearch } from "@/components/challenge/search";
 import type { components } from "@repo/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ChallengesFilter } from "@/components/challenge/filter";
+import { Filter } from "@/components/challenge/filter";
 import { ctf } from "@/utils/ctf-data";
 import { apiClient } from "@/utils/api-client";
 
@@ -34,7 +34,7 @@ function Index() {
   return (
     <div className="m-2">
       <div className="mr-4 flex justify-between">
-        <ChallengesFilter
+        <Filter
           tags={tags}
           difficulties={Object.entries(ctf.level_map).map(([k, v]) => ({
             level: k,

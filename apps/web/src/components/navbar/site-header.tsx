@@ -1,11 +1,17 @@
 import type { components } from "@repo/api";
 import { ThemeToggle } from "./theme-toggle";
-import { PlayerNotification } from "./notification";
+import { Notification } from "./notification";
 import { ProfileDropdown } from "./profile-dropdown";
 import { Button } from "@repo/ui/components/button";
 import { Link, useLocation } from "@tanstack/react-router";
 import { CountdownTimer } from "@repo/ui/components/countdown";
 import { ctf } from "@/utils/ctf-data";
+import type { FileRouteTypes } from "@/routeTree.gen";
+
+interface Navlink {
+  to: FileRouteTypes["to"];
+  text: string;
+}
 
 export function SiteHeader({
   playerProfile,
@@ -14,9 +20,9 @@ export function SiteHeader({
 }) {
   const location = useLocation({ select: (path) => path.pathname });
 
-  const navLinks = [
+  const navLinks: Navlink[] = [
     { to: "/challenges", text: "Challenges" },
-    { to: "/scoreboard/team", text: "Scoreboard" },
+    { to: "/scoreboard", text: "Scoreboard" },
   ];
 
   return (
@@ -44,7 +50,7 @@ export function SiteHeader({
           <ThemeToggle />
           {playerProfile ? (
             <>
-              <PlayerNotification />
+              <Notification />
               <ProfileDropdown playerProfile={playerProfile} />
             </>
           ) : (

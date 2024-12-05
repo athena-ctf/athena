@@ -1,13 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { ChallengesFilter as Component } from "@/components/challenge/filter";
-import { routerDecorator } from "@/utils/routerDecorator";
+import { Filter as Component } from "@/components/challenge/filter";
 import { faker } from "@faker-js/faker";
 
 const meta = {
   title: "Components/Challenge/Filter",
   component: Component,
-  decorators: [routerDecorator],
 } satisfies Meta<typeof Component>;
 
 export default meta;

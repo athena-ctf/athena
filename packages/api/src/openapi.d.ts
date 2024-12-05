@@ -3038,7 +3038,6 @@ export interface components {
     };
     RegisterPlayer: {
       avatar_url: string;
-      display_name: string;
       email: string;
       password: string;
       team: components["schemas"]["TeamRegister"];
