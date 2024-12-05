@@ -30,7 +30,7 @@ export const Full: Story = {
           response(200).json(
             Array(10)
               .fill(0)
-              .map((_) => ({
+              .map(() => ({
                 content: faker.lorem.lines(1),
                 created_at: faker.date.anytime().toISOString(),
                 id: faker.string.uuid(),

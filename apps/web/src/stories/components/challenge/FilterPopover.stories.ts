@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { FilterPopover as Component } from "@/components/challenge/filter-popover";
+import { faker } from "@faker-js/faker";
 
 const meta = {
   title: "Components/Challenge/FilterPopover",
@@ -16,24 +17,12 @@ export const FilterPopover: Story = {
     setOpen(open) {
       console.log("action: ", open);
     },
-    options: [
-      {
-        id: "web",
-        value: "Web",
-      },
-      {
-        id: "osint",
-        value: "OSINT",
-      },
-      {
-        id: "malware",
-        value: "Malware",
-      },
-      {
-        id: "forensics",
-        value: "Forensics",
-      },
-    ],
+    options: Array(5)
+      .fill(0)
+      .map(() => ({
+        id: faker.string.uuid(),
+        value: faker.lorem.word(),
+      })),
     selected: [],
     onSelect(value: string) {
       console.log("selected: ", value);

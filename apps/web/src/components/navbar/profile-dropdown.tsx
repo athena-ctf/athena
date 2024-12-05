@@ -15,9 +15,10 @@ import { LogOut, Settings, User, Users } from "lucide-react";
 
 export function ProfileDropdown({
   playerProfile,
-}: { playerProfile: components["schemas"]["PlayerProfile"] }) {
+  defaultOpen,
+}: { playerProfile: components["schemas"]["PlayerProfile"]; defaultOpen?: boolean }) {
   return (
-    <DropdownMenu>
+    <DropdownMenu defaultOpen={defaultOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">

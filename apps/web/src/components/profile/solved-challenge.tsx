@@ -10,10 +10,10 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card";
 
 export function SolvedChallenge({
-  challenge,
+  challenges,
   className,
 }: {
-  challenge: components["schemas"]["ChallengeModel"][];
+  challenges: components["schemas"]["ChallengeModel"][];
   className?: string;
 }) {
   return (
@@ -22,22 +22,26 @@ export function SolvedChallenge({
         <CardTitle>Solved Challenges</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="items-center">Challenge Name</TableHead>
-              <TableHead className="items-center">Points</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody className="items-center">
-            {challenge.map((challenge) => (
-              <TableRow className="items-center" key={challenge.title}>
-                <TableCell>{challenge.title}</TableCell>
-                <TableCell>{challenge.points}</TableCell>
+        {challenges.length === 0 ? (
+          <div className="text-gray-500">No challenges solved.</div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="items-center">Challenge Name</TableHead>
+                <TableHead className="items-center">Points</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody className="items-center">
+              {challenges.map((challenge) => (
+                <TableRow className="items-center" key={challenge.id}>
+                  <TableCell>{challenge.title}</TableCell>
+                  <TableCell>{challenge.points}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </CardContent>
     </Card>
   );

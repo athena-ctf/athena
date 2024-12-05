@@ -13,26 +13,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Filter: Story = {
   args: {
-    tags: [
-      {
+    tags: Array(5)
+      .fill(0)
+      .map(() => ({
         created_at: faker.date.anytime().toISOString(),
         id: faker.string.uuid(),
         value: faker.lorem.word(),
         updated_at: faker.date.anytime().toISOString(),
-      },
-      {
-        created_at: faker.date.anytime().toISOString(),
-        id: faker.string.uuid(),
-        value: faker.lorem.word(),
-        updated_at: faker.date.anytime().toISOString(),
-      },
-      {
-        created_at: faker.date.anytime().toISOString(),
-        id: faker.string.uuid(),
-        value: faker.lorem.word(),
-        updated_at: faker.date.anytime().toISOString(),
-      },
-    ],
+      })),
     difficulties: [
       {
         level: "0",

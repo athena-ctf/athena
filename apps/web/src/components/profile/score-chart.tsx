@@ -48,7 +48,7 @@ export function ScoreChart({ data }: { data: PointRecords }) {
   }, [data, processPointsData]);
 
   return (
-    <Card>
+    <Card className="max-w-md">
       <CardHeader>
         <CardTitle>Points Graph</CardTitle>
       </CardHeader>
@@ -63,7 +63,7 @@ export function ScoreChart({ data }: { data: PointRecords }) {
                 cursor={false}
                 content={<ChartTooltipContent hideLabel />}
                 labelFormatter={(label) => `Time: ${label}`}
-                formatter={(value: number) => [`${value} points`, "Change"]}
+                formatter={(value: number) => `${value} points`}
               />
               <Line type="monotone" dataKey="cumulativePoints" stroke="#16a34a" strokeWidth={2} />
             </LineChart>

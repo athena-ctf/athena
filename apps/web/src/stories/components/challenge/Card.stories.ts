@@ -29,14 +29,14 @@ export const Card: Story = {
       },
       solves: 0,
       state: "solved",
-      tags: [
-        {
+      tags: Array(5)
+        .fill(0)
+        .map(() => ({
           created_at: faker.date.anytime().toISOString(),
           id: faker.string.uuid(),
           value: faker.lorem.word(),
           updated_at: faker.date.anytime().toISOString(),
-        },
-      ],
+        })),
     },
   },
 };

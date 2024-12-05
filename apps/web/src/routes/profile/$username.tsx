@@ -34,7 +34,7 @@ function Index() {
           <ProfileCard playerProfile={profile} className="row-span-2" />
           <ScoreChart data={profile.history} />
           <ChallengeDiff data={profile.tag_solves} />
-          <SolvedChallenge challenge={profile.solved_challenges} className="col-span-2" />
+          <SolvedChallenge challenges={profile.solved_challenges} className="col-span-2" />
         </div>
       )}
     </div>

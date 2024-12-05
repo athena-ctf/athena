@@ -34,5 +34,6 @@ export const ProfileDropdown: Story = {
       solved_challenges: [],
       tag_solves: [],
     },
+    defaultOpen: true,
   },
 };

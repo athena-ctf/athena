@@ -28,7 +28,7 @@ const chartConfig = {
 
 export function ChallengeDiff({ data }: Data) {
   return (
-    <Card>
+    <Card className="max-w-md">
       <CardHeader className="items-center">
         <CardTitle>Challenge Map</CardTitle>
         <CardDescription>Showing total solved challenges</CardDescription>

@@ -14,8 +14,9 @@ type Story = StoryObj<typeof meta>;
 export const Card: Story = {
   args: {
     playerProfile: {
-      awards: [
-        {
+      awards: Array(4)
+        .fill(0)
+        .map(() => ({
           count: faker.number.int(10),
           created_at: "",
           id: faker.string.uuid(),
@@ -23,26 +24,7 @@ export const Card: Story = {
           prize: 0,
           updated_at: "",
           value: faker.lorem.word(),
-        },
-        {
-          count: faker.number.int(10),
-          created_at: "",
-          id: faker.string.uuid(),
-          logo_url: faker.image.url(),
-          prize: 0,
-          updated_at: "",
-          value: faker.lorem.word(),
-        },
-        {
-          count: faker.number.int(10),
-          created_at: "",
-          id: faker.string.uuid(),
-          logo_url: faker.image.url(),
-          prize: 0,
-          updated_at: "",
-          value: faker.lorem.word(),
-        },
-      ],
+        })),
       history: [],
       player: {
         avatar_url: faker.image.avatar(),
