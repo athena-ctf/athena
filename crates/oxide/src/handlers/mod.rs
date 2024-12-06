@@ -1,5 +1,4 @@
 pub mod admin;
-pub mod auth;
 pub mod award;
 pub mod ban;
 pub mod challenge;
@@ -24,88 +23,16 @@ pub mod team;
 pub mod ticket;
 pub mod unlock;
 
-use std::collections::HashMap;
+pub mod auth {
+    pub mod admin;
+    pub mod player;
+}
 
-use fred::prelude::*;
 use futures::Stream;
-use sea_orm::prelude::*;
-use sea_orm::{Iterable, QuerySelect};
 use tempfile::NamedTempFile;
 use tokio::fs::File;
 use tokio::io::BufReader;
 use tokio_util::io::ReaderStream;
-
-use crate::errors::Result;
-use crate::redis_keys::{player_history_key, PLAYER_LEADERBOARD};
-use crate::schemas::{
-    Award, AwardsReceived, Challenge, PlayerModel, PlayerProfile, PointsHistory, Tag, TagSolves,
-};
-
-pub async fn retrieve_profile(
-    player: PlayerModel,
-    db: &DbConn,
-    pool: &Pool,
-) -> Result<PlayerProfile> {
-    let (rank, score) = pool
-        .zrevrank(PLAYER_LEADERBOARD, &player.id.to_string(), true)
-        .await?;
-
-    let mut tags_map = Tag::find()
-        .all(db)
-        .await?
-        .into_iter()
-        .map(|tag| {
-            (
-                tag.id,
-                TagSolves {
-                    tag_value: tag.value,
-                    solves: 0,
-                },
-            )
-        })
-        .collect::<HashMap<_, _>>();
-
-    let solved_challenges = player
-        .find_related(Challenge)
-        .filter(entity::submission::Column::IsCorrect.eq(true))
-        .all(db)
-        .await?;
-
-    for submitted_challenge in &solved_challenges {
-        let tags = submitted_challenge.find_related(Tag).all(db).await?;
-        for tag in tags {
-            tags_map
-                .entry(tag.id)
-                .and_modify(|tag_solves| tag_solves.solves += 1);
-        }
-    }
-
-    let awards = player
-        .find_related(Award)
-        .select_only()
-        .columns(entity::award::Column::iter())
-        .column(entity::player_award::Column::Count)
-        .into_model::<AwardsReceived>()
-        .all(db)
-        .await?;
-    let tag_solves = tags_map.values().cloned().collect();
-    let history = pool
-        .lrange::<Vec<String>, _>(player_history_key(player.id), 0, -1)
-        .await?
-        .into_iter()
-        .map(|hist_entry| PointsHistory::parse(&hist_entry))
-        .collect();
-
-    Ok(PlayerProfile {
-        player,
-        solved_challenges,
-        awards,
-        tag_solves,
-        rank,
-        score,
-        history,
-    })
-}
 
 struct CsvStream {
     _temp_file: NamedTempFile, // This ensures the file is deleted when dropped

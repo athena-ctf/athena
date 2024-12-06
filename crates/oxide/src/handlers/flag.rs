@@ -1,15 +1,12 @@
 use std::sync::LazyLock;
 
-use chrono::Utc;
 use dashmap::DashMap;
 use regex::Regex;
 use sea_orm::sea_query::OnConflict;
 use sea_orm::{Iterable, TransactionTrait};
 
 use crate::jwt::AuthPlayer;
-use crate::redis_keys::{
-    player_history_key, CHALLENGE_SOLVES, PLAYER_LEADERBOARD, TEAM_LEADERBOARD,
-};
+use crate::redis_keys::CHALLENGE_SOLVES;
 use crate::schemas::{
     Award, Challenge, ChallengeKindEnum, ChallengeModel, CreateFlagSchema, Flag, FlagModel,
     FlagVerificationResult, JsonResponse, Player, PlayerAward, PlayerAwardModel, PlayerModel,
@@ -34,14 +31,14 @@ static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(DashMap:
 )]
 /// Verify flag
 pub async fn verify(
-    AuthPlayer(player_claimd): AuthPlayer,
+    AuthPlayer(player_claims): AuthPlayer,
     state: State<Arc<AppState>>,
     Json(body): Json<VerifyFlagSchema>,
 ) -> Result<Json<FlagVerificationResult>> {
     let txn = state.db_conn.begin().await?;
 
     let prev_model = if let Some(submission_model) =
-        Submission::find_by_id((body.challenge_id, player_claimd.sub))
+        Submission::find_by_id((body.challenge_id, player_claims.sub))
             .one(&state.db_conn)
             .await?
     {
@@ -119,7 +116,7 @@ pub async fn verify(
         ChallengeKindEnum::DynamicContainerized => {
             let Some(flag_model) = Flag::find()
                 .filter(entity::flag::Column::ChallengeId.eq(body.challenge_id))
-                .filter(entity::flag::Column::PlayerId.eq(player_claimd.sub))
+                .filter(entity::flag::Column::PlayerId.eq(player_claims.sub))
                 .one(&state.db_conn)
                 .await?
             else {
@@ -132,29 +129,13 @@ pub async fn verify(
 
     if is_correct {
         state
-            .redis_client
-            .zincrby::<(), _, _>(
-                PLAYER_LEADERBOARD,
-                f64::from(points),
-                &player_claimd.sub.to_string(),
-            )
+            .leaderboard_manager
+            .update_player(player_claims.sub, points.into())
             .await?;
 
         state
-            .redis_client
-            .lpush::<(), _, _>(
-                player_history_key(player_claimd.sub),
-                vec![format!("{}:{}", Utc::now().timestamp(), f64::from(points))],
-            )
-            .await?;
-
-        state
-            .redis_client
-            .zincrby::<(), _, _>(
-                TEAM_LEADERBOARD,
-                f64::from(points),
-                &player_claimd.team_id.to_string(),
-            )
+            .leaderboard_manager
+            .update_team(player_claims.team_id, points.into())
             .await?;
 
         let solves = state
@@ -191,7 +172,7 @@ pub async fn verify(
 
         if let Some(award_model) = award_model {
             PlayerAward::insert(
-                PlayerAwardModel::new(player_claimd.sub, award_model.id, 1).into_active_model(),
+                PlayerAwardModel::new(player_claims.sub, award_model.id, 1).into_active_model(),
             )
             .on_conflict(
                 OnConflict::columns(entity::player_award::PrimaryKey::iter())
@@ -212,7 +193,7 @@ pub async fn verify(
         submission_model.into_active_model().update(&txn).await?;
     } else {
         SubmissionModel::new(
-            player_claimd.sub,
+            player_claims.sub,
             body.challenge_id,
             is_correct,
             vec![body.flag],

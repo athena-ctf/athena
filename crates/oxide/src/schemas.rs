@@ -170,18 +170,7 @@ pub struct AwardsReceived {
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct PointsHistory {
     pub timestamp: i64,
-    pub points: f64,
-}
-
-impl PointsHistory {
-    pub fn parse(s: &str) -> Self {
-        let (x, y) = s.split_once(':').unwrap();
-
-        let timestamp = x.parse().unwrap();
-        let points = y.parse().unwrap();
-
-        Self { timestamp, points }
-    }
+    pub points: i64,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -191,7 +180,7 @@ pub struct PlayerProfile {
     pub awards: Vec<AwardsReceived>,
     pub tag_solves: Vec<TagSolves>,
     pub rank: u64,
-    pub score: u64,
+    pub score: i32,
     pub history: Vec<PointsHistory>,
 }
 
@@ -203,13 +192,23 @@ pub struct PlayerDetails {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct TeamMember {
+    pub player_id: Uuid,
+    pub player_username: String,
+    pub rank: u64,
+    pub score: i32,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct TeamProfile {
     pub team: TeamModel,
     pub solved_challenges: Vec<ChallengeModel>,
+    pub awards: Vec<AwardsReceived>,
     pub tag_solves: Vec<TagSolves>,
-    pub members: Vec<PlayerProfile>,
+    pub members: Vec<TeamMember>,
+    pub history: Vec<PointsHistory>,
     pub rank: u64,
-    pub score: u64,
+    pub score: i32,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -223,22 +222,21 @@ pub struct TeamDetails {
     pub profile: TeamProfile,
     pub submissions: Vec<SubmissionModel>,
     pub unlocks: Vec<UnlockModel>,
-    pub awards: Vec<AwardModel>,
     pub invites: Vec<InviteModel>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct LeaderboardRankings {
-    pub total: i64,
-    pub offset: i64,
-    pub count: i64,
+    pub total: u64,
+    pub offset: u64,
+    pub count: u64,
     pub rankings: Vec<Ranking>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct RankingQuery {
-    pub offset: i64,
-    pub count: i64,
+    pub offset: u64,
+    pub count: u64,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

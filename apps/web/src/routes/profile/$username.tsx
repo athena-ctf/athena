@@ -31,7 +31,15 @@ function Index() {
     <div className="h-full w-screen">
       {profile && (
         <div className="grid grid-rows-2 grid-cols-3">
-          <ProfileCard playerProfile={profile} className="row-span-2" />
+          <ProfileCard
+            name={profile.player.username}
+            email={profile.player.email}
+            awards={profile.awards}
+            extra={{ kind: "player", avatarUrl: profile.player.avatar_url }}
+            rank={profile.rank}
+            score={profile.score}
+            className="row-span-2"
+          />
           <ScoreChart data={profile.history} />
           <ChallengeDiff data={profile.tag_solves} />
           <SolvedChallenge challenges={profile.solved_challenges} className="col-span-2" />

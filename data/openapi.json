@@ -16393,11 +16393,13 @@
         "properties": {
           "count": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "minimum": 0
           },
           "offset": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "minimum": 0
           },
           "rankings": {
             "type": "array",
@@ -16407,7 +16409,8 @@
           },
           "total": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "minimum": 0
           }
         }
       },
@@ -16771,8 +16774,7 @@
           },
           "score": {
             "type": "integer",
-            "format": "int64",
-            "minimum": 0
+            "format": "int32"
           },
           "solved_challenges": {
             "type": "array",
@@ -16890,8 +16892,8 @@
         ],
         "properties": {
           "points": {
-            "type": "number",
-            "format": "double"
+            "type": "integer",
+            "format": "int64"
           },
           "timestamp": {
             "type": "integer",
@@ -17229,16 +17231,9 @@
           "profile",
           "submissions",
           "unlocks",
-          "awards",
           "invites"
         ],
         "properties": {
-          "awards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AwardModel"
-            }
-          },
           "invites": {
             "type": "array",
             "items": {
@@ -17259,6 +17254,33 @@
             "items": {
               "$ref": "#/components/schemas/UnlockModel"
             }
+          }
+        }
+      },
+      "TeamMember": {
+        "type": "object",
+        "required": [
+          "player_id",
+          "player_username",
+          "rank",
+          "score"
+        ],
+        "properties": {
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "player_username": {
+            "type": "string"
+          },
+          "rank": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "score": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -17297,16 +17319,30 @@
         "required": [
           "team",
           "solved_challenges",
+          "awards",
           "tag_solves",
           "members",
+          "history",
           "rank",
           "score"
         ],
         "properties": {
+          "awards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AwardsReceived"
+            }
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PointsHistory"
+            }
+          },
           "members": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PlayerProfile"
+              "$ref": "#/components/schemas/TeamMember"
             }
           },
           "rank": {
@@ -17316,8 +17352,7 @@
           },
           "score": {
             "type": "integer",
-            "format": "int64",
-            "minimum": 0
+            "format": "int32"
           },
           "solved_challenges": {
             "type": "array",

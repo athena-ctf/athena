@@ -3006,7 +3006,7 @@ export interface components {
       player: components["schemas"]["PlayerModel"];
       /** Format: int64 */
       rank: number;
-      /** Format: int64 */
+      /** Format: int32 */
       score: number;
       solved_challenges: components["schemas"]["ChallengeModel"][];
       tag_solves: components["schemas"]["TagSolves"][];
@@ -3026,7 +3026,7 @@ export interface components {
       unlocks: components["schemas"]["UnlockModel"][];
     };
     PointsHistory: {
-      /** Format: double */
+      /** Format: int64 */
       points: number;
       /** Format: int64 */
       timestamp: number;
@@ -3128,11 +3128,19 @@ export interface components {
       tag_value: string;
     };
     TeamDetails: {
-      awards: components["schemas"]["AwardModel"][];
       invites: components["schemas"]["InviteModel"][];
       profile: components["schemas"]["TeamProfile"];
       submissions: components["schemas"]["SubmissionModel"][];
       unlocks: components["schemas"]["UnlockModel"][];
+    };
+    TeamMember: {
+      /** Format: uuid */
+      player_id: string;
+      player_username: string;
+      /** Format: int64 */
+      rank: number;
+      /** Format: int32 */
+      score: number;
     };
     TeamModel: {
       /** Format: date-time */
@@ -3145,10 +3153,12 @@ export interface components {
       updated_at: string;
     };
     TeamProfile: {
-      members: components["schemas"]["PlayerProfile"][];
+      awards: components["schemas"]["AwardsReceived"][];
+      history: components["schemas"]["PointsHistory"][];
+      members: components["schemas"]["TeamMember"][];
       /** Format: int64 */
       rank: number;
-      /** Format: int64 */
+      /** Format: int32 */
       score: number;
       solved_challenges: components["schemas"]["ChallengeModel"][];
       tag_solves: components["schemas"]["TagSolves"][];

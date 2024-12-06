@@ -1,127 +1,21 @@
 use bollard::secret::ContainerStateStatusEnum;
-use entity::links::{TeamToAward, TeamToChallenge, TeamToHint};
 use fred::prelude::*;
 use sea_orm::prelude::*;
 use sea_orm::{Condition, QuerySelect};
 
-use crate::docker::Manager;
 use crate::errors::Result;
-use crate::redis_keys::{
-    CHALLENGE_SOLVES, PLAYER_LAST_UPDATED, PLAYER_LEADERBOARD, TEAM_LEADERBOARD,
-};
+use crate::redis_keys::{CHALLENGE_SOLVES, PLAYER_LAST_UPDATED};
 use crate::schemas::{
-    Award, Challenge, ChallengeKindEnum, Deployment, Hint, Instance, Player, Submission, Team,
+    Award, Challenge, ChallengeKindEnum, Deployment, Instance, Player, Submission,
 };
+use crate::{docker, leaderboard};
 
-pub async fn load_leaderboard(db: &DbConn, redis_pool: &Pool) -> Result<()> {
-    let players = Player::find().all(db).await?;
-    let mut leaderboard_player = Vec::with_capacity(players.len());
-
-    for player in players {
-        let challenge_points = player
-            .find_related(Challenge)
-            .select_only()
-            .column_as(
-                Expr::col(entity::challenge::Column::Points).sum(),
-                "challenge_points",
-            )
-            .filter(entity::submission::Column::IsCorrect.eq(true))
-            .into_tuple::<(i32,)>()
-            .one(db)
-            .await?
-            .unwrap()
-            .0;
-
-        let hint_costs = player
-            .find_related(Hint)
-            .select_only()
-            .column_as(Expr::col(entity::hint::Column::Cost).sum(), "hint_costs")
-            .into_tuple::<(i32,)>()
-            .one(db)
-            .await?
-            .unwrap()
-            .0;
-
-        let award_prizes = player
-            .find_related(Award)
-            .select_only()
-            .column_as(
-                Expr::col(entity::award::Column::Prize).sum(),
-                "award_prizes",
-            )
-            .into_tuple::<(i32,)>()
-            .one(db)
-            .await?
-            .unwrap()
-            .0;
-
-        leaderboard_player.push((
-            f64::from(challenge_points + award_prizes - hint_costs),
-            player.id.to_string(),
-        ));
-    }
-
-    redis_pool
-        .zadd::<(), _, _>(
-            PLAYER_LEADERBOARD,
-            None,
-            None,
-            false,
-            false,
-            leaderboard_player,
-        )
-        .await?;
-
-    let teams = Team::find().all(db).await?;
-    let mut leaderboard_team = Vec::with_capacity(teams.len());
-
-    for team in teams {
-        let challenge_points = team
-            .find_linked(TeamToChallenge)
-            .select_only()
-            .column_as(
-                Expr::col(entity::challenge::Column::Points).sum(),
-                "challenge_points",
-            )
-            .filter(entity::submission::Column::IsCorrect.eq(true))
-            .into_tuple::<(i32,)>()
-            .one(db)
-            .await?
-            .unwrap()
-            .0;
-
-        let hint_costs = team
-            .find_linked(TeamToHint)
-            .select_only()
-            .column_as(Expr::col(entity::hint::Column::Cost).sum(), "hint_costs")
-            .into_tuple::<(i32,)>()
-            .one(db)
-            .await?
-            .unwrap()
-            .0;
-
-        let award_prizes = team
-            .find_linked(TeamToAward)
-            .select_only()
-            .column_as(
-                Expr::col(entity::award::Column::Prize).sum(),
-                "award_prizes",
-            )
-            .into_tuple::<(i32,)>()
-            .one(db)
-            .await?
-            .unwrap()
-            .0;
-
-        leaderboard_team.push((
-            f64::from(challenge_points + award_prizes - hint_costs),
-            team.id.to_string(),
-        ));
-    }
-
-    redis_pool
-        .zadd::<(), _, _>(TEAM_LEADERBOARD, None, None, false, false, leaderboard_team)
-        .await?;
+pub async fn load_leaderboard(
+    db: &DbConn,
+    leaderboard_manager: &leaderboard::Manager,
+) -> Result<()> {
+    leaderboard_manager.load_players(db).await?;
+    leaderboard_manager.load_teams(db).await?;
 
     Ok(())
 }
@@ -186,7 +80,7 @@ pub async fn verify_awards(db: &DbConn) -> Result<bool> {
     Ok(first_blood && second_blood && third_blood)
 }
 
-pub async fn load_static_deployments(db: &DbConn, manager: &Manager) -> Result<()> {
+pub async fn load_static_deployments(db: &DbConn, manager: &docker::Manager) -> Result<()> {
     for challenge_model in Challenge::find()
         .filter(entity::challenge::Column::Kind.eq(ChallengeKindEnum::StaticContainerized))
         .all(db)
@@ -198,7 +92,7 @@ pub async fn load_static_deployments(db: &DbConn, manager: &Manager) -> Result<(
     Ok(())
 }
 
-pub async fn unload_deployments(db: &DbConn, manager: &Manager) -> Result<()> {
+pub async fn unload_deployments(db: &DbConn, manager: &docker::Manager) -> Result<()> {
     for challenge_model in Challenge::find()
         .filter(
             Condition::any()
@@ -214,7 +108,7 @@ pub async fn unload_deployments(db: &DbConn, manager: &Manager) -> Result<()> {
     Ok(())
 }
 
-pub async fn watch_static_deployments(db: &DbConn, manager: &Manager) -> Result<()> {
+pub async fn watch_static_deployments(db: &DbConn, manager: &docker::Manager) -> Result<()> {
     for (challenge_model, deployment_model) in Challenge::find()
         .filter(entity::challenge::Column::Kind.eq(ChallengeKindEnum::StaticContainerized))
         .find_also_related(Deployment)

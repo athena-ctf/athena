@@ -1,35 +1,37 @@
-use fred::prelude::*;
-use fred::types::Map;
+use fred::clients::Pool;
+use fred::error::Error;
+use fred::interfaces::{HashesInterface, KeysInterface};
+use fred::types::{FromValue, Map, Value as RedisValue};
 use ring::digest::{digest, SHA256};
 
 use crate::errors::Result;
 use crate::redis_keys::token_key;
 
-pub struct TokenManager {
+pub struct Manager {
     pub redis_pool: Pool,
     pub max_retries: u8,
     pub expiration_duration: i64,
 }
 
-pub struct TokenValue {
+pub struct Value {
     token: Vec<u8>,
     retries: i64,
 }
 
-impl TryInto<Map> for TokenValue {
+impl TryInto<Map> for Value {
     type Error = Error;
 
     fn try_into(self) -> std::result::Result<Map, Self::Error> {
         let mut map = Map::new();
-        map.insert("token".into(), Value::Bytes(self.token.into()));
+        map.insert("token".into(), RedisValue::Bytes(self.token.into()));
         map.insert("retries".into(), self.retries.into());
 
         Ok(map)
     }
 }
 
-impl FromValue for TokenValue {
-    fn from_value(value: Value) -> std::result::Result<Self, Error> {
+impl FromValue for Value {
+    fn from_value(value: RedisValue) -> std::result::Result<Self, Error> {
         let value = value.into_map()?;
 
         Ok(Self {
@@ -60,7 +62,15 @@ impl TokenVerificationResult {
     }
 }
 
-impl TokenManager {
+impl Manager {
+    pub fn new(redis_pool: Pool, max_retries: u8, expiration_duration: i64) -> Self {
+        Self {
+            redis_pool,
+            max_retries,
+            expiration_duration,
+        }
+    }
+
     pub async fn generate(&self, key: &str, email: &str) -> Result<String> {
         let token = crate::utils::gen_random(8);
 
@@ -69,7 +79,7 @@ impl TokenManager {
         self.redis_pool
             .hset::<(), _, _>(
                 token_key(key, email),
-                TokenValue {
+                Value {
                     token: hashed_token,
                     retries: self.max_retries.into(),
                 },
@@ -91,7 +101,7 @@ impl TokenManager {
     ) -> Result<TokenVerificationResult> {
         if let Some(token_value) = self
             .redis_pool
-            .hgetall::<Option<TokenValue>, _>(token_key(key, email))
+            .hgetall::<Option<Value>, _>(token_key(key, email))
             .await?
         {
             if token_value.retries == 0 {

@@ -28,7 +28,7 @@ export function SolvedChallenge({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="items-center">Challenge Name</TableHead>
+                <TableHead className="items-center">Title</TableHead>
                 <TableHead className="items-center">Points</TableHead>
               </TableRow>
             </TableHeader>

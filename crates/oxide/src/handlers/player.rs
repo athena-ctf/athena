@@ -1,14 +1,79 @@
+use std::collections::HashMap;
+
+use sea_orm::{Iterable, QuerySelect};
+
 use crate::jwt::AuthPlayer;
+use crate::leaderboard;
 use crate::redis_keys::PLAYER_LAST_UPDATED;
 use crate::schemas::{
-    Award, AwardModel, Ban, BanModel, Challenge, ChallengeModel, CreatePlayerSchema, Deployment,
-    DeploymentModel, Flag, FlagModel, Hint, HintModel, JsonResponse, Notification,
-    NotificationModel, Player, PlayerAward, PlayerAwardModel, PlayerDetails, PlayerModel,
-    PlayerProfile, Submission, SubmissionModel, Team, TeamModel, Ticket, TicketModel, Unlock,
-    UnlockModel, UpdateProfileSchema,
+    Award, AwardModel, AwardsReceived, Ban, BanModel, Challenge, ChallengeModel,
+    CreatePlayerSchema, Deployment, DeploymentModel, Flag, FlagModel, Hint, HintModel,
+    JsonResponse, Notification, NotificationModel, Player, PlayerAward, PlayerAwardModel,
+    PlayerDetails, PlayerModel, PlayerProfile, Submission, SubmissionModel, Tag, TagSolves, Team,
+    TeamModel, Ticket, TicketModel, Unlock, UnlockModel, UpdateProfileSchema,
 };
 
 oxide_macros::crud!(Player, single: [Team], optional: [Deployment, Ban], multiple: [Flag, Award, PlayerAward, Notification, Submission, Unlock, Challenge, Hint, Ticket]);
+
+pub async fn get_user_profile(
+    player: PlayerModel,
+    leaderboard_manager: &leaderboard::Manager,
+    db: &DbConn,
+) -> Result<PlayerProfile> {
+    let (rank, score) = leaderboard_manager.player_rank(player.id).await?;
+
+    let mut tags_map = Tag::find()
+        .all(db)
+        .await?
+        .into_iter()
+        .map(|tag| {
+            (
+                tag.id,
+                TagSolves {
+                    tag_value: tag.value,
+                    solves: 0,
+                },
+            )
+        })
+        .collect::<HashMap<_, _>>();
+
+    let solved_challenges = player
+        .find_related(Challenge)
+        .filter(entity::submission::Column::IsCorrect.eq(true))
+        .all(db)
+        .await?;
+
+    for submitted_challenge in &solved_challenges {
+        let tags = submitted_challenge.find_related(Tag).all(db).await?;
+        for tag in tags {
+            tags_map
+                .entry(tag.id)
+                .and_modify(|tag_solves| tag_solves.solves += 1);
+        }
+    }
+
+    let awards = player
+        .find_related(Award)
+        .select_only()
+        .columns(entity::award::Column::iter())
+        .column(entity::player_award::Column::Count)
+        .into_model::<AwardsReceived>()
+        .all(db)
+        .await?;
+
+    let tag_solves = tags_map.values().cloned().collect();
+    let history = leaderboard_manager.player_history(player.id).await?;
+
+    Ok(PlayerProfile {
+        player,
+        solved_challenges,
+        awards,
+        tag_solves,
+        rank,
+        score,
+        history,
+    })
+}
 
 #[utoipa::path(
     get,
@@ -36,9 +101,9 @@ pub async fn retrieve_profile_by_username(
         return Err(Error::NotFound("Player not found".to_owned()));
     };
 
-    Ok(Json(
-        super::retrieve_profile(player_model, &state.db_conn, &state.redis_client).await?,
-    ))
+    get_user_profile(player_model, &state.leaderboard_manager, &state.db_conn)
+        .await
+        .map(Json)
 }
 
 #[utoipa::path(
@@ -111,7 +176,7 @@ pub async fn retrieve_summary(
             .find_related(Unlock)
             .all(&state.db_conn)
             .await?,
-        profile: super::retrieve_profile(player_model, &state.db_conn, &state.redis_client).await?,
+        profile: get_user_profile(player_model, &state.leaderboard_manager, &state.db_conn).await?,
     }))
 }
 

@@ -7,16 +7,16 @@ use sea_orm::DbConn;
 use tokio::sync::RwLock;
 use tokio_cron_scheduler::JobScheduler;
 
-use crate::docker::Manager;
-use crate::token::TokenManager;
+use crate::{docker, leaderboard, token};
 
 pub struct AppState {
     pub db_conn: DbConn,
     pub settings: Arc<RwLock<Settings>>,
 
     pub redis_client: Pool,
-    pub docker_manager: Arc<Manager>,
-    pub token_manager: TokenManager,
+    pub docker_manager: Arc<docker::Manager>,
+    pub token_manager: Arc<token::Manager>,
+    pub leaderboard_manager: Arc<leaderboard::Manager>,
     pub scheduler: JobScheduler,
 
     #[cfg(feature = "file-transport")]

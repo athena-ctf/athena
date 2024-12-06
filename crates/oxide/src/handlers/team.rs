@@ -1,26 +1,36 @@
 use std::collections::HashMap;
 
 use entity::links::{TeamToAward, TeamToChallenge, TeamToSubmission, TeamToUnlock};
+use sea_orm::{Iterable, QuerySelect};
 
 use crate::jwt::AuthPlayer;
-use crate::redis_keys::TEAM_LEADERBOARD;
+use crate::leaderboard;
 use crate::schemas::{
-    CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Tag, TagSolves, Team,
-    TeamDetails, TeamModel, TeamProfile,
+    AwardsReceived, CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Tag,
+    TagSolves, Team, TeamDetails, TeamMember, TeamModel, TeamProfile,
 };
 
 oxide_macros::crud!(Team, single: [], optional: [], multiple: [Invite, Player]);
 
-async fn get_team_profile(team_model: TeamModel, pool: &Pool, db: &DbConn) -> Result<TeamProfile> {
-    let (rank, score) = pool
-        .zrevrank(TEAM_LEADERBOARD, &team_model.id.to_string(), true)
-        .await?;
+async fn get_team_profile(
+    team: TeamModel,
+    leaderboard_manager: &leaderboard::Manager,
+    db: &DbConn,
+) -> Result<TeamProfile> {
+    let (rank, score) = leaderboard_manager.team_rank(team.id).await?;
 
-    let players = team_model.find_related(Player).all(db).await?;
+    let players = team.find_related(Player).all(db).await?;
     let mut members = Vec::with_capacity(players.len());
 
     for player_model in players {
-        members.push(super::retrieve_profile(player_model, db, pool).await?);
+        let (rank, score) = leaderboard_manager.player_rank(player_model.id).await?;
+
+        members.push(TeamMember {
+            player_id: player_model.id,
+            player_username: player_model.username,
+            rank,
+            score,
+        });
     }
 
     let mut tags_map = Tag::find()
@@ -40,7 +50,7 @@ async fn get_team_profile(team_model: TeamModel, pool: &Pool, db: &DbConn) -> Re
 
     let mut challenges = Vec::new();
 
-    for submitted_challenge in team_model
+    for submitted_challenge in team
         .find_linked(TeamToChallenge)
         .filter(entity::submission::Column::IsCorrect.eq(true))
         .all(db)
@@ -56,10 +66,23 @@ async fn get_team_profile(team_model: TeamModel, pool: &Pool, db: &DbConn) -> Re
         challenges.push(submitted_challenge);
     }
 
+    let history = leaderboard_manager.team_history(team.id).await?;
+
+    let awards = team
+        .find_linked(TeamToAward)
+        .select_only()
+        .columns(entity::award::Column::iter())
+        .column(entity::player_award::Column::Count)
+        .into_model::<AwardsReceived>()
+        .all(db)
+        .await?;
+
     Ok(TeamProfile {
-        team: team_model,
+        team,
         solved_challenges: challenges,
         tag_solves: tags_map.values().cloned().collect(),
+        awards,
+        history,
         members,
         rank,
         score,
@@ -92,7 +115,7 @@ pub async fn retrieve_team_by_teamname(
         return Err(Error::NotFound("Team not found".to_owned()));
     };
 
-    get_team_profile(team_model, &state.redis_client, &state.db_conn)
+    get_team_profile(team_model, &state.leaderboard_manager, &state.db_conn)
         .await
         .map(Json)
 }
@@ -206,11 +229,7 @@ pub async fn retrieve_summary(
             .find_linked(TeamToUnlock)
             .all(&state.db_conn)
             .await?,
-        awards: team_model
-            .find_linked(TeamToAward)
-            .all(&state.db_conn)
-            .await?,
-        profile: get_team_profile(team_model, &state.redis_client, &state.db_conn).await?,
+        profile: get_team_profile(team_model, &state.leaderboard_manager, &state.db_conn).await?,
         invites,
     }))
 }

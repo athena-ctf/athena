@@ -1,8 +1,6 @@
-use chrono::Utc;
 use sea_orm::TransactionTrait;
 
 use crate::jwt::AuthPlayer;
-use crate::redis_keys::{player_history_key, PLAYER_LEADERBOARD, TEAM_LEADERBOARD};
 use crate::schemas::{
     Challenge, ChallengeModel, CreateHintSchema, Hint, HintModel, JsonResponse, Player,
     PlayerModel, Unlock, UnlockModel,
@@ -54,33 +52,13 @@ pub async fn unlock_by_id(
     };
 
     state
-        .redis_client
-        .zincrby::<(), _, _>(
-            PLAYER_LEADERBOARD,
-            -f64::from(hint_model.cost),
-            &player_claims.sub.to_string(),
-        )
+        .leaderboard_manager
+        .update_player(player_claims.sub, -hint_model.cost)
         .await?;
 
     state
-        .redis_client
-        .lpush::<(), _, _>(
-            player_history_key(player_claims.sub),
-            vec![format!(
-                "{}:{}",
-                Utc::now().timestamp(),
-                -f64::from(hint_model.cost)
-            )],
-        )
-        .await?;
-
-    state
-        .redis_client
-        .zincrby::<(), _, _>(
-            TEAM_LEADERBOARD,
-            -f64::from(hint_model.cost),
-            &player_claims.team_id.to_string(),
-        )
+        .leaderboard_manager
+        .update_team(player_claims.team_id, -hint_model.cost)
         .await?;
 
     Ok(Json(hint_model))

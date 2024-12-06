@@ -4,6 +4,7 @@ mod docker;
 mod errors;
 mod handlers;
 mod jwt;
+mod leaderboard;
 mod middleware;
 mod permissions;
 mod redis_keys;
@@ -25,10 +26,8 @@ use tokio::signal;
 use tokio::sync::RwLock;
 use tokio_cron_scheduler::{Job, JobScheduler};
 
-use crate::docker::Manager;
 use crate::errors::{Error, Result};
 use crate::service::{AppState, Settings};
-use crate::token::TokenManager;
 
 pub mod utils {
     pub fn gen_random(size: usize) -> String {
@@ -69,12 +68,23 @@ pub async fn start(settings: Settings) -> Result<()> {
         .build_pool(8)?;
     let redis_conn = redis_client.init().await?;
 
-    let docker_manager = Arc::new(Manager::new(
+    let docker_manager = Arc::new(docker::Manager::new(
         db_conn.clone(),
         settings.challenge.clone(),
         "caddy:2019".to_owned(),
         settings.ctf.domain.clone(),
     )?);
+
+    let leaderboard_manager = Arc::new(leaderboard::Manager::new(
+        redis_client.clone(),
+        settings.ctf.time.end.timestamp(),
+        settings
+            .ctf
+            .time
+            .end
+            .signed_duration_since(settings.ctf.time.start)
+            .num_seconds(),
+    ));
 
     let scheduler = JobScheduler::new().await?;
 
@@ -86,7 +96,7 @@ pub async fn start(settings: Settings) -> Result<()> {
         return Err(Error::InvalidConfig("Awards".to_owned()));
     }
 
-    tasks::load_leaderboard(&db_conn, &redis_client).await?;
+    tasks::load_leaderboard(&db_conn, &leaderboard_manager).await?;
     tasks::load_challenge_solves(&db_conn, &redis_client).await?;
     tasks::load_player_updates(&db_conn, &redis_client).await?;
     tasks::load_static_deployments(&db_conn, &docker_manager).await?;
@@ -110,11 +120,11 @@ pub async fn start(settings: Settings) -> Result<()> {
         )?)
         .await?;
 
-    let token_manager = TokenManager {
-        redis_pool: redis_client.clone(),
-        max_retries: settings.token.max_retries,
-        expiration_duration: settings.token.token_expiry_in_secs,
-    };
+    let token_manager = Arc::new(token::Manager::new(
+        redis_client.clone(),
+        settings.token.max_retries,
+        settings.token.token_expiry_in_secs,
+    ));
 
     let settings = Arc::new(RwLock::new(settings));
 
@@ -129,6 +139,7 @@ pub async fn start(settings: Settings) -> Result<()> {
             db_conn,
             settings: settings.clone(),
             token_manager,
+            leaderboard_manager,
             scheduler,
             redis_client: redis_client.clone(),
             docker_manager,

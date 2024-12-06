@@ -20,9 +20,7 @@ use sea_orm::{ActiveValue, Condition, IntoActiveModel, TransactionTrait};
 
 use crate::errors::{Error, Result};
 use crate::jwt::{RefreshClaims, TokenPair};
-use crate::redis_keys::{
-    PLAYER_LAST_UPDATED, PLAYER_LEADERBOARD, REFRESH_TOKEN_BLACKLIST, TEAM_LEADERBOARD,
-};
+use crate::redis_keys::{PLAYER_LAST_UPDATED, REFRESH_TOKEN_BLACKLIST};
 use crate::schemas::{
     Invite, InviteVerificationResult, JsonResponse, LoginRequest, LoginResponse, Player,
     PlayerModel, RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery,
@@ -142,28 +140,11 @@ pub async fn register(
     txn.commit().await?;
 
     state
-        .redis_client
-        .zadd::<(), _, _>(
-            PLAYER_LEADERBOARD,
-            None,
-            None,
-            false,
-            false,
-            (0.0, &player_model.id.to_string()),
-        )
+        .leaderboard_manager
+        .init_player(player_model.id)
         .await?;
 
-    state
-        .redis_client
-        .zadd::<(), _, _>(
-            TEAM_LEADERBOARD,
-            None,
-            None,
-            false,
-            false,
-            (0.0, &team_id.to_string()),
-        )
-        .await?;
+    state.leaderboard_manager.init_player(team_id).await?;
 
     Ok(Json(JsonResponse {
         message: "Successfully registered".to_string(),
