@@ -1,24 +1,19 @@
 {
-  "extends": "@repo/typescript-config/nextjs.json",
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@ui/*": ["../../packages/ui/src/*"]
-    }
-  },
-  "include": [
-    "next-env.d.ts",
-    "next.config.mjs",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "components/input-tags.tsx"
-  ],
-  "exclude": ["node_modules"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@ui/*": [
+        "../../packages/ui/src/*"
+      ]
+    },
+    "resolveJsonModule": true
+  }
 }

@@ -12,7 +12,7 @@ const middleware: Middleware = {
     const { accessToken, setTokens } = useAuthStore.getState();
 
     if (response.status === 401 && accessToken) {
-      const resp = await fetch("/auth/player/token/refresh", { method: "POST" });
+      const resp = await fetch("/auth/admin/token/refresh", { method: "POST" });
 
       if (resp.ok) {
         const accessToken = (await resp.json()).access_token;

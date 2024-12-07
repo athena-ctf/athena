@@ -130,12 +130,12 @@ pub async fn verify(
     if is_correct {
         state
             .leaderboard_manager
-            .update_player(player_claims.sub, points.into())
+            .update_player(player_claims.sub, points)
             .await?;
 
         state
             .leaderboard_manager
-            .update_team(player_claims.team_id, points.into())
+            .update_team(player_claims.team_id, points)
             .await?;
 
         let solves = state

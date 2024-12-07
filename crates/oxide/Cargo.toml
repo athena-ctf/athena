@@ -1,7 +1,7 @@
 [package]
 name = "oxide"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 license = "MIT OR Apache-2.0"
 
 
@@ -14,8 +14,8 @@ config = { path = "../config" }
 chrono = { workspace = true }
 entity = { path = "../entity" }
 fastrand = { workspace = true }
-fred = { version = "10.0.0", features = ["partial-tracing", "i-hexpire"] }
-lettre = { version = "0.11.10", default-features = false, features = [
+fred = { version = "10.0.1", features = ["partial-tracing", "i-hexpire"] }
+lettre = { version = "0.11.11", default-features = false, features = [
     "tokio1-rustls-tls",
     "smtp-transport",
     "pool",

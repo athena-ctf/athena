@@ -38,7 +38,7 @@ impl Manager {
     }
 
     fn get_score(&self, points: i32) -> f64 {
-        ((points * 10i32.pow(self.num_digits)) as f64)
+        f64::from(points * 10i32.pow(self.num_digits))
             + (self.end_timestamp - Utc::now().timestamp()) as f64
     }
 

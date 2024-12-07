@@ -1,1 +1,3 @@
-module.exports = require("@repo/ui/postcss.config");
+import cfg from "@repo/ui/postcss.config";
+
+export default cfg;

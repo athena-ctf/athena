@@ -6,8 +6,8 @@ use chrono::{DateTime, Days, Utc};
 use config_rs::{Config, File};
 use indexmap::IndexMap;
 use oxide_macros::JsonPath;
-use schemars::gen::SchemaSettings;
 use schemars::JsonSchema;
+use schemars::r#gen::SchemaSettings;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -217,34 +217,22 @@ impl Default for Settings {
                 sponsors: IndexMap::new(),
                 prizes: IndexMap::new(),
                 level_map: IndexMap::from([
-                    (
-                        0,
-                        Level {
-                            name: "Very Easy".to_owned(),
-                            color: "#23332b".to_owned(),
-                        },
-                    ),
-                    (
-                        1,
-                        Level {
-                            name: "Easy".to_owned(),
-                            color: "#059c50".to_owned(),
-                        },
-                    ),
-                    (
-                        2,
-                        Level {
-                            name: "Medium".to_owned(),
-                            color: "#d0d40f".to_owned(),
-                        },
-                    ),
-                    (
-                        3,
-                        Level {
-                            name: "Hard".to_owned(),
-                            color: "#d4290f".to_owned(),
-                        },
-                    ),
+                    (0, Level {
+                        name: "Very Easy".to_owned(),
+                        color: "#23332b".to_owned(),
+                    }),
+                    (1, Level {
+                        name: "Easy".to_owned(),
+                        color: "#059c50".to_owned(),
+                    }),
+                    (2, Level {
+                        name: "Medium".to_owned(),
+                        color: "#d0d40f".to_owned(),
+                    }),
+                    (3, Level {
+                        name: "Hard".to_owned(),
+                        color: "#d4290f".to_owned(),
+                    }),
                 ]),
             },
             database: Database {
