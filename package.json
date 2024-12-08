@@ -9,8 +9,7 @@
     "biome:fix": "biome check . --write"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.2",
-    "@repo/typescript-config": "workspace:*"
+    "@biomejs/biome": "1.9.2"
   },
   "packageManager": "pnpm@9.12.1",
   "engines": {
