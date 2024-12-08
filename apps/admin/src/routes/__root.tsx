@@ -1,15 +1,20 @@
-import * as React from "react";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
+import { ThemeProvider } from "@repo/ui/components/theme-provider";
+import { Toaster } from "@repo/ui/components/sonner";
+import { AppSidebar } from "@/components/app-sidebar";
 
 export const Route = createRootRoute({
-  component: RootComponent,
+  component: Index,
 });
 
-function RootComponent() {
+function Index() {
   return (
-    <React.Fragment>
-      <div>Hello "__root"!</div>
-      <Outlet />
-    </React.Fragment>
+    <ThemeProvider storageKey="athena-theme">
+      <div className="relative flex min-h-screen flex-col bg-background">
+        <AppSidebar />
+        <Outlet />
+      </div>
+      <Toaster richColors position="bottom-right" closeButton visibleToasts={5} />
+    </ThemeProvider>
   );
 }

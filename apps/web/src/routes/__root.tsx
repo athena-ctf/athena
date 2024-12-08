@@ -23,14 +23,12 @@ function Index() {
   }, []);
 
   return (
-    <>
-      <ThemeProvider storageKey="athena-theme">
-        <div className="relative flex min-h-screen flex-col bg-background">
-          <SiteHeader />
-          <Outlet />
-        </div>
-        <Toaster richColors position="bottom-right" closeButton visibleToasts={5} />
-      </ThemeProvider>
-    </>
+    <ThemeProvider storageKey="athena-theme">
+      <div className="relative flex min-h-screen flex-col bg-background">
+        <SiteHeader />
+        <Outlet />
+      </div>
+      <Toaster richColors position="bottom-right" closeButton visibleToasts={5} />
+    </ThemeProvider>
   );
 }

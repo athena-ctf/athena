@@ -6,9 +6,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN pnpx turbo prune --scope=web --docker
-RUN pnpm install
-RUN pnpx turbo run build --filter=web
+RUN pnpm install --frozen-lockfile
+RUN pnpm --filter admin build
 
 FROM nginx:alpine AS runner
 WORKDIR /usr/share/nginx/html
@@ -17,7 +16,7 @@ RUN rm -rf ./*
 
 COPY --from=builder /app/apps/web/dist .
 
-COPY data/web-nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./conf/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

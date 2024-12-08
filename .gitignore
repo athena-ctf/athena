@@ -10,11 +10,6 @@ node_modules
 
 coverage
 
-.turbo
-
-.vercel
-
-.next/
 out/
 build
 dist
