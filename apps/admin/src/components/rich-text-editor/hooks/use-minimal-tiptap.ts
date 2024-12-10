@@ -19,9 +19,10 @@ import {
   FileHandler,
 } from "../extensions";
 import { cn } from "@repo/ui/lib/utils";
-import { fileToBase64, getOutput, randomId } from "../utils";
+import { getOutput, randomId } from "../utils";
 import { useThrottle } from "./use-throttle";
 import { toast } from "sonner";
+import { ctf } from "@/utils/ctf-data";
 
 export interface UseMinimalTiptapEditorProps extends UseEditorOptions {
   value?: Content;
@@ -31,6 +32,19 @@ export interface UseMinimalTiptapEditorProps extends UseEditorOptions {
   throttleDelay?: number;
   onUpdate?: (content: Content) => void;
   onBlur?: (content: Content) => void;
+}
+
+async function uploadImage(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`https://static.${ctf.domain}/upload/local`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await response.json();
+  return data.url as string;
 }
 
 const createExtensions = (placeholder: string) => [
@@ -52,17 +66,7 @@ const createExtensions = (placeholder: string) => [
     maxFileSize: 5 * 1024 * 1024,
     allowBase64: true,
     uploadFn: async (file) => {
-      // NOTE: This is a fake upload function. Replace this with your own upload logic.
-      // This function should return the uploaded image URL.
-
-      // wait 3s to simulate upload
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
-      const src = await fileToBase64(file);
-
-      // either return { id: string | number, src: string } or just src
-      // return src;
-      return { id: randomId(), src };
+      return await uploadImage(file);
     },
     onToggle(editor, files, pos) {
       editor.commands.insertContentAt(
@@ -124,7 +128,7 @@ const createExtensions = (placeholder: string) => [
     maxFileSize: 5 * 1024 * 1024,
     onDrop: (editor, files, pos) => {
       files.forEach(async (file) => {
-        const src = await fileToBase64(file);
+        const src = await uploadImage(file);
         editor.commands.insertContentAt(pos, {
           type: "image",
           attrs: { src },
@@ -133,7 +137,7 @@ const createExtensions = (placeholder: string) => [
     },
     onPaste: (editor, files) => {
       files.forEach(async (file) => {
-        const src = await fileToBase64(file);
+        const src = await uploadImage(file);
         editor.commands.insertContent({
           type: "image",
           attrs: { src },

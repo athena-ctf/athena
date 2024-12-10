@@ -21,6 +21,7 @@ import {
 } from "@repo/ui/components/card";
 import { PasswordInput } from "@repo/ui/components/password-input";
 import {
+  Command,
   CommandInput,
   CommandList,
   CommandEmpty,
@@ -29,7 +30,7 @@ import {
 } from "@repo/ui/components/command";
 import { Popover, PopoverTrigger, PopoverContent } from "@repo/ui/components/popover";
 import { cn } from "@repo/ui/lib/utils";
-import { ChevronsUpDown, Command, Check } from "lucide-react";
+import { ChevronsUpDown, Check } from "lucide-react";
 
 const roles = ["analyst", "editor", "judge", "manager", "moderator"] as const;
 

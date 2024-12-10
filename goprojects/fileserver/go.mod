@@ -15,7 +15,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/klauspost/compress v1.17.11
 	golang.org/x/oauth2 v0.24.0
-	google.golang.org/api v0.210.0
+	google.golang.org/api v0.211.0
 )
 
 replace athena.io/config => ../config
@@ -26,7 +26,7 @@ require (
 	ariga.io/atlas v0.29.0 // indirect
 	cel.dev/expr v0.19.1 // indirect
 	cloud.google.com/go v0.116.0 // indirect
-	cloud.google.com/go/auth v0.12.0 // indirect
+	cloud.google.com/go/auth v0.12.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.6 // indirect
 	cloud.google.com/go/compute/metadata v0.5.2 // indirect
 	cloud.google.com/go/iam v1.3.0 // indirect

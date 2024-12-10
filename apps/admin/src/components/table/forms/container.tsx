@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import {
   Card,
   CardContent,
@@ -21,8 +22,19 @@ import {
   CardTitle,
 } from "@repo/ui/components/card";
 import { Switch } from "@repo/ui/components/switch";
-import { PlusCircle, X } from "lucide-react";
+import { cn } from "@repo/ui/lib/utils";
+import { Check, ChevronsUpDown, PlusCircle, X } from "lucide-react";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from "@repo/ui/components/command";
 import { useEffect, useState } from "react";
+import type { components } from "@repo/api";
+import { toast } from "sonner";
 
 const schema = z.object({
   challenge_id: z.string().uuid(),
@@ -48,7 +60,7 @@ export function ContainerForm() {
     },
   });
 
-  const [challengeIds, setChallengeIds] = useState<string[]>([]);
+  const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIds"][]>([]);
 
   const { fields, append, remove } = useFieldArray({
     name: "environment",
@@ -66,7 +78,14 @@ export function ContainerForm() {
   };
 
   useEffect(() => {
-    apiClient.GET("/admin/challenge");
+    apiClient.GET("/admin/challenge/ids").then((res) => {
+      if (res.error) {
+        toast.error("Could not fetch ids");
+        console.error(res.error.message);
+      } else {
+        setChallengeIds(res.data);
+      }
+    });
   }, []);
 
   return (
@@ -78,6 +97,60 @@ export function ContainerForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <FormField
+              control={form.control}
+              name="challenge_id"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Challenge Id</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-[200px] justify-between",
+                            !field.value && "text-muted-foreground",
+                          )}
+                        >
+                          {field.value ? field.value : "Select challenge"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                      <Command>
+                        <CommandInput placeholder="Search challenge..." />
+                        <CommandList>
+                          <CommandEmpty>No challenge found.</CommandEmpty>
+                          <CommandGroup>
+                            {challengeIds.map((challengeId) => (
+                              <CommandItem
+                                value={challengeId.id}
+                                key={challengeId.id}
+                                onSelect={() => {
+                                  form.setValue("challenge_id", challengeId.id);
+                                }}
+                              >
+                                {challengeId.title}
+                                <Check
+                                  className={cn(
+                                    "ml-auto",
+                                    challengeId.id === field.value ? "opacity-100" : "opacity-0",
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="name"

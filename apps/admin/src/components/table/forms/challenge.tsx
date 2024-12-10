@@ -20,6 +20,7 @@ import {
   CardTitle,
 } from "@repo/ui/components/card";
 import {
+  Command,
   CommandInput,
   CommandList,
   CommandEmpty,
@@ -28,7 +29,7 @@ import {
 } from "@repo/ui/components/command";
 import { Popover, PopoverTrigger, PopoverContent } from "@repo/ui/components/popover";
 import { cn } from "@repo/ui/lib/utils";
-import { ChevronsUpDown, Command, Check } from "lucide-react";
+import { ChevronsUpDown, Check } from "lucide-react";
 import { MinimalTiptapEditor } from "@/components/rich-text-editor";
 import { ctf } from "@/utils/ctf-data";
 
