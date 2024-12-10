@@ -39,7 +39,7 @@ impl MigrationTrait for Migration {
                         ForeignKey::create()
                             .name("fk-instance-deployment_id")
                             .from(Instance::Table, Instance::DeploymentId)
-                            .to(Deployment::Table, Deployment::Id)
+                            .to(Deployment::Table, Deployment::Id) // TODO: add deployment name
                             .on_delete(ForeignKeyAction::Cascade)
                             .on_update(ForeignKeyAction::Cascade),
                     )

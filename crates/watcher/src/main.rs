@@ -1,15 +1,16 @@
 use std::sync::LazyLock;
 
 use async_stream::stream;
-use axum::response::sse::{Event, KeepAlive};
 use axum::response::Sse;
+use axum::response::sse::{Event, KeepAlive};
 use axum::routing::get;
 use axum::{Error, Extension, Router};
 use dashmap::DashMap;
-use entity::prelude::*;
+use db::PlayerAlert;
+use entity::prelude::NotificationModel;
 use futures::Stream;
 use sea_orm::prelude::*;
-use sea_orm::{sqlx, Database, IntoActiveModel};
+use sea_orm::{Database, IntoActiveModel, sqlx};
 use tokio::net::TcpListener;
 use tokio::sync::mpsc::{self, Sender};
 use tower_http::trace::TraceLayer;
@@ -19,8 +20,13 @@ use uuid::Uuid;
 
 mod db;
 
-static CONNECTED_CLIENTS: LazyLock<DashMap<Uuid, Sender<NotificationModel>>> =
-    LazyLock::new(DashMap::new);
+#[derive(Clone, serde::Serialize)]
+pub struct Alert {
+    title: String,
+    content: String,
+}
+
+static CONNECTED_CLIENTS: LazyLock<DashMap<Uuid, Sender<Alert>>> = LazyLock::new(DashMap::new);
 
 pub async fn start_listening(
     channel_name: String,
@@ -47,32 +53,42 @@ pub async fn start_listening(
             );
 
             let payload = pg_notification.payload().to_owned();
-            let payload = serde_json::from_str::<db::Notification>(&payload)
+            let payload = serde_json::from_str::<db::Alert>(&payload)
                 .unwrap()
                 .into_model(&db_conn)
                 .await;
 
             if let Some(payload) = payload {
-                payload.clone().into_active_model().insert(&db_conn).await?;
-                if let Some(player_id) = payload.player_id {
-                    send_direct_message(player_id, payload).await;
-                } else {
-                    broadcast_message(payload).await;
+                match payload {
+                    PlayerAlert::Notification(model) => {
+                        model.clone().into_active_model().insert(&db_conn).await?;
+
+                        send_direct_message(model).await;
+                    }
+
+                    PlayerAlert::Alert(title, content) => {
+                        broadcast_message(Alert { title, content }).await;
+                    }
                 }
             }
         }
     }
 }
 
-async fn send_direct_message(player_id: Uuid, model: NotificationModel) {
-    if let Some(tx) = CONNECTED_CLIENTS.get(&player_id) {
-        let _ = tx.send(model).await;
+async fn send_direct_message(model: NotificationModel) {
+    if let Some(tx) = CONNECTED_CLIENTS.get(&model.player_id) {
+        let _ = tx
+            .send(Alert {
+                title: "You have an unread notification".to_owned(),
+                content: model.title,
+            })
+            .await;
     }
 }
 
-async fn broadcast_message(model: NotificationModel) {
+async fn broadcast_message(alert: Alert) {
     for client in CONNECTED_CLIENTS.iter() {
-        let _ = client.value().send(model.clone()).await;
+        let _ = client.value().send(alert.clone()).await;
     }
 }
 
@@ -115,7 +131,7 @@ async fn main() {
 async fn sse_handler(
     Extension(id): Extension<Uuid>,
 ) -> Sse<impl Stream<Item = Result<Event, Error>>> {
-    let (tx, mut rx) = mpsc::channel::<NotificationModel>(100);
+    let (tx, mut rx) = mpsc::channel::<Alert>(100);
     CONNECTED_CLIENTS.insert(id, tx);
 
     let stream = stream! {

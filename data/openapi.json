@@ -198,6 +198,60 @@
         }
       }
     },
+    "/admin/admin/ids": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "List admin ids",
+        "operationId": "list_admin_ids",
+        "responses": {
+          "200": {
+            "description": "Listed admin ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdminIds"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/admin/import": {
       "get": {
         "tags": [
@@ -773,6 +827,60 @@
         }
       }
     },
+    "/admin/award/ids": {
+      "get": {
+        "tags": [
+          "award"
+        ],
+        "summary": "List award ids",
+        "operationId": "list_award_ids",
+        "responses": {
+          "200": {
+            "description": "Listed award ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AwardIds"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/award/import": {
       "get": {
         "tags": [
@@ -1311,6 +1419,60 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/ban/ids": {
+      "get": {
+        "tags": [
+          "ban"
+        ],
+        "summary": "List ban ids",
+        "operationId": "list_ban_ids",
+        "responses": {
+          "200": {
+            "description": "Listed ban ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BanIds"
+                  }
                 }
               }
             }
@@ -1979,6 +2141,60 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/challenge/ids": {
+      "get": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "List challenge ids",
+        "operationId": "list_challenge_ids",
+        "responses": {
+          "200": {
+            "description": "Listed challenge ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChallengeIds"
+                  }
                 }
               }
             }
@@ -2785,7 +3001,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateChallengeFileSchema"
+                "$ref": "#/components/schemas/UpdateChallengeFileSchema"
               }
             }
           },
@@ -3400,7 +3616,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateChallengeTagSchema"
+                "$ref": "#/components/schemas/UpdateChallengeTagSchema"
               }
             }
           },
@@ -3784,6 +4000,60 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/container/ids": {
+      "get": {
+        "tags": [
+          "container"
+        ],
+        "summary": "List container ids",
+        "operationId": "list_container_ids",
+        "responses": {
+          "200": {
+            "description": "Listed container ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContainerIds"
+                  }
                 }
               }
             }
@@ -4447,6 +4717,60 @@
         }
       }
     },
+    "/admin/deployment/ids": {
+      "get": {
+        "tags": [
+          "deployment"
+        ],
+        "summary": "List deployment ids",
+        "operationId": "list_deployment_ids",
+        "responses": {
+          "200": {
+            "description": "Listed deployment ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeploymentIds"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/deployment/import": {
       "get": {
         "tags": [
@@ -4985,6 +5309,60 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/file/ids": {
+      "get": {
+        "tags": [
+          "file"
+        ],
+        "summary": "List file ids",
+        "operationId": "list_file_ids",
+        "responses": {
+          "200": {
+            "description": "Listed file ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileIds"
+                  }
                 }
               }
             }
@@ -5597,6 +5975,60 @@
         }
       }
     },
+    "/admin/flag/ids": {
+      "get": {
+        "tags": [
+          "flag"
+        ],
+        "summary": "List flag ids",
+        "operationId": "list_flag_ids",
+        "responses": {
+          "200": {
+            "description": "Listed flag ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FlagIds"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/flag/import": {
       "get": {
         "tags": [
@@ -6135,6 +6567,60 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/hint/ids": {
+      "get": {
+        "tags": [
+          "hint"
+        ],
+        "summary": "List hint ids",
+        "operationId": "list_hint_ids",
+        "responses": {
+          "200": {
+            "description": "Listed hint ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HintIds"
+                  }
                 }
               }
             }
@@ -6747,6 +7233,60 @@
         }
       }
     },
+    "/admin/instance/ids": {
+      "get": {
+        "tags": [
+          "instance"
+        ],
+        "summary": "List instance ids",
+        "operationId": "list_instance_ids",
+        "responses": {
+          "200": {
+            "description": "Listed instance ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InstanceIds"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/instance/import": {
       "get": {
         "tags": [
@@ -7285,6 +7825,60 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/invite/ids": {
+      "get": {
+        "tags": [
+          "invite"
+        ],
+        "summary": "List invite ids",
+        "operationId": "list_invite_ids",
+        "responses": {
+          "200": {
+            "description": "Listed invite ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InviteIds"
+                  }
                 }
               }
             }
@@ -7897,6 +8491,60 @@
         }
       }
     },
+    "/admin/notification/ids": {
+      "get": {
+        "tags": [
+          "notification"
+        ],
+        "summary": "List notification ids",
+        "operationId": "list_notification_ids",
+        "responses": {
+          "200": {
+            "description": "Listed notification ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificationIds"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/notification/import": {
       "get": {
         "tags": [
@@ -8435,6 +9083,60 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/player/ids": {
+      "get": {
+        "tags": [
+          "player"
+        ],
+        "summary": "List player ids",
+        "operationId": "list_player_ids",
+        "responses": {
+          "200": {
+            "description": "Listed player ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlayerIds"
+                  }
                 }
               }
             }
@@ -9241,7 +9943,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePlayerAwardSchema"
+                "$ref": "#/components/schemas/UpdatePlayerAwardSchema"
               }
             }
           },
@@ -10037,7 +10739,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateSubmissionSchema"
+                "$ref": "#/components/schemas/UpdateSubmissionSchema"
               }
             }
           },
@@ -10421,6 +11123,60 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/tag/ids": {
+      "get": {
+        "tags": [
+          "tag"
+        ],
+        "summary": "List tag ids",
+        "operationId": "list_tag_ids",
+        "responses": {
+          "200": {
+            "description": "Listed tag ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TagIds"
+                  }
                 }
               }
             }
@@ -11033,6 +11789,60 @@
         }
       }
     },
+    "/admin/team/ids": {
+      "get": {
+        "tags": [
+          "team"
+        ],
+        "summary": "List team ids",
+        "operationId": "list_team_ids",
+        "responses": {
+          "200": {
+            "description": "Listed team ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TeamIds"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/team/import": {
       "get": {
         "tags": [
@@ -11571,6 +12381,60 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/ticket/ids": {
+      "get": {
+        "tags": [
+          "ticket"
+        ],
+        "summary": "List ticket ids",
+        "operationId": "list_ticket_ids",
+        "responses": {
+          "200": {
+            "description": "Listed ticket ids successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TicketIds"
+                  }
                 }
               }
             }
@@ -12460,7 +13324,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUnlockSchema"
+                "$ref": "#/components/schemas/UpdateUnlockSchema"
               }
             }
           },
@@ -14979,6 +15843,22 @@
   },
   "components": {
     "schemas": {
+      "AdminIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "username"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
       "AdminModel": {
         "type": "object",
         "required": [
@@ -15020,6 +15900,22 @@
             "items": {
               "$ref": "#/components/schemas/TicketModel"
             }
+          }
+        }
+      },
+      "AwardIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "value"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "value": {
+            "type": "string"
           }
         }
       },
@@ -15113,6 +16009,22 @@
           }
         }
       },
+      "BanIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "reason"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
       "BanModel": {
         "type": "object",
         "required": [
@@ -15194,6 +16106,22 @@
           },
           "file": {
             "$ref": "#/components/schemas/FileModel"
+          }
+        }
+      },
+      "ChallengeIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
           }
         }
       },
@@ -15426,6 +16354,22 @@
           }
         }
       },
+      "ContainerIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "ContainerModel": {
         "type": "object",
         "required": [
@@ -15585,7 +16529,21 @@
         }
       },
       "CreateChallengeFileSchema": {
-        "type": "object"
+        "type": "object",
+        "required": [
+          "challenge_id",
+          "file_id"
+        ],
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "file_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
       },
       "CreateChallengeSchema": {
         "type": "object",
@@ -15621,7 +16579,21 @@
         }
       },
       "CreateChallengeTagSchema": {
-        "type": "object"
+        "type": "object",
+        "required": [
+          "challenge_id",
+          "tag_id"
+        ],
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tag_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
       },
       "CreateContainerSchema": {
         "type": "object",
@@ -15824,17 +16796,15 @@
         "type": "object",
         "required": [
           "title",
-          "content"
+          "content",
+          "player_id"
         ],
         "properties": {
           "content": {
             "type": "string"
           },
           "player_id": {
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": "string",
             "format": "uuid"
           },
           "title": {
@@ -15845,12 +16815,22 @@
       "CreatePlayerAwardSchema": {
         "type": "object",
         "required": [
+          "player_id",
+          "award_id",
           "count"
         ],
         "properties": {
+          "award_id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "count": {
             "type": "integer",
             "format": "int32"
+          },
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       },
@@ -15860,8 +16840,8 @@
           "team_id",
           "username",
           "email",
-          "password",
-          "avatar_url"
+          "avatar_url",
+          "password"
         ],
         "properties": {
           "avatar_url": {
@@ -15899,9 +16879,15 @@
         "type": "object",
         "required": [
           "is_correct",
+          "player_id",
+          "challenge_id",
           "flags"
         ],
         "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "flags": {
             "type": "array",
             "items": {
@@ -15910,6 +16896,10 @@
           },
           "is_correct": {
             "type": "boolean"
+          },
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       },
@@ -15967,7 +16957,33 @@
         }
       },
       "CreateUnlockSchema": {
-        "type": "object"
+        "type": "object",
+        "required": [
+          "player_id",
+          "hint_id"
+        ],
+        "properties": {
+          "hint_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "DeploymentIds": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
       },
       "DeploymentModel": {
         "type": "object",
@@ -16060,6 +17076,22 @@
           }
         }
       },
+      "FileIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "FileModel": {
         "type": "object",
         "required": [
@@ -16094,6 +17126,22 @@
         "properties": {
           "challenge": {
             "$ref": "#/components/schemas/ChallengeModel"
+          }
+        }
+      },
+      "FlagIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "value"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "value": {
+            "type": "string"
           }
         }
       },
@@ -16168,6 +17216,22 @@
         "properties": {
           "is_correct": {
             "type": "boolean"
+          }
+        }
+      },
+      "HintIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "description"
+        ],
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       },
@@ -16253,6 +17317,22 @@
           }
         }
       },
+      "InstanceIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "container_name"
+        ],
+        "properties": {
+          "container_name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "InstanceModel": {
         "type": "object",
         "required": [
@@ -16303,6 +17383,18 @@
         "properties": {
           "deployment": {
             "$ref": "#/components/schemas/DeploymentModel"
+          }
+        }
+      },
+      "InviteIds": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       },
@@ -16535,6 +17627,22 @@
           }
         }
       },
+      "NotificationIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
       "NotificationModel": {
         "type": "object",
         "required": [
@@ -16542,7 +17650,8 @@
           "created_at",
           "updated_at",
           "title",
-          "content"
+          "content",
+          "player_id"
         ],
         "properties": {
           "content": {
@@ -16557,10 +17666,7 @@
             "format": "uuid"
           },
           "player_id": {
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": "string",
             "format": "uuid"
           },
           "title": {
@@ -16685,6 +17791,22 @@
             "items": {
               "$ref": "#/components/schemas/UnlockModel"
             }
+          }
+        }
+      },
+      "PlayerIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "username"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
           }
         }
       },
@@ -17162,6 +18284,22 @@
           }
         }
       },
+      "TagIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "value"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
       "TagModel": {
         "type": "object",
         "required": [
@@ -17254,6 +18392,22 @@
             "items": {
               "$ref": "#/components/schemas/UnlockModel"
             }
+          }
+        }
+      },
+      "TeamIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
           }
         }
       },
@@ -17437,6 +18591,22 @@
           }
         }
       },
+      "TicketIds": {
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
       "TicketModel": {
         "type": "object",
         "required": [
@@ -17580,6 +18750,12 @@
           }
         ]
       },
+      "UpdateChallengeFileSchema": {
+        "type": "object"
+      },
+      "UpdateChallengeTagSchema": {
+        "type": "object"
+      },
       "UpdateInviteSchema": {
         "type": "object",
         "properties": {
@@ -17595,6 +18771,18 @@
               "integer",
               "null"
             ],
+            "format": "int32"
+          }
+        }
+      },
+      "UpdatePlayerAwardSchema": {
+        "type": "object",
+        "required": [
+          "count"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
             "format": "int32"
           }
         }
@@ -17619,6 +18807,27 @@
             "type": "string"
           }
         }
+      },
+      "UpdateSubmissionSchema": {
+        "type": "object",
+        "required": [
+          "is_correct",
+          "flags"
+        ],
+        "properties": {
+          "flags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "is_correct": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UpdateUnlockSchema": {
+        "type": "object"
       },
       "VerifyFlagSchema": {
         "type": "object",

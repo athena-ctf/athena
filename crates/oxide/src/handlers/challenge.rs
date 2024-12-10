@@ -18,7 +18,8 @@ oxide_macros::crud!(
     Challenge,
     single: [],
     optional: [],
-    multiple: [Container, File, Hint, Deployment, Tag, Submission, ChallengeTag, ChallengeFile, Flag, Player]
+    multiple: [Container, File, Hint, Deployment, Tag, Submission, ChallengeTag, ChallengeFile, Flag, Player],
+    id_descriptor: title
 );
 
 #[utoipa::path(

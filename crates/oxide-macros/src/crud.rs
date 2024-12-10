@@ -1,14 +1,15 @@
 use proc_macro::TokenStream;
-use quote::{format_ident, quote, ToTokens};
+use quote::{ToTokens, format_ident, quote};
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
-use syn::{bracketed, parse_macro_input, Ident, Token};
+use syn::{Ident, Token, bracketed, parse_macro_input};
 
 struct CrudMacroInput {
     entity: Ident,
     single: Vec<Ident>,
     multiple: Vec<Ident>,
     optional: Vec<Ident>,
+    id_descriptor: Option<Ident>,
 }
 
 impl Parse for CrudMacroInput {
@@ -39,11 +40,22 @@ impl Parse for CrudMacroInput {
         let multiple: Punctuated<Ident, Token![,]> =
             content.parse_terminated(Ident::parse, Token![,])?;
 
+        let id_descriptor = if input.is_empty() {
+            None
+        } else {
+            input.parse::<Token![,]>()?;
+            input.parse::<Ident>()?;
+            input.parse::<Token![:]>()?;
+
+            Some(input.parse::<Ident>()?)
+        };
+
         Ok(Self {
             entity,
             single: single.into_iter().collect(),
             multiple: multiple.into_iter().collect(),
             optional: optional.into_iter().collect(),
+            id_descriptor,
         })
     }
 }
@@ -73,6 +85,55 @@ fn gen_list_fn(entity: &Ident) -> impl ToTokens {
         )]
         pub async fn list(state: State<Arc<AppState>>) -> Result<Json<Vec<#entity_model>>> {
             Ok(Json(#entity::find().all(&state.db_conn).await?))
+        }
+    }
+}
+
+fn gen_list_ids_fn(entity: &Ident, id_descriptor: Option<Ident>) -> impl ToTokens {
+    let entity_snake = heck::AsSnakeCase(entity.to_string());
+    let entity_str = entity.to_string();
+
+    let doc = format!("List {entity_snake} ids");
+    let path = format!("/admin/{entity_snake}/ids");
+    let operation_id = format!("list_{entity_snake}_ids");
+    let description = format!("Listed {entity_snake} ids successfully");
+
+    let ids_struct = format_ident!("{entity}Ids");
+
+    let id_descriptor = id_descriptor.map(|desc| quote! { #desc: String, });
+
+    quote! {
+        #[derive(
+            serde::Serialize,
+            serde::Deserialize,
+            sea_orm::FromQueryResult,
+            utoipa::ToSchema,
+            sea_orm::DerivePartialModel,
+        )]
+        #[sea_orm(entity = #entity_str)]
+        pub struct #ids_struct {
+            id: Uuid,
+            #id_descriptor
+        }
+
+        #[doc = #doc]
+        #[utoipa::path(
+            get,
+            path = #path,
+            operation_id = #operation_id,
+            responses(
+                (status = 200, description = #description, body = [#ids_struct]),
+                (status = 401, description = "Action is permissible after login", body = JsonResponse),
+                (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
+                (status = 500, description = "Unexpected error", body = JsonResponse)
+            )
+        )]pub async fn list_ids(state: State<Arc<AppState>>) -> Result<Json<Vec<#ids_struct>>> {
+            Ok(Json(
+                #entity::find()
+                    .into_partial_model::<#ids_struct>()
+                    .all(&state.db_conn)
+                    .await?,
+            ))
         }
     }
 }
@@ -440,9 +501,11 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
         single,
         multiple,
         optional,
+        id_descriptor,
     } = parse_macro_input!(input as CrudMacroInput);
 
     let list_fn = gen_list_fn(&entity);
+    let list_ids_fn = gen_list_ids_fn(&entity, id_descriptor);
     let create_fn = gen_create_fn(&entity);
     let retrieve_fn = gen_retrieve_fn(&entity);
     let update_fn = gen_update_fn(&entity);
@@ -485,6 +548,8 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
         use crate::service::AppState;
 
         #list_fn
+
+        #list_ids_fn
 
         #create_fn
 

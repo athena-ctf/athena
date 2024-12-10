@@ -1,4 +1,4 @@
-import { GalleryVerticalEnd, ChevronDown, type LucideIcon } from "lucide-react";
+import { GalleryVerticalEnd, ChevronDown, type LucideIcon, Table } from "lucide-react";
 
 import {
   Sidebar,
@@ -26,7 +26,35 @@ interface SidebarItem {
   items: { title: string; url: FileRouteTypes["to"] }[];
 }
 
-const sidebarItems: SidebarItem[] = [];
+const sidebarItems: SidebarItem[] = [
+  {
+    title: "Tables",
+    icon: Table,
+    items: [
+      { title: "Admin", url: "/table/admin" },
+      { title: "Award", url: "/table/award" },
+      { title: "Ban", url: "/table/ban" },
+      { title: "Challenge File", url: "/table/challenge_file" },
+      { title: "Challenge", url: "/table/challenge" },
+      { title: "Challenge Tag", url: "/table/challenge_tag" },
+      { title: "Container", url: "/table/container" },
+      { title: "Deployment", url: "/table/deployment" },
+      { title: "File", url: "/table/file" },
+      { title: "Flag", url: "/table/flag" },
+      { title: "Hint", url: "/table/hint" },
+      { title: "Instance", url: "/table/instance" },
+      { title: "Invite", url: "/table/invite" },
+      { title: "Notification", url: "/table/notification" },
+      { title: "Player Award", url: "/table/player_award" },
+      { title: "Player", url: "/table/player" },
+      { title: "Submission", url: "/table/submission" },
+      { title: "Tag", url: "/table/tag" },
+      { title: "Team", url: "/table/team" },
+      { title: "Ticket", url: "/table/ticket" },
+      { title: "Unlock", url: "/table/unlock" },
+    ],
+  },
+];
 
 export function AppSidebar() {
   return (

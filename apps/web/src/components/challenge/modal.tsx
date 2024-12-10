@@ -183,7 +183,13 @@ export function ChallengeModal({
             )}
           </VerticalTabsList>
           <VerticalTabsContent value="description">
-            <ScrollArea className="h-max">{challengeSummary.challenge.description}</ScrollArea>
+            <ScrollArea className="h-max">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: challengeSummary.challenge.description,
+                }}
+              />
+            </ScrollArea>
           </VerticalTabsContent>
           {challengeSummary.challenge.kind === "dynamic_containerized" && ( // TODO
             <VerticalTabsContent value="deployment">

@@ -1,7 +1,7 @@
 use proc_macro::TokenStream;
-use quote::{format_ident, quote, ToTokens};
+use quote::{ToTokens, format_ident, quote};
 use syn::parse::{Parse, ParseStream};
-use syn::{parse_macro_input, Ident, Token};
+use syn::{Ident, Token, parse_macro_input};
 
 struct JoinCrudMacroInput {
     entity: Ident,
@@ -158,7 +158,7 @@ fn gen_join_update_fn(entity: &Ident, related_from: &Ident, related_to: &Ident) 
     let not_found = format!("No {entity_snake} found with specified id");
 
     let entity_model = format_ident!("{entity}Model");
-    let request_body = format_ident!("Create{entity}Schema");
+    let request_body = format_ident!("Update{entity}Schema");
 
     quote! {
         #[doc = #doc]

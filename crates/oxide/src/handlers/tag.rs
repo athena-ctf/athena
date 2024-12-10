@@ -3,4 +3,4 @@ use crate::schemas::{
     TagModel,
 };
 
-oxide_macros::crud!(Tag, single: [], optional: [], multiple: [ChallengeTag, Challenge]);
+oxide_macros::crud!(Tag, single: [], optional: [], multiple: [ChallengeTag, Challenge], id_descriptor: value);

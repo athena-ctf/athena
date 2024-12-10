@@ -6,7 +6,7 @@ license = "MIT OR Apache-2.0"
 
 
 [dependencies]
-argon2 = { version = "0.5.3", features = ["std"] }
+argon2 = { workspace = true }
 askama = "0.12.1"
 axum = { workspace = true }
 bollard = { version = "0.18.1", features = ["chrono"] }
@@ -29,7 +29,7 @@ ring = "0.17.8"
 sea-orm = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-thiserror = "2.0.5"
+thiserror = "2.0.6"
 tokio = { workspace = true }
 tower-http = { workspace = true }
 tracing = { workspace = true }

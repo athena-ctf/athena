@@ -13,6 +13,27 @@ import { createFileRoute } from "@tanstack/react-router";
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
+import { Route as TableUnlockImport } from "./routes/table/unlock";
+import { Route as TableTicketImport } from "./routes/table/ticket";
+import { Route as TableTeamImport } from "./routes/table/team";
+import { Route as TableTagImport } from "./routes/table/tag";
+import { Route as TableSubmissionImport } from "./routes/table/submission";
+import { Route as TablePlayerawardImport } from "./routes/table/player_award";
+import { Route as TablePlayerImport } from "./routes/table/player";
+import { Route as TableNotificationImport } from "./routes/table/notification";
+import { Route as TableInviteImport } from "./routes/table/invite";
+import { Route as TableInstanceImport } from "./routes/table/instance";
+import { Route as TableHintImport } from "./routes/table/hint";
+import { Route as TableFlagImport } from "./routes/table/flag";
+import { Route as TableFileImport } from "./routes/table/file";
+import { Route as TableDeploymentImport } from "./routes/table/deployment";
+import { Route as TableContainerImport } from "./routes/table/container";
+import { Route as TableChallengetagImport } from "./routes/table/challenge_tag";
+import { Route as TableChallengefileImport } from "./routes/table/challenge_file";
+import { Route as TableChallengeImport } from "./routes/table/challenge";
+import { Route as TableBanImport } from "./routes/table/ban";
+import { Route as TableAwardImport } from "./routes/table/award";
+import { Route as TableAdminImport } from "./routes/table/admin";
 
 // Create Virtual Routes
 
@@ -26,6 +47,132 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
 
+const TableUnlockRoute = TableUnlockImport.update({
+  id: "/table/unlock",
+  path: "/table/unlock",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableTicketRoute = TableTicketImport.update({
+  id: "/table/ticket",
+  path: "/table/ticket",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableTeamRoute = TableTeamImport.update({
+  id: "/table/team",
+  path: "/table/team",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableTagRoute = TableTagImport.update({
+  id: "/table/tag",
+  path: "/table/tag",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableSubmissionRoute = TableSubmissionImport.update({
+  id: "/table/submission",
+  path: "/table/submission",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TablePlayerawardRoute = TablePlayerawardImport.update({
+  id: "/table/player_award",
+  path: "/table/player_award",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TablePlayerRoute = TablePlayerImport.update({
+  id: "/table/player",
+  path: "/table/player",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableNotificationRoute = TableNotificationImport.update({
+  id: "/table/notification",
+  path: "/table/notification",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableInviteRoute = TableInviteImport.update({
+  id: "/table/invite",
+  path: "/table/invite",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableInstanceRoute = TableInstanceImport.update({
+  id: "/table/instance",
+  path: "/table/instance",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableHintRoute = TableHintImport.update({
+  id: "/table/hint",
+  path: "/table/hint",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableFlagRoute = TableFlagImport.update({
+  id: "/table/flag",
+  path: "/table/flag",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableFileRoute = TableFileImport.update({
+  id: "/table/file",
+  path: "/table/file",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableDeploymentRoute = TableDeploymentImport.update({
+  id: "/table/deployment",
+  path: "/table/deployment",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableContainerRoute = TableContainerImport.update({
+  id: "/table/container",
+  path: "/table/container",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableChallengetagRoute = TableChallengetagImport.update({
+  id: "/table/challenge_tag",
+  path: "/table/challenge_tag",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableChallengefileRoute = TableChallengefileImport.update({
+  id: "/table/challenge_file",
+  path: "/table/challenge_file",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableChallengeRoute = TableChallengeImport.update({
+  id: "/table/challenge",
+  path: "/table/challenge",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableBanRoute = TableBanImport.update({
+  id: "/table/ban",
+  path: "/table/ban",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableAwardRoute = TableAwardImport.update({
+  id: "/table/award",
+  path: "/table/award",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const TableAdminRoute = TableAdminImport.update({
+  id: "/table/admin",
+  path: "/table/admin",
+  getParentRoute: () => rootRoute,
+} as any);
+
 // Populate the FileRoutesByPath interface
 
 declare module "@tanstack/react-router" {
@@ -37,6 +184,153 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof IndexLazyImport;
       parentRoute: typeof rootRoute;
     };
+    "/table/admin": {
+      id: "/table/admin";
+      path: "/table/admin";
+      fullPath: "/table/admin";
+      preLoaderRoute: typeof TableAdminImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/award": {
+      id: "/table/award";
+      path: "/table/award";
+      fullPath: "/table/award";
+      preLoaderRoute: typeof TableAwardImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/ban": {
+      id: "/table/ban";
+      path: "/table/ban";
+      fullPath: "/table/ban";
+      preLoaderRoute: typeof TableBanImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/challenge": {
+      id: "/table/challenge";
+      path: "/table/challenge";
+      fullPath: "/table/challenge";
+      preLoaderRoute: typeof TableChallengeImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/challenge_file": {
+      id: "/table/challenge_file";
+      path: "/table/challenge_file";
+      fullPath: "/table/challenge_file";
+      preLoaderRoute: typeof TableChallengefileImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/challenge_tag": {
+      id: "/table/challenge_tag";
+      path: "/table/challenge_tag";
+      fullPath: "/table/challenge_tag";
+      preLoaderRoute: typeof TableChallengetagImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/container": {
+      id: "/table/container";
+      path: "/table/container";
+      fullPath: "/table/container";
+      preLoaderRoute: typeof TableContainerImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/deployment": {
+      id: "/table/deployment";
+      path: "/table/deployment";
+      fullPath: "/table/deployment";
+      preLoaderRoute: typeof TableDeploymentImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/file": {
+      id: "/table/file";
+      path: "/table/file";
+      fullPath: "/table/file";
+      preLoaderRoute: typeof TableFileImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/flag": {
+      id: "/table/flag";
+      path: "/table/flag";
+      fullPath: "/table/flag";
+      preLoaderRoute: typeof TableFlagImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/hint": {
+      id: "/table/hint";
+      path: "/table/hint";
+      fullPath: "/table/hint";
+      preLoaderRoute: typeof TableHintImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/instance": {
+      id: "/table/instance";
+      path: "/table/instance";
+      fullPath: "/table/instance";
+      preLoaderRoute: typeof TableInstanceImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/invite": {
+      id: "/table/invite";
+      path: "/table/invite";
+      fullPath: "/table/invite";
+      preLoaderRoute: typeof TableInviteImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/notification": {
+      id: "/table/notification";
+      path: "/table/notification";
+      fullPath: "/table/notification";
+      preLoaderRoute: typeof TableNotificationImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/player": {
+      id: "/table/player";
+      path: "/table/player";
+      fullPath: "/table/player";
+      preLoaderRoute: typeof TablePlayerImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/player_award": {
+      id: "/table/player_award";
+      path: "/table/player_award";
+      fullPath: "/table/player_award";
+      preLoaderRoute: typeof TablePlayerawardImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/submission": {
+      id: "/table/submission";
+      path: "/table/submission";
+      fullPath: "/table/submission";
+      preLoaderRoute: typeof TableSubmissionImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/tag": {
+      id: "/table/tag";
+      path: "/table/tag";
+      fullPath: "/table/tag";
+      preLoaderRoute: typeof TableTagImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/team": {
+      id: "/table/team";
+      path: "/table/team";
+      fullPath: "/table/team";
+      preLoaderRoute: typeof TableTeamImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/ticket": {
+      id: "/table/ticket";
+      path: "/table/ticket";
+      fullPath: "/table/ticket";
+      preLoaderRoute: typeof TableTicketImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/table/unlock": {
+      id: "/table/unlock";
+      path: "/table/unlock";
+      fullPath: "/table/unlock";
+      preLoaderRoute: typeof TableUnlockImport;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
@@ -44,32 +338,204 @@ declare module "@tanstack/react-router" {
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexLazyRoute;
+  "/table/admin": typeof TableAdminRoute;
+  "/table/award": typeof TableAwardRoute;
+  "/table/ban": typeof TableBanRoute;
+  "/table/challenge": typeof TableChallengeRoute;
+  "/table/challenge_file": typeof TableChallengefileRoute;
+  "/table/challenge_tag": typeof TableChallengetagRoute;
+  "/table/container": typeof TableContainerRoute;
+  "/table/deployment": typeof TableDeploymentRoute;
+  "/table/file": typeof TableFileRoute;
+  "/table/flag": typeof TableFlagRoute;
+  "/table/hint": typeof TableHintRoute;
+  "/table/instance": typeof TableInstanceRoute;
+  "/table/invite": typeof TableInviteRoute;
+  "/table/notification": typeof TableNotificationRoute;
+  "/table/player": typeof TablePlayerRoute;
+  "/table/player_award": typeof TablePlayerawardRoute;
+  "/table/submission": typeof TableSubmissionRoute;
+  "/table/tag": typeof TableTagRoute;
+  "/table/team": typeof TableTeamRoute;
+  "/table/ticket": typeof TableTicketRoute;
+  "/table/unlock": typeof TableUnlockRoute;
 }
 
 export interface FileRoutesByTo {
   "/": typeof IndexLazyRoute;
+  "/table/admin": typeof TableAdminRoute;
+  "/table/award": typeof TableAwardRoute;
+  "/table/ban": typeof TableBanRoute;
+  "/table/challenge": typeof TableChallengeRoute;
+  "/table/challenge_file": typeof TableChallengefileRoute;
+  "/table/challenge_tag": typeof TableChallengetagRoute;
+  "/table/container": typeof TableContainerRoute;
+  "/table/deployment": typeof TableDeploymentRoute;
+  "/table/file": typeof TableFileRoute;
+  "/table/flag": typeof TableFlagRoute;
+  "/table/hint": typeof TableHintRoute;
+  "/table/instance": typeof TableInstanceRoute;
+  "/table/invite": typeof TableInviteRoute;
+  "/table/notification": typeof TableNotificationRoute;
+  "/table/player": typeof TablePlayerRoute;
+  "/table/player_award": typeof TablePlayerawardRoute;
+  "/table/submission": typeof TableSubmissionRoute;
+  "/table/tag": typeof TableTagRoute;
+  "/table/team": typeof TableTeamRoute;
+  "/table/ticket": typeof TableTicketRoute;
+  "/table/unlock": typeof TableUnlockRoute;
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute;
   "/": typeof IndexLazyRoute;
+  "/table/admin": typeof TableAdminRoute;
+  "/table/award": typeof TableAwardRoute;
+  "/table/ban": typeof TableBanRoute;
+  "/table/challenge": typeof TableChallengeRoute;
+  "/table/challenge_file": typeof TableChallengefileRoute;
+  "/table/challenge_tag": typeof TableChallengetagRoute;
+  "/table/container": typeof TableContainerRoute;
+  "/table/deployment": typeof TableDeploymentRoute;
+  "/table/file": typeof TableFileRoute;
+  "/table/flag": typeof TableFlagRoute;
+  "/table/hint": typeof TableHintRoute;
+  "/table/instance": typeof TableInstanceRoute;
+  "/table/invite": typeof TableInviteRoute;
+  "/table/notification": typeof TableNotificationRoute;
+  "/table/player": typeof TablePlayerRoute;
+  "/table/player_award": typeof TablePlayerawardRoute;
+  "/table/submission": typeof TableSubmissionRoute;
+  "/table/tag": typeof TableTagRoute;
+  "/table/team": typeof TableTeamRoute;
+  "/table/ticket": typeof TableTicketRoute;
+  "/table/unlock": typeof TableUnlockRoute;
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/";
+  fullPaths:
+    | "/"
+    | "/table/admin"
+    | "/table/award"
+    | "/table/ban"
+    | "/table/challenge"
+    | "/table/challenge_file"
+    | "/table/challenge_tag"
+    | "/table/container"
+    | "/table/deployment"
+    | "/table/file"
+    | "/table/flag"
+    | "/table/hint"
+    | "/table/instance"
+    | "/table/invite"
+    | "/table/notification"
+    | "/table/player"
+    | "/table/player_award"
+    | "/table/submission"
+    | "/table/tag"
+    | "/table/team"
+    | "/table/ticket"
+    | "/table/unlock";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/";
-  id: "__root__" | "/";
+  to:
+    | "/"
+    | "/table/admin"
+    | "/table/award"
+    | "/table/ban"
+    | "/table/challenge"
+    | "/table/challenge_file"
+    | "/table/challenge_tag"
+    | "/table/container"
+    | "/table/deployment"
+    | "/table/file"
+    | "/table/flag"
+    | "/table/hint"
+    | "/table/instance"
+    | "/table/invite"
+    | "/table/notification"
+    | "/table/player"
+    | "/table/player_award"
+    | "/table/submission"
+    | "/table/tag"
+    | "/table/team"
+    | "/table/ticket"
+    | "/table/unlock";
+  id:
+    | "__root__"
+    | "/"
+    | "/table/admin"
+    | "/table/award"
+    | "/table/ban"
+    | "/table/challenge"
+    | "/table/challenge_file"
+    | "/table/challenge_tag"
+    | "/table/container"
+    | "/table/deployment"
+    | "/table/file"
+    | "/table/flag"
+    | "/table/hint"
+    | "/table/instance"
+    | "/table/invite"
+    | "/table/notification"
+    | "/table/player"
+    | "/table/player_award"
+    | "/table/submission"
+    | "/table/tag"
+    | "/table/team"
+    | "/table/ticket"
+    | "/table/unlock";
   fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute;
+  TableAdminRoute: typeof TableAdminRoute;
+  TableAwardRoute: typeof TableAwardRoute;
+  TableBanRoute: typeof TableBanRoute;
+  TableChallengeRoute: typeof TableChallengeRoute;
+  TableChallengefileRoute: typeof TableChallengefileRoute;
+  TableChallengetagRoute: typeof TableChallengetagRoute;
+  TableContainerRoute: typeof TableContainerRoute;
+  TableDeploymentRoute: typeof TableDeploymentRoute;
+  TableFileRoute: typeof TableFileRoute;
+  TableFlagRoute: typeof TableFlagRoute;
+  TableHintRoute: typeof TableHintRoute;
+  TableInstanceRoute: typeof TableInstanceRoute;
+  TableInviteRoute: typeof TableInviteRoute;
+  TableNotificationRoute: typeof TableNotificationRoute;
+  TablePlayerRoute: typeof TablePlayerRoute;
+  TablePlayerawardRoute: typeof TablePlayerawardRoute;
+  TableSubmissionRoute: typeof TableSubmissionRoute;
+  TableTagRoute: typeof TableTagRoute;
+  TableTeamRoute: typeof TableTeamRoute;
+  TableTicketRoute: typeof TableTicketRoute;
+  TableUnlockRoute: typeof TableUnlockRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  TableAdminRoute: TableAdminRoute,
+  TableAwardRoute: TableAwardRoute,
+  TableBanRoute: TableBanRoute,
+  TableChallengeRoute: TableChallengeRoute,
+  TableChallengefileRoute: TableChallengefileRoute,
+  TableChallengetagRoute: TableChallengetagRoute,
+  TableContainerRoute: TableContainerRoute,
+  TableDeploymentRoute: TableDeploymentRoute,
+  TableFileRoute: TableFileRoute,
+  TableFlagRoute: TableFlagRoute,
+  TableHintRoute: TableHintRoute,
+  TableInstanceRoute: TableInstanceRoute,
+  TableInviteRoute: TableInviteRoute,
+  TableNotificationRoute: TableNotificationRoute,
+  TablePlayerRoute: TablePlayerRoute,
+  TablePlayerawardRoute: TablePlayerawardRoute,
+  TableSubmissionRoute: TableSubmissionRoute,
+  TableTagRoute: TableTagRoute,
+  TableTeamRoute: TableTeamRoute,
+  TableTicketRoute: TableTicketRoute,
+  TableUnlockRoute: TableUnlockRoute,
 };
 
 export const routeTree = rootRoute
@@ -82,11 +548,95 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/table/admin",
+        "/table/award",
+        "/table/ban",
+        "/table/challenge",
+        "/table/challenge_file",
+        "/table/challenge_tag",
+        "/table/container",
+        "/table/deployment",
+        "/table/file",
+        "/table/flag",
+        "/table/hint",
+        "/table/instance",
+        "/table/invite",
+        "/table/notification",
+        "/table/player",
+        "/table/player_award",
+        "/table/submission",
+        "/table/tag",
+        "/table/team",
+        "/table/ticket",
+        "/table/unlock"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/table/admin": {
+      "filePath": "table/admin.tsx"
+    },
+    "/table/award": {
+      "filePath": "table/award.tsx"
+    },
+    "/table/ban": {
+      "filePath": "table/ban.tsx"
+    },
+    "/table/challenge": {
+      "filePath": "table/challenge.tsx"
+    },
+    "/table/challenge_file": {
+      "filePath": "table/challenge_file.tsx"
+    },
+    "/table/challenge_tag": {
+      "filePath": "table/challenge_tag.tsx"
+    },
+    "/table/container": {
+      "filePath": "table/container.tsx"
+    },
+    "/table/deployment": {
+      "filePath": "table/deployment.tsx"
+    },
+    "/table/file": {
+      "filePath": "table/file.tsx"
+    },
+    "/table/flag": {
+      "filePath": "table/flag.tsx"
+    },
+    "/table/hint": {
+      "filePath": "table/hint.tsx"
+    },
+    "/table/instance": {
+      "filePath": "table/instance.tsx"
+    },
+    "/table/invite": {
+      "filePath": "table/invite.tsx"
+    },
+    "/table/notification": {
+      "filePath": "table/notification.tsx"
+    },
+    "/table/player": {
+      "filePath": "table/player.tsx"
+    },
+    "/table/player_award": {
+      "filePath": "table/player_award.tsx"
+    },
+    "/table/submission": {
+      "filePath": "table/submission.tsx"
+    },
+    "/table/tag": {
+      "filePath": "table/tag.tsx"
+    },
+    "/table/team": {
+      "filePath": "table/team.tsx"
+    },
+    "/table/ticket": {
+      "filePath": "table/ticket.tsx"
+    },
+    "/table/unlock": {
+      "filePath": "table/unlock.tsx"
     }
   }
 }

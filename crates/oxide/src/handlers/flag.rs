@@ -13,7 +13,7 @@ use crate::schemas::{
     Submission, SubmissionModel, VerifyFlagSchema,
 };
 
-oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: []);
+oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: [], id_descriptor: value);
 
 static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(DashMap::new);
 
@@ -192,12 +192,9 @@ pub async fn verify(
         submission_model.flags.push(body.flag);
         submission_model.into_active_model().update(&txn).await?;
     } else {
-        SubmissionModel::new(
-            player_claims.sub,
-            body.challenge_id,
-            is_correct,
-            vec![body.flag],
-        )
+        SubmissionModel::new(is_correct, player_claims.sub, body.challenge_id, vec![
+            body.flag,
+        ])
         .into_active_model()
         .insert(&txn)
         .await?;

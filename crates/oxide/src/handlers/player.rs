@@ -13,7 +13,13 @@ use crate::schemas::{
     TeamModel, Ticket, TicketModel, Unlock, UnlockModel, UpdateProfileSchema,
 };
 
-oxide_macros::crud!(Player, single: [Team], optional: [Deployment, Ban], multiple: [Flag, Award, PlayerAward, Notification, Submission, Unlock, Challenge, Hint, Ticket]);
+oxide_macros::crud!(
+    Player,
+    single: [Team],
+    optional: [Deployment, Ban],
+    multiple: [Flag, Award, PlayerAward, Notification, Submission, Unlock, Challenge, Hint, Ticket],
+    id_descriptor: username
+);
 
 pub async fn get_user_profile(
     player: PlayerModel,
@@ -27,13 +33,10 @@ pub async fn get_user_profile(
         .await?
         .into_iter()
         .map(|tag| {
-            (
-                tag.id,
-                TagSolves {
-                    tag_value: tag.value,
-                    solves: 0,
-                },
-            )
+            (tag.id, TagSolves {
+                tag_value: tag.value,
+                solves: 0,
+            })
         })
         .collect::<HashMap<_, _>>();
 

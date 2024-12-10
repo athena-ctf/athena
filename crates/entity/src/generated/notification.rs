@@ -23,7 +23,7 @@ pub struct Model {
     pub updated_at: DateTimeWithTimeZone,
     pub title: String,
     pub content: String,
-    pub player_id: Option<Uuid>,
+    pub player_id: Uuid,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

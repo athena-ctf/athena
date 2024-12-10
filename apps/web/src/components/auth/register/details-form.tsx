@@ -31,7 +31,6 @@ import {
 const detailsSchema = z
   .object({
     avatarUrl: z.string(),
-    displayName: z.string().max(100),
     username: z.string().min(2).max(100),
     password: z.string().min(8),
     confirmPassword: z.string().min(8),
@@ -51,7 +50,7 @@ export function DetailsForm({ next }: { next: () => void }) {
     mode: "onChange",
   });
 
-  const { setAvatarUrl, setDisplayName, setEmail, setPassword, setUsername } = useRegisterStore();
+  const { setAvatarUrl, setEmail, setPassword, setUsername } = useRegisterStore();
 
   const uploadFile = async (file: File) => {
     createPreview(file);
@@ -104,7 +103,6 @@ export function DetailsForm({ next }: { next: () => void }) {
       toast.error(resp.error.message);
     } else {
       setAvatarUrl(values.avatarUrl);
-      setDisplayName(values.displayName);
       setEmail(values.email);
       setPassword(values.password);
       setUsername(values.username);
@@ -159,19 +157,6 @@ export function DetailsForm({ next }: { next: () => void }) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="displayName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Display Name</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>

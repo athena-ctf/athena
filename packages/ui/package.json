@@ -14,10 +14,9 @@
     "ui:add": "pnpm dlx shadcn@latest add"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
     "@types/node": "^20.17.9",
     "@types/react": "^18.3.14",
-    "@types/react-dom": "^18.3.2",
+    "@types/react-dom": "^18.3.3",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "react": "^18.3.1",
@@ -62,7 +61,7 @@
     "cmdk": "^1.0.4",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.5.1",
-    "framer-motion": "^11.13.1",
+    "framer-motion": "^11.13.3",
     "input-otp": "^1.4.1",
     "js-sha256": "^0.11.0",
     "lucide-react": "^0.352.0",

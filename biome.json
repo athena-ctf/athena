@@ -15,7 +15,8 @@
       },
       "style": {
         "useNodejsImportProtocol": "off",
-        "noParameterAssign": "off"
+        "noParameterAssign": "off",
+        "noNonNullAssertion": "off"
       },
       "suspicious": {
         "noExplicitAny": "off"
@@ -25,6 +26,9 @@
       },
       "correctness": {
         "useExhaustiveDependencies": "warn"
+      },
+      "complexity": {
+        "noForEach": "off"
       }
     }
   },

@@ -39,6 +39,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/admin/admin/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List admin ids */
+    get: operations["list_admin_ids"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/admin/admin/import": {
     parameters: {
       query?: never;
@@ -127,6 +144,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/admin/award/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List award ids */
+    get: operations["list_award_ids"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/admin/award/import": {
     parameters: {
       query?: never;
@@ -207,6 +241,23 @@ export interface paths {
     };
     /** Export bans */
     get: operations["export_bans"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/ban/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List ban ids */
+    get: operations["list_ban_ids"];
     put?: never;
     post?: never;
     delete?: never;
@@ -312,6 +363,23 @@ export interface paths {
     };
     /** Export challenges */
     get: operations["export_challenges"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/challenge/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List challenge ids */
+    get: operations["list_challenge_ids"];
     put?: never;
     post?: never;
     delete?: never;
@@ -584,6 +652,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/admin/container/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List container ids */
+    get: operations["list_container_ids"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/admin/container/import": {
     parameters: {
       query?: never;
@@ -689,6 +774,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/admin/deployment/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List deployment ids */
+    get: operations["list_deployment_ids"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/admin/deployment/import": {
     parameters: {
       query?: never;
@@ -769,6 +871,23 @@ export interface paths {
     };
     /** Export files */
     get: operations["export_files"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/file/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List file ids */
+    get: operations["list_file_ids"];
     put?: never;
     post?: never;
     delete?: never;
@@ -865,6 +984,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/admin/flag/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List flag ids */
+    get: operations["list_flag_ids"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/admin/flag/import": {
     parameters: {
       query?: never;
@@ -945,6 +1081,23 @@ export interface paths {
     };
     /** Export hints */
     get: operations["export_hints"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/hint/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List hint ids */
+    get: operations["list_hint_ids"];
     put?: never;
     post?: never;
     delete?: never;
@@ -1041,6 +1194,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/admin/instance/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List instance ids */
+    get: operations["list_instance_ids"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/admin/instance/import": {
     parameters: {
       query?: never;
@@ -1121,6 +1291,23 @@ export interface paths {
     };
     /** Export invites */
     get: operations["export_invites"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/invite/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List invite ids */
+    get: operations["list_invite_ids"];
     put?: never;
     post?: never;
     delete?: never;
@@ -1217,6 +1404,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/admin/notification/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List notification ids */
+    get: operations["list_notification_ids"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/admin/notification/import": {
     parameters: {
       query?: never;
@@ -1297,6 +1501,23 @@ export interface paths {
     };
     /** Export players */
     get: operations["export_players"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/player/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List player ids */
+    get: operations["list_player_ids"];
     put?: never;
     post?: never;
     delete?: never;
@@ -1604,6 +1825,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/admin/tag/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List tag ids */
+    get: operations["list_tag_ids"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/admin/tag/import": {
     parameters: {
       query?: never;
@@ -1692,6 +1930,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/admin/team/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List team ids */
+    get: operations["list_team_ids"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/admin/team/import": {
     parameters: {
       query?: never;
@@ -1772,6 +2027,23 @@ export interface paths {
     };
     /** Export tickets */
     get: operations["export_tickets"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/ticket/ids": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List ticket ids */
+    get: operations["list_ticket_ids"];
     put?: never;
     post?: never;
     delete?: never;
@@ -2486,6 +2758,11 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    AdminIds: {
+      /** Format: uuid */
+      id: string;
+      username: string;
+    };
     AdminModel: {
       /** Format: date-time */
       created_at: string;
@@ -2498,6 +2775,11 @@ export interface components {
     };
     AdminRelations: {
       tickets: components["schemas"]["TicketModel"][];
+    };
+    AwardIds: {
+      /** Format: uuid */
+      id: string;
+      value: string;
     };
     AwardModel: {
       /** Format: date-time */
@@ -2529,6 +2811,11 @@ export interface components {
       updated_at: string;
       value: string;
     };
+    BanIds: {
+      /** Format: uuid */
+      id: string;
+      reason: string;
+    };
     BanModel: {
       /** Format: date-time */
       created_at: string;
@@ -2556,6 +2843,11 @@ export interface components {
     ChallengeFileRelations: {
       challenge: components["schemas"]["ChallengeModel"];
       file: components["schemas"]["FileModel"];
+    };
+    ChallengeIds: {
+      /** Format: uuid */
+      id: string;
+      title: string;
     };
     ChallengeInstance: {
       instance_model: components["schemas"]["InstanceModel"];
@@ -2617,6 +2909,11 @@ export interface components {
       challenge: components["schemas"]["ChallengeModel"];
       tag: components["schemas"]["TagModel"];
     };
+    ContainerIds: {
+      /** Format: uuid */
+      id: string;
+      name: string;
+    };
     ContainerModel: {
       /** Format: uuid */
       challenge_id: string;
@@ -2665,7 +2962,12 @@ export interface components {
       duration: number;
       reason: string;
     };
-    CreateChallengeFileSchema: Record<string, never>;
+    CreateChallengeFileSchema: {
+      /** Format: uuid */
+      challenge_id: string;
+      /** Format: uuid */
+      file_id: string;
+    };
     CreateChallengeSchema: {
       author_name: string;
       description: string;
@@ -2676,7 +2978,12 @@ export interface components {
       points: number;
       title: string;
     };
-    CreateChallengeTagSchema: Record<string, never>;
+    CreateChallengeTagSchema: {
+      /** Format: uuid */
+      challenge_id: string;
+      /** Format: uuid */
+      tag_id: string;
+    };
     CreateContainerSchema: {
       /** Format: uuid */
       challenge_id: string;
@@ -2735,12 +3042,16 @@ export interface components {
     CreateNotificationSchema: {
       content: string;
       /** Format: uuid */
-      player_id?: string | null;
+      player_id: string;
       title: string;
     };
     CreatePlayerAwardSchema: {
+      /** Format: uuid */
+      award_id: string;
       /** Format: int32 */
       count: number;
+      /** Format: uuid */
+      player_id: string;
     };
     CreatePlayerSchema: {
       avatar_url: string;
@@ -2754,8 +3065,12 @@ export interface components {
       username: string;
     };
     CreateSubmissionSchema: {
+      /** Format: uuid */
+      challenge_id: string;
       flags: string[];
       is_correct: boolean;
+      /** Format: uuid */
+      player_id: string;
     };
     CreateTagSchema: {
       value: string;
@@ -2772,7 +3087,16 @@ export interface components {
       status: components["schemas"]["TicketStatusEnum"];
       title: string;
     };
-    CreateUnlockSchema: Record<string, never>;
+    CreateUnlockSchema: {
+      /** Format: uuid */
+      hint_id: string;
+      /** Format: uuid */
+      player_id: string;
+    };
+    DeploymentIds: {
+      /** Format: uuid */
+      id: string;
+    };
     DeploymentModel: {
       /** Format: uuid */
       challenge_id: string;
@@ -2797,6 +3121,11 @@ export interface components {
       hints: components["schemas"]["HintSummary"][];
       instances?: components["schemas"]["ChallengeInstance"][] | null;
     };
+    FileIds: {
+      /** Format: uuid */
+      id: string;
+      name: string;
+    };
     FileModel: {
       /** Format: date-time */
       created_at: string;
@@ -2808,6 +3137,11 @@ export interface components {
     };
     FileRelations: {
       challenge: components["schemas"]["ChallengeModel"];
+    };
+    FlagIds: {
+      /** Format: uuid */
+      id: string;
+      value: string;
     };
     FlagModel: {
       /** Format: uuid */
@@ -2829,6 +3163,11 @@ export interface components {
     };
     FlagVerificationResult: {
       is_correct: boolean;
+    };
+    HintIds: {
+      description: string;
+      /** Format: uuid */
+      id: string;
     };
     HintModel: {
       /** Format: uuid */
@@ -2855,6 +3194,11 @@ export interface components {
       id: string;
       status: components["schemas"]["UnlockStatus"];
     };
+    InstanceIds: {
+      container_name: string;
+      /** Format: uuid */
+      id: string;
+    };
     InstanceModel: {
       container_id: string;
       container_name: string;
@@ -2870,6 +3214,10 @@ export interface components {
     };
     InstanceRelations: {
       deployment: components["schemas"]["DeploymentModel"];
+    };
+    InviteIds: {
+      /** Format: uuid */
+      id: string;
     };
     InviteModel: {
       /** Format: date-time */
@@ -2942,6 +3290,11 @@ export interface components {
         username: string;
       };
     };
+    NotificationIds: {
+      /** Format: uuid */
+      id: string;
+      title: string;
+    };
     NotificationModel: {
       content: string;
       /** Format: date-time */
@@ -2949,7 +3302,7 @@ export interface components {
       /** Format: uuid */
       id: string;
       /** Format: uuid */
-      player_id?: string | null;
+      player_id: string;
       title: string;
       /** Format: date-time */
       updated_at: string;
@@ -2983,6 +3336,11 @@ export interface components {
       profile: components["schemas"]["PlayerProfile"];
       submissions: components["schemas"]["SubmissionModel"][];
       unlocks: components["schemas"]["UnlockModel"][];
+    };
+    PlayerIds: {
+      /** Format: uuid */
+      id: string;
+      username: string;
     };
     PlayerModel: {
       avatar_url: string;
@@ -3110,6 +3468,11 @@ export interface components {
       challenge: components["schemas"]["ChallengeModel"];
       player: components["schemas"]["PlayerModel"];
     };
+    TagIds: {
+      /** Format: uuid */
+      id: string;
+      value: string;
+    };
     TagModel: {
       /** Format: date-time */
       created_at: string;
@@ -3132,6 +3495,11 @@ export interface components {
       profile: components["schemas"]["TeamProfile"];
       submissions: components["schemas"]["SubmissionModel"][];
       unlocks: components["schemas"]["UnlockModel"][];
+    };
+    TeamIds: {
+      /** Format: uuid */
+      id: string;
+      name: string;
     };
     TeamMember: {
       /** Format: uuid */
@@ -3181,6 +3549,11 @@ export interface components {
       invites: components["schemas"]["InviteModel"][];
       players: components["schemas"]["PlayerModel"][];
     };
+    TicketIds: {
+      /** Format: uuid */
+      id: string;
+      title: string;
+    };
     TicketModel: {
       /** Format: uuid */
       assigned_to?: string | null;
@@ -3225,17 +3598,28 @@ export interface components {
           kind: "unlocked";
           value: string;
         };
+    UpdateChallengeFileSchema: Record<string, never>;
+    UpdateChallengeTagSchema: Record<string, never>;
     UpdateInviteSchema: {
       /** Format: date-time */
       expires_at?: string | null;
       /** Format: int32 */
       remaining?: number | null;
     };
+    UpdatePlayerAwardSchema: {
+      /** Format: int32 */
+      count: number;
+    };
     UpdateProfileSchema: {
       discord_id?: string | null;
       email: string;
       username: string;
     };
+    UpdateSubmissionSchema: {
+      flags: string[];
+      is_correct: boolean;
+    };
+    UpdateUnlockSchema: Record<string, never>;
     VerifyFlagSchema: {
       /** Format: uuid */
       challenge_id: string;
@@ -3382,6 +3766,53 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  list_admin_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed admin ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AdminIds"][];
         };
       };
       /** @description Action is permissible after login */
@@ -3895,6 +4326,53 @@ export interface operations {
       };
     };
   };
+  list_award_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed award ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AwardIds"][];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
   import_awards: {
     parameters: {
       query?: never;
@@ -4346,6 +4824,53 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  list_ban_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed ban ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["BanIds"][];
         };
       };
       /** @description Action is permissible after login */
@@ -4900,6 +5425,53 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  list_challenge_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed challenge ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ChallengeIds"][];
         };
       };
       /** @description Action is permissible after login */
@@ -5551,7 +6123,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreateChallengeFileSchema"];
+        "application/json": components["schemas"]["UpdateChallengeFileSchema"];
       };
     };
     responses: {
@@ -6041,7 +6613,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreateChallengeTagSchema"];
+        "application/json": components["schemas"]["UpdateChallengeTagSchema"];
       };
     };
     responses: {
@@ -6362,6 +6934,53 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  list_container_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed container ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ContainerIds"][];
         };
       };
       /** @description Action is permissible after login */
@@ -6922,6 +7541,53 @@ export interface operations {
       };
     };
   };
+  list_deployment_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed deployment ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DeploymentIds"][];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
   import_deployments: {
     parameters: {
       query?: never;
@@ -7373,6 +8039,53 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  list_file_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed file ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["FileIds"][];
         };
       };
       /** @description Action is permissible after login */
@@ -7886,6 +8599,53 @@ export interface operations {
       };
     };
   };
+  list_flag_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed flag ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["FlagIds"][];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
   import_flags: {
     parameters: {
       query?: never;
@@ -8337,6 +9097,53 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  list_hint_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed hint ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HintIds"][];
         };
       };
       /** @description Action is permissible after login */
@@ -8850,6 +9657,53 @@ export interface operations {
       };
     };
   };
+  list_instance_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed instance ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["InstanceIds"][];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
   import_instances: {
     parameters: {
       query?: never;
@@ -9301,6 +10155,53 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  list_invite_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed invite ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["InviteIds"][];
         };
       };
       /** @description Action is permissible after login */
@@ -9814,6 +10715,53 @@ export interface operations {
       };
     };
   };
+  list_notification_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed notification ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["NotificationIds"][];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
   import_notifications: {
     parameters: {
       query?: never;
@@ -10265,6 +11213,53 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  list_player_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed player ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PlayerIds"][];
         };
       };
       /** @description Action is permissible after login */
@@ -10916,7 +11911,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreatePlayerAwardSchema"];
+        "application/json": components["schemas"]["UpdatePlayerAwardSchema"];
       };
     };
     responses: {
@@ -11557,7 +12552,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreateSubmissionSchema"];
+        "application/json": components["schemas"]["UpdateSubmissionSchema"];
       };
     };
     responses: {
@@ -11878,6 +12873,53 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  list_tag_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed tag ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TagIds"][];
         };
       };
       /** @description Action is permissible after login */
@@ -12391,6 +13433,53 @@ export interface operations {
       };
     };
   };
+  list_team_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed team ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TeamIds"][];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
   import_teams: {
     parameters: {
       query?: never;
@@ -12842,6 +13931,53 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  list_ticket_ids: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed ticket ids successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TicketIds"][];
         };
       };
       /** @description Action is permissible after login */
@@ -13561,7 +14697,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreateUnlockSchema"];
+        "application/json": components["schemas"]["UpdateUnlockSchema"];
       };
     };
     responses: {

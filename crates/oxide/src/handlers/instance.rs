@@ -2,7 +2,7 @@ use crate::schemas::{
     CreateInstanceSchema, Deployment, DeploymentModel, Instance, InstanceModel, JsonResponse,
 };
 
-oxide_macros::crud!(Instance, single: [Deployment], optional: [], multiple: []);
+oxide_macros::crud!(Instance, single: [Deployment], optional: [], multiple: [], id_descriptor: container_name);
 
 #[utoipa::path(
     put,

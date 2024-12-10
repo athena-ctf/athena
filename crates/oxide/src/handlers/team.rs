@@ -10,7 +10,7 @@ use crate::schemas::{
     TagSolves, Team, TeamDetails, TeamMember, TeamModel, TeamProfile,
 };
 
-oxide_macros::crud!(Team, single: [], optional: [], multiple: [Invite, Player]);
+oxide_macros::crud!(Team, single: [], optional: [], multiple: [Invite, Player], id_descriptor: name);
 
 async fn get_team_profile(
     team: TeamModel,
@@ -38,13 +38,10 @@ async fn get_team_profile(
         .await?
         .into_iter()
         .map(|tag| {
-            (
-                tag.id,
-                TagSolves {
-                    tag_value: tag.value,
-                    solves: 0,
-                },
-            )
+            (tag.id, TagSolves {
+                tag_value: tag.value,
+                solves: 0,
+            })
         })
         .collect::<HashMap<_, _>>();
 
@@ -191,13 +188,10 @@ pub async fn retrieve_summary(
         .await?
         .into_iter()
         .map(|tag| {
-            (
-                tag.id,
-                TagSolves {
-                    tag_value: tag.value,
-                    solves: 0,
-                },
-            )
+            (tag.id, TagSolves {
+                tag_value: tag.value,
+                solves: 0,
+            })
         })
         .collect::<HashMap<_, _>>();
 

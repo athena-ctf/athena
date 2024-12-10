@@ -57,7 +57,11 @@ export function ChallengeCard({
           </CardHeader>
           <CardContent className="px-10">
             <div className="flex justify-between text-ellipsis p-2 px-6 text-sm">
-              <div>{challengeSummary.challenge.description}</div>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: challengeSummary.challenge.description,
+                }}
+              />
             </div>
           </CardContent>
         </Card>

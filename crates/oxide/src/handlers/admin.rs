@@ -1,7 +1,7 @@
 use crate::jwt::AuthAdmin;
 use crate::schemas::{Admin, AdminModel, CreateAdminSchema, JsonResponse, Ticket, TicketModel};
 
-oxide_macros::crud!(Admin, single: [], optional: [], multiple: [Ticket]);
+oxide_macros::crud!(Admin, single: [], optional: [], multiple: [Ticket], id_descriptor: username);
 
 #[utoipa::path(
     get,

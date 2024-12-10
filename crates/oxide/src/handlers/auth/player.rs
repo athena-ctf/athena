@@ -2,14 +2,14 @@ use std::str::FromStr;
 use std::sync::Arc;
 use std::time::Duration;
 
-use argon2::password_hash::rand_core::OsRng;
 use argon2::password_hash::SaltString;
+use argon2::password_hash::rand_core::OsRng;
 use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use askama::Template;
-use axum::extract::{Query, State};
 use axum::Json;
-use axum_extra::extract::cookie::Cookie;
+use axum::extract::{Query, State};
 use axum_extra::extract::CookieJar;
+use axum_extra::extract::cookie::Cookie;
 use fred::prelude::*;
 use jsonwebtoken::{DecodingKey, Validation};
 use lettre::message::header::ContentType;
@@ -130,8 +130,8 @@ pub async fn register(
         None,
         body.username,
         body.email,
-        password,
         body.avatar_url,
+        password,
     )
     .into_active_model()
     .insert(&txn)

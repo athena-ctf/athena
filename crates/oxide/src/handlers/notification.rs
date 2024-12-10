@@ -3,7 +3,7 @@ use crate::schemas::{
     CreateNotificationSchema, JsonResponse, Notification, NotificationModel, Player, PlayerModel,
 };
 
-oxide_macros::crud!(Notification, single: [], optional: [Player], multiple: []);
+oxide_macros::crud!(Notification, single: [], optional: [Player], multiple: [], id_descriptor: title);
 
 #[utoipa::path(
     get,

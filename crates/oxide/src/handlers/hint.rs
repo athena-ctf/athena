@@ -6,12 +6,7 @@ use crate::schemas::{
     PlayerModel, Unlock, UnlockModel,
 };
 
-oxide_macros::crud!(
-    Hint,
-    single: [Challenge],
-    optional: [],
-    multiple: [Unlock, Player]
-);
+oxide_macros::crud!(Hint, single: [Challenge], optional: [], multiple: [Unlock, Player], id_descriptor: description);
 
 #[utoipa::path(
     get,
