@@ -12,13 +12,8 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/components/card";
+import { toast } from "sonner";
+import type { components } from "@repo/api";
 
 const schema = z.object({
   reason: z.string(),
@@ -27,7 +22,9 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-export function BanForm() {
+export function BanForm({
+  onSuccess,
+}: { onSuccess: (model: components["schemas"]["BanModel"]) => void }) {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -37,46 +34,46 @@ export function BanForm() {
     const resp = await apiClient.POST("/admin/ban", {
       body: values,
     });
+
+    if (resp.error) {
+      toast.error("Could not create ban");
+      console.error(resp.error.message);
+    } else {
+      onSuccess(resp.data);
+    }
   };
 
   return (
-    <Card className="m-auto max-w-md">
-      <CardHeader>
-        <CardTitle className="text-2xl">Create Ban</CardTitle>
-        <CardDescription>Create a new ban</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-            <FormField
-              control={form.control}
-              name="reason"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Reason</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="duration"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Duration (in days)</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />{" "}
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <FormField
+          control={form.control}
+          name="reason"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Reason</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="duration"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Duration (in days)</FormLabel>
+              <FormControl>
+                <Input type="number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Create</Button>
+      </form>
+    </Form>
   );
 }

@@ -40,10 +40,10 @@ export function ProfileCard({
         <div className="text-center space-y-1">
           <h2 className="text-2xl font-bold">{name}</h2>
           <p className="text-sm text-muted-foreground">
-            {email}{" "}
+            {email}
             {extra.kind === "team" && (
               <span>
-                &bull; {extra.memberCount} member{extra.memberCount > 1 ? "s" : ""}
+                &nbsp;&bull; {extra.memberCount} member{extra.memberCount > 1 ? "s" : ""}
               </span>
             )}
           </p>

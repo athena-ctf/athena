@@ -12,13 +12,6 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/components/card";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import {
@@ -42,7 +35,9 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-export function HintForm() {
+export function HintForm({
+  onSuccess,
+}: { onSuccess: (model: components["schemas"]["HintModel"]) => void }) {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -65,100 +60,100 @@ export function HintForm() {
     const resp = await apiClient.POST("/admin/hint", {
       body: values,
     });
+
+    if (resp.error) {
+      toast.error("Could not create hint");
+      console.error(resp.error.message);
+    } else {
+      onSuccess(resp.data);
+    }
   };
 
   return (
-    <Card className="m-auto max-w-md">
-      <CardHeader>
-        <CardTitle className="text-2xl">Create Hint</CardTitle>
-        <CardDescription>Create a new hint</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="cost"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Cost</FormLabel>
+              <FormControl>
+                <Input type="number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="challenge_id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Challenge Id</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
                   <FormControl>
-                    <Input {...field} />
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-full justify-between flex",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value ? field.value : "Select challenge"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="cost"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Cost</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="challenge_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Challenge Id</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "w-[200px] justify-between",
-                            !field.value && "text-muted-foreground",
-                          )}
-                        >
-                          {field.value ? field.value : "Select challenge"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
-                      <Command>
-                        <CommandInput placeholder="Search challenge..." />
-                        <CommandList>
-                          <CommandEmpty>No challenge found.</CommandEmpty>
-                          <CommandGroup>
-                            {challengeIds.map((challengeId) => (
-                              <CommandItem
-                                value={challengeId.id}
-                                key={challengeId.id}
-                                onSelect={() => {
-                                  form.setValue("challenge_id", challengeId.id);
-                                }}
-                              >
-                                {challengeId.title}
-                                <Check
-                                  className={cn(
-                                    "ml-auto",
-                                    challengeId.id === field.value ? "opacity-100" : "opacity-0",
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput placeholder="Search challenge..." />
+                    <CommandList>
+                      <CommandEmpty>No challenge found.</CommandEmpty>
+                      <CommandGroup>
+                        {challengeIds.map((challengeId) => (
+                          <CommandItem
+                            value={challengeId.id}
+                            key={challengeId.id}
+                            onSelect={() => {
+                              form.setValue("challenge_id", challengeId.id);
+                            }}
+                          >
+                            {challengeId.title}
+                            <Check
+                              className={cn(
+                                "ml-auto",
+                                challengeId.id === field.value ? "opacity-100" : "opacity-0",
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Create</Button>
+      </form>
+    </Form>
   );
 }

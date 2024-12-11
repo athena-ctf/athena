@@ -12,13 +12,6 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { DateTimePicker } from "@repo/ui/components/date-time-picker";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/components/card";
 import { cn } from "@repo/ui/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
@@ -43,7 +36,9 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-export function DeploymentForm() {
+export function DeploymentForm({
+  onSuccess,
+}: { onSuccess: (model: components["schemas"]["DeploymentModel"]) => void }) {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -53,6 +48,13 @@ export function DeploymentForm() {
     const resp = await apiClient.POST("/admin/deployment", {
       body: { ...values, expires_at: formatISO(values.expires_at) },
     });
+
+    if (resp.error) {
+      toast.error("Could not create deployment");
+      console.error(resp.error.message);
+    } else {
+      onSuccess(resp.data);
+    }
   };
 
   const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIds"][]>([]);
@@ -79,138 +81,131 @@ export function DeploymentForm() {
   }, []);
 
   return (
-    <Card className="m-auto max-w-md">
-      <CardHeader>
-        <CardTitle className="text-2xl">Create Deployment</CardTitle>
-        <CardDescription>Create a new deployment</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-            <FormField
-              control={form.control}
-              name="expires_at"
-              render={({ field }) => (
-                <FormItem className="flex w-72 flex-col gap-2">
-                  <FormLabel htmlFor="datetime">Date time</FormLabel>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <FormField
+          control={form.control}
+          name="expires_at"
+          render={({ field }) => (
+            <FormItem className="flex w-72 flex-col gap-2">
+              <FormLabel htmlFor="datetime">Date time</FormLabel>
+              <FormControl>
+                <DateTimePicker value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="challenge_id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Challenge Id</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
                   <FormControl>
-                    <DateTimePicker value={field.value} onChange={field.onChange} />
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-full justify-between flex",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value ? field.value : "Select challenge"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="challenge_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Challenge Id</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "w-[200px] justify-between",
-                            !field.value && "text-muted-foreground",
-                          )}
-                        >
-                          {field.value ? field.value : "Select challenge"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
-                      <Command>
-                        <CommandInput placeholder="Search challenge..." />
-                        <CommandList>
-                          <CommandEmpty>No challenge found.</CommandEmpty>
-                          <CommandGroup>
-                            {challengeIds.map((challengeId) => (
-                              <CommandItem
-                                value={challengeId.id}
-                                key={challengeId.id}
-                                onSelect={() => {
-                                  form.setValue("challenge_id", challengeId.id);
-                                }}
-                              >
-                                {challengeId.title}
-                                <Check
-                                  className={cn(
-                                    "ml-auto",
-                                    challengeId.id === field.value ? "opacity-100" : "opacity-0",
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="player_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Player Id</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "w-[200px] justify-between",
-                            !field.value && "text-muted-foreground",
-                          )}
-                        >
-                          {field.value ? field.value : "Select player"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
-                      <Command>
-                        <CommandInput placeholder="Search player..." />
-                        <CommandList>
-                          <CommandEmpty>No player found.</CommandEmpty>
-                          <CommandGroup>
-                            {playerIds.map((playerId) => (
-                              <CommandItem
-                                value={playerId.id}
-                                key={playerId.id}
-                                onSelect={() => {
-                                  form.setValue("player_id", playerId.id);
-                                }}
-                              >
-                                {playerId.username}
-                                <Check
-                                  className={cn(
-                                    "ml-auto",
-                                    playerId.id === field.value ? "opacity-100" : "opacity-0",
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+                </PopoverTrigger>
+                <PopoverContent className="w-flex p-0">
+                  <Command>
+                    <CommandInput placeholder="Search challenge..." />
+                    <CommandList>
+                      <CommandEmpty>No challenge found.</CommandEmpty>
+                      <CommandGroup>
+                        {challengeIds.map((challengeId) => (
+                          <CommandItem
+                            value={challengeId.id}
+                            key={challengeId.id}
+                            onSelect={() => {
+                              form.setValue("challenge_id", challengeId.id);
+                            }}
+                          >
+                            {challengeId.title}
+                            <Check
+                              className={cn(
+                                "ml-auto",
+                                challengeId.id === field.value ? "opacity-100" : "opacity-0",
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="player_id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Player Id</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-full justify-between flex",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value ? field.value : "Select player"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput placeholder="Search player..." />
+                    <CommandList>
+                      <CommandEmpty>No player found.</CommandEmpty>
+                      <CommandGroup>
+                        {playerIds.map((playerId) => (
+                          <CommandItem
+                            value={playerId.id}
+                            key={playerId.id}
+                            onSelect={() => {
+                              form.setValue("player_id", playerId.id);
+                            }}
+                          >
+                            {playerId.username}
+                            <Check
+                              className={cn(
+                                "ml-auto",
+                                playerId.id === field.value ? "opacity-100" : "opacity-0",
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Create</Button>
+      </form>
+    </Form>
   );
 }

@@ -12,17 +12,12 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/components/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
 import { ImageIcon, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { ctf } from "@/utils/ctf-data";
+import type { components } from "@repo/api";
+import { toast } from "sonner";
 
 const schema = z.object({
   value: z.string(),
@@ -32,7 +27,9 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-export function AwardForm() {
+export function AwardForm({
+  onSuccess,
+}: { onSuccess: (model: components["schemas"]["AwardModel"]) => void }) {
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
 
@@ -87,77 +84,77 @@ export function AwardForm() {
     const resp = await apiClient.POST("/admin/award", {
       body: values,
     });
+
+    if (resp.error) {
+      toast.error("Could not create award");
+      console.error(resp.error.message);
+    } else {
+      onSuccess(resp.data);
+    }
   };
 
   return (
-    <Card className="m-auto max-w-md">
-      <CardHeader>
-        <CardTitle className="text-2xl">Create Award</CardTitle>
-        <CardDescription>Create a new award</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-            <FormField
-              control={form.control}
-              name="value"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Value</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="prize"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Prize</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="logo_url"
-              render={() => (
-                <FormItem>
-                  <FormLabel>Logo</FormLabel>
-                  <FormControl>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-4">
-                        <Avatar className="h-16 w-16">
-                          <AvatarImage src={previewUrl} />
-                          <AvatarFallback>
-                            <ImageIcon className="h-8 w-8 text-muted-foreground" />
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 space-y-2">
-                          <Input
-                            type="file"
-                            accept="image/jpeg,image/jpg,image/png"
-                            onChange={handleFileChange}
-                            className="flex-1"
-                          />
-                        </div>
-                      </div>
-                      {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        <FormField
+          control={form.control}
+          name="value"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Value</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="prize"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Prize</FormLabel>
+              <FormControl>
+                <Input type="number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="logo_url"
+          render={() => (
+            <FormItem>
+              <FormLabel>Logo</FormLabel>
+              <FormControl>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="size-12">
+                      <AvatarImage src={previewUrl} />
+                      <AvatarFallback>
+                        <ImageIcon className="h-8 w-8 text-muted-foreground" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 space-y-2">
+                      <Input
+                        type="file"
+                        accept="image/jpeg,image/jpg,image/png"
+                        onChange={handleFileChange}
+                        className="flex-1"
+                      />
                     </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+                  </div>
+                  {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Create</Button>
+      </form>
+    </Form>
   );
 }
