@@ -1,7 +1,7 @@
-import { useMemo } from "react";
-import Fuse from "fuse.js";
-import { Input } from "@repo/ui/components/input";
 import type { components } from "@repo/api";
+import { Input } from "@repo/ui/components/input";
+import Fuse from "fuse.js";
+import { useMemo } from "react";
 
 interface FuzzySearchInputProps {
   challenges: components["schemas"]["ChallengeSummary"][];

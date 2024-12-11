@@ -1,5 +1,3 @@
-import { useState, useRef, useEffect } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import {
   Command,
@@ -11,6 +9,8 @@ import {
 } from "@repo/ui/components/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { cn } from "@repo/ui/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 interface FilterOption {
   id: string;

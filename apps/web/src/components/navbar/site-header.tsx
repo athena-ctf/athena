@@ -1,12 +1,12 @@
+import type { FileRouteTypes } from "@/routeTree.gen";
+import { ctf } from "@/utils/ctf-data";
 import type { components } from "@repo/api";
-import { ThemeToggle } from "./theme-toggle";
+import { Button } from "@repo/ui/components/button";
+import { CountdownTimer } from "@repo/ui/components/countdown";
+import { Link, useLocation } from "@tanstack/react-router";
 import { Notification } from "./notification";
 import { ProfileDropdown } from "./profile-dropdown";
-import { Button } from "@repo/ui/components/button";
-import { Link, useLocation } from "@tanstack/react-router";
-import { CountdownTimer } from "@repo/ui/components/countdown";
-import { ctf } from "@/utils/ctf-data";
-import type { FileRouteTypes } from "@/routeTree.gen";
+import { ThemeToggle } from "./theme-toggle";
 
 interface Navlink {
   to: FileRouteTypes["to"];

@@ -1,14 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/components/button";
 import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@repo/ui/components/form";
-import {
   Card,
   CardContent,
   CardDescription,
@@ -16,15 +8,23 @@ import {
   CardTitle,
 } from "@repo/ui/components/card";
 import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@repo/ui/components/form";
+import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
 } from "@repo/ui/components/input-otp";
 
+import { useResetStore } from "@/stores/reset";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useResetStore } from "@/stores/reset";
 
 const verifyEmailSchema = z.object({
   token: z.string().length(8),

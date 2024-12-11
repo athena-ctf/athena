@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import { faker } from "@faker-js/faker";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import { ChallengeForm as Component } from "@/components/table/forms/challenge";
-import { openapiHttp } from "@/utils/msw";
 import { cardDecorator, tooltipDecorator } from "@/utils/decorators";
+import { openapiHttp } from "@/utils/msw";
 
 const meta = {
   title: "Components/Table/Forms/ChallengeForm",

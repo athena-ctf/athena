@@ -1,9 +1,9 @@
-import { Card, CardContent } from "@repo/ui/components/card";
-import { Badge } from "@repo/ui/components/badge";
-import { Server, Link2, EthernetPort } from "lucide-react";
-import type { components } from "@repo/api";
-import { ctf } from "@/utils/ctf-data";
 import { uuidToBase62 } from "@/utils/base62";
+import { ctf } from "@/utils/ctf-data";
+import type { components } from "@repo/api";
+import { Badge } from "@repo/ui/components/badge";
+import { Card, CardContent } from "@repo/ui/components/card";
+import { EthernetPort, Link2, Server } from "lucide-react";
 
 const stateColorMap = {
   Created: "bg-blue-200 text-blue-800",

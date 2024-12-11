@@ -1,9 +1,9 @@
-import * as React from "react";
 import { Button } from "@repo/ui/components/button";
+import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import { Switch } from "@repo/ui/components/switch";
-import { Input } from "@repo/ui/components/input";
 import { cn } from "@repo/ui/lib/utils";
+import * as React from "react";
 
 export interface LinkEditorProps extends React.HTMLAttributes<HTMLDivElement> {
   defaultUrl?: string;

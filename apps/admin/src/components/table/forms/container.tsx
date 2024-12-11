@@ -1,33 +1,33 @@
 import { apiClient } from "@/utils/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
+import type { components } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
-import { TagsInput } from "@repo/ui/components/tags-input";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@repo/ui/components/command";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { Switch } from "@repo/ui/components/switch";
+import { TagsInput } from "@repo/ui/components/tags-input";
 import { cn } from "@repo/ui/lib/utils";
 import { Check, ChevronsUpDown, PlusCircle, X } from "lucide-react";
-import {
-  Command,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-} from "@repo/ui/components/command";
 import { useEffect, useState } from "react";
-import type { components } from "@repo/api";
+import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
 const schema = z.object({
   challenge_id: z.string().uuid(),

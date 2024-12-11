@@ -13,15 +13,15 @@ import { createFileRoute } from "@tanstack/react-router";
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
-import { Route as TeamImport } from "./routes/team";
-import { Route as ScoreboardImport } from "./routes/scoreboard";
-import { Route as ProfileImport } from "./routes/profile";
-import { Route as TeamTeamnameImport } from "./routes/team/$teamname";
-import { Route as ProfileUsernameImport } from "./routes/profile/$username";
-import { Route as AuthResetImport } from "./routes/auth/reset";
-import { Route as AuthRegisterImport } from "./routes/auth/register";
-import { Route as AuthLogoutImport } from "./routes/auth/logout";
 import { Route as AuthLoginImport } from "./routes/auth/login";
+import { Route as AuthLogoutImport } from "./routes/auth/logout";
+import { Route as AuthRegisterImport } from "./routes/auth/register";
+import { Route as AuthResetImport } from "./routes/auth/reset";
+import { Route as ProfileImport } from "./routes/profile";
+import { Route as ProfileUsernameImport } from "./routes/profile/$username";
+import { Route as ScoreboardImport } from "./routes/scoreboard";
+import { Route as TeamImport } from "./routes/team";
+import { Route as TeamTeamnameImport } from "./routes/team/$teamname";
 
 // Create Virtual Routes
 

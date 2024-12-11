@@ -45,12 +45,6 @@ func (fc *FileCreate) SetBackend(f file.Backend) *FileCreate {
 	return fc
 }
 
-// SetChallengeID sets the "challenge_id" field.
-func (fc *FileCreate) SetChallengeID(u uuid.UUID) *FileCreate {
-	fc.mutation.SetChallengeID(u)
-	return fc
-}
-
 // SetID sets the "id" field.
 func (fc *FileCreate) SetID(u uuid.UUID) *FileCreate {
 	fc.mutation.SetID(u)
@@ -108,9 +102,6 @@ func (fc *FileCreate) check() error {
 			return &ValidationError{Name: "backend", err: fmt.Errorf(`ent: validator failed for field "File.backend": %w`, err)}
 		}
 	}
-	if _, ok := fc.mutation.ChallengeID(); !ok {
-		return &ValidationError{Name: "challenge_id", err: errors.New(`ent: missing required field "File.challenge_id"`)}
-	}
 	return nil
 }
 
@@ -161,10 +152,6 @@ func (fc *FileCreate) createSpec() (*File, *sqlgraph.CreateSpec) {
 	if value, ok := fc.mutation.Backend(); ok {
 		_spec.SetField(file.FieldBackend, field.TypeEnum, value)
 		_node.Backend = value
-	}
-	if value, ok := fc.mutation.ChallengeID(); ok {
-		_spec.SetField(file.FieldChallengeID, field.TypeUUID, value)
-		_node.ChallengeID = value
 	}
 	return _node, _spec
 }

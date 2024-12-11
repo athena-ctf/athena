@@ -25,9 +25,7 @@ type File struct {
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// Backend holds the value of the "backend" field.
-	Backend file.Backend `json:"backend,omitempty"`
-	// ChallengeID holds the value of the "challenge_id" field.
-	ChallengeID  uuid.UUID `json:"challenge_id,omitempty"`
+	Backend      file.Backend `json:"backend,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -40,7 +38,7 @@ func (*File) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case file.FieldCreatedAt, file.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
-		case file.FieldID, file.FieldChallengeID:
+		case file.FieldID:
 			values[i] = new(uuid.UUID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -86,12 +84,6 @@ func (f *File) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field backend", values[i])
 			} else if value.Valid {
 				f.Backend = file.Backend(value.String)
-			}
-		case file.FieldChallengeID:
-			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field challenge_id", values[i])
-			} else if value != nil {
-				f.ChallengeID = *value
 			}
 		default:
 			f.selectValues.Set(columns[i], values[i])
@@ -140,9 +132,6 @@ func (f *File) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("backend=")
 	builder.WriteString(fmt.Sprintf("%v", f.Backend))
-	builder.WriteString(", ")
-	builder.WriteString("challenge_id=")
-	builder.WriteString(fmt.Sprintf("%v", f.ChallengeID))
 	builder.WriteByte(')')
 	return builder.String()
 }

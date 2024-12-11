@@ -1,7 +1,6 @@
+import { ctf } from "@/utils/ctf-data";
 import type { components } from "@repo/api";
-import { ChallengeModal } from "./modal";
 import { Badge } from "@repo/ui/components/badge";
-import { CountdownTimer } from "@repo/ui/components/countdown";
 import {
   Card,
   CardContent,
@@ -9,9 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/components/card";
-import { Circle } from "lucide-react";
+import { CountdownTimer } from "@repo/ui/components/countdown";
 import { parseISO } from "date-fns";
-import { ctf } from "@/utils/ctf-data";
+import { Circle } from "lucide-react";
+import { ChallengeModal } from "./modal";
 
 const stateColor = {
   solved: "",

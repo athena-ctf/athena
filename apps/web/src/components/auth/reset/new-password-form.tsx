@@ -1,6 +1,14 @@
 import { useResetStore } from "@/stores/reset";
+import { apiClient } from "@/utils/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/card";
 import {
   Form,
   FormControl,
@@ -9,19 +17,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@repo/ui/components/form";
-import { useNavigate } from "@tanstack/react-router";
 import { PasswordInput } from "@repo/ui/components/password-input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/components/card";
+import { useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { apiClient } from "@/utils/api-client";
 
 const schema = z
   .object({

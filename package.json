@@ -6,7 +6,9 @@
     "generate:openapi": "pnpm --filter @repo/api generate",
     "generate:emails": "pnpm --filter @repo/emails export",
     "biome": "biome check .",
-    "biome:fix": "biome check . --write"
+    "biome:fix": "biome check . --write",
+    "storybook:web": "pnpm --filter web storybook",
+    "storybook:admin": "pnpm --filter admin storybook"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.2"

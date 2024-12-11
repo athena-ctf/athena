@@ -1,32 +1,32 @@
+import { useRegisterStore } from "@/stores/register";
+import { apiClient } from "@/utils/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/components/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/card";
+import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@repo/ui/components/form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useRegisterStore } from "@/stores/register";
-import { toast } from "sonner";
-import { useNavigate } from "@tanstack/react-router";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
 } from "@repo/ui/components/input-otp";
-import { apiClient } from "@/utils/api-client";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@repo/ui/components/card";
+import { useNavigate } from "@tanstack/react-router";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const verifyEmailSchema = z.object({
   token: z.string().length(8),

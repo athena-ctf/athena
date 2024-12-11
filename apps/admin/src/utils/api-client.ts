@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth";
-import { type paths, createFetchClient, type Middleware } from "@repo/api";
+import { type Middleware, createFetchClient, type paths } from "@repo/api";
 import { ctf } from "./ctf-data";
 
 const middleware: Middleware = {

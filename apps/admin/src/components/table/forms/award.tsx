@@ -1,23 +1,23 @@
 import { apiClient } from "@/utils/api-client";
+import { ctf } from "@/utils/ctf-data";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { components } from "@repo/api";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
 import { Button } from "@repo/ui/components/button";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
 import { ImageIcon, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { ctf } from "@/utils/ctf-data";
-import type { components } from "@repo/api";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
 const schema = z.object({
   value: z.string(),

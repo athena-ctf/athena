@@ -12,9 +12,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { Button } from "@ui/components/ui/button";
 import type { DataTableFacetedFilterProps } from "@ui/components/ui/data-table-faceted-filter";
 import { DataTableToolbar } from "@ui/components/ui/data-table-toolbar";
-import { Button } from "@ui/components/ui/button";
 import {
   Select,
   SelectContent,

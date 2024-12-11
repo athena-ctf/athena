@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { ProfileDropdown as Component } from "@/components/navbar/profile-dropdown";
-import { faker } from "@faker-js/faker";
 import { routerDecorator } from "@/utils/router-decorator";
+import { faker } from "@faker-js/faker";
 
 const meta = {
   title: "Components/Navbar/ProfileDropdown",

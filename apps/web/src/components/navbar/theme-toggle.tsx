@@ -1,6 +1,6 @@
-import { Sun, Moon } from "lucide-react";
 import { Switch } from "@repo/ui/components/switch";
 import { useTheme } from "@repo/ui/components/theme-provider-vite";
+import { Moon, Sun } from "lucide-react";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();

@@ -38,7 +38,6 @@ type FileMutation struct {
 	updated_at    *time.Time
 	name          *string
 	backend       *file.Backend
-	challenge_id  *uuid.UUID
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*File, error)
@@ -293,42 +292,6 @@ func (m *FileMutation) ResetBackend() {
 	m.backend = nil
 }
 
-// SetChallengeID sets the "challenge_id" field.
-func (m *FileMutation) SetChallengeID(u uuid.UUID) {
-	m.challenge_id = &u
-}
-
-// ChallengeID returns the value of the "challenge_id" field in the mutation.
-func (m *FileMutation) ChallengeID() (r uuid.UUID, exists bool) {
-	v := m.challenge_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldChallengeID returns the old "challenge_id" field's value of the File entity.
-// If the File object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *FileMutation) OldChallengeID(ctx context.Context) (v uuid.UUID, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldChallengeID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldChallengeID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldChallengeID: %w", err)
-	}
-	return oldValue.ChallengeID, nil
-}
-
-// ResetChallengeID resets all changes to the "challenge_id" field.
-func (m *FileMutation) ResetChallengeID() {
-	m.challenge_id = nil
-}
-
 // Where appends a list predicates to the FileMutation builder.
 func (m *FileMutation) Where(ps ...predicate.File) {
 	m.predicates = append(m.predicates, ps...)
@@ -363,7 +326,7 @@ func (m *FileMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *FileMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 4)
 	if m.created_at != nil {
 		fields = append(fields, file.FieldCreatedAt)
 	}
@@ -375,9 +338,6 @@ func (m *FileMutation) Fields() []string {
 	}
 	if m.backend != nil {
 		fields = append(fields, file.FieldBackend)
-	}
-	if m.challenge_id != nil {
-		fields = append(fields, file.FieldChallengeID)
 	}
 	return fields
 }
@@ -395,8 +355,6 @@ func (m *FileMutation) Field(name string) (ent.Value, bool) {
 		return m.Name()
 	case file.FieldBackend:
 		return m.Backend()
-	case file.FieldChallengeID:
-		return m.ChallengeID()
 	}
 	return nil, false
 }
@@ -414,8 +372,6 @@ func (m *FileMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldName(ctx)
 	case file.FieldBackend:
 		return m.OldBackend(ctx)
-	case file.FieldChallengeID:
-		return m.OldChallengeID(ctx)
 	}
 	return nil, fmt.Errorf("unknown File field %s", name)
 }
@@ -452,13 +408,6 @@ func (m *FileMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetBackend(v)
-		return nil
-	case file.FieldChallengeID:
-		v, ok := value.(uuid.UUID)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetChallengeID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown File field %s", name)
@@ -520,9 +469,6 @@ func (m *FileMutation) ResetField(name string) error {
 		return nil
 	case file.FieldBackend:
 		m.ResetBackend()
-		return nil
-	case file.FieldChallengeID:
-		m.ResetChallengeID()
 		return nil
 	}
 	return fmt.Errorf("unknown File field %s", name)

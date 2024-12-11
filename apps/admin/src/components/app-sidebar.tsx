@@ -1,5 +1,11 @@
-import { GalleryVerticalEnd, ChevronDown, type LucideIcon, Table } from "lucide-react";
+import { ChevronDown, GalleryVerticalEnd, type LucideIcon, Table } from "lucide-react";
 
+import type { FileRouteTypes } from "@/routeTree.gen";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@repo/ui/components/collapsible";
 import {
   Sidebar,
   SidebarContent,
@@ -8,16 +14,10 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
 } from "@repo/ui/components/sidebar";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@repo/ui/components/collapsible";
-import type { FileRouteTypes } from "@/routeTree.gen";
 import { Link } from "@tanstack/react-router";
 
 interface SidebarItem {

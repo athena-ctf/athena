@@ -70,11 +70,6 @@ func Name(v string) predicate.File {
 	return predicate.File(sql.FieldEQ(FieldName, v))
 }
 
-// ChallengeID applies equality check predicate on the "challenge_id" field. It's identical to ChallengeIDEQ.
-func ChallengeID(v uuid.UUID) predicate.File {
-	return predicate.File(sql.FieldEQ(FieldChallengeID, v))
-}
-
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.File {
 	return predicate.File(sql.FieldEQ(FieldCreatedAt, v))
@@ -238,46 +233,6 @@ func BackendIn(vs ...Backend) predicate.File {
 // BackendNotIn applies the NotIn predicate on the "backend" field.
 func BackendNotIn(vs ...Backend) predicate.File {
 	return predicate.File(sql.FieldNotIn(FieldBackend, vs...))
-}
-
-// ChallengeIDEQ applies the EQ predicate on the "challenge_id" field.
-func ChallengeIDEQ(v uuid.UUID) predicate.File {
-	return predicate.File(sql.FieldEQ(FieldChallengeID, v))
-}
-
-// ChallengeIDNEQ applies the NEQ predicate on the "challenge_id" field.
-func ChallengeIDNEQ(v uuid.UUID) predicate.File {
-	return predicate.File(sql.FieldNEQ(FieldChallengeID, v))
-}
-
-// ChallengeIDIn applies the In predicate on the "challenge_id" field.
-func ChallengeIDIn(vs ...uuid.UUID) predicate.File {
-	return predicate.File(sql.FieldIn(FieldChallengeID, vs...))
-}
-
-// ChallengeIDNotIn applies the NotIn predicate on the "challenge_id" field.
-func ChallengeIDNotIn(vs ...uuid.UUID) predicate.File {
-	return predicate.File(sql.FieldNotIn(FieldChallengeID, vs...))
-}
-
-// ChallengeIDGT applies the GT predicate on the "challenge_id" field.
-func ChallengeIDGT(v uuid.UUID) predicate.File {
-	return predicate.File(sql.FieldGT(FieldChallengeID, v))
-}
-
-// ChallengeIDGTE applies the GTE predicate on the "challenge_id" field.
-func ChallengeIDGTE(v uuid.UUID) predicate.File {
-	return predicate.File(sql.FieldGTE(FieldChallengeID, v))
-}
-
-// ChallengeIDLT applies the LT predicate on the "challenge_id" field.
-func ChallengeIDLT(v uuid.UUID) predicate.File {
-	return predicate.File(sql.FieldLT(FieldChallengeID, v))
-}
-
-// ChallengeIDLTE applies the LTE predicate on the "challenge_id" field.
-func ChallengeIDLTE(v uuid.UUID) predicate.File {
-	return predicate.File(sql.FieldLTE(FieldChallengeID, v))
 }
 
 // And groups predicates with the AND operator between them.

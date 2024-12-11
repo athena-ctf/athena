@@ -1,8 +1,8 @@
-import { defineConfig, type Plugin } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import path from "path";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import react from "@vitejs/plugin-react-swc";
 import fs from "fs/promises";
+import { type Plugin, defineConfig } from "vite";
 
 function genCtfJson(): Plugin {
   return {

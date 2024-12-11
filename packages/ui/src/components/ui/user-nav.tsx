@@ -1,4 +1,6 @@
 import React from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { Button } from "./button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,8 +11,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
-import { Button } from "./button";
-import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 
 export function UserNav() {
   return (

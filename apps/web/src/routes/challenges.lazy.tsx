@@ -1,13 +1,13 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 import { ChallengeCard } from "@/components/challenge/card";
+import { Filter } from "@/components/challenge/filter";
 import { ChallengeSearch } from "@/components/challenge/search";
+import { apiClient } from "@/utils/api-client";
+import { ctf } from "@/utils/ctf-data";
 import type { components } from "@repo/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Filter } from "@/components/challenge/filter";
-import { ctf } from "@/utils/ctf-data";
-import { apiClient } from "@/utils/api-client";
 
 export const Route = createLazyFileRoute("/challenges")({
   component: Index,

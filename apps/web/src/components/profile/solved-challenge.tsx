@@ -1,4 +1,5 @@
 import type { components } from "@repo/api";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card";
 import {
   Table,
   TableBody,
@@ -7,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@repo/ui/components/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card";
 
 export function SolvedChallenge({
   challenges,

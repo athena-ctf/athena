@@ -1,5 +1,14 @@
+import { useRegisterStore } from "@/stores/register";
+import { apiClient } from "@/utils/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/card";
 import {
   Form,
   FormControl,
@@ -9,20 +18,11 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@repo/ui/components/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/tabs";
 import { Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useRegisterStore } from "@/stores/register";
 import { toast } from "sonner";
-import { apiClient } from "@/utils/api-client";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@repo/ui/components/card";
+import { z } from "zod";
 
 const joinTeamSchema = z.object({
   teamName: z.string(),

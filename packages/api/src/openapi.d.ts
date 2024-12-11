@@ -2811,6 +2811,8 @@ export interface components {
       updated_at: string;
       value: string;
     };
+    /** @enum {string} */
+    BackendEnum: "azure" | "gcp" | "local" | "s3";
     BanIds: {
       /** Format: uuid */
       id: string;
@@ -3007,6 +3009,7 @@ export interface components {
       player_id?: string | null;
     };
     CreateFileSchema: {
+      backend: components["schemas"]["BackendEnum"];
       name: string;
     };
     CreateFlagSchema: {
@@ -3127,6 +3130,7 @@ export interface components {
       name: string;
     };
     FileModel: {
+      backend: components["schemas"]["BackendEnum"];
       /** Format: date-time */
       created_at: string;
       /** Format: uuid */

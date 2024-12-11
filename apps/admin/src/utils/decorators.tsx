@@ -1,12 +1,12 @@
-import type { Decorator } from "@storybook/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { TooltipProvider } from "@repo/ui/components/tooltip";
+import type { Decorator } from "@storybook/react";
 import {
+  RouterProvider,
+  createMemoryHistory,
   createRootRoute,
   createRoute,
-  createMemoryHistory,
   createRouter,
-  RouterProvider,
 } from "@tanstack/react-router";
 
 const rootRoute = createRootRoute();

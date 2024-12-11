@@ -15,7 +15,6 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString},
 		{Name: "backend", Type: field.TypeEnum, Enums: []string{"local", "s3", "azure", "gcp"}},
-		{Name: "challenge_id", Type: field.TypeUUID},
 	}
 	// FilesTable holds the schema information for the "files" table.
 	FilesTable = &schema.Table{

@@ -1,14 +1,14 @@
-import { useState, useEffect, useCallback } from "react";
-import { format } from "date-fns";
+import type { components } from "@repo/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@repo/ui/components/chart";
-import type { components } from "@repo/api";
+import { format } from "date-fns";
+import { useCallback, useEffect, useState } from "react";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
 type PointRecords = components["schemas"]["PlayerProfile"]["history"];
 

@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Alert } from "@repo/ui/components/alert";
 import { useAuthStore } from "@/stores/auth";
+import { Alert } from "@repo/ui/components/alert";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth/logout")({
   component: Index,

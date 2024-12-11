@@ -1,5 +1,6 @@
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 
+import type { components } from "@repo/api";
 import {
   Card,
   CardContent,
@@ -13,7 +14,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@repo/ui/components/chart";
-import type { components } from "@repo/api";
 
 interface Data {
   data: components["schemas"]["TagSolves"][];

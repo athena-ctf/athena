@@ -1,3 +1,5 @@
+import { apiClient } from "@/utils/api-client";
+import { ctf } from "@/utils/ctf-data";
 import type { components } from "@repo/api";
 import {
   Accordion,
@@ -24,20 +26,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@repo/ui/components/tooltip";
+import { Link } from "@tanstack/react-router";
+import { Circle, Download, Lightbulb, Lock, LockOpen, ScrollText, Server } from "lucide-react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { InstanceCard } from "./instance-card";
 import {
   VerticalTabs,
   VerticalTabsContent,
   VerticalTabsList,
   VerticalTabsTrigger,
 } from "./vertical-tabs";
-import { Circle, Download, Lightbulb, Lock, LockOpen, ScrollText, Server } from "lucide-react";
-import { Link } from "@tanstack/react-router";
-import type React from "react";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { apiClient } from "@/utils/api-client";
-import { ctf } from "@/utils/ctf-data";
-import { InstanceCard } from "./instance-card";
 
 export function ChallengeModal({
   challengeSummary,

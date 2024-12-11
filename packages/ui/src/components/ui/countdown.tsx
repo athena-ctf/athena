@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { differenceInSeconds, differenceInMinutes } from "date-fns";
 import { cn } from "@ui/lib/utils";
+import { differenceInMinutes, differenceInSeconds } from "date-fns";
+import React, { useState, useEffect } from "react";
 
 interface CountdownTimerProps {
   targetDate: Date;

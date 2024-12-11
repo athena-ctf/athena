@@ -1,5 +1,5 @@
-import { createOpenApiHttp } from "openapi-msw";
 import type { paths } from "@repo/api";
+import { createOpenApiHttp } from "openapi-msw";
 import { ctf } from "./ctf-data";
 
 export const openapiHttp = createOpenApiHttp<paths>({

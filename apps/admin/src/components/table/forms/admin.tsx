@@ -1,31 +1,31 @@
 import { apiClient } from "@/utils/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { components } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@repo/ui/components/command";
+import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { PasswordInput } from "@repo/ui/components/password-input";
-import {
-  Command,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-} from "@repo/ui/components/command";
-import { Popover, PopoverTrigger, PopoverContent } from "@repo/ui/components/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { cn } from "@repo/ui/lib/utils";
-import { ChevronsUpDown, Check } from "lucide-react";
-import type { components } from "@repo/api";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
 const roles = ["analyst", "editor", "judge", "manager", "moderator"] as const;
 

@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
 import { faker } from "@faker-js/faker";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import { AdminForm as Component } from "@/components/table/forms/admin";
-import { openapiHttp } from "@/utils/msw";
 import { cardDecorator } from "@/utils/decorators";
+import { openapiHttp } from "@/utils/msw";
 
 const meta = {
   title: "Components/Table/Forms/AdminForm",

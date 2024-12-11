@@ -1,10 +1,10 @@
 import type { Decorator } from "@storybook/react";
 import {
+  RouterProvider,
+  createMemoryHistory,
   createRootRoute,
   createRoute,
-  createMemoryHistory,
   createRouter,
-  RouterProvider,
 } from "@tanstack/react-router";
 
 const rootRoute = createRootRoute();

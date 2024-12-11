@@ -13,27 +13,27 @@ import { createFileRoute } from "@tanstack/react-router";
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
-import { Route as TableUnlockImport } from "./routes/table/unlock";
-import { Route as TableTicketImport } from "./routes/table/ticket";
-import { Route as TableTeamImport } from "./routes/table/team";
-import { Route as TableTagImport } from "./routes/table/tag";
-import { Route as TableSubmissionImport } from "./routes/table/submission";
-import { Route as TablePlayerawardImport } from "./routes/table/player_award";
-import { Route as TablePlayerImport } from "./routes/table/player";
-import { Route as TableNotificationImport } from "./routes/table/notification";
-import { Route as TableInviteImport } from "./routes/table/invite";
-import { Route as TableInstanceImport } from "./routes/table/instance";
-import { Route as TableHintImport } from "./routes/table/hint";
-import { Route as TableFlagImport } from "./routes/table/flag";
-import { Route as TableFileImport } from "./routes/table/file";
-import { Route as TableDeploymentImport } from "./routes/table/deployment";
-import { Route as TableContainerImport } from "./routes/table/container";
-import { Route as TableChallengetagImport } from "./routes/table/challenge_tag";
-import { Route as TableChallengefileImport } from "./routes/table/challenge_file";
-import { Route as TableChallengeImport } from "./routes/table/challenge";
-import { Route as TableBanImport } from "./routes/table/ban";
-import { Route as TableAwardImport } from "./routes/table/award";
 import { Route as TableAdminImport } from "./routes/table/admin";
+import { Route as TableAwardImport } from "./routes/table/award";
+import { Route as TableBanImport } from "./routes/table/ban";
+import { Route as TableChallengeImport } from "./routes/table/challenge";
+import { Route as TableChallengefileImport } from "./routes/table/challenge_file";
+import { Route as TableChallengetagImport } from "./routes/table/challenge_tag";
+import { Route as TableContainerImport } from "./routes/table/container";
+import { Route as TableDeploymentImport } from "./routes/table/deployment";
+import { Route as TableFileImport } from "./routes/table/file";
+import { Route as TableFlagImport } from "./routes/table/flag";
+import { Route as TableHintImport } from "./routes/table/hint";
+import { Route as TableInstanceImport } from "./routes/table/instance";
+import { Route as TableInviteImport } from "./routes/table/invite";
+import { Route as TableNotificationImport } from "./routes/table/notification";
+import { Route as TablePlayerImport } from "./routes/table/player";
+import { Route as TablePlayerawardImport } from "./routes/table/player_award";
+import { Route as TableSubmissionImport } from "./routes/table/submission";
+import { Route as TableTagImport } from "./routes/table/tag";
+import { Route as TableTeamImport } from "./routes/table/team";
+import { Route as TableTicketImport } from "./routes/table/ticket";
+import { Route as TableUnlockImport } from "./routes/table/unlock";
 
 // Create Virtual Routes
 

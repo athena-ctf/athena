@@ -3,6 +3,8 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
+use super::sea_orm_active_enums::BackendEnum;
+
 #[derive(
     Clone,
     Debug,
@@ -22,6 +24,7 @@ pub struct Model {
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
     pub name: String,
+    pub backend: BackendEnum,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

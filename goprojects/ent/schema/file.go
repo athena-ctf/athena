@@ -19,7 +19,6 @@ func (File) Fields() []ent.Field {
 		field.Time("updated_at"),
 		field.String("name"),
 		field.Enum("backend").Values("local", "s3", "azure", "gcp"),
-		field.UUID("challenge_id", uuid.New()),
 	}
 }
 

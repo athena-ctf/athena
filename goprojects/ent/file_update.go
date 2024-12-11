@@ -13,7 +13,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/google/uuid"
 )
 
 // FileUpdate is the builder for updating File entities.
@@ -85,20 +84,6 @@ func (fu *FileUpdate) SetNillableBackend(f *file.Backend) *FileUpdate {
 	return fu
 }
 
-// SetChallengeID sets the "challenge_id" field.
-func (fu *FileUpdate) SetChallengeID(u uuid.UUID) *FileUpdate {
-	fu.mutation.SetChallengeID(u)
-	return fu
-}
-
-// SetNillableChallengeID sets the "challenge_id" field if the given value is not nil.
-func (fu *FileUpdate) SetNillableChallengeID(u *uuid.UUID) *FileUpdate {
-	if u != nil {
-		fu.SetChallengeID(*u)
-	}
-	return fu
-}
-
 // Mutation returns the FileMutation object of the builder.
 func (fu *FileUpdate) Mutation() *FileMutation {
 	return fu.mutation
@@ -164,9 +149,6 @@ func (fu *FileUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := fu.mutation.Backend(); ok {
 		_spec.SetField(file.FieldBackend, field.TypeEnum, value)
-	}
-	if value, ok := fu.mutation.ChallengeID(); ok {
-		_spec.SetField(file.FieldChallengeID, field.TypeUUID, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, fu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -240,20 +222,6 @@ func (fuo *FileUpdateOne) SetBackend(f file.Backend) *FileUpdateOne {
 func (fuo *FileUpdateOne) SetNillableBackend(f *file.Backend) *FileUpdateOne {
 	if f != nil {
 		fuo.SetBackend(*f)
-	}
-	return fuo
-}
-
-// SetChallengeID sets the "challenge_id" field.
-func (fuo *FileUpdateOne) SetChallengeID(u uuid.UUID) *FileUpdateOne {
-	fuo.mutation.SetChallengeID(u)
-	return fuo
-}
-
-// SetNillableChallengeID sets the "challenge_id" field if the given value is not nil.
-func (fuo *FileUpdateOne) SetNillableChallengeID(u *uuid.UUID) *FileUpdateOne {
-	if u != nil {
-		fuo.SetChallengeID(*u)
 	}
 	return fuo
 }
@@ -353,9 +321,6 @@ func (fuo *FileUpdateOne) sqlSave(ctx context.Context) (_node *File, err error) 
 	}
 	if value, ok := fuo.mutation.Backend(); ok {
 		_spec.SetField(file.FieldBackend, field.TypeEnum, value)
-	}
-	if value, ok := fuo.mutation.ChallengeID(); ok {
-		_spec.SetField(file.FieldChallengeID, field.TypeUUID, value)
 	}
 	_node = &File{config: fuo.config}
 	_spec.Assign = _node.assignValues

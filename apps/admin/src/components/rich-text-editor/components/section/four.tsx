@@ -1,9 +1,9 @@
-import type * as React from "react";
-import type { Editor } from "@tiptap/react";
-import type { FormatAction } from "../../types";
 import type { toggleVariants } from "@repo/ui/components/toggle";
+import type { Editor } from "@tiptap/react";
 import type { VariantProps } from "class-variance-authority";
 import { ChevronDownIcon, ListIcon } from "lucide-react";
+import type * as React from "react";
+import type { FormatAction } from "../../types";
 import { ToolbarSection } from "../toolbar-section";
 
 type ListItemAction = "orderedList" | "bulletList";

@@ -1,19 +1,19 @@
-import * as React from "react";
-import type { Editor } from "@tiptap/react";
-import type { Level } from "@tiptap/extension-heading";
-import type { FormatAction } from "../../types";
-import type { VariantProps } from "class-variance-authority";
-import type { toggleVariants } from "@repo/ui/components/toggle";
-import { cn } from "@repo/ui/lib/utils";
-import { ChevronDownIcon, CaseSensitiveIcon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
-import { ToolbarButton } from "../toolbar-button";
+import type { toggleVariants } from "@repo/ui/components/toggle";
+import { cn } from "@repo/ui/lib/utils";
+import type { Level } from "@tiptap/extension-heading";
+import type { Editor } from "@tiptap/react";
+import type { VariantProps } from "class-variance-authority";
+import { CaseSensitiveIcon, ChevronDownIcon } from "lucide-react";
+import * as React from "react";
+import type { FormatAction } from "../../types";
 import { ShortcutKey } from "../shortcut-key";
+import { ToolbarButton } from "../toolbar-button";
 
 interface TextStyle
   extends Omit<FormatAction, "value" | "icon" | "action" | "isActive" | "canExecute"> {

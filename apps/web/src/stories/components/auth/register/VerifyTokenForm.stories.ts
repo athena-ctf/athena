@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { VerifyTokenForm as Component } from "@/components/auth/register/verify-token-form";
-import { routerDecorator } from "@/utils/router-decorator";
 import { openapiHttp } from "@/utils/msw";
+import { routerDecorator } from "@/utils/router-decorator";
 
 const meta = {
   title: "Components/Auth/Register/VerifyTokenForm",

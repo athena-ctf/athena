@@ -1,8 +1,8 @@
 import type { Table } from "@tanstack/react-table";
-import React from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
-import { Button } from "./button";
 import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeft, ChevronsRight } from "lucide-react";
+import React from "react";
+import { Button } from "./button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;

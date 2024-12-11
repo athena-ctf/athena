@@ -1,13 +1,13 @@
-import * as React from "react";
-import type { Editor } from "@tiptap/react";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import type { toggleVariants } from "@repo/ui/components/toggle";
-import type { VariantProps } from "class-variance-authority";
-import { ChevronDownIcon, CheckIcon } from "lucide-react";
-import { ToolbarButton } from "../toolbar-button";
-import { Popover, PopoverTrigger, PopoverContent } from "@repo/ui/components/popover";
 import { ToggleGroup, ToggleGroupItem } from "@repo/ui/components/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ui/components/tooltip";
+import type { Editor } from "@tiptap/react";
+import type { VariantProps } from "class-variance-authority";
+import { CheckIcon, ChevronDownIcon } from "lucide-react";
+import * as React from "react";
 import { useTheme } from "../../hooks/use-theme";
+import { ToolbarButton } from "../toolbar-button";
 
 interface ColorItem {
   cssVar: string;

@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { defineStepper } from "@stepperize/react";
 import { EmailForm } from "@/components/auth/reset/email-form";
-import { VerifyTokenForm } from "@/components/auth/reset/verify-token-form";
 import { NewPasswordForm } from "@/components/auth/reset/new-password-form";
+import { VerifyTokenForm } from "@/components/auth/reset/verify-token-form";
+import { defineStepper } from "@stepperize/react";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth/reset")({
   component: Index,

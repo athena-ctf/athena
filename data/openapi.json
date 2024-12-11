@@ -16009,6 +16009,15 @@
           }
         }
       },
+      "BackendEnum": {
+        "type": "string",
+        "enum": [
+          "azure",
+          "gcp",
+          "local",
+          "s3"
+        ]
+      },
       "BanIds": {
         "type": "object",
         "required": [
@@ -16687,9 +16696,13 @@
       "CreateFileSchema": {
         "type": "object",
         "required": [
-          "name"
+          "name",
+          "backend"
         ],
         "properties": {
+          "backend": {
+            "$ref": "#/components/schemas/BackendEnum"
+          },
           "name": {
             "type": "string"
           }
@@ -17098,9 +17111,13 @@
           "id",
           "created_at",
           "updated_at",
-          "name"
+          "name",
+          "backend"
         ],
         "properties": {
+          "backend": {
+            "$ref": "#/components/schemas/BackendEnum"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time"

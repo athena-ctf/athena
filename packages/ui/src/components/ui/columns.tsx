@@ -2,9 +2,9 @@
 
 import type { components } from "@repo/api";
 import { type ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "@ui/components/ui/data-table-column-header";
 import { Button } from "@ui/components/ui/button";
 import { Checkbox } from "@ui/components/ui/checkbox";
+import { DataTableColumnHeader } from "@ui/components/ui/data-table-column-header";
 import { Dialog, DialogTrigger } from "@ui/components/ui/dialog";
 import {
   DropdownMenu,

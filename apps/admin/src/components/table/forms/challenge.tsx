@@ -1,32 +1,32 @@
+import { MinimalTiptapEditor } from "@/components/rich-text-editor";
 import { apiClient } from "@/utils/api-client";
+import { ctf } from "@/utils/ctf-data";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { components } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@repo/ui/components/command";
+import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
-import {
-  Command,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-} from "@repo/ui/components/command";
-import { Popover, PopoverTrigger, PopoverContent } from "@repo/ui/components/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { cn } from "@repo/ui/lib/utils";
-import { ChevronsUpDown, Check } from "lucide-react";
-import { MinimalTiptapEditor } from "@/components/rich-text-editor";
-import { ctf } from "@/utils/ctf-data";
-import type { components } from "@repo/api";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
 const kinds = [
   "dynamic_containerized",

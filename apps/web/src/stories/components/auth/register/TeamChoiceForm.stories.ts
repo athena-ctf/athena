@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { TeamChoiceForm as Component } from "@/components/auth/register/team-choice-form";
-import { routerDecorator } from "@/utils/router-decorator";
 import { openapiHttp } from "@/utils/msw";
+import { routerDecorator } from "@/utils/router-decorator";
 import { faker } from "@faker-js/faker";
 
 const meta = {

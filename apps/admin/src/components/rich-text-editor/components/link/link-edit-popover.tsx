@@ -1,9 +1,9 @@
-import * as React from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
+import type { toggleVariants } from "@repo/ui/components/toggle";
 import type { Editor } from "@tiptap/react";
 import type { VariantProps } from "class-variance-authority";
-import type { toggleVariants } from "@repo/ui/components/toggle";
-import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { Link2Icon } from "lucide-react";
+import * as React from "react";
 import { ToolbarButton } from "../toolbar-button";
 import { LinkEditBlock } from "./link-edit-block";
 

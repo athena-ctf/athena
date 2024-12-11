@@ -1,25 +1,9 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@repo/ui/components/button";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@repo/ui/components/form";
-import { Input } from "@repo/ui/components/input";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useRegisterStore } from "@/stores/register";
-import { Link } from "@tanstack/react-router";
-import { toast } from "sonner";
-import { PasswordInput } from "@repo/ui/components/password-input";
-import { useState } from "react";
-import { ImageIcon, Loader2 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
 import { apiClient } from "@/utils/api-client";
 import { ctf } from "@/utils/ctf-data";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
+import { Button } from "@repo/ui/components/button";
 import {
   Card,
   CardContent,
@@ -27,6 +11,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/components/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@repo/ui/components/form";
+import { Input } from "@repo/ui/components/input";
+import { PasswordInput } from "@repo/ui/components/password-input";
+import { Link } from "@tanstack/react-router";
+import { ImageIcon, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const detailsSchema = z
   .object({

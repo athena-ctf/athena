@@ -1,8 +1,8 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card";
-import { Badge } from "@repo/ui/components/badge";
-import type { components } from "@repo/api";
 import { getOrdinal } from "@/utils/get-ordinal";
+import type { components } from "@repo/api";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
+import { Badge } from "@repo/ui/components/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { cn } from "@repo/ui/lib/utils";
 
 interface ProfileCardProps {

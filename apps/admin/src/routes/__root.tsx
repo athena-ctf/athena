@@ -1,9 +1,9 @@
-import { Outlet, createRootRoute } from "@tanstack/react-router";
-import { ThemeProvider } from "@repo/ui/components/theme-provider";
-import { Toaster } from "@repo/ui/components/sonner";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@repo/ui/components/sidebar";
+import { Toaster } from "@repo/ui/components/sonner";
+import { ThemeProvider } from "@repo/ui/components/theme-provider";
 import { TooltipProvider } from "@repo/ui/components/tooltip";
+import { Outlet, createRootRoute } from "@tanstack/react-router";
 
 export const Route = createRootRoute({
   component: Index,

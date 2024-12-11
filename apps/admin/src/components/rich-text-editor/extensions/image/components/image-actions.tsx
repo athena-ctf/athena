@@ -1,6 +1,3 @@
-import * as React from "react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ui/components/tooltip";
-import { cn } from "@repo/ui/lib/utils";
 import { Button } from "@repo/ui/components/button";
 import {
   DropdownMenu,
@@ -8,13 +5,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ui/components/tooltip";
+import { cn } from "@repo/ui/lib/utils";
 import {
   ClipboardCopyIcon,
-  EllipsisIcon,
   DownloadIcon,
+  EllipsisIcon,
   Link2Icon,
   MoveDiagonalIcon,
 } from "lucide-react";
+import * as React from "react";
 
 interface ImageActionsProps {
   shouldMerge?: boolean;

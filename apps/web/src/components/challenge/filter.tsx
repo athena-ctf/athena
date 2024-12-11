@@ -1,9 +1,9 @@
-import { useState, useCallback } from "react";
-import { X } from "lucide-react";
-import { Button } from "@repo/ui/components/button";
-import { FilterPopover } from "./filter-popover";
-import { FilterBadge } from "./filter-badge";
 import type { components } from "@repo/api";
+import { Button } from "@repo/ui/components/button";
+import { X } from "lucide-react";
+import { useCallback, useState } from "react";
+import { FilterBadge } from "./filter-badge";
+import { FilterPopover } from "./filter-popover";
 
 type Category = "tag" | "difficulty" | "status";
 const STATUS_OPTIONS = ["solved", "unsolved", "challenge_limit_reached"];

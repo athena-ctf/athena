@@ -21,8 +21,6 @@ const (
 	FieldName = "name"
 	// FieldBackend holds the string denoting the backend field in the database.
 	FieldBackend = "backend"
-	// FieldChallengeID holds the string denoting the challenge_id field in the database.
-	FieldChallengeID = "challenge_id"
 	// Table holds the table name of the file in the database.
 	Table = "files"
 )
@@ -34,7 +32,6 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldName,
 	FieldBackend,
-	FieldChallengeID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -98,9 +95,4 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 // ByBackend orders the results by the backend field.
 func ByBackend(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBackend, opts...).ToFunc()
-}
-
-// ByChallengeID orders the results by the challenge_id field.
-func ByChallengeID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldChallengeID, opts...).ToFunc()
 }

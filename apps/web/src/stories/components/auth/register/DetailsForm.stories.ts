@@ -1,10 +1,10 @@
+import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/react";
 import { http, HttpResponse } from "msw";
-import { faker } from "@faker-js/faker";
 
 import { DetailsForm as Component } from "@/components/auth/register/details-form";
-import { routerDecorator } from "@/utils/router-decorator";
 import { openapiHttp } from "@/utils/msw";
+import { routerDecorator } from "@/utils/router-decorator";
 
 const meta = {
   title: "Components/Auth/Register/DetailsForm",

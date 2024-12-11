@@ -1,5 +1,5 @@
-import { ChallengeDiff } from "@/components/profile/challenge-diff";
 import { ProfileCard } from "@/components/profile/card";
+import { ChallengeDiff } from "@/components/profile/challenge-diff";
 import { ScoreChart } from "@/components/profile/score-chart";
 import { SolvedChallenge } from "@/components/profile/solved-challenge";
 import { apiClient } from "@/utils/api-client";
