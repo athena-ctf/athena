@@ -8,296 +8,297 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as AuthLoginImport } from "./routes/auth/login";
-import { Route as AuthLogoutImport } from "./routes/auth/logout";
-import { Route as AuthRegisterImport } from "./routes/auth/register";
-import { Route as AuthResetImport } from "./routes/auth/reset";
-import { Route as ProfileImport } from "./routes/profile";
-import { Route as ProfileUsernameImport } from "./routes/profile/$username";
-import { Route as ScoreboardImport } from "./routes/scoreboard";
-import { Route as TeamImport } from "./routes/team";
-import { Route as TeamTeamnameImport } from "./routes/team/$teamname";
+import { Route as rootRoute } from './routes/__root'
+import { Route as TeamImport } from './routes/team'
+import { Route as ScoreboardImport } from './routes/scoreboard'
+import { Route as ProfileImport } from './routes/profile'
+import { Route as TeamTeamnameImport } from './routes/team/$teamname'
+import { Route as ProfileUsernameImport } from './routes/profile/$username'
+import { Route as AuthResetImport } from './routes/auth/reset'
+import { Route as AuthRegisterImport } from './routes/auth/register'
+import { Route as AuthLogoutImport } from './routes/auth/logout'
+import { Route as AuthLoginImport } from './routes/auth/login'
 
 // Create Virtual Routes
 
-const ChallengesLazyImport = createFileRoute("/challenges")();
-const IndexLazyImport = createFileRoute("/")();
+const ChallengesLazyImport = createFileRoute('/challenges')()
+const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
 
 const ChallengesLazyRoute = ChallengesLazyImport.update({
-  id: "/challenges",
-  path: "/challenges",
+  id: '/challenges',
+  path: '/challenges',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/challenges.lazy").then((d) => d.Route));
+} as any).lazy(() => import('./routes/challenges.lazy').then((d) => d.Route))
 
 const TeamRoute = TeamImport.update({
-  id: "/team",
-  path: "/team",
+  id: '/team',
+  path: '/team',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const ScoreboardRoute = ScoreboardImport.update({
-  id: "/scoreboard",
-  path: "/scoreboard",
+  id: '/scoreboard',
+  path: '/scoreboard',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const ProfileRoute = ProfileImport.update({
-  id: "/profile",
-  path: "/profile",
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const IndexLazyRoute = IndexLazyImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
 const TeamTeamnameRoute = TeamTeamnameImport.update({
-  id: "/$teamname",
-  path: "/$teamname",
+  id: '/$teamname',
+  path: '/$teamname',
   getParentRoute: () => TeamRoute,
-} as any);
+} as any)
 
 const ProfileUsernameRoute = ProfileUsernameImport.update({
-  id: "/$username",
-  path: "/$username",
+  id: '/$username',
+  path: '/$username',
   getParentRoute: () => ProfileRoute,
-} as any);
+} as any)
 
 const AuthResetRoute = AuthResetImport.update({
-  id: "/auth/reset",
-  path: "/auth/reset",
+  id: '/auth/reset',
+  path: '/auth/reset',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const AuthRegisterRoute = AuthRegisterImport.update({
-  id: "/auth/register",
-  path: "/auth/register",
+  id: '/auth/register',
+  path: '/auth/register',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const AuthLogoutRoute = AuthLogoutImport.update({
-  id: "/auth/logout",
-  path: "/auth/logout",
+  id: '/auth/logout',
+  path: '/auth/logout',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const AuthLoginRoute = AuthLoginImport.update({
-  id: "/auth/login",
-  path: "/auth/login",
+  id: '/auth/login',
+  path: '/auth/login',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexLazyImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/profile": {
-      id: "/profile";
-      path: "/profile";
-      fullPath: "/profile";
-      preLoaderRoute: typeof ProfileImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/scoreboard": {
-      id: "/scoreboard";
-      path: "/scoreboard";
-      fullPath: "/scoreboard";
-      preLoaderRoute: typeof ScoreboardImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/team": {
-      id: "/team";
-      path: "/team";
-      fullPath: "/team";
-      preLoaderRoute: typeof TeamImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/challenges": {
-      id: "/challenges";
-      path: "/challenges";
-      fullPath: "/challenges";
-      preLoaderRoute: typeof ChallengesLazyImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/auth/login": {
-      id: "/auth/login";
-      path: "/auth/login";
-      fullPath: "/auth/login";
-      preLoaderRoute: typeof AuthLoginImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/auth/logout": {
-      id: "/auth/logout";
-      path: "/auth/logout";
-      fullPath: "/auth/logout";
-      preLoaderRoute: typeof AuthLogoutImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/auth/register": {
-      id: "/auth/register";
-      path: "/auth/register";
-      fullPath: "/auth/register";
-      preLoaderRoute: typeof AuthRegisterImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/auth/reset": {
-      id: "/auth/reset";
-      path: "/auth/reset";
-      fullPath: "/auth/reset";
-      preLoaderRoute: typeof AuthResetImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/profile/$username": {
-      id: "/profile/$username";
-      path: "/$username";
-      fullPath: "/profile/$username";
-      preLoaderRoute: typeof ProfileUsernameImport;
-      parentRoute: typeof ProfileImport;
-    };
-    "/team/$teamname": {
-      id: "/team/$teamname";
-      path: "/$teamname";
-      fullPath: "/team/$teamname";
-      preLoaderRoute: typeof TeamTeamnameImport;
-      parentRoute: typeof TeamImport;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
+      parentRoute: typeof rootRoute
+    }
+    '/scoreboard': {
+      id: '/scoreboard'
+      path: '/scoreboard'
+      fullPath: '/scoreboard'
+      preLoaderRoute: typeof ScoreboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/team': {
+      id: '/team'
+      path: '/team'
+      fullPath: '/team'
+      preLoaderRoute: typeof TeamImport
+      parentRoute: typeof rootRoute
+    }
+    '/challenges': {
+      id: '/challenges'
+      path: '/challenges'
+      fullPath: '/challenges'
+      preLoaderRoute: typeof ChallengesLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/logout': {
+      id: '/auth/logout'
+      path: '/auth/logout'
+      fullPath: '/auth/logout'
+      preLoaderRoute: typeof AuthLogoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/reset': {
+      id: '/auth/reset'
+      path: '/auth/reset'
+      fullPath: '/auth/reset'
+      preLoaderRoute: typeof AuthResetImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/$username': {
+      id: '/profile/$username'
+      path: '/$username'
+      fullPath: '/profile/$username'
+      preLoaderRoute: typeof ProfileUsernameImport
+      parentRoute: typeof ProfileImport
+    }
+    '/team/$teamname': {
+      id: '/team/$teamname'
+      path: '/$teamname'
+      fullPath: '/team/$teamname'
+      preLoaderRoute: typeof TeamTeamnameImport
+      parentRoute: typeof TeamImport
+    }
   }
 }
 
 // Create and export the route tree
 
 interface ProfileRouteChildren {
-  ProfileUsernameRoute: typeof ProfileUsernameRoute;
+  ProfileUsernameRoute: typeof ProfileUsernameRoute
 }
 
 const ProfileRouteChildren: ProfileRouteChildren = {
   ProfileUsernameRoute: ProfileUsernameRoute,
-};
+}
 
-const ProfileRouteWithChildren = ProfileRoute._addFileChildren(ProfileRouteChildren);
+const ProfileRouteWithChildren =
+  ProfileRoute._addFileChildren(ProfileRouteChildren)
 
 interface TeamRouteChildren {
-  TeamTeamnameRoute: typeof TeamTeamnameRoute;
+  TeamTeamnameRoute: typeof TeamTeamnameRoute
 }
 
 const TeamRouteChildren: TeamRouteChildren = {
   TeamTeamnameRoute: TeamTeamnameRoute,
-};
+}
 
-const TeamRouteWithChildren = TeamRoute._addFileChildren(TeamRouteChildren);
+const TeamRouteWithChildren = TeamRoute._addFileChildren(TeamRouteChildren)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexLazyRoute;
-  "/profile": typeof ProfileRouteWithChildren;
-  "/scoreboard": typeof ScoreboardRoute;
-  "/team": typeof TeamRouteWithChildren;
-  "/challenges": typeof ChallengesLazyRoute;
-  "/auth/login": typeof AuthLoginRoute;
-  "/auth/logout": typeof AuthLogoutRoute;
-  "/auth/register": typeof AuthRegisterRoute;
-  "/auth/reset": typeof AuthResetRoute;
-  "/profile/$username": typeof ProfileUsernameRoute;
-  "/team/$teamname": typeof TeamTeamnameRoute;
+  '/': typeof IndexLazyRoute
+  '/profile': typeof ProfileRouteWithChildren
+  '/scoreboard': typeof ScoreboardRoute
+  '/team': typeof TeamRouteWithChildren
+  '/challenges': typeof ChallengesLazyRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/logout': typeof AuthLogoutRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/auth/reset': typeof AuthResetRoute
+  '/profile/$username': typeof ProfileUsernameRoute
+  '/team/$teamname': typeof TeamTeamnameRoute
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexLazyRoute;
-  "/profile": typeof ProfileRouteWithChildren;
-  "/scoreboard": typeof ScoreboardRoute;
-  "/team": typeof TeamRouteWithChildren;
-  "/challenges": typeof ChallengesLazyRoute;
-  "/auth/login": typeof AuthLoginRoute;
-  "/auth/logout": typeof AuthLogoutRoute;
-  "/auth/register": typeof AuthRegisterRoute;
-  "/auth/reset": typeof AuthResetRoute;
-  "/profile/$username": typeof ProfileUsernameRoute;
-  "/team/$teamname": typeof TeamTeamnameRoute;
+  '/': typeof IndexLazyRoute
+  '/profile': typeof ProfileRouteWithChildren
+  '/scoreboard': typeof ScoreboardRoute
+  '/team': typeof TeamRouteWithChildren
+  '/challenges': typeof ChallengesLazyRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/logout': typeof AuthLogoutRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/auth/reset': typeof AuthResetRoute
+  '/profile/$username': typeof ProfileUsernameRoute
+  '/team/$teamname': typeof TeamTeamnameRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/": typeof IndexLazyRoute;
-  "/profile": typeof ProfileRouteWithChildren;
-  "/scoreboard": typeof ScoreboardRoute;
-  "/team": typeof TeamRouteWithChildren;
-  "/challenges": typeof ChallengesLazyRoute;
-  "/auth/login": typeof AuthLoginRoute;
-  "/auth/logout": typeof AuthLogoutRoute;
-  "/auth/register": typeof AuthRegisterRoute;
-  "/auth/reset": typeof AuthResetRoute;
-  "/profile/$username": typeof ProfileUsernameRoute;
-  "/team/$teamname": typeof TeamTeamnameRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexLazyRoute
+  '/profile': typeof ProfileRouteWithChildren
+  '/scoreboard': typeof ScoreboardRoute
+  '/team': typeof TeamRouteWithChildren
+  '/challenges': typeof ChallengesLazyRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/logout': typeof AuthLogoutRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/auth/reset': typeof AuthResetRoute
+  '/profile/$username': typeof ProfileUsernameRoute
+  '/team/$teamname': typeof TeamTeamnameRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/profile"
-    | "/scoreboard"
-    | "/team"
-    | "/challenges"
-    | "/auth/login"
-    | "/auth/logout"
-    | "/auth/register"
-    | "/auth/reset"
-    | "/profile/$username"
-    | "/team/$teamname";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | '/profile'
+    | '/scoreboard'
+    | '/team'
+    | '/challenges'
+    | '/auth/login'
+    | '/auth/logout'
+    | '/auth/register'
+    | '/auth/reset'
+    | '/profile/$username'
+    | '/team/$teamname'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | "/profile"
-    | "/scoreboard"
-    | "/team"
-    | "/challenges"
-    | "/auth/login"
-    | "/auth/logout"
-    | "/auth/register"
-    | "/auth/reset"
-    | "/profile/$username"
-    | "/team/$teamname";
+    | '/'
+    | '/profile'
+    | '/scoreboard'
+    | '/team'
+    | '/challenges'
+    | '/auth/login'
+    | '/auth/logout'
+    | '/auth/register'
+    | '/auth/reset'
+    | '/profile/$username'
+    | '/team/$teamname'
   id:
-    | "__root__"
-    | "/"
-    | "/profile"
-    | "/scoreboard"
-    | "/team"
-    | "/challenges"
-    | "/auth/login"
-    | "/auth/logout"
-    | "/auth/register"
-    | "/auth/reset"
-    | "/profile/$username"
-    | "/team/$teamname";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/profile'
+    | '/scoreboard'
+    | '/team'
+    | '/challenges'
+    | '/auth/login'
+    | '/auth/logout'
+    | '/auth/register'
+    | '/auth/reset'
+    | '/profile/$username'
+    | '/team/$teamname'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute;
-  ProfileRoute: typeof ProfileRouteWithChildren;
-  ScoreboardRoute: typeof ScoreboardRoute;
-  TeamRoute: typeof TeamRouteWithChildren;
-  ChallengesLazyRoute: typeof ChallengesLazyRoute;
-  AuthLoginRoute: typeof AuthLoginRoute;
-  AuthLogoutRoute: typeof AuthLogoutRoute;
-  AuthRegisterRoute: typeof AuthRegisterRoute;
-  AuthResetRoute: typeof AuthResetRoute;
+  IndexLazyRoute: typeof IndexLazyRoute
+  ProfileRoute: typeof ProfileRouteWithChildren
+  ScoreboardRoute: typeof ScoreboardRoute
+  TeamRoute: typeof TeamRouteWithChildren
+  ChallengesLazyRoute: typeof ChallengesLazyRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthLogoutRoute: typeof AuthLogoutRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
+  AuthResetRoute: typeof AuthResetRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -310,11 +311,11 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLogoutRoute: AuthLogoutRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   AuthResetRoute: AuthResetRoute,
-};
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {

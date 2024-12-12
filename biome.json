@@ -35,6 +35,6 @@
     "lineWidth": 100
   },
   "files": {
-    "ignore": ["**/*.json"]
+    "ignore": ["**/*.json", "**/routeTree.gen.ts"]
   }
 }

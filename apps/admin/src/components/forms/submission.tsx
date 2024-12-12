@@ -20,7 +20,7 @@ import {
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
-import { Switch } from "@ui/components/ui/switch";
+import { Switch } from "@repo/ui/components/switch";
 import { cn } from "@ui/lib/utils";
 import { Check, ChevronsUpDown, PlusCircle, X } from "lucide-react";
 import { useEffect, useState } from "react";

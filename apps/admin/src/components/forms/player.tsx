@@ -2,8 +2,8 @@ import { apiClient } from "@/utils/api-client";
 import { ctf } from "@/utils/ctf-data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { components } from "@repo/api";
-import { Avatar, AvatarFallback, AvatarImage } from "@ui/components/ui/avatar";
-import { Button } from "@ui/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
+import { Button } from "@repo/ui/components/button";
 import {
   Command,
   CommandEmpty,
@@ -11,7 +11,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@ui/components/ui/command";
+} from "@repo/ui/components/command";
 import {
   Form,
   FormControl,
@@ -19,10 +19,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@ui/components/ui/form";
-import { Input } from "@ui/components/ui/input";
-import { PasswordInput } from "@ui/components/ui/password-input";
-import { Popover, PopoverContent, PopoverTrigger } from "@ui/components/ui/popover";
+} from "@repo/ui/components/form";
+import { Input } from "@repo/ui/components/input";
+import { PasswordInput } from "@repo/ui/components/password-input";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { cn } from "@ui/lib/utils";
 import { Check, ChevronsUpDown, ImageIcon, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
