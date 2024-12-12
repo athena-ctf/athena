@@ -1,6 +1,5 @@
 import { apiClient } from "@/utils/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { components } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import {
   Command,
@@ -26,32 +25,42 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const roles = ["analyst", "editor", "judge", "manager", "moderator"] as const;
 
 const schema = z.object({
   role: z.enum(roles),
   username: z.string(),
-  password: z.string(),
+  password: z.string().min(8),
 });
 
 type Schema = z.infer<typeof schema>;
 
-export function AdminForm({
-  onSuccess,
-}: { onSuccess: (model: components["schemas"]["AdminModel"]) => void }) {
+export function AdminForm({ onSuccess, kind, defaultValues }: FormProps<"AdminModel">) {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues,
   });
 
   const onSubmit = async (values: Schema) => {
-    const resp = await apiClient.POST("/admin/admin", {
-      body: values,
-    });
+    const resp =
+      kind === "create"
+        ? await apiClient.POST("/admin/admin", {
+            body: values,
+          })
+        : await apiClient.PUT("/admin/admin/{id}", {
+            body: values,
+            params: {
+              path: {
+                id: defaultValues.id,
+              },
+            },
+          });
 
     if (resp.error) {
-      toast.error("Could not create admin");
+      toast.error(`Could not ${kind} admin`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -141,7 +150,7 @@ export function AdminForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );

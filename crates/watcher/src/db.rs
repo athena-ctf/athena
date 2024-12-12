@@ -85,6 +85,7 @@ impl Alert {
                                 ban_model.reason, ban_model.duration
                             ),
                             new_model.id,
+                            None,
                         )))
                     } else {
                         None
@@ -97,6 +98,7 @@ impl Alert {
                         "Ticket removed",
                         "Your ticket has been deleted",
                         model.opened_by,
+                        None,
                     )))
                 }
                 Action::Update {
@@ -111,6 +113,7 @@ impl Alert {
                                 old_model.title, new_model.title
                             ),
                             new_model.opened_by,
+                            None,
                         )))
                     } else if old_model.assigned_to.is_none() && new_model.assigned_to.is_some() {
                         let admin_model = Admin::find_by_id(new_model.assigned_to.unwrap())
@@ -125,6 +128,7 @@ impl Alert {
                                 new_model.title, admin_model.username
                             ),
                             new_model.opened_by,
+                            None,
                         )))
                     } else if old_model.status != new_model.status {
                         Some(PlayerAlert::Notification(NotificationModel::new(
@@ -135,6 +139,7 @@ impl Alert {
                                 get_status(new_model.status)
                             ),
                             new_model.opened_by,
+                            None,
                         )))
                     } else {
                         None
@@ -145,6 +150,7 @@ impl Alert {
                         "Ticket created",
                         format!(r#"Your ticket "{}" has been created"#, model.title),
                         model.opened_by,
+                        None,
                     )))
                 }
             },

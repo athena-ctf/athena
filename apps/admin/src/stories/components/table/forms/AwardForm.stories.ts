@@ -14,11 +14,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const AwardForm: Story = {
+export const CreateAwardForm: Story = {
   args: {
     onSuccess() {
       console.log("created");
     },
+    kind: "create",
   },
   parameters: {
     msw: {
@@ -31,6 +32,37 @@ export const AwardForm: Story = {
             value: faker.internet.username(),
             logo_url: faker.image.avatar(),
             prize: faker.number.int(100),
+          }),
+        ),
+      ],
+    },
+  },
+};
+
+export const UpdateAwardForm: Story = {
+  args: {
+    onSuccess() {
+      console.log("created");
+    },
+    kind: "update",
+    defaultValues: {
+      created_at: faker.date.anytime().toISOString(),
+      id: faker.string.uuid(),
+      updated_at: faker.date.anytime().toISOString(),
+      value: faker.internet.username(),
+      logo_url: faker.image.avatar(),
+      prize: faker.number.int(100),
+    },
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        openapiHttp.put("/admin/award/{id}", async ({ request, response, params: { id } }) =>
+          response(200).json({
+            ...(await request.json()),
+            id,
+            updated_at: faker.date.anytime().toISOString(),
+            created_at: faker.date.anytime().toISOString(),
           }),
         ),
       ],

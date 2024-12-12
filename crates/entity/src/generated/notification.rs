@@ -24,6 +24,7 @@ pub struct Model {
     pub title: String,
     pub content: String,
     pub player_id: Uuid,
+    pub read_at: Option<DateTimeWithTimeZone>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

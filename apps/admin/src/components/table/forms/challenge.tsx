@@ -2,7 +2,6 @@ import { MinimalTiptapEditor } from "@/components/rich-text-editor";
 import { apiClient } from "@/utils/api-client";
 import { ctf } from "@/utils/ctf-data";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { components } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import {
   Command,
@@ -27,6 +26,7 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const kinds = [
   "dynamic_containerized",
@@ -46,21 +46,30 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-export function ChallengeForm({
-  onSuccess,
-}: { onSuccess: (model: components["schemas"]["ChallengeModel"]) => void }) {
+export function ChallengeForm({ onSuccess, kind, defaultValues }: FormProps<"ChallengeModel">) {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues,
   });
 
   const onSubmit = async (values: Schema) => {
-    const resp = await apiClient.POST("/admin/challenge", {
-      body: values,
-    });
+    const resp =
+      kind === "create"
+        ? await apiClient.POST("/admin/challenge", {
+            body: values,
+          })
+        : await apiClient.PUT("/admin/challenge/{id}", {
+            body: values,
+            params: {
+              path: {
+                id: defaultValues.id,
+              },
+            },
+          });
 
     if (resp.error) {
-      toast.error("Could not create challenge");
+      toast.error(`Could not ${kind} challenge`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -244,7 +253,7 @@ export function ChallengeForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );

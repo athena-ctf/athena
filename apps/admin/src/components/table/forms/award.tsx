@@ -1,7 +1,6 @@
 import { apiClient } from "@/utils/api-client";
 import { ctf } from "@/utils/ctf-data";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { components } from "@repo/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
 import { Button } from "@repo/ui/components/button";
 import {
@@ -18,6 +17,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const schema = z.object({
   value: z.string(),
@@ -27,15 +27,14 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-export function AwardForm({
-  onSuccess,
-}: { onSuccess: (model: components["schemas"]["AwardModel"]) => void }) {
+export function AwardForm({ onSuccess, kind, defaultValues }: FormProps<"AwardModel">) {
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
 
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues,
   });
 
   const uploadFile = async (file: File) => {
@@ -81,12 +80,22 @@ export function AwardForm({
   };
 
   const onSubmit = async (values: Schema) => {
-    const resp = await apiClient.POST("/admin/award", {
-      body: values,
-    });
+    const resp =
+      kind === "create"
+        ? await apiClient.POST("/admin/award", {
+            body: values,
+          })
+        : await apiClient.PUT("/admin/award/{id}", {
+            body: values,
+            params: {
+              path: {
+                id: defaultValues.id,
+              },
+            },
+          });
 
     if (resp.error) {
-      toast.error("Could not create award");
+      toast.error(`Could not ${kind} award`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -153,7 +162,7 @@ export function AwardForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );

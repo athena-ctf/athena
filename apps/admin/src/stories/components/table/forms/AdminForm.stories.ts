@@ -14,11 +14,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const AdminForm: Story = {
+export const CreateAdminForm: Story = {
   args: {
     onSuccess() {
       console.log("created");
     },
+    kind: "create",
   },
   parameters: {
     msw: {
@@ -30,6 +31,36 @@ export const AdminForm: Story = {
             role: "analyst",
             updated_at: faker.date.anytime().toISOString(),
             username: faker.internet.username(),
+          }),
+        ),
+      ],
+    },
+  },
+};
+
+export const UpdateAdminForm: Story = {
+  args: {
+    onSuccess() {
+      console.log("updated");
+    },
+    kind: "update",
+    defaultValues: {
+      created_at: faker.date.anytime().toISOString(),
+      id: faker.string.uuid(),
+      role: "analyst",
+      updated_at: faker.date.anytime().toISOString(),
+      username: faker.internet.username(),
+    },
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        openapiHttp.put("/admin/admin/{id}", async ({ request, response, params: { id } }) =>
+          response(200).json({
+            ...(await request.json()),
+            id,
+            updated_at: faker.date.anytime().toISOString(),
+            created_at: faker.date.anytime().toISOString(),
           }),
         ),
       ],

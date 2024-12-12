@@ -1,6 +1,5 @@
 import { apiClient } from "@/utils/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { components } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import {
   Form,
@@ -14,6 +13,7 @@ import { Input } from "@repo/ui/components/input";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const schema = z.object({
   reason: z.string(),
@@ -22,21 +22,30 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-export function BanForm({
-  onSuccess,
-}: { onSuccess: (model: components["schemas"]["BanModel"]) => void }) {
+export function BanForm({ onSuccess, kind, defaultValues }: FormProps<"BanModel">) {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues,
   });
 
   const onSubmit = async (values: Schema) => {
-    const resp = await apiClient.POST("/admin/ban", {
-      body: values,
-    });
+    const resp =
+      kind === "create"
+        ? await apiClient.POST("/admin/ban", {
+            body: values,
+          })
+        : await apiClient.PUT("/admin/ban/{id}", {
+            body: values,
+            params: {
+              path: {
+                id: defaultValues.id,
+              },
+            },
+          });
 
     if (resp.error) {
-      toast.error("Could not create ban");
+      toast.error(`Could not ${kind} ban`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -72,7 +81,7 @@ export function BanForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );

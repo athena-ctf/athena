@@ -21,36 +21,49 @@ import {
 } from "@repo/ui/components/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { cn } from "@repo/ui/lib/utils";
-import { formatISO } from "date-fns";
+import { formatISO, parseISO } from "date-fns";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const schema = z.object({
   expires_at: z.date(),
   challenge_id: z.string().uuid(),
-  player_id: z.string().uuid().optional(),
+  player_id: z.string().uuid().optional().nullable(),
 });
 
 type Schema = z.infer<typeof schema>;
 
-export function DeploymentForm({
-  onSuccess,
-}: { onSuccess: (model: components["schemas"]["DeploymentModel"]) => void }) {
+export function DeploymentForm({ onSuccess, kind, defaultValues }: FormProps<"DeploymentModel">) {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues: {
+      ...defaultValues,
+      expires_at: defaultValues && parseISO(defaultValues.expires_at),
+    },
   });
 
   const onSubmit = async (values: Schema) => {
-    const resp = await apiClient.POST("/admin/deployment", {
-      body: { ...values, expires_at: formatISO(values.expires_at) },
-    });
+    const resp =
+      kind === "create"
+        ? await apiClient.POST("/admin/deployment", {
+            body: { ...values, expires_at: formatISO(values.expires_at) },
+          })
+        : await apiClient.PUT("/admin/deployment/{id}", {
+            body: { ...values, expires_at: formatISO(values.expires_at) },
+            params: {
+              path: {
+                id: defaultValues.id,
+              },
+            },
+          });
 
     if (resp.error) {
-      toast.error("Could not create deployment");
+      toast.error(`Could not ${kind} deployment`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -87,7 +100,7 @@ export function DeploymentForm({
           control={form.control}
           name="expires_at"
           render={({ field }) => (
-            <FormItem className="flex w-72 flex-col gap-2">
+            <FormItem>
               <FormLabel htmlFor="datetime">Expires At</FormLabel>
               <FormControl>
                 <DateTimePicker value={field.value} onChange={field.onChange} />
@@ -204,7 +217,7 @@ export function DeploymentForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );

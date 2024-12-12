@@ -28,6 +28,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const schema = z.object({
   challenge_id: z.string().uuid(),
@@ -46,16 +47,22 @@ type Schema = z.infer<typeof schema>;
 
 export function ContainerForm({
   onSuccess,
-}: { onSuccess: (model: components["schemas"]["ContainerModel"]) => void }) {
+  kind,
+  defaultValues: _defaultValues,
+}: FormProps<"ContainerModel">) {
+  const defaultValues = _defaultValues && {
+    ..._defaultValues,
+    environment: _defaultValues.environment.map((env) => ({
+      key: env.split("=")[0],
+      value: env.split("=")[1],
+    })),
+    command: _defaultValues.command.join(" "),
+  };
+
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues: {
-      environment: [{ key: "", value: "" }],
-      ports: [],
-      networks: [],
-      depends_on: [],
-    },
+    defaultValues: { environment: [], ports: [], networks: [], depends_on: [], ...defaultValues },
   });
 
   const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIds"][]>([]);
@@ -66,16 +73,30 @@ export function ContainerForm({
   });
 
   const onSubmit = async (values: Schema) => {
-    const resp = await apiClient.POST("/admin/container", {
-      body: {
-        ...values,
-        environment: Object.entries(values.environment).map(([k, v]) => `${k}=${v}`),
-        command: values.command.split(" "),
-      },
-    });
+    const resp =
+      kind === "create"
+        ? await apiClient.POST("/admin/container", {
+            body: {
+              ...values,
+              environment: Object.entries(values.environment).map(([k, v]) => `${k}=${v}`),
+              command: values.command.split(" "),
+            },
+          })
+        : await apiClient.PUT("/admin/container/{id}", {
+            body: {
+              ...values,
+              environment: Object.entries(values.environment).map(([k, v]) => `${k}=${v}`),
+              command: values.command.split(" "),
+            },
+            params: {
+              path: {
+                id: _defaultValues.id,
+              },
+            },
+          });
 
     if (resp.error) {
-      toast.error("Could not create container");
+      toast.error(`Could not ${kind} container`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -215,15 +236,15 @@ export function ContainerForm({
           )}
         />
         <div>
-          <h3 className="text-lg font-semibold mb-4">Environment</h3>
+          <p>Environment</p>
           {fields.map((field, index) => (
-            <div key={field.id} className="flex items-end space-x-4 mb-4">
+            <div key={field.id} className="flex items-end space-x-4 mb-2">
               <FormField
                 control={form.control}
                 name={`environment.${index}.key`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Key</FormLabel>
+                    {index === 0 && <FormLabel>Key</FormLabel>}
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -236,7 +257,7 @@ export function ContainerForm({
                 name={`environment.${index}.value`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Value</FormLabel>
+                    {index === 0 && <FormLabel>Value</FormLabel>}
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -244,7 +265,7 @@ export function ContainerForm({
                   </FormItem>
                 )}
               />
-              {index > 0 && (
+              {fields.length > 0 && (
                 <Button type="button" variant="outline" size="icon" onClick={() => remove(index)}>
                   <X className="h-4 w-4" />
                 </Button>
@@ -309,7 +330,7 @@ export function ContainerForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );

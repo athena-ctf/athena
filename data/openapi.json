@@ -16820,6 +16820,13 @@
             "type": "string",
             "format": "uuid"
           },
+          "read_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
           "title": {
             "type": "string"
           }
@@ -17685,6 +17692,13 @@
           "player_id": {
             "type": "string",
             "format": "uuid"
+          },
+          "read_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
           },
           "title": {
             "type": "string"

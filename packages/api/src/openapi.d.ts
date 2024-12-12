@@ -3046,6 +3046,8 @@ export interface components {
       content: string;
       /** Format: uuid */
       player_id: string;
+      /** Format: date-time */
+      read_at?: string | null;
       title: string;
     };
     CreatePlayerAwardSchema: {
@@ -3307,6 +3309,8 @@ export interface components {
       id: string;
       /** Format: uuid */
       player_id: string;
+      /** Format: date-time */
+      read_at?: string | null;
       title: string;
       /** Format: date-time */
       updated_at: string;

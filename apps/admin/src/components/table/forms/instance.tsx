@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const schema = z.object({
   container_id: z.string(),
@@ -38,25 +39,53 @@ type Schema = z.infer<typeof schema>;
 
 export function InstanceForm({
   onSuccess,
-}: { onSuccess: (model: components["schemas"]["InstanceModel"]) => void }) {
+  kind,
+  defaultValues: _defaultValues,
+}: FormProps<"InstanceModel">) {
+  const defaultValues = _defaultValues && {
+    ..._defaultValues,
+    port_mapping: _defaultValues.port_mapping.map((port) => ({
+      hostPort: port.split(":")[0],
+      destPort: port.split(":")[1],
+    })),
+  };
+
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: {
-      port_mapping: [{ hostPort: "", destPort: "" }],
+      port_mapping: [],
+      ...defaultValues,
     },
   });
 
   const onSubmit = async (values: Schema) => {
-    const resp = await apiClient.POST("/admin/instance", {
-      body: {
-        ...values,
-        port_mapping: Object.entries(values.port_mapping).map(([host, dest]) => `${host}:${dest}`),
-      }, // TODO: check port mapping order
-    });
+    const resp =
+      kind === "create"
+        ? await apiClient.POST("/admin/instance", {
+            body: {
+              ...values,
+              port_mapping: Object.entries(values.port_mapping).map(
+                ([host, dest]) => `${host}:${dest}`,
+              ),
+            }, // TODO: check port mapping order
+          })
+        : await apiClient.PUT("/admin/instance/{id}", {
+            body: {
+              ...values,
+              port_mapping: Object.entries(values.port_mapping).map(
+                ([host, dest]) => `${host}:${dest}`,
+              ),
+            }, // TODO: check port mapping order
+            params: {
+              path: {
+                id: _defaultValues.id,
+              },
+            },
+          });
 
     if (resp.error) {
-      toast.error("Could not create instance");
+      toast.error(`Could not ${kind} instance`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -88,7 +117,7 @@ export function InstanceForm({
           name="container_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Reason</FormLabel>
+              <FormLabel>Container Name</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -101,7 +130,7 @@ export function InstanceForm({
           name="container_id"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Duration (in days)</FormLabel>
+              <FormLabel>Container Id</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -164,15 +193,15 @@ export function InstanceForm({
           )}
         />
         <div>
-          <h3 className="text-lg font-semibold mb-4">Port Mapping</h3>
+          <p>Port Mapping</p>
           {fields.map((field, index) => (
-            <div key={field.id} className="flex items-end space-x-4 mb-4">
+            <div key={field.id} className="flex items-end space-x-4 mb-2">
               <FormField
                 control={form.control}
                 name={`port_mapping.${index}.hostPort`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Key</FormLabel>
+                    {index === 0 && <FormLabel>Host Port</FormLabel>}
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -185,7 +214,7 @@ export function InstanceForm({
                 name={`port_mapping.${index}.destPort`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Value</FormLabel>
+                    {index === 0 && <FormLabel>Dest Port</FormLabel>}
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -193,7 +222,7 @@ export function InstanceForm({
                   </FormItem>
                 )}
               />
-              {index > 0 && (
+              {fields.length > 0 && (
                 <Button type="button" variant="outline" size="icon" onClick={() => remove(index)}>
                   <X className="h-4 w-4" />
                 </Button>
@@ -212,7 +241,7 @@ export function InstanceForm({
           </Button>
         </div>
 
-        <Button type="submit">Create</Button>
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );

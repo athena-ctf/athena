@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const schema = z.object({
   description: z.string(),
@@ -35,12 +36,11 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-export function HintForm({
-  onSuccess,
-}: { onSuccess: (model: components["schemas"]["HintModel"]) => void }) {
+export function HintForm({ onSuccess, kind, defaultValues }: FormProps<"HintModel">) {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues,
   });
 
   const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIds"][]>([]);
@@ -57,12 +57,22 @@ export function HintForm({
   }, []);
 
   const onSubmit = async (values: Schema) => {
-    const resp = await apiClient.POST("/admin/hint", {
-      body: values,
-    });
+    const resp =
+      kind === "create"
+        ? await apiClient.POST("/admin/hint", {
+            body: values,
+          })
+        : await apiClient.PUT("/admin/hint/{id}", {
+            body: values,
+            params: {
+              path: {
+                id: defaultValues.id,
+              },
+            },
+          });
 
     if (resp.error) {
-      toast.error("Could not create hint");
+      toast.error(`Could not ${kind} hint`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -152,7 +162,7 @@ export function HintForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );

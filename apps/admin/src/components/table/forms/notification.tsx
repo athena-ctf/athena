@@ -10,6 +10,7 @@ import {
   CommandItem,
   CommandList,
 } from "@repo/ui/components/command";
+import { DateTimePicker } from "@repo/ui/components/date-time-picker";
 import {
   Form,
   FormControl,
@@ -22,35 +23,55 @@ import { Input } from "@repo/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { Textarea } from "@repo/ui/components/textarea";
 import { cn } from "@repo/ui/lib/utils";
+import { formatISO, parseISO } from "date-fns";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const schema = z.object({
   title: z.string(),
   content: z.string(),
   player_id: z.string().uuid(),
+  read_at: z.date().optional(),
 });
 
 type Schema = z.infer<typeof schema>;
 
-export function NotificationBanForm({
+export function NotificationForm({
   onSuccess,
-}: { onSuccess: (model: components["schemas"]["NotificationModel"]) => void }) {
+  kind,
+  defaultValues,
+}: FormProps<"NotificationModel">) {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues: {
+      ...defaultValues,
+      read_at:
+        typeof defaultValues?.read_at === "string" ? parseISO(defaultValues.read_at) : undefined,
+    },
   });
 
   const onSubmit = async (values: Schema) => {
-    const resp = await apiClient.POST("/admin/notification", {
-      body: values,
-    });
+    const resp =
+      kind === "create"
+        ? await apiClient.POST("/admin/notification", {
+            body: { ...values, read_at: values.read_at && formatISO(values.read_at) },
+          })
+        : await apiClient.PUT("/admin/notification/{id}", {
+            body: { ...values, read_at: values.read_at && formatISO(values.read_at) },
+            params: {
+              path: {
+                id: defaultValues.id,
+              },
+            },
+          });
 
     if (resp.error) {
-      toast.error("Could not create notification");
+      toast.error(`Could not ${kind} notification`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -156,7 +177,20 @@ export function NotificationBanForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <FormField
+          control={form.control}
+          name="read_at"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="datetime">Read At</FormLabel>
+              <FormControl>
+                <DateTimePicker value={field.value} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );

@@ -22,12 +22,13 @@ import {
 import { Input } from "@repo/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { cn } from "@repo/ui/lib/utils";
-import { formatISO } from "date-fns";
+import { formatISO, parseISO } from "date-fns";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const schema = z.object({
   remaining: z.number(),
@@ -37,21 +38,33 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-export function InviteForm({
-  onSuccess,
-}: { onSuccess: (model: components["schemas"]["InviteModel"]) => void }) {
+export function InviteForm({ onSuccess, kind, defaultValues }: FormProps<"InviteModel">) {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues: {
+      ...defaultValues,
+      expires_at: defaultValues && parseISO(defaultValues.expires_at),
+    },
   });
 
   const onSubmit = async (values: Schema) => {
-    const resp = await apiClient.POST("/admin/invite", {
-      body: { ...values, expires_at: formatISO(values.expires_at) },
-    });
+    const resp =
+      kind === "create"
+        ? await apiClient.POST("/admin/invite", {
+            body: { ...values, expires_at: formatISO(values.expires_at) },
+          })
+        : await apiClient.PUT("/admin/invite/{id}", {
+            body: { ...values, expires_at: formatISO(values.expires_at) },
+            params: {
+              path: {
+                id: defaultValues.id,
+              },
+            },
+          });
 
     if (resp.error) {
-      toast.error("Could not create invite");
+      toast.error(`Could not ${kind} invite`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -79,7 +92,7 @@ export function InviteForm({
           name="remaining"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Reason</FormLabel>
+              <FormLabel>Remaining</FormLabel>
               <FormControl>
                 <Input type="number" {...field} />
               </FormControl>
@@ -91,7 +104,7 @@ export function InviteForm({
           control={form.control}
           name="expires_at"
           render={({ field }) => (
-            <FormItem className="flex w-72 flex-col gap-2">
+            <FormItem>
               <FormLabel htmlFor="datetime">Expires At</FormLabel>
               <FormControl>
                 <DateTimePicker value={field.value} onChange={field.onChange} />
@@ -154,7 +167,7 @@ export function InviteForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );

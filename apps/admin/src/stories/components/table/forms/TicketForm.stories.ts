@@ -1,20 +1,20 @@
 import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { ChallengeFileForm as Component } from "@/components/table/forms/challenge_file";
+import { TicketForm as Component } from "@/components/table/forms/ticket";
 import { cardDecorator } from "@/utils/decorators";
 import { openapiHttp } from "@/utils/msw";
 
 const meta = {
-  title: "Components/Table/Forms/ChallengeFileForm",
+  title: "Components/Table/Forms/TicketForm",
   component: Component,
-  decorators: [cardDecorator("Create challenge file form")],
+  decorators: [cardDecorator("Create ticket form")],
 } satisfies Meta<typeof Component>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const ChallengeFileForm: Story = {
+export const TicketForm: Story = {
   args: {
     onSuccess() {
       console.log("created");
@@ -23,26 +23,29 @@ export const ChallengeFileForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/challenge_file", ({ response }) =>
+        openapiHttp.post("/admin/ticket", ({ response }) =>
           response(201).json({
             created_at: faker.date.anytime().toISOString(),
+            id: faker.string.uuid(),
             updated_at: faker.date.anytime().toISOString(),
-            challenge_id: faker.string.uuid(),
-            file_id: faker.string.uuid(),
+            assigned_to: faker.string.uuid(),
+            opened_by: faker.string.uuid(),
+            status: "closed",
+            title: faker.lorem.sentence(5),
           }),
         ),
-        openapiHttp.get("/admin/challenge/ids", ({ response }) =>
+        openapiHttp.get("/admin/player/ids", ({ response }) =>
           response(200).json(
             Array(10)
               .fill(0)
-              .map(() => ({ id: faker.string.uuid(), title: faker.lorem.words(3) })),
+              .map(() => ({ id: faker.string.uuid(), username: faker.internet.username() })),
           ),
         ),
-        openapiHttp.get("/admin/file/ids", ({ response }) =>
+        openapiHttp.get("/admin/admin/ids", ({ response }) =>
           response(200).json(
             Array(10)
               .fill(0)
-              .map(() => ({ id: faker.string.uuid(), name: faker.system.commonFileName() })),
+              .map(() => ({ id: faker.string.uuid(), username: faker.internet.username() })),
           ),
         ),
       ],

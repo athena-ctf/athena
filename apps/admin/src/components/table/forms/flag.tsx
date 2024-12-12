@@ -27,22 +27,22 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const schema = z.object({
   value: z.string(),
   challenge_id: z.string().uuid(),
-  player_id: z.string().uuid().optional(),
+  player_id: z.string().uuid().optional().nullable(),
   ignore_case: z.boolean(),
 });
 
 type Schema = z.infer<typeof schema>;
 
-export function FlagForm({
-  onSuccess,
-}: { onSuccess: (model: components["schemas"]["FlagModel"]) => void }) {
+export function FlagForm({ onSuccess, kind, defaultValues }: FormProps<"FlagModel">) {
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues,
   });
 
   const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIds"][]>([]);
@@ -69,12 +69,22 @@ export function FlagForm({
   }, []);
 
   const onSubmit = async (values: Schema) => {
-    const resp = await apiClient.POST("/admin/flag", {
-      body: values,
-    });
+    const resp =
+      kind === "create"
+        ? await apiClient.POST("/admin/flag", {
+            body: values,
+          })
+        : await apiClient.PUT("/admin/flag/{id}", {
+            body: values,
+            params: {
+              path: {
+                id: defaultValues.id,
+              },
+            },
+          });
 
     if (resp.error) {
-      toast.error("Could not create flag");
+      toast.error(`Could not ${kind} flag`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -217,7 +227,7 @@ export function FlagForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );

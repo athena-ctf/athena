@@ -30,6 +30,7 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Notification::Title).string().not_null())
                     .col(ColumnDef::new(Notification::Content).string().not_null())
                     .col(ColumnDef::new(Notification::PlayerId).uuid().not_null())
+                    .col(ColumnDef::new(Notification::ReadAt).timestamp_with_time_zone())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-notification-player_id")
@@ -63,6 +64,7 @@ enum Notification {
     CreatedAt,
     UpdatedAt,
     PlayerId,
+    ReadAt,
 }
 
 #[derive(DeriveIden)]

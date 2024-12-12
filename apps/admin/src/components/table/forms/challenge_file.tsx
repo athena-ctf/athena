@@ -1,7 +1,7 @@
 import { apiClient } from "@/utils/api-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { components } from "@repo/api";
-import { Button } from "@ui/components/ui/button";
+import { Button } from "@repo/ui/components/button";
 import {
   Command,
   CommandEmpty,
@@ -9,7 +9,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@ui/components/ui/command";
+} from "@repo/ui/components/command";
 import {
   Form,
   FormControl,
@@ -17,14 +17,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@ui/components/ui/form";
-import { Popover, PopoverContent, PopoverTrigger } from "@ui/components/ui/popover";
+} from "@repo/ui/components/form";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { cn } from "@ui/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { type FormProps, buttonText } from "./props";
 
 const createSchema = z.object({
   challenge_id: z.string().uuid(),
@@ -33,9 +34,10 @@ const createSchema = z.object({
 
 type CreateSchema = z.infer<typeof createSchema>;
 
-export function ChallengeFileForm({
+export function CreateChallengeFileForm({
   onSuccess,
-}: { onSuccess: (model: components["schemas"]["ChallengeFileModel"]) => void }) {
+  kind,
+}: FormProps<"ChallengeFileModel", "join_create">) {
   const form = useForm<CreateSchema>({
     resolver: zodResolver(createSchema),
     mode: "onChange",
@@ -47,7 +49,7 @@ export function ChallengeFileForm({
     });
 
     if (resp.error) {
-      toast.error("Could not create challenge file");
+      toast.error(`Could not ${kind} challenge file`);
       console.error(resp.error.message);
     } else {
       onSuccess(resp.data);
@@ -188,7 +190,7 @@ export function ChallengeFileForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">{buttonText[kind]}</Button>
       </form>
     </Form>
   );
