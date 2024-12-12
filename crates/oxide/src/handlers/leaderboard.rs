@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use axum::extract::{Query, State};
 use axum::Json;
+use axum::extract::{Query, State};
 
 use crate::errors::Result;
 use crate::schemas::{JsonResponse, LeaderboardRankings, Ranking, RankingQuery};

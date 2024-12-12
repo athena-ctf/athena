@@ -1,10 +1,10 @@
 use std::sync::Arc;
 use std::time::Duration;
 
+use axum::Router;
 use axum::extract::{MatchedPath, Request};
 use axum::http::Method;
 use axum::routing::get;
-use axum::Router;
 use tower_http::cors::{Any, CorsLayer};
 use tower_http::timeout::TimeoutLayer;
 use tower_http::trace::TraceLayer;

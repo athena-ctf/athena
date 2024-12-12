@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use indexmap::IndexMap;
-use serde::de::DeserializeOwned;
 use serde::Serialize;
+use serde::de::DeserializeOwned;
 use serde_json::Value;
 
 pub trait JsonPath: Serialize + DeserializeOwned {

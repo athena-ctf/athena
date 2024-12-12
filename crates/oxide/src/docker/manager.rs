@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use bollard::Docker;
 use bollard::auth::DockerCredentials;
 use bollard::container::{
     Config, CreateContainerOptions, RestartContainerOptions, StartContainerOptions,
@@ -7,7 +8,6 @@ use bollard::container::{
 use bollard::image::CreateImageOptions;
 use bollard::network::{ConnectNetworkOptions, CreateNetworkOptions};
 use bollard::secret::ContainerStateStatusEnum;
-use bollard::Docker;
 use chrono::{Duration, Utc};
 use entity::prelude::*;
 use futures::StreamExt;
@@ -204,13 +204,10 @@ impl Manager {
                 for network in &container.networks {
                     let network_name = format!("ctf_{}_{network}", challenge_model.title);
                     self.docker
-                        .connect_network(
-                            &network_name,
-                            ConnectNetworkOptions {
-                                container: container_info.id.as_str(),
-                                ..Default::default()
-                            },
-                        )
+                        .connect_network(&network_name, ConnectNetworkOptions {
+                            container: container_info.id.as_str(),
+                            ..Default::default()
+                        })
                         .await?;
                 }
 

@@ -2,7 +2,7 @@ use fred::clients::Pool;
 use fred::error::Error;
 use fred::interfaces::{HashesInterface, KeysInterface};
 use fred::types::{FromValue, Map, Value as RedisValue};
-use ring::digest::{digest, SHA256};
+use ring::digest::{SHA256, digest};
 
 use crate::errors::Result;
 use crate::redis_keys::token_key;
@@ -77,13 +77,10 @@ impl Manager {
         let hashed_token = digest(&SHA256, token.as_bytes()).as_ref().to_vec();
 
         self.redis_pool
-            .hset::<(), _, _>(
-                token_key(key, email),
-                Value {
-                    token: hashed_token,
-                    retries: self.max_retries.into(),
-                },
-            )
+            .hset::<(), _, _>(token_key(key, email), Value {
+                token: hashed_token,
+                retries: self.max_retries.into(),
+            })
             .await?;
 
         self.redis_pool

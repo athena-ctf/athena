@@ -1,8 +1,8 @@
 use chrono::Utc;
 use entity::links::{TeamToAward, TeamToChallenge, TeamToHint};
 use fred::prelude::*;
-use sea_orm::prelude::*;
 use sea_orm::QuerySelect;
+use sea_orm::prelude::*;
 
 use crate::errors::Result;
 use crate::schemas::{Award, Challenge, Hint, Player, PointsHistory, Ranking, Team};

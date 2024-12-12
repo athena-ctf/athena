@@ -2,14 +2,14 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use argon2::{Argon2, PasswordHash, PasswordVerifier};
-use axum::extract::State;
 use axum::Json;
-use axum_extra::extract::cookie::Cookie;
+use axum::extract::State;
 use axum_extra::extract::CookieJar;
+use axum_extra::extract::cookie::Cookie;
 use fred::prelude::*;
 use jsonwebtoken::{DecodingKey, Validation};
-use sea_orm::prelude::*;
 use sea_orm::TransactionTrait;
+use sea_orm::prelude::*;
 
 use crate::errors::{Error, Result};
 use crate::jwt::{RefreshClaims, TokenPair};

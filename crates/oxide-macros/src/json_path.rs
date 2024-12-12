@@ -1,7 +1,7 @@
 // lib.rs
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input, Data, DeriveInput};
+use syn::{Data, DeriveInput, parse_macro_input};
 
 pub fn derive_json_path_impl(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);

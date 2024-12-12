@@ -15,14 +15,11 @@ pub async fn main() {
 
     match command.subcommand {
         cli::SubCommand::Generate(generate) => {
-            tokio::fs::write(
-                &generate.out,
-                match generate.kind {
-                    cli::GenerateKind::Config => Settings::default().default_json().unwrap(),
-                    cli::GenerateKind::OpenapiSchema => oxide::api::get_schema().unwrap(),
-                    cli::GenerateKind::ConfigSchema => Settings::json_schema().unwrap(),
-                },
-            )
+            tokio::fs::write(&generate.out, match generate.kind {
+                cli::GenerateKind::Config => Settings::default().default_json().unwrap(),
+                cli::GenerateKind::OpenapiSchema => oxide::api::get_schema().unwrap(),
+                cli::GenerateKind::ConfigSchema => Settings::json_schema().unwrap(),
+            })
             .await
             .unwrap();
 

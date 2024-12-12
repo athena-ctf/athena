@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use axum::routing::{delete, patch, post};
 use axum::Router;
+use axum::routing::{delete, patch, post};
 
 use crate::handlers::invite;
 use crate::service::AppState;
