@@ -1,20 +1,20 @@
 import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { AwardForm as Component } from "@/components/table/forms/award";
+import { HintForm as Component } from "@/components/forms/hint";
 import { cardDecorator } from "@/utils/decorators";
 import { openapiHttp } from "@/utils/msw";
 
 const meta = {
-  title: "Components/Table/Forms/AwardForm",
+  title: "Components/Forms/HintForm",
   component: Component,
-  decorators: [cardDecorator("Create award form")],
+  decorators: [cardDecorator("Create hint form")],
 } satisfies Meta<typeof Component>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const CreateAwardForm: Story = {
+export const CreateForm: Story = {
   args: {
     onSuccess() {
       console.log("created");
@@ -24,46 +24,60 @@ export const CreateAwardForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/award", ({ response }) =>
+        openapiHttp.post("/admin/hint", ({ response }) =>
           response(201).json({
             created_at: faker.date.anytime().toISOString(),
             id: faker.string.uuid(),
             updated_at: faker.date.anytime().toISOString(),
-            value: faker.internet.username(),
-            logo_url: faker.image.avatar(),
-            prize: faker.number.int(100),
+            challenge_id: faker.string.uuid(),
+            cost: faker.number.int(100),
+            description: faker.lorem.sentence(),
           }),
+        ),
+        openapiHttp.get("/admin/challenge/ids", ({ response }) =>
+          response(200).json(
+            Array(10)
+              .fill(0)
+              .map(() => ({ id: faker.string.uuid(), title: faker.lorem.words(3) })),
+          ),
         ),
       ],
     },
   },
 };
 
-export const UpdateAwardForm: Story = {
+export const UpdateForm: Story = {
   args: {
     onSuccess() {
-      console.log("created");
+      console.log("updated");
     },
     kind: "update",
     defaultValues: {
       created_at: faker.date.anytime().toISOString(),
       id: faker.string.uuid(),
       updated_at: faker.date.anytime().toISOString(),
-      value: faker.internet.username(),
-      logo_url: faker.image.avatar(),
-      prize: faker.number.int(100),
+      challenge_id: faker.string.uuid(),
+      cost: faker.number.int(100),
+      description: faker.lorem.sentence(),
     },
   },
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.put("/admin/award/{id}", async ({ request, response, params: { id } }) =>
+        openapiHttp.put("/admin/hint/{id}", async ({ request, response, params: { id } }) =>
           response(200).json({
             ...(await request.json()),
             id,
             updated_at: faker.date.anytime().toISOString(),
             created_at: faker.date.anytime().toISOString(),
           }),
+        ),
+        openapiHttp.get("/admin/challenge/ids", ({ response }) =>
+          response(200).json(
+            Array(10)
+              .fill(0)
+              .map(() => ({ id: faker.string.uuid(), title: faker.lorem.words(3) })),
+          ),
         ),
       ],
     },

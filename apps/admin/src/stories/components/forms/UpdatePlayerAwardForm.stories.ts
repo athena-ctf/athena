@@ -1,12 +1,12 @@
 import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { UpdatePlayerAwardForm as Component } from "@/components/table/forms/player_award";
+import { UpdatePlayerAwardForm as Component } from "@/components/forms/player_award";
 import { cardDecorator } from "@/utils/decorators";
 import { openapiHttp } from "@/utils/msw";
 
 const meta = {
-  title: "Components/Table/Forms/UpdatePlayerAwardForm",
+  title: "Components/Forms/UpdatePlayerAwardForm",
   component: Component,
   decorators: [cardDecorator("Update player award form")],
 } satisfies Meta<typeof Component>;
@@ -19,6 +19,7 @@ export const UpdatePlayerAwardForm: Story = {
     onSuccess() {
       console.log("updated");
     },
+    kind: "update",
     oldModel: {
       created_at: faker.date.anytime().toISOString(),
       updated_at: faker.date.anytime().toISOString(),

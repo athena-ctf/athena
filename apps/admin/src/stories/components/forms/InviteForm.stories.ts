@@ -1,20 +1,20 @@
 import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { AdminForm as Component } from "@/components/table/forms/admin";
+import { InviteForm as Component } from "@/components/forms/invite";
 import { cardDecorator } from "@/utils/decorators";
 import { openapiHttp } from "@/utils/msw";
 
 const meta = {
-  title: "Components/Table/Forms/AdminForm",
+  title: "Components/Forms/InviteForm",
   component: Component,
-  decorators: [cardDecorator("Create admin form")],
+  decorators: [cardDecorator("Create invite form")],
 } satisfies Meta<typeof Component>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const CreateAdminForm: Story = {
+export const CreateForm: Story = {
   args: {
     onSuccess() {
       console.log("created");
@@ -24,21 +24,29 @@ export const CreateAdminForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/admin", ({ response }) =>
+        openapiHttp.post("/admin/invite", ({ response }) =>
           response(201).json({
             created_at: faker.date.anytime().toISOString(),
             id: faker.string.uuid(),
-            role: "analyst",
             updated_at: faker.date.anytime().toISOString(),
-            username: faker.internet.username(),
+            team_id: faker.string.uuid(),
+            expires_at: faker.date.anytime().toISOString(),
+            remaining: faker.number.int(10),
           }),
+        ),
+        openapiHttp.get("/admin/team/ids", ({ response }) =>
+          response(200).json(
+            Array(10)
+              .fill(0)
+              .map(() => ({ id: faker.string.uuid(), name: faker.internet.username() })),
+          ),
         ),
       ],
     },
   },
 };
 
-export const UpdateAdminForm: Story = {
+export const UpdateForm: Story = {
   args: {
     onSuccess() {
       console.log("updated");
@@ -47,21 +55,29 @@ export const UpdateAdminForm: Story = {
     defaultValues: {
       created_at: faker.date.anytime().toISOString(),
       id: faker.string.uuid(),
-      role: "analyst",
       updated_at: faker.date.anytime().toISOString(),
-      username: faker.internet.username(),
+      team_id: faker.string.uuid(),
+      expires_at: faker.date.anytime().toISOString(),
+      remaining: faker.number.int(10),
     },
   },
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.put("/admin/admin/{id}", async ({ request, response, params: { id } }) =>
+        openapiHttp.put("/admin/invite/{id}", async ({ request, response, params: { id } }) =>
           response(200).json({
             ...(await request.json()),
             id,
             updated_at: faker.date.anytime().toISOString(),
             created_at: faker.date.anytime().toISOString(),
           }),
+        ),
+        openapiHttp.get("/admin/team/ids", ({ response }) =>
+          response(200).json(
+            Array(10)
+              .fill(0)
+              .map(() => ({ id: faker.string.uuid(), name: faker.internet.username() })),
+          ),
         ),
       ],
     },
