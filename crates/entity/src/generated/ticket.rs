@@ -24,6 +24,7 @@ pub struct Model {
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
     pub title: String,
+    pub description: String,
     pub status: TicketStatusEnum,
     pub opened_by: Uuid,
     pub assigned_to: Option<Uuid>,

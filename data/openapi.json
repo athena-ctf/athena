@@ -16953,6 +16953,7 @@
         "type": "object",
         "required": [
           "title",
+          "description",
           "status",
           "opened_by"
         ],
@@ -16963,6 +16964,9 @@
               "null"
             ],
             "format": "uuid"
+          },
+          "description": {
+            "type": "string"
           },
           "opened_by": {
             "type": "string",
@@ -18645,6 +18649,7 @@
           "created_at",
           "updated_at",
           "title",
+          "description",
           "status",
           "opened_by"
         ],
@@ -18659,6 +18664,9 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "description": {
+            "type": "string"
           },
           "id": {
             "type": "string",

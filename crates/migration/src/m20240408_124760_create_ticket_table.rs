@@ -34,6 +34,7 @@ impl MigrationTrait for Migration {
                             .not_null(),
                     )
                     .col(ColumnDef::new(Ticket::Title).string().not_null())
+                    .col(ColumnDef::new(Ticket::Description).text().not_null())
                     .col(
                         ColumnDef::new(Ticket::Status)
                             .enumeration(TicketStatusEnum, TicketStatusVariants::iter())
@@ -84,6 +85,7 @@ enum Ticket {
     CreatedAt,
     UpdatedAt,
     Title,
+    Description,
     Status,
     OpenedBy,
     AssignedTo,

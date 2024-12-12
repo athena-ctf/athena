@@ -20,6 +20,7 @@ import {
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
+import { Textarea } from "@repo/ui/components/textarea";
 import { cn } from "@repo/ui/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -32,6 +33,7 @@ const ticket_statuses = ["closed", "open", "resolved"] as const;
 
 const schema = z.object({
   title: z.string(),
+  description: z.string(),
   opened_by: z.string().uuid(),
   assigned_to: z.string().uuid().optional().nullable(),
   status: z.enum(ticket_statuses),
@@ -103,6 +105,19 @@ export function TicketForm({ onSuccess, kind, defaultValues }: FormProps<"Ticket
               <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea className="resize-none" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

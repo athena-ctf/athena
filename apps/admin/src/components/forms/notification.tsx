@@ -113,11 +113,7 @@ export function NotificationForm({
             <FormItem>
               <FormLabel>Content</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Content of the notificaton"
-                  className="resize-none"
-                  {...field}
-                />
+                <Textarea className="resize-none" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -3087,6 +3087,7 @@ export interface components {
     CreateTicketSchema: {
       /** Format: uuid */
       assigned_to?: string | null;
+      description: string;
       /** Format: uuid */
       opened_by: string;
       status: components["schemas"]["TicketStatusEnum"];
@@ -3567,6 +3568,7 @@ export interface components {
       assigned_to?: string | null;
       /** Format: date-time */
       created_at: string;
+      description: string;
       /** Format: uuid */
       id: string;
       /** Format: uuid */
