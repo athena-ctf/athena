@@ -34,6 +34,13 @@ export const CreateForm: Story = {
             ignore_case: false,
           }),
         ),
+        openapiHttp.get("/admin/player/ids", ({ response }) =>
+          response(200).json(
+            Array(10)
+              .fill(0)
+              .map(() => ({ id: faker.string.uuid(), username: faker.internet.username() })),
+          ),
+        ),
         openapiHttp.get("/admin/challenge/ids", ({ response }) =>
           response(200).json(
             Array(10)
@@ -71,6 +78,13 @@ export const UpdateForm: Story = {
             updated_at: faker.date.anytime().toISOString(),
             created_at: faker.date.anytime().toISOString(),
           }),
+        ),
+        openapiHttp.get("/admin/player/ids", ({ response }) =>
+          response(200).json(
+            Array(10)
+              .fill(0)
+              .map(() => ({ id: faker.string.uuid(), username: faker.internet.username() })),
+          ),
         ),
         openapiHttp.get("/admin/challenge/ids", ({ response }) =>
           response(200).json(
