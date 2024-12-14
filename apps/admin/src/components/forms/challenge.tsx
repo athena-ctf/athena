@@ -135,7 +135,9 @@ export function ChallengeForm({ onSuccess, kind, defaultValues }: FormProps<"Cha
                         !field.value && "text-muted-foreground",
                       )}
                     >
-                      {field.value ? field.value : "Select level"}
+                      {field.value
+                        ? ctf.levels.find((level) => level.value === field.value)?.name
+                        : "Select level"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
@@ -146,19 +148,19 @@ export function ChallengeForm({ onSuccess, kind, defaultValues }: FormProps<"Cha
                     <CommandList>
                       <CommandEmpty>No level found.</CommandEmpty>
                       <CommandGroup>
-                        {Object.entries(ctf.level_map).map(([level, name]) => (
+                        {ctf.levels.map((level) => (
                           <CommandItem
-                            value={level}
-                            key={name.name}
+                            value={level.value.toString()}
+                            key={level.name}
                             onSelect={() => {
-                              form.setValue("level", Number.parseInt(level));
+                              form.setValue("level", level.value);
                             }}
                           >
-                            {name.name}
+                            {level.name}
                             <Check
                               className={cn(
                                 "ml-auto",
-                                field.value && level === field.value.toString()
+                                field.value && level.value === field.value
                                   ? "opacity-100"
                                   : "opacity-0",
                               )}

@@ -113,23 +113,26 @@ export function ChallengeModal({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <div className="flex place-content-center justify-between">
-            <Circle className={`${challengeSummary.challenge.level}`} />
-            <div>
-              <DialogTitle>{challengeSummary.challenge.title}</DialogTitle>
-              <DialogDescription className="flex flex-col items-center py-3">
-                @{challengeSummary.challenge.author_name} &bull; {challengeSummary.challenge.points}{" "}
-                points &bull; {challengeSummary.solves} Solves
-              </DialogDescription>
-            </div>
-            <div className="flex flex-row space-x-2">
-              {challengeSummary.tags.map((tag) => (
-                <Badge className="my-auto" key={tag.value}>
-                  {tag.value}
-                </Badge>
-              ))}
-            </div>
+          <div className="flex flex-1 space-x-3">
+            <Circle
+              fill={
+                ctf.levels.find((level) => level.value === challengeSummary.challenge.level)?.color
+              }
+              className="h-4 w-4"
+            />
+            <DialogTitle>{challengeSummary.challenge.title}</DialogTitle>
           </div>
+          <div className="flex flex-row space-x-2 w-full ml-7">
+            {challengeSummary.tags.map((tag) => (
+              <Badge className="my-auto" key={tag.value}>
+                {tag.value}
+              </Badge>
+            ))}
+          </div>
+          <DialogDescription className="ml-7">
+            @{challengeSummary.challenge.author_name} &bull; {challengeSummary.challenge.points}{" "}
+            points &bull; {challengeSummary.solves} Solves
+          </DialogDescription>
         </DialogHeader>
         <VerticalTabs defaultValue="description">
           <VerticalTabsList>

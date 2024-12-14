@@ -24,21 +24,12 @@ export const CreateForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/container", ({ response }) =>
+        openapiHttp.post("/admin/container", async ({ request, response }) =>
           response(201).json({
-            created_at: faker.date.anytime().toISOString(),
+            ...(await request.json()),
             id: faker.string.uuid(),
+            created_at: faker.date.anytime().toISOString(),
             updated_at: faker.date.anytime().toISOString(),
-            challenge_id: faker.string.uuid(),
-            command: [],
-            depends_on: [],
-            environment: [],
-            image: faker.lorem.word(),
-            internal: false,
-            memory_limit: faker.number.int(500),
-            name: faker.lorem.word(),
-            networks: [],
-            ports: [],
           }),
         ),
         openapiHttp.get("/admin/challenge/ids", ({ response }) =>

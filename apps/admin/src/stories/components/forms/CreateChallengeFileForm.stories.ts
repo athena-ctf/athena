@@ -24,12 +24,11 @@ export const CreateChallengeFileForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/challenge_file", ({ response }) =>
+        openapiHttp.post("/admin/challenge_file", async ({ request, response }) =>
           response(201).json({
+            ...(await request.json()),
             created_at: faker.date.anytime().toISOString(),
             updated_at: faker.date.anytime().toISOString(),
-            challenge_id: faker.string.uuid(),
-            file_id: faker.string.uuid(),
           }),
         ),
         openapiHttp.get("/admin/challenge/ids", ({ response }) =>

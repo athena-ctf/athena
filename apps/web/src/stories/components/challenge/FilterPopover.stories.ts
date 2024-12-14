@@ -20,14 +20,14 @@ export const FilterPopover: Story = {
     options: Array(5)
       .fill(0)
       .map(() => ({
-        id: faker.string.uuid(),
-        value: faker.lorem.word(),
+        value: faker.string.uuid(),
+        label: faker.lorem.word(),
       })),
     selected: [],
     onSelect(value: string) {
       console.log("selected: ", value);
     },
     placeholder: "Select tag ...",
-    buttonText: "Tags",
+    title: "Tags",
   },
 };

@@ -24,14 +24,12 @@ export const CreateForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/award", ({ response }) =>
+        openapiHttp.post("/admin/award", async ({ request, response }) =>
           response(201).json({
-            created_at: faker.date.anytime().toISOString(),
+            ...(await request.json()),
             id: faker.string.uuid(),
+            created_at: faker.date.anytime().toISOString(),
             updated_at: faker.date.anytime().toISOString(),
-            value: faker.internet.username(),
-            logo_url: faker.image.avatar(),
-            prize: faker.number.int(100),
           }),
         ),
       ],

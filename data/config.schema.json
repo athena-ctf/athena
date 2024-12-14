@@ -117,7 +117,7 @@
       "required": [
         "description",
         "domain",
-        "level_map",
+        "levels",
         "name",
         "prizes",
         "sponsors",
@@ -130,9 +130,9 @@
         "domain": {
           "type": "string"
         },
-        "level_map": {
-          "type": "object",
-          "additionalProperties": {
+        "levels": {
+          "type": "array",
+          "items": {
             "$ref": "#/definitions/Level"
           }
         },
@@ -299,7 +299,8 @@
       "type": "object",
       "required": [
         "color",
-        "name"
+        "name",
+        "value"
       ],
       "properties": {
         "color": {
@@ -307,6 +308,10 @@
         },
         "name": {
           "type": "string"
+        },
+        "value": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

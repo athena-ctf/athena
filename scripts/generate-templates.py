@@ -3,7 +3,7 @@ import json
 import slugify
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-config = json.load(open("config.json"))
+config = json.load(open("conf/config.json"))
 env = Environment(
     loader=FileSystemLoader("data/templates"), autoescape=select_autoescape
 )

@@ -4,36 +4,40 @@
     "domain": "athena.io",
     "description": "Athena is a hosted platform for CTFs",
     "time": {
-      "end": "2024-11-29T06:25:29.063251378Z",
-      "start": "2024-11-27T06:25:29.063260953Z",
-      "freeze": "2024-11-30T06:25:29.063260546Z"
+      "end": "2024-12-16T09:14:01.680914361Z",
+      "start": "2024-12-14T09:14:01.680936432Z",
+      "freeze": "2024-12-17T09:14:01.680935501Z"
     },
     "sponsors": {},
     "prizes": {},
-    "level_map": {
-      "0": {
+    "levels": [
+      {
+        "value": 1,
         "name": "Very Easy",
         "color": "#23332b"
       },
-      "1": {
+      {
+        "value": 2,
         "name": "Easy",
         "color": "#059c50"
       },
-      "2": {
+      {
+        "value": 3,
         "name": "Medium",
         "color": "#d0d40f"
       },
-      "3": {
+      {
+        "value": 4,
         "name": "Hard",
         "color": "#d4290f"
       }
-    }
+    ]
   },
   "database": {
     "host": "postgres",
     "port": 5432,
     "username": "postgres",
-    "password": "R5QZF7L8cIBb",
+    "password": "MCI8skXf6XUf",
     "listener_channel": "athena_db_modification",
     "database_name": "athena_db"
   },
@@ -41,7 +45,7 @@
     "host": "redis",
     "port": 6379,
     "username": "redis",
-    "password": "n5PSWCSngO1L"
+    "password": "UEciEdQCneRb"
   },
   "file_storage": {
     "local": {
@@ -50,7 +54,7 @@
     }
   },
   "jwt": {
-    "secret": "x2eK5SywNphlIbCBFbunyN7tnyJEFZhiUMLTVIBL1Tw=",
+    "secret": "yMrBMt2NWi0+q9BBvI97uUy8gFxLL4UzMTO0gDKLzBU=",
     "access_expiry_duration": 600,
     "refresh_expiry_duration": 86400
   },
@@ -58,13 +62,13 @@
     "from": "noreply@athena.io",
     "reply_to": "admin@athena.io",
     "username": "athena_smtp",
-    "password": "OobitIx47NKp",
+    "password": "eyhKJEOBukMB",
     "server_url": "smtp.athena.io"
   },
   "docker": {
     "registry_url": "registry.athena.io",
     "registry_username": "athena",
-    "registry_password": "vYvBjnolsbal"
+    "registry_password": "NVSudnELeVV1"
   },
   "discord": {
     "welcome_channel_id": "",
@@ -82,7 +86,7 @@
   "challenge": {
     "container_registry": "registry.athena.io",
     "registry_username": "athena",
-    "registry_password": "8g4GYlMDBQ1N",
+    "registry_password": "4ZkXLSlmc3NB",
     "container_timeout": 900,
     "player_flag_len": 20
   }

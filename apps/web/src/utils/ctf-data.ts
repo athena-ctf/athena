@@ -4,7 +4,7 @@ import baseCtf from "../../ctf.json";
 export interface Ctf {
   description: string;
   domain: string;
-  level_map: { [key: string]: Level };
+  levels: Level[];
   name: string;
   prizes: { [key: string]: string[] };
   sponsors: { [key: string]: Sponsor[] };
@@ -12,6 +12,7 @@ export interface Ctf {
 }
 
 export interface Level {
+  value: number;
   color: string;
   name: string;
 }

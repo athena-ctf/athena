@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { ChallengeForm as Component } from "@/components/forms/challenge";
 import { cardDecorator, tooltipDecorator } from "@/utils/decorators";
 import { openapiHttp } from "@/utils/msw";
+import { ctf } from "@/utils/ctf-data";
 
 const meta = {
   title: "Components/Forms/ChallengeForm",
@@ -24,17 +25,12 @@ export const CreateForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/challenge", ({ response }) =>
+        openapiHttp.post("/admin/challenge", async ({ request, response }) =>
           response(201).json({
-            created_at: faker.date.anytime().toISOString(),
+            ...(await request.json()),
             id: faker.string.uuid(),
+            created_at: faker.date.anytime().toISOString(),
             updated_at: faker.date.anytime().toISOString(),
-            author_name: faker.person.fullName(),
-            description: faker.lorem.paragraph(),
-            kind: "dynamic_containerized",
-            level: faker.number.int(5),
-            points: faker.number.int(500),
-            title: faker.lorem.words(3),
           }),
         ),
       ],
@@ -55,7 +51,7 @@ export const UpdateForm: Story = {
       author_name: faker.person.fullName(),
       description: faker.lorem.paragraph(),
       kind: "dynamic_containerized",
-      level: faker.number.int(5),
+      level: faker.helpers.arrayElement(ctf.levels).value,
       points: faker.number.int(500),
       title: faker.lorem.words(3),
     },

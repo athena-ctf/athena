@@ -32,9 +32,11 @@ export function ChallengeCard({
             <div className="flex place-content-center justify-between">
               <div className="flex place-items-center space-x-4">
                 <Circle
-                  style={{
-                    color: ctf.level_map[challengeSummary.challenge.level.toString()].color,
-                  }}
+                  fill={
+                    ctf.levels.find((level) => level.value === challengeSummary.challenge.level)
+                      ?.color
+                  }
+                  className="h-4 w-4"
                 />
                 <CardTitle className="flex flex-row content-between text-xl w-full">
                   {challengeSummary.challenge.title}

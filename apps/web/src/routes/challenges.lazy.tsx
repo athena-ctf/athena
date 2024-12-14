@@ -4,7 +4,6 @@ import { ChallengeCard } from "@/components/challenge/card";
 import { Filter } from "@/components/challenge/filter";
 import { ChallengeSearch } from "@/components/challenge/search";
 import { apiClient } from "@/utils/api-client";
-import { ctf } from "@/utils/ctf-data";
 import type { components } from "@repo/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -36,10 +35,6 @@ function Index() {
       <div className="mr-4 flex justify-between">
         <Filter
           tags={tags}
-          difficulties={Object.entries(ctf.level_map).map(([k, v]) => ({
-            level: k,
-            value: v.name,
-          }))}
           onChange={(tags, difficulties, statuses) => {
             setFiltered(
               challenges.filter((challenge) => {

@@ -24,12 +24,11 @@ export const CreateChallengeTagForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/challenge_tag", ({ response }) =>
+        openapiHttp.post("/admin/challenge_tag", async ({ request, response }) =>
           response(201).json({
+            ...(await request.json()),
             created_at: faker.date.anytime().toISOString(),
             updated_at: faker.date.anytime().toISOString(),
-            challenge_id: faker.string.uuid(),
-            tag_id: faker.string.uuid(),
           }),
         ),
         openapiHttp.get("/admin/challenge/ids", ({ response }) =>

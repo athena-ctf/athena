@@ -147,12 +147,9 @@ services:
             context: .
             tags: ["athena-ctf/bot"]
         restart: unless-stopped
-        environment:
-            DISCORD_TOKEN: "{{ discord.bot_token }}"
-            DISCORD_PREFIX: "!"
         volumes:
             - discord_bot_data:/bot/data
-            - ./conf/bot-config.json:/bot/config.json
+            - ./conf/config.json:/data/config.json
         depends_on:
             - redis
             - postgres

@@ -1,7 +1,7 @@
 import { SiteHeader } from "@/components/navbar/site-header";
 import { ctf } from "@/utils/ctf-data";
 import { Toaster } from "@repo/ui/components/sonner";
-import { ThemeProvider } from "@repo/ui/components/theme-provider-vite";
+import { ThemeProvider } from "@repo/ui/components/theme-provider";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { toast } from "sonner";

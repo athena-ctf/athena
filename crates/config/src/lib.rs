@@ -17,6 +17,7 @@ pub use json_path::JsonPath;
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
 pub struct Level {
+    value: i32,
     name: String,
     color: String,
 }
@@ -29,7 +30,7 @@ pub struct Ctf {
     pub time: Time,
     pub sponsors: IndexMap<String, Vec<Sponsor>>,
     pub prizes: IndexMap<String, Vec<String>>,
-    pub level_map: IndexMap<i32, Level>,
+    pub levels: Vec<Level>,
 }
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
@@ -216,24 +217,28 @@ impl Default for Settings {
                 },
                 sponsors: IndexMap::new(),
                 prizes: IndexMap::new(),
-                level_map: IndexMap::from([
-                    (0, Level {
+                levels: vec![
+                    Level {
+                        value: 0,
                         name: "Very Easy".to_owned(),
                         color: "#23332b".to_owned(),
-                    }),
-                    (1, Level {
+                    },
+                    Level {
+                        value: 1,
                         name: "Easy".to_owned(),
                         color: "#059c50".to_owned(),
-                    }),
-                    (2, Level {
+                    },
+                    Level {
+                        value: 2,
                         name: "Medium".to_owned(),
                         color: "#d0d40f".to_owned(),
-                    }),
-                    (3, Level {
+                    },
+                    Level {
+                        value: 3,
                         name: "Hard".to_owned(),
                         color: "#d4290f".to_owned(),
-                    }),
-                ]),
+                    },
+                ],
             },
             database: Database {
                 host: "postgres".to_owned(),

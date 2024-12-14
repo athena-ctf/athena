@@ -24,14 +24,12 @@ export const CreateForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/invite", ({ response }) =>
+        openapiHttp.post("/admin/invite", async ({ request, response }) =>
           response(201).json({
-            created_at: faker.date.anytime().toISOString(),
+            ...(await request.json()),
             id: faker.string.uuid(),
+            created_at: faker.date.anytime().toISOString(),
             updated_at: faker.date.anytime().toISOString(),
-            team_id: faker.string.uuid(),
-            expires_at: faker.date.anytime().toISOString(),
-            remaining: faker.number.int(10),
           }),
         ),
         openapiHttp.get("/admin/team/ids", ({ response }) =>

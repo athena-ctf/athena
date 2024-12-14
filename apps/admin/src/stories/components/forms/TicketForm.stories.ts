@@ -24,15 +24,12 @@ export const CreateForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/ticket", ({ response }) =>
+        openapiHttp.post("/admin/ticket", async ({ request, response }) =>
           response(201).json({
-            created_at: faker.date.anytime().toISOString(),
+            ...(await request.json()),
             id: faker.string.uuid(),
+            created_at: faker.date.anytime().toISOString(),
             updated_at: faker.date.anytime().toISOString(),
-            assigned_to: faker.string.uuid(),
-            opened_by: faker.string.uuid(),
-            status: "closed",
-            title: faker.lorem.sentence(5),
           }),
         ),
         openapiHttp.get("/admin/player/ids", ({ response }) =>
@@ -68,6 +65,7 @@ export const UpdateForm: Story = {
       opened_by: faker.string.uuid(),
       status: "closed",
       title: faker.lorem.sentence(5),
+      description: faker.lorem.paragraph(5),
     },
   },
   parameters: {

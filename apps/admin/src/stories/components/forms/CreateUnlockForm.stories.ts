@@ -24,12 +24,11 @@ export const CreateUnlockForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/unlock", ({ response }) =>
+        openapiHttp.post("/admin/unlock", async ({ request, response }) =>
           response(201).json({
+            ...(await request.json()),
             created_at: faker.date.anytime().toISOString(),
             updated_at: faker.date.anytime().toISOString(),
-            player_id: faker.string.uuid(),
-            hint_id: faker.string.uuid(),
           }),
         ),
         openapiHttp.get("/admin/player/ids", ({ response }) =>

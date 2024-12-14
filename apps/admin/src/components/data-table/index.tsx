@@ -1,6 +1,6 @@
 import type { FacetedFilterProps } from "@/components/data-table/faceted-filter";
 import { Pagination } from "@/components/data-table/pagination";
-import { Toolbar } from "@/components/data-table/toolbar";
+import { Toolbar, type ToolbarAction } from "@/components/data-table/toolbar";
 import {
   Table,
   TableBody,
@@ -12,6 +12,8 @@ import {
 import {
   type ColumnDef,
   type ColumnFiltersState,
+  type RowData,
+  type RowSelectionState,
   type SortingState,
   type VisibilityState,
   flexRender,
@@ -23,23 +25,42 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import * as React from "react";
+import { useEffect, useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  filters: FacetedFilterProps<TData, TValue>[];
+  filters: (Omit<FacetedFilterProps<TData, TValue>, "column"> & { columnName: string })[];
+  search?: string;
+  actions: ToolbarAction[];
+}
+
+declare module "@tanstack/table-core" {
+  interface TableMeta<TData extends RowData> {
+    dateStyle: string;
+    setDateStyle: (value: string) => void;
+    removeRow(rowIndex: number): void;
+    updateRow(newData: TData, rowIndex: number): void;
+  }
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data,
+  data: _data,
   filters,
+  search,
+  actions,
 }: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [data, setData] = useState(_data);
+  const [dateStyle, setDateStyle] = useState("relative");
+
+  useEffect(() => {
+    setData(_data);
+  }, [_data]);
 
   const table = useReactTable({
     data,
@@ -61,11 +82,39 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    meta: {
+      dateStyle,
+      setDateStyle(value) {
+        setDateStyle(value);
+      },
+      removeRow(rowIndex) {
+        setData((old) => old.filter((_, index) => index !== rowIndex));
+      },
+      updateRow(newData, rowIndex) {
+        setData((old) =>
+          old.map((row, index) => {
+            if (index === rowIndex) {
+              return newData;
+            }
+            return row;
+          }),
+        );
+      },
+    },
   });
 
   return (
     <div className="space-y-4">
-      <Toolbar table={table} filters={filters} />
+      <Toolbar
+        table={table}
+        filters={filters.map((filter) => ({
+          title: filter.title,
+          options: filter.options,
+          column: table.getColumn(filter.columnName)!, // TODO: typecheck this
+        }))}
+        search={search}
+        actions={actions}
+      />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

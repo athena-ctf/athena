@@ -8,7 +8,7 @@ import {
 import { MoreHorizontal } from "lucide-react";
 
 interface RowAction {
-  key: string;
+  label: string;
   action: () => void;
 }
 
@@ -27,8 +27,8 @@ export function RowActions({ actions }: RowActionsProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         {actions.map((action) => (
-          <DropdownMenuItem key={action.key} asChild>
-            <Button onClick={() => action.action()}>{action.key}</Button>
+          <DropdownMenuItem key={action.label} onClick={() => action.action()}>
+            {action.label}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

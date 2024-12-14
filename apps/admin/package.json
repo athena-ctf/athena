@@ -20,6 +20,7 @@
     "@repo/ui": "workspace:*",
     "@tanstack/react-router": "^1.88.0",
     "@tanstack/react-table": "^8.20.6",
+    "@tanstack/table-core": "^8.20.5",
     "@tiptap/extension-code-block-lowlight": "^2.10.3",
     "@tiptap/extension-color": "^2.10.3",
     "@tiptap/extension-heading": "^2.10.3",

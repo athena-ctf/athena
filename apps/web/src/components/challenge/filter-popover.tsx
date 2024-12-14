@@ -9,12 +9,14 @@ import {
 } from "@repo/ui/components/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { cn } from "@repo/ui/lib/utils";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Badge } from "@ui/components/ui/badge";
+import { Separator } from "@ui/components/ui/separator";
+import { Check, PlusCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface FilterOption {
-  id: string;
   value: string;
+  label: string;
 }
 
 interface FilterPopoverProps {
@@ -24,7 +26,7 @@ interface FilterPopoverProps {
   selected: string[];
   onSelect: (value: string) => void;
   placeholder: string;
-  buttonText: string;
+  title: string;
 }
 
 export function FilterPopover({
@@ -34,10 +36,12 @@ export function FilterPopover({
   selected,
   onSelect,
   placeholder,
-  buttonText,
+  title,
 }: FilterPopoverProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [inputValue, setInputValue] = useState("");
+
+  const selectedValues = new Set(selected);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -54,21 +58,36 @@ export function FilterPopover({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          ref={buttonRef}
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-fit justify-between"
-          onKeyDown={(e) => {
-            if (e.key === "ArrowDown" || e.key === "Enter") {
-              e.preventDefault();
-              setOpen(true);
-            }
-          }}
-        >
-          {selected.length > 0 ? `${buttonText} (${selected.length})` : buttonText}
-          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+        <Button variant="outline" size="sm" className="h-8 border-dashed">
+          <PlusCircle />
+          {title}
+          {selectedValues?.size > 0 && (
+            <>
+              <Separator orientation="vertical" className="mx-2 h-4" />
+              <Badge variant="secondary" className="rounded-sm px-1 font-normal lg:hidden">
+                {selectedValues.size}
+              </Badge>
+              <div className="hidden space-x-1 lg:flex">
+                {selectedValues.size > 2 ? (
+                  <Badge variant="secondary" className="rounded-sm px-1 font-normal">
+                    {selectedValues.size} selected
+                  </Badge>
+                ) : (
+                  options
+                    .filter((option) => selectedValues.has(option.label))
+                    .map((option) => (
+                      <Badge
+                        variant="secondary"
+                        key={option.label}
+                        className="rounded-sm px-1 font-normal"
+                      >
+                        {option.label}
+                      </Badge>
+                    ))
+                )}
+              </div>
+            </>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-fit p-0">
@@ -79,24 +98,24 @@ export function FilterPopover({
             onValueChange={setInputValue}
           />
           <CommandList>
-            <CommandEmpty>No {buttonText} found.</CommandEmpty>
+            <CommandEmpty>No {title} found.</CommandEmpty>
             <CommandGroup>
               {options
-                .filter((option) => option.value.toLowerCase().includes(inputValue.toLowerCase()))
+                .filter((option) => option.label.toLowerCase().includes(inputValue.toLowerCase()))
                 .map((option) => (
                   <CommandItem
-                    key={option.id || option.value}
-                    value={option.value}
+                    key={option.value || option.label}
+                    value={option.label}
                     onSelect={onSelect}
                     className="cursor-pointer"
                   >
                     <Check
                       className={cn(
                         "mr-2 size-4",
-                        selected.includes(option.value) ? "opacity-100" : "opacity-0",
+                        selected.includes(option.label) ? "opacity-100" : "opacity-0",
                       )}
                     />
-                    {option.value}
+                    {option.label}
                   </CommandItem>
                 ))}
             </CommandGroup>

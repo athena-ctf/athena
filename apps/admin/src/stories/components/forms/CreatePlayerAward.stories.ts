@@ -24,13 +24,11 @@ export const CreatePlayerAwardForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/player_award", ({ response }) =>
+        openapiHttp.post("/admin/player_award", async ({ request, response }) =>
           response(201).json({
+            ...(await request.json()),
             created_at: faker.date.anytime().toISOString(),
             updated_at: faker.date.anytime().toISOString(),
-            player_id: faker.string.uuid(),
-            award_id: faker.string.uuid(),
-            count: faker.number.int(10),
           }),
         ),
         openapiHttp.get("/admin/player/ids", ({ response }) =>

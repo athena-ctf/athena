@@ -24,13 +24,12 @@ export const CreateForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/ban", ({ response }) =>
+        openapiHttp.post("/admin/ban", async ({ request, response }) =>
           response(201).json({
-            created_at: faker.date.anytime().toISOString(),
+            ...(await request.json()),
             id: faker.string.uuid(),
+            created_at: faker.date.anytime().toISOString(),
             updated_at: faker.date.anytime().toISOString(),
-            duration: faker.number.int({ min: 0, max: 7 }),
-            reason: faker.lorem.sentence(),
           }),
         ),
       ],

@@ -47,8 +47,8 @@ type Ctf struct {
 	// Domain corresponds to the JSON schema field "domain".
 	Domain string `json:"domain"`
 
-	// LevelMap corresponds to the JSON schema field "level_map".
-	LevelMap CtfLevelMap `json:"level_map"`
+	// Levels corresponds to the JSON schema field "levels".
+	Levels []Level `json:"levels"`
 
 	// Name corresponds to the JSON schema field "name".
 	Name string `json:"name"`
@@ -62,8 +62,6 @@ type Ctf struct {
 	// Time corresponds to the JSON schema field "time".
 	Time Time `json:"time"`
 }
-
-type CtfLevelMap map[string]Level
 
 type CtfPrizes map[string][]string
 
@@ -163,6 +161,9 @@ type Level struct {
 
 	// Name corresponds to the JSON schema field "name".
 	Name string `json:"name"`
+
+	// Value corresponds to the JSON schema field "value".
+	Value int `json:"value"`
 }
 
 type Local struct {

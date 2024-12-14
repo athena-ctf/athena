@@ -8,7 +8,7 @@ function genCtfJson(): Plugin {
   return {
     name: "gen-json-file",
     buildStart: async () => {
-      const filePath = new URL("../../config.json", import.meta.url);
+      const filePath = new URL("../../conf/config.json", import.meta.url);
       const contents = await fs.readFile(filePath, { encoding: "utf8" });
 
       const outFilePath = new URL("./ctf.json", import.meta.url);

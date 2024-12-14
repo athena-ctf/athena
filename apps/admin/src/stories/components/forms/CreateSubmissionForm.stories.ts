@@ -24,14 +24,11 @@ export const CreateSubmissionForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.post("/admin/submission", ({ response }) =>
+        openapiHttp.post("/admin/submission", async ({ request, response }) =>
           response(201).json({
+            ...(await request.json()),
             created_at: faker.date.anytime().toISOString(),
             updated_at: faker.date.anytime().toISOString(),
-            player_id: faker.string.uuid(),
-            challenge_id: faker.string.uuid(),
-            is_correct: false,
-            flags: [],
           }),
         ),
         openapiHttp.get("/admin/player/ids", ({ response }) =>

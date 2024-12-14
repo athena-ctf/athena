@@ -14,15 +14,13 @@ import { Separator } from "@repo/ui/components/separator";
 import { cn } from "@repo/ui/lib/utils";
 import type { Column } from "@tanstack/react-table";
 import { Check, PlusCircle } from "lucide-react";
-import type * as React from "react";
 
 export interface FacetedFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>;
+  column: Column<TData, TValue>;
   title: string;
   options: {
     label: string;
-    value: string;
-    icon?: React.ComponentType<{ className?: string }>;
+    value: TValue;
   }[];
 }
 
@@ -31,8 +29,8 @@ export function FacetedFilter<TData, TValue>({
   title,
   options,
 }: FacetedFilterProps<TData, TValue>) {
-  const facets = column?.getFacetedUniqueValues();
-  const selectedValues = new Set(column?.getFilterValue() as string[]);
+  const facets = column.getFacetedUniqueValues();
+  const selectedValues = new Set(column.getFilterValue() as TValue[]);
 
   return (
     <Popover>
@@ -57,7 +55,7 @@ export function FacetedFilter<TData, TValue>({
                     .map((option) => (
                       <Badge
                         variant="secondary"
-                        key={option.value}
+                        key={option.label}
                         className="rounded-sm px-1 font-normal"
                       >
                         {option.label}
@@ -79,7 +77,7 @@ export function FacetedFilter<TData, TValue>({
                 const isSelected = selectedValues.has(option.value);
                 return (
                   <CommandItem
-                    key={option.value}
+                    key={option.label}
                     onSelect={() => {
                       if (isSelected) {
                         selectedValues.delete(option.value);
@@ -87,7 +85,7 @@ export function FacetedFilter<TData, TValue>({
                         selectedValues.add(option.value);
                       }
                       const filterValues = Array.from(selectedValues);
-                      column?.setFilterValue(filterValues.length ? filterValues : undefined);
+                      column.setFilterValue(filterValues.length ? filterValues : undefined);
                     }}
                   >
                     <div
@@ -100,7 +98,6 @@ export function FacetedFilter<TData, TValue>({
                     >
                       <Check />
                     </div>
-                    {option.icon && <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />}
                     <span>{option.label}</span>
                     {facets?.get(option.value) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
@@ -116,7 +113,7 @@ export function FacetedFilter<TData, TValue>({
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
-                    onSelect={() => column?.setFilterValue(undefined)}
+                    onSelect={() => column.setFilterValue(undefined)}
                     className="justify-center text-center"
                   >
                     Clear filters

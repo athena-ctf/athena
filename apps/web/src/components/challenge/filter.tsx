@@ -1,20 +1,22 @@
 import type { components } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import { X } from "lucide-react";
-import { useCallback, useState } from "react";
-import { FilterBadge } from "./filter-badge";
+import { useState } from "react";
 import { FilterPopover } from "./filter-popover";
+import { ctf } from "@/utils/ctf-data";
 
-type Category = "tag" | "difficulty" | "status";
 const STATUS_OPTIONS = ["solved", "unsolved", "challenge_limit_reached"];
+const DIFFICULTIES = ctf.levels.map((level) => ({
+  value: level.value.toString(),
+  label: level.name,
+}));
 
 interface FilterProps {
   tags: components["schemas"]["TagModel"][];
-  difficulties: { level: string; value: string }[];
   onChange: (tags: string[], difficulties: string[], status: string[]) => void;
 }
 
-export function Filter({ tags, difficulties, onChange }: FilterProps) {
+export function Filter({ tags, onChange }: FilterProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
@@ -52,32 +54,6 @@ export function Filter({ tags, difficulties, onChange }: FilterProps) {
     onChange([], [], []);
   };
 
-  const removeFilter = useCallback(
-    (category: Category, value: string) => {
-      switch (category) {
-        case "tag": {
-          const newTags = selectedTags.filter((t) => t !== value);
-          setSelectedTags(newTags);
-          onChange(newTags, selectedDifficulties, selectedStatus);
-          break;
-        }
-        case "difficulty": {
-          const newDifficulties = selectedDifficulties.filter((d) => d !== value);
-          setSelectedDifficulties(newDifficulties);
-          onChange(selectedTags, newDifficulties, selectedStatus);
-          break;
-        }
-        case "status": {
-          const newStatus = selectedStatus.filter((s) => s !== value);
-          setSelectedStatus(newStatus);
-          onChange(selectedTags, selectedDifficulties, newStatus);
-          break;
-        }
-      }
-    },
-    [selectedTags, selectedDifficulties, selectedStatus, onChange],
-  );
-
   const hasActiveFilters =
     selectedTags.length > 0 || selectedDifficulties.length > 0 || selectedStatus.length > 0;
 
@@ -87,34 +63,31 @@ export function Filter({ tags, difficulties, onChange }: FilterProps) {
         <FilterPopover
           open={tagOpen}
           setOpen={setTagOpen}
-          options={tags}
+          options={tags.map((tag) => ({ label: tag.value, value: tag.id }))}
           selected={selectedTags}
           onSelect={handleTagSelect}
           placeholder="Search tags..."
-          buttonText="Tags"
+          title="Tags"
         />
 
         <FilterPopover
           open={difficultyOpen}
           setOpen={setDifficultyOpen}
-          options={difficulties.map((d) => ({
-            id: d.level.toString(),
-            value: d.value,
-          }))}
+          options={DIFFICULTIES}
           selected={selectedDifficulties}
           onSelect={handleDifficultySelect}
           placeholder="Search difficulty..."
-          buttonText="Difficulty"
+          title="Difficulty"
         />
 
         <FilterPopover
           open={statusOpen}
           setOpen={setStatusOpen}
-          options={STATUS_OPTIONS.map((s) => ({ id: s, value: s }))}
+          options={STATUS_OPTIONS.map((s) => ({ label: s, value: s }))}
           selected={selectedStatus}
           onSelect={handleStatusSelect}
           placeholder="Search status..."
-          buttonText="Status"
+          title="Status"
         />
 
         {hasActiveFilters && (
@@ -124,35 +97,6 @@ export function Filter({ tags, difficulties, onChange }: FilterProps) {
           </Button>
         )}
       </div>
-
-      {hasActiveFilters && (
-        <div className="flex flex-wrap gap-2">
-          {selectedTags.map((tag) => (
-            <FilterBadge
-              key={tag}
-              label={tag}
-              category="tag"
-              onRemove={() => removeFilter("tag", tag)}
-            />
-          ))}
-          {selectedDifficulties.map((difficulty) => (
-            <FilterBadge
-              key={difficulty}
-              label={difficulty}
-              category="difficulty"
-              onRemove={() => removeFilter("difficulty", difficulty)}
-            />
-          ))}
-          {selectedStatus.map((status) => (
-            <FilterBadge
-              key={status}
-              label={status}
-              category="status"
-              onRemove={() => removeFilter("status", status)}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 }
