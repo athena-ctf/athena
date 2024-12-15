@@ -3,12 +3,9 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(
-    Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize, utoipa::ToSchema,
-)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[sea_orm(table_name = "instance")]
-#[schema(as = InstanceModel)]
-#[oxide_macros::gen_schemas(table_name = "instance", id_descriptor = "container_id")]
+#[oxide_macros::gen_schemas(id_descriptor = "container_id")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,

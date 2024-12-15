@@ -154,6 +154,17 @@
         ],
         "summary": "Export admins",
         "operationId": "export_admins",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported admins successfully",
@@ -222,7 +233,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AdminIds"
+                    "$ref": "#/components/schemas/AdminIdSchema"
                   }
                 }
               }
@@ -792,6 +803,17 @@
         ],
         "summary": "Export awards",
         "operationId": "export_awards",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported awards successfully",
@@ -860,7 +882,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AwardIds"
+                    "$ref": "#/components/schemas/AwardIdSchema"
                   }
                 }
               }
@@ -1430,6 +1452,17 @@
         ],
         "summary": "Export bans",
         "operationId": "export_bans",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported bans successfully",
@@ -1498,7 +1531,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BanIds"
+                    "$ref": "#/components/schemas/BanIdSchema"
                   }
                 }
               }
@@ -2161,6 +2194,17 @@
         ],
         "summary": "Export challenges",
         "operationId": "export_challenges",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported challenges successfully",
@@ -2229,7 +2273,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChallengeIds"
+                    "$ref": "#/components/schemas/ChallengeIdSchema"
                   }
                 }
               }
@@ -2799,6 +2843,17 @@
         ],
         "summary": "Export challenge_files",
         "operationId": "export_challenge_files",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported challenge_files successfully",
@@ -3423,6 +3478,17 @@
         ],
         "summary": "Export challenge_tags",
         "operationId": "export_challenge_tags",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported challenge_tags successfully",
@@ -4047,6 +4113,17 @@
         ],
         "summary": "Export containers",
         "operationId": "export_containers",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported containers successfully",
@@ -4115,7 +4192,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ContainerIds"
+                    "$ref": "#/components/schemas/ContainerIdSchema"
                   }
                 }
               }
@@ -4736,6 +4813,17 @@
         ],
         "summary": "Export deployments",
         "operationId": "export_deployments",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported deployments successfully",
@@ -4804,7 +4892,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DeploymentIds"
+                    "$ref": "#/components/schemas/DeploymentIdSchema"
                   }
                 }
               }
@@ -5374,6 +5462,17 @@
         ],
         "summary": "Export files",
         "operationId": "export_files",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported files successfully",
@@ -5442,7 +5541,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/FileIds"
+                    "$ref": "#/components/schemas/FileIdSchema"
                   }
                 }
               }
@@ -6012,6 +6111,17 @@
         ],
         "summary": "Export flags",
         "operationId": "export_flags",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported flags successfully",
@@ -6080,7 +6190,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/FlagIds"
+                    "$ref": "#/components/schemas/FlagIdSchema"
                   }
                 }
               }
@@ -6650,6 +6760,17 @@
         ],
         "summary": "Export hints",
         "operationId": "export_hints",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported hints successfully",
@@ -6718,7 +6839,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/HintIds"
+                    "$ref": "#/components/schemas/HintIdSchema"
                   }
                 }
               }
@@ -7288,6 +7409,17 @@
         ],
         "summary": "Export instances",
         "operationId": "export_instances",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported instances successfully",
@@ -7356,7 +7488,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/InstanceIds"
+                    "$ref": "#/components/schemas/InstanceIdSchema"
                   }
                 }
               }
@@ -7926,6 +8058,17 @@
         ],
         "summary": "Export invites",
         "operationId": "export_invites",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported invites successfully",
@@ -7994,7 +8137,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/InviteIds"
+                    "$ref": "#/components/schemas/InviteIdSchema"
                   }
                 }
               }
@@ -8564,6 +8707,17 @@
         ],
         "summary": "Export notifications",
         "operationId": "export_notifications",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported notifications successfully",
@@ -8632,7 +8786,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NotificationIds"
+                    "$ref": "#/components/schemas/NotificationIdSchema"
                   }
                 }
               }
@@ -9202,6 +9356,17 @@
         ],
         "summary": "Export players",
         "operationId": "export_players",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported players successfully",
@@ -9270,7 +9435,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PlayerIds"
+                    "$ref": "#/components/schemas/PlayerIdSchema"
                   }
                 }
               }
@@ -9840,6 +10005,17 @@
         ],
         "summary": "Export player_awards",
         "operationId": "export_player_awards",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported player_awards successfully",
@@ -10645,6 +10821,17 @@
         ],
         "summary": "Export submissions",
         "operationId": "export_submissions",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported submissions successfully",
@@ -11269,6 +11456,17 @@
         ],
         "summary": "Export tags",
         "operationId": "export_tags",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported tags successfully",
@@ -11337,7 +11535,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/TagIds"
+                    "$ref": "#/components/schemas/TagIdSchema"
                   }
                 }
               }
@@ -11907,6 +12105,17 @@
         ],
         "summary": "Export teams",
         "operationId": "export_teams",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported teams successfully",
@@ -11975,7 +12184,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/TeamIds"
+                    "$ref": "#/components/schemas/TeamIdSchema"
                   }
                 }
               }
@@ -12545,6 +12754,17 @@
         ],
         "summary": "Export tickets",
         "operationId": "export_tickets",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported tickets successfully",
@@ -12613,7 +12833,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/TicketIds"
+                    "$ref": "#/components/schemas/TicketIdSchema"
                   }
                 }
               }
@@ -13266,6 +13486,17 @@
         ],
         "summary": "Export unlocks",
         "operationId": "export_unlocks",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Format to export table",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Exported unlocks successfully",
@@ -16032,7 +16263,7 @@
   },
   "components": {
     "schemas": {
-      "AdminIds": {
+      "AdminIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -16087,12 +16318,12 @@
           "tickets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TicketModel"
+              "$ref": "#/components/schemas/TicketIdSchema"
             }
           }
         }
       },
-      "AwardIds": {
+      "AwardIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -16151,10 +16382,10 @@
         ],
         "properties": {
           "player": {
-            "$ref": "#/components/schemas/PlayerModel"
+            "$ref": "#/components/schemas/PlayerIdSchema"
           },
           "player_award": {
-            "$ref": "#/components/schemas/PlayerAwardModel"
+            "$ref": "#/components/schemas/PlayerAwardIdSchema"
           }
         }
       },
@@ -16207,7 +16438,7 @@
           "s3"
         ]
       },
-      "BanIds": {
+      "BanIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -16261,7 +16492,24 @@
         ],
         "properties": {
           "player": {
-            "$ref": "#/components/schemas/PlayerModel"
+            "$ref": "#/components/schemas/PlayerIdSchema"
+          }
+        }
+      },
+      "ChallengeFileIdSchema": {
+        "type": "object",
+        "required": [
+          "challenge_id",
+          "file_id"
+        ],
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "file_id": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       },
@@ -16300,14 +16548,14 @@
         ],
         "properties": {
           "challenge": {
-            "$ref": "#/components/schemas/ChallengeModel"
+            "$ref": "#/components/schemas/ChallengeIdSchema"
           },
           "file": {
-            "$ref": "#/components/schemas/FileModel"
+            "$ref": "#/components/schemas/FileIdSchema"
           }
         }
       },
-      "ChallengeIds": {
+      "ChallengeIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -16413,61 +16661,61 @@
           "challenge_files": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ChallengeFileModel"
+              "$ref": "#/components/schemas/ChallengeFileIdSchema"
             }
           },
           "challenge_tags": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ChallengeTagModel"
+              "$ref": "#/components/schemas/ChallengeTagIdSchema"
             }
           },
           "containers": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ContainerModel"
+              "$ref": "#/components/schemas/ContainerIdSchema"
             }
           },
           "deployments": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DeploymentModel"
+              "$ref": "#/components/schemas/DeploymentIdSchema"
             }
           },
           "files": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FileModel"
+              "$ref": "#/components/schemas/FileIdSchema"
             }
           },
           "flags": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FlagModel"
+              "$ref": "#/components/schemas/FlagIdSchema"
             }
           },
           "hints": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/HintModel"
+              "$ref": "#/components/schemas/HintIdSchema"
             }
           },
           "players": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PlayerModel"
+              "$ref": "#/components/schemas/PlayerIdSchema"
             }
           },
           "submissions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SubmissionModel"
+              "$ref": "#/components/schemas/SubmissionIdSchema"
             }
           },
           "tags": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TagModel"
+              "$ref": "#/components/schemas/TagIdSchema"
             }
           }
         }
@@ -16510,6 +16758,23 @@
           }
         }
       },
+      "ChallengeTagIdSchema": {
+        "type": "object",
+        "required": [
+          "challenge_id",
+          "tag_id"
+        ],
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tag_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "ChallengeTagModel": {
         "type": "object",
         "required": [
@@ -16545,14 +16810,14 @@
         ],
         "properties": {
           "challenge": {
-            "$ref": "#/components/schemas/ChallengeModel"
+            "$ref": "#/components/schemas/ChallengeIdSchema"
           },
           "tag": {
-            "$ref": "#/components/schemas/TagModel"
+            "$ref": "#/components/schemas/TagIdSchema"
           }
         }
       },
-      "ContainerIds": {
+      "ContainerIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -16652,7 +16917,7 @@
         ],
         "properties": {
           "challenge": {
-            "$ref": "#/components/schemas/ChallengeModel"
+            "$ref": "#/components/schemas/ChallengeIdSchema"
           }
         }
       },
@@ -17180,7 +17445,7 @@
           }
         }
       },
-      "DeploymentIds": {
+      "DeploymentIdSchema": {
         "type": "object",
         "required": [
           "id"
@@ -17240,16 +17505,16 @@
         ],
         "properties": {
           "challenge": {
-            "$ref": "#/components/schemas/ChallengeModel"
+            "$ref": "#/components/schemas/ChallengeIdSchema"
           },
           "instances": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/InstanceModel"
+              "$ref": "#/components/schemas/InstanceIdSchema"
             }
           },
           "player": {
-            "$ref": "#/components/schemas/PlayerModel"
+            "$ref": "#/components/schemas/PlayerIdSchema"
           }
         }
       },
@@ -17283,7 +17548,15 @@
           }
         }
       },
-      "FileIds": {
+      "ExportFormat": {
+        "type": "string",
+        "enum": [
+          "Csv",
+          "Xml",
+          "Json"
+        ]
+      },
+      "FileIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -17336,11 +17609,11 @@
         ],
         "properties": {
           "challenge": {
-            "$ref": "#/components/schemas/ChallengeModel"
+            "$ref": "#/components/schemas/ChallengeIdSchema"
           }
         }
       },
-      "FlagIds": {
+      "FlagIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -17405,7 +17678,7 @@
         ],
         "properties": {
           "challenge": {
-            "$ref": "#/components/schemas/ChallengeModel"
+            "$ref": "#/components/schemas/ChallengeIdSchema"
           },
           "player": {
             "oneOf": [
@@ -17413,7 +17686,7 @@
                 "type": "null"
               },
               {
-                "$ref": "#/components/schemas/PlayerModel"
+                "$ref": "#/components/schemas/PlayerIdSchema"
               }
             ]
           }
@@ -17430,7 +17703,7 @@
           }
         }
       },
-      "HintIds": {
+      "HintIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -17491,18 +17764,18 @@
         ],
         "properties": {
           "challenge": {
-            "$ref": "#/components/schemas/ChallengeModel"
+            "$ref": "#/components/schemas/ChallengeIdSchema"
           },
           "players": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PlayerModel"
+              "$ref": "#/components/schemas/PlayerIdSchema"
             }
           },
           "unlocks": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UnlockModel"
+              "$ref": "#/components/schemas/UnlockIdSchema"
             }
           }
         }
@@ -17528,14 +17801,14 @@
           }
         }
       },
-      "InstanceIds": {
+      "InstanceIdSchema": {
         "type": "object",
         "required": [
           "id",
-          "container_name"
+          "container_id"
         ],
         "properties": {
-          "container_name": {
+          "container_id": {
             "type": "string"
           },
           "id": {
@@ -17593,11 +17866,11 @@
         ],
         "properties": {
           "deployment": {
-            "$ref": "#/components/schemas/DeploymentModel"
+            "$ref": "#/components/schemas/DeploymentIdSchema"
           }
         }
       },
-      "InviteIds": {
+      "InviteIdSchema": {
         "type": "object",
         "required": [
           "id"
@@ -17653,7 +17926,7 @@
         ],
         "properties": {
           "team": {
-            "$ref": "#/components/schemas/TeamModel"
+            "$ref": "#/components/schemas/TeamIdSchema"
           }
         }
       },
@@ -17838,7 +18111,7 @@
           }
         }
       },
-      "NotificationIds": {
+      "NotificationIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -17905,9 +18178,26 @@
                 "type": "null"
               },
               {
-                "$ref": "#/components/schemas/PlayerModel"
+                "$ref": "#/components/schemas/PlayerIdSchema"
               }
             ]
+          }
+        }
+      },
+      "PlayerAwardIdSchema": {
+        "type": "object",
+        "required": [
+          "player_id",
+          "award_id"
+        ],
+        "properties": {
+          "award_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       },
@@ -17951,10 +18241,10 @@
         ],
         "properties": {
           "award": {
-            "$ref": "#/components/schemas/AwardModel"
+            "$ref": "#/components/schemas/AwardIdSchema"
           },
           "player": {
-            "$ref": "#/components/schemas/PlayerModel"
+            "$ref": "#/components/schemas/PlayerIdSchema"
           }
         }
       },
@@ -18012,7 +18302,7 @@
           }
         }
       },
-      "PlayerIds": {
+      "PlayerIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -18148,7 +18438,7 @@
           "awards": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AwardModel"
+              "$ref": "#/components/schemas/AwardIdSchema"
             }
           },
           "ban": {
@@ -18157,14 +18447,14 @@
                 "type": "null"
               },
               {
-                "$ref": "#/components/schemas/BanModel"
+                "$ref": "#/components/schemas/BanIdSchema"
               }
             ]
           },
           "challenges": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ChallengeModel"
+              "$ref": "#/components/schemas/ChallengeIdSchema"
             }
           },
           "deployment": {
@@ -18173,53 +18463,53 @@
                 "type": "null"
               },
               {
-                "$ref": "#/components/schemas/DeploymentModel"
+                "$ref": "#/components/schemas/DeploymentIdSchema"
               }
             ]
           },
           "flags": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FlagModel"
+              "$ref": "#/components/schemas/FlagIdSchema"
             }
           },
           "hints": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/HintModel"
+              "$ref": "#/components/schemas/HintIdSchema"
             }
           },
           "notifications": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NotificationModel"
+              "$ref": "#/components/schemas/NotificationIdSchema"
             }
           },
           "player_awards": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PlayerAwardModel"
+              "$ref": "#/components/schemas/PlayerAwardIdSchema"
             }
           },
           "submissions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SubmissionModel"
+              "$ref": "#/components/schemas/SubmissionIdSchema"
             }
           },
           "team": {
-            "$ref": "#/components/schemas/TeamModel"
+            "$ref": "#/components/schemas/TeamIdSchema"
           },
           "tickets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TicketModel"
+              "$ref": "#/components/schemas/TicketIdSchema"
             }
           },
           "unlocks": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UnlockModel"
+              "$ref": "#/components/schemas/UnlockIdSchema"
             }
           }
         }
@@ -18449,6 +18739,23 @@
           }
         }
       },
+      "SubmissionIdSchema": {
+        "type": "object",
+        "required": [
+          "player_id",
+          "challenge_id"
+        ],
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "SubmissionModel": {
         "type": "object",
         "required": [
@@ -18495,14 +18802,14 @@
         ],
         "properties": {
           "challenge": {
-            "$ref": "#/components/schemas/ChallengeModel"
+            "$ref": "#/components/schemas/ChallengeIdSchema"
           },
           "player": {
-            "$ref": "#/components/schemas/PlayerModel"
+            "$ref": "#/components/schemas/PlayerIdSchema"
           }
         }
       },
-      "TagIds": {
+      "TagIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -18554,13 +18861,13 @@
           "challenge_tags": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ChallengeTagModel"
+              "$ref": "#/components/schemas/ChallengeTagIdSchema"
             }
           },
           "challenges": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ChallengeModel"
+              "$ref": "#/components/schemas/ChallengeIdSchema"
             }
           }
         }
@@ -18613,7 +18920,7 @@
           }
         }
       },
-      "TeamIds": {
+      "TeamIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -18798,18 +19105,18 @@
           "invites": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/InviteModel"
+              "$ref": "#/components/schemas/InviteIdSchema"
             }
           },
           "players": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PlayerModel"
+              "$ref": "#/components/schemas/PlayerIdSchema"
             }
           }
         }
       },
-      "TicketIds": {
+      "TicketIdSchema": {
         "type": "object",
         "required": [
           "id",
@@ -18879,10 +19186,10 @@
         ],
         "properties": {
           "admin": {
-            "$ref": "#/components/schemas/AdminModel"
+            "$ref": "#/components/schemas/AdminIdSchema"
           },
           "player": {
-            "$ref": "#/components/schemas/PlayerModel"
+            "$ref": "#/components/schemas/PlayerIdSchema"
           }
         }
       },
@@ -18893,6 +19200,23 @@
           "open",
           "resolved"
         ]
+      },
+      "UnlockIdSchema": {
+        "type": "object",
+        "required": [
+          "player_id",
+          "hint_id"
+        ],
+        "properties": {
+          "hint_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "player_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
       },
       "UnlockModel": {
         "type": "object",
@@ -18929,10 +19253,10 @@
         ],
         "properties": {
           "hint": {
-            "$ref": "#/components/schemas/HintModel"
+            "$ref": "#/components/schemas/HintIdSchema"
           },
           "player": {
-            "$ref": "#/components/schemas/PlayerModel"
+            "$ref": "#/components/schemas/PlayerIdSchema"
           }
         }
       },

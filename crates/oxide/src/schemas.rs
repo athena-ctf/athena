@@ -291,8 +291,9 @@ pub enum ExportFormat {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+#[serde(rename_all = "lowercase")]
 pub struct ExportQuery {
-    format: ExportFormat,
+    pub format: ExportFormat,
 }
 
 impl ExportQuery {

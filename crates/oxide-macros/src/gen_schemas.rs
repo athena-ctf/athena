@@ -24,9 +24,13 @@ impl<A, B, C, D, E> Unzip5 for Option<(A, B, C, D, E)> {
 
 #[derive(Debug, FromMeta)]
 struct MacroArgs {
-    table_name: String,
     #[darling(default)]
     id_descriptor: Option<String>,
+}
+
+#[derive(Debug, FromMeta)]
+struct SeaOrmArgs {
+    table_name: String,
 }
 
 pub fn gen_schemas_impl(args: TokenStream, input: TokenStream) -> TokenStream {
@@ -45,9 +49,19 @@ pub fn gen_schemas_impl(args: TokenStream, input: TokenStream) -> TokenStream {
         }
     };
 
+    let table_args = SeaOrmArgs::from_meta(
+        &input
+            .attrs
+            .iter()
+            .find(|attr| attr.path().is_ident("sea_orm"))
+            .unwrap()
+            .meta,
+    )
+    .unwrap();
+
     let details_name = format_ident!(
         "Create{}Schema",
-        heck::AsUpperCamelCase(&args.table_name).to_string()
+        heck::AsUpperCamelCase(&table_args.table_name).to_string()
     );
 
     let join = !input
@@ -143,7 +157,7 @@ pub fn gen_schemas_impl(args: TokenStream, input: TokenStream) -> TokenStream {
     let update_schema = join.then(|| {
         let update_schema_name = format_ident!(
             "Update{}Schema",
-            heck::AsUpperCamelCase(&args.table_name).to_string()
+            heck::AsUpperCamelCase(&table_args.table_name).to_string()
         );
 
         let update_fields = detail_fields
@@ -191,8 +205,13 @@ pub fn gen_schemas_impl(args: TokenStream, input: TokenStream) -> TokenStream {
 
     let struct_ident = format_ident!(
         "{}IdSchema",
-        heck::AsUpperCamelCase(&args.table_name).to_string()
+        heck::AsUpperCamelCase(&table_args.table_name).to_string()
     );
+    let model_ident = format_ident!(
+        "{}Model",
+        heck::AsUpperCamelCase(&table_args.table_name).to_string()
+    );
+
     let id_schema_struct = if join {
         let id_fields = input.fields.iter().filter_map(|f| {
             f.ident
@@ -240,6 +259,8 @@ pub fn gen_schemas_impl(args: TokenStream, input: TokenStream) -> TokenStream {
     };
 
     quote! {
+        #[derive(utoipa::ToSchema)]
+        #[schema(as = #model_ident)]
         #input
 
         #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, utoipa::ToSchema, sea_orm::FromQueryResult, sea_orm::DerivePartialModel)]

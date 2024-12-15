@@ -5,12 +5,9 @@ use serde::{Deserialize, Serialize};
 
 use super::sea_orm_active_enums::RoleEnum;
 
-#[derive(
-    Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize, utoipa::ToSchema,
-)]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[sea_orm(table_name = "admin")]
-#[schema(as = AdminModel)]
-#[oxide_macros::gen_schemas(table_name = "admin", id_descriptor = "username")]
+#[oxide_macros::gen_schemas(id_descriptor = "username")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,

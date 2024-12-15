@@ -2758,7 +2758,7 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
-    AdminIds: {
+    AdminIdSchema: {
       /** Format: uuid */
       id: string;
       username: string;
@@ -2774,9 +2774,9 @@ export interface components {
       username: string;
     };
     AdminRelations: {
-      tickets: components["schemas"]["TicketModel"][];
+      tickets: components["schemas"]["TicketIdSchema"][];
     };
-    AwardIds: {
+    AwardIdSchema: {
       /** Format: uuid */
       id: string;
       value: string;
@@ -2794,8 +2794,8 @@ export interface components {
       value: string;
     };
     AwardRelations: {
-      player: components["schemas"]["PlayerModel"];
-      player_award: components["schemas"]["PlayerAwardModel"];
+      player: components["schemas"]["PlayerIdSchema"];
+      player_award: components["schemas"]["PlayerAwardIdSchema"];
     };
     AwardsReceived: {
       /** Format: int32 */
@@ -2813,7 +2813,7 @@ export interface components {
     };
     /** @enum {string} */
     BackendEnum: "azure" | "gcp" | "local" | "s3";
-    BanIds: {
+    BanIdSchema: {
       /** Format: uuid */
       id: string;
       reason: string;
@@ -2830,7 +2830,13 @@ export interface components {
       updated_at: string;
     };
     BanRelations: {
-      player: components["schemas"]["PlayerModel"];
+      player: components["schemas"]["PlayerIdSchema"];
+    };
+    ChallengeFileIdSchema: {
+      /** Format: uuid */
+      challenge_id: string;
+      /** Format: uuid */
+      file_id: string;
     };
     ChallengeFileModel: {
       /** Format: uuid */
@@ -2843,10 +2849,10 @@ export interface components {
       updated_at: string;
     };
     ChallengeFileRelations: {
-      challenge: components["schemas"]["ChallengeModel"];
-      file: components["schemas"]["FileModel"];
+      challenge: components["schemas"]["ChallengeIdSchema"];
+      file: components["schemas"]["FileIdSchema"];
     };
-    ChallengeIds: {
+    ChallengeIdSchema: {
       /** Format: uuid */
       id: string;
       title: string;
@@ -2878,16 +2884,16 @@ export interface components {
       updated_at: string;
     };
     ChallengeRelations: {
-      challenge_files: components["schemas"]["ChallengeFileModel"][];
-      challenge_tags: components["schemas"]["ChallengeTagModel"][];
-      containers: components["schemas"]["ContainerModel"][];
-      deployments: components["schemas"]["DeploymentModel"][];
-      files: components["schemas"]["FileModel"][];
-      flags: components["schemas"]["FlagModel"][];
-      hints: components["schemas"]["HintModel"][];
-      players: components["schemas"]["PlayerModel"][];
-      submissions: components["schemas"]["SubmissionModel"][];
-      tags: components["schemas"]["TagModel"][];
+      challenge_files: components["schemas"]["ChallengeFileIdSchema"][];
+      challenge_tags: components["schemas"]["ChallengeTagIdSchema"][];
+      containers: components["schemas"]["ContainerIdSchema"][];
+      deployments: components["schemas"]["DeploymentIdSchema"][];
+      files: components["schemas"]["FileIdSchema"][];
+      flags: components["schemas"]["FlagIdSchema"][];
+      hints: components["schemas"]["HintIdSchema"][];
+      players: components["schemas"]["PlayerIdSchema"][];
+      submissions: components["schemas"]["SubmissionIdSchema"][];
+      tags: components["schemas"]["TagIdSchema"][];
     };
     ChallengeSummary: {
       challenge: components["schemas"]["ChallengeModel"];
@@ -2896,6 +2902,12 @@ export interface components {
       solves: number;
       state: components["schemas"]["PlayerChallengeState"];
       tags: components["schemas"]["TagModel"][];
+    };
+    ChallengeTagIdSchema: {
+      /** Format: uuid */
+      challenge_id: string;
+      /** Format: uuid */
+      tag_id: string;
     };
     ChallengeTagModel: {
       /** Format: uuid */
@@ -2908,10 +2920,10 @@ export interface components {
       updated_at: string;
     };
     ChallengeTagRelations: {
-      challenge: components["schemas"]["ChallengeModel"];
-      tag: components["schemas"]["TagModel"];
+      challenge: components["schemas"]["ChallengeIdSchema"];
+      tag: components["schemas"]["TagIdSchema"];
     };
-    ContainerIds: {
+    ContainerIdSchema: {
       /** Format: uuid */
       id: string;
       name: string;
@@ -2937,7 +2949,7 @@ export interface components {
       updated_at: string;
     };
     ContainerRelations: {
-      challenge: components["schemas"]["ChallengeModel"];
+      challenge: components["schemas"]["ChallengeIdSchema"];
     };
     /** @enum {string} */
     ContainerStateEnum:
@@ -3099,7 +3111,7 @@ export interface components {
       /** Format: uuid */
       player_id: string;
     };
-    DeploymentIds: {
+    DeploymentIdSchema: {
       /** Format: uuid */
       id: string;
     };
@@ -3118,16 +3130,18 @@ export interface components {
       updated_at: string;
     };
     DeploymentRelations: {
-      challenge: components["schemas"]["ChallengeModel"];
-      instances: components["schemas"]["InstanceModel"][];
-      player: components["schemas"]["PlayerModel"];
+      challenge: components["schemas"]["ChallengeIdSchema"];
+      instances: components["schemas"]["InstanceIdSchema"][];
+      player: components["schemas"]["PlayerIdSchema"];
     };
     DetailedChallenge: {
       files: components["schemas"]["FileModel"][];
       hints: components["schemas"]["HintSummary"][];
       instances?: components["schemas"]["ChallengeInstance"][] | null;
     };
-    FileIds: {
+    /** @enum {string} */
+    ExportFormat: "Csv" | "Xml" | "Json";
+    FileIdSchema: {
       /** Format: uuid */
       id: string;
       name: string;
@@ -3143,9 +3157,9 @@ export interface components {
       updated_at: string;
     };
     FileRelations: {
-      challenge: components["schemas"]["ChallengeModel"];
+      challenge: components["schemas"]["ChallengeIdSchema"];
     };
-    FlagIds: {
+    FlagIdSchema: {
       /** Format: uuid */
       id: string;
       value: string;
@@ -3165,13 +3179,13 @@ export interface components {
       value: string;
     };
     FlagRelations: {
-      challenge: components["schemas"]["ChallengeModel"];
-      player?: null | components["schemas"]["PlayerModel"];
+      challenge: components["schemas"]["ChallengeIdSchema"];
+      player?: null | components["schemas"]["PlayerIdSchema"];
     };
     FlagVerificationResult: {
       is_correct: boolean;
     };
-    HintIds: {
+    HintIdSchema: {
       description: string;
       /** Format: uuid */
       id: string;
@@ -3190,9 +3204,9 @@ export interface components {
       updated_at: string;
     };
     HintRelations: {
-      challenge: components["schemas"]["ChallengeModel"];
-      players: components["schemas"]["PlayerModel"][];
-      unlocks: components["schemas"]["UnlockModel"][];
+      challenge: components["schemas"]["ChallengeIdSchema"];
+      players: components["schemas"]["PlayerIdSchema"][];
+      unlocks: components["schemas"]["UnlockIdSchema"][];
     };
     HintSummary: {
       /** Format: int32 */
@@ -3201,8 +3215,8 @@ export interface components {
       id: string;
       status: components["schemas"]["UnlockStatus"];
     };
-    InstanceIds: {
-      container_name: string;
+    InstanceIdSchema: {
+      container_id: string;
       /** Format: uuid */
       id: string;
     };
@@ -3220,9 +3234,9 @@ export interface components {
       updated_at: string;
     };
     InstanceRelations: {
-      deployment: components["schemas"]["DeploymentModel"];
+      deployment: components["schemas"]["DeploymentIdSchema"];
     };
-    InviteIds: {
+    InviteIdSchema: {
       /** Format: uuid */
       id: string;
     };
@@ -3241,7 +3255,7 @@ export interface components {
       updated_at: string;
     };
     InviteRelations: {
-      team: components["schemas"]["TeamModel"];
+      team: components["schemas"]["TeamIdSchema"];
     };
     InviteVerificationResult: {
       /** Format: uuid */
@@ -3297,7 +3311,7 @@ export interface components {
         username: string;
       };
     };
-    NotificationIds: {
+    NotificationIdSchema: {
       /** Format: uuid */
       id: string;
       title: string;
@@ -3317,7 +3331,13 @@ export interface components {
       updated_at: string;
     };
     NotificationRelations: {
-      player?: null | components["schemas"]["PlayerModel"];
+      player?: null | components["schemas"]["PlayerIdSchema"];
+    };
+    PlayerAwardIdSchema: {
+      /** Format: uuid */
+      award_id: string;
+      /** Format: uuid */
+      player_id: string;
     };
     PlayerAwardModel: {
       /** Format: uuid */
@@ -3332,8 +3352,8 @@ export interface components {
       updated_at: string;
     };
     PlayerAwardRelations: {
-      award: components["schemas"]["AwardModel"];
-      player: components["schemas"]["PlayerModel"];
+      award: components["schemas"]["AwardIdSchema"];
+      player: components["schemas"]["PlayerIdSchema"];
     };
     /** @enum {string} */
     PlayerChallengeState: "solved" | "unsolved" | "challenge_limit_reached";
@@ -3346,7 +3366,7 @@ export interface components {
       submissions: components["schemas"]["SubmissionModel"][];
       unlocks: components["schemas"]["UnlockModel"][];
     };
-    PlayerIds: {
+    PlayerIdSchema: {
       /** Format: uuid */
       id: string;
       username: string;
@@ -3379,18 +3399,18 @@ export interface components {
       tag_solves: components["schemas"]["TagSolves"][];
     };
     PlayerRelations: {
-      awards: components["schemas"]["AwardModel"][];
-      ban?: null | components["schemas"]["BanModel"];
-      challenges: components["schemas"]["ChallengeModel"][];
-      deployment?: null | components["schemas"]["DeploymentModel"];
-      flags: components["schemas"]["FlagModel"][];
-      hints: components["schemas"]["HintModel"][];
-      notifications: components["schemas"]["NotificationModel"][];
-      player_awards: components["schemas"]["PlayerAwardModel"][];
-      submissions: components["schemas"]["SubmissionModel"][];
-      team: components["schemas"]["TeamModel"];
-      tickets: components["schemas"]["TicketModel"][];
-      unlocks: components["schemas"]["UnlockModel"][];
+      awards: components["schemas"]["AwardIdSchema"][];
+      ban?: null | components["schemas"]["BanIdSchema"];
+      challenges: components["schemas"]["ChallengeIdSchema"][];
+      deployment?: null | components["schemas"]["DeploymentIdSchema"];
+      flags: components["schemas"]["FlagIdSchema"][];
+      hints: components["schemas"]["HintIdSchema"][];
+      notifications: components["schemas"]["NotificationIdSchema"][];
+      player_awards: components["schemas"]["PlayerAwardIdSchema"][];
+      submissions: components["schemas"]["SubmissionIdSchema"][];
+      team: components["schemas"]["TeamIdSchema"];
+      tickets: components["schemas"]["TicketIdSchema"][];
+      unlocks: components["schemas"]["UnlockIdSchema"][];
     };
     PointsHistory: {
       /** Format: int64 */
@@ -3461,6 +3481,12 @@ export interface components {
       /** Format: int64 */
       unlocks: number;
     };
+    SubmissionIdSchema: {
+      /** Format: uuid */
+      challenge_id: string;
+      /** Format: uuid */
+      player_id: string;
+    };
     SubmissionModel: {
       /** Format: uuid */
       challenge_id: string;
@@ -3474,10 +3500,10 @@ export interface components {
       updated_at: string;
     };
     SubmissionRelations: {
-      challenge: components["schemas"]["ChallengeModel"];
-      player: components["schemas"]["PlayerModel"];
+      challenge: components["schemas"]["ChallengeIdSchema"];
+      player: components["schemas"]["PlayerIdSchema"];
     };
-    TagIds: {
+    TagIdSchema: {
       /** Format: uuid */
       id: string;
       value: string;
@@ -3492,8 +3518,8 @@ export interface components {
       value: string;
     };
     TagRelations: {
-      challenge_tags: components["schemas"]["ChallengeTagModel"][];
-      challenges: components["schemas"]["ChallengeModel"][];
+      challenge_tags: components["schemas"]["ChallengeTagIdSchema"][];
+      challenges: components["schemas"]["ChallengeIdSchema"][];
     };
     TagSolves: {
       solves: number;
@@ -3505,7 +3531,7 @@ export interface components {
       submissions: components["schemas"]["SubmissionModel"][];
       unlocks: components["schemas"]["UnlockModel"][];
     };
-    TeamIds: {
+    TeamIdSchema: {
       /** Format: uuid */
       id: string;
       name: string;
@@ -3555,10 +3581,10 @@ export interface components {
           team_name: string;
         };
     TeamRelations: {
-      invites: components["schemas"]["InviteModel"][];
-      players: components["schemas"]["PlayerModel"][];
+      invites: components["schemas"]["InviteIdSchema"][];
+      players: components["schemas"]["PlayerIdSchema"][];
     };
-    TicketIds: {
+    TicketIdSchema: {
       /** Format: uuid */
       id: string;
       title: string;
@@ -3579,11 +3605,17 @@ export interface components {
       updated_at: string;
     };
     TicketRelations: {
-      admin: components["schemas"]["AdminModel"];
-      player: components["schemas"]["PlayerModel"];
+      admin: components["schemas"]["AdminIdSchema"];
+      player: components["schemas"]["PlayerIdSchema"];
     };
     /** @enum {string} */
     TicketStatusEnum: "closed" | "open" | "resolved";
+    UnlockIdSchema: {
+      /** Format: uuid */
+      hint_id: string;
+      /** Format: uuid */
+      player_id: string;
+    };
     UnlockModel: {
       /** Format: date-time */
       created_at: string;
@@ -3595,8 +3627,8 @@ export interface components {
       updated_at: string;
     };
     UnlockRelations: {
-      hint: components["schemas"]["HintModel"];
-      player: components["schemas"]["PlayerModel"];
+      hint: components["schemas"]["HintIdSchema"];
+      player: components["schemas"]["PlayerIdSchema"];
     };
     UnlockStatus:
       | {
@@ -3762,7 +3794,10 @@ export interface operations {
   };
   export_admins: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -3825,7 +3860,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["AdminIds"][];
+          "application/json": components["schemas"]["AdminIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -4294,7 +4329,10 @@ export interface operations {
   };
   export_awards: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -4357,7 +4395,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["AwardIds"][];
+          "application/json": components["schemas"]["AwardIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -4826,7 +4864,10 @@ export interface operations {
   };
   export_bans: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -4889,7 +4930,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["BanIds"][];
+          "application/json": components["schemas"]["BanIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -5430,7 +5471,10 @@ export interface operations {
   };
   export_challenges: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -5493,7 +5537,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["ChallengeIds"][];
+          "application/json": components["schemas"]["ChallengeIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -5962,7 +6006,10 @@ export interface operations {
   };
   export_challenge_files: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -6455,7 +6502,10 @@ export interface operations {
   };
   export_challenge_tags: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -6948,7 +6998,10 @@ export interface operations {
   };
   export_containers: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -7011,7 +7064,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["ContainerIds"][];
+          "application/json": components["schemas"]["ContainerIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -7527,7 +7580,10 @@ export interface operations {
   };
   export_deployments: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -7590,7 +7646,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["DeploymentIds"][];
+          "application/json": components["schemas"]["DeploymentIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -8059,7 +8115,10 @@ export interface operations {
   };
   export_files: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -8122,7 +8181,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["FileIds"][];
+          "application/json": components["schemas"]["FileIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -8591,7 +8650,10 @@ export interface operations {
   };
   export_flags: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -8654,7 +8716,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["FlagIds"][];
+          "application/json": components["schemas"]["FlagIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -9123,7 +9185,10 @@ export interface operations {
   };
   export_hints: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -9186,7 +9251,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["HintIds"][];
+          "application/json": components["schemas"]["HintIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -9655,7 +9720,10 @@ export interface operations {
   };
   export_instances: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -9718,7 +9786,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["InstanceIds"][];
+          "application/json": components["schemas"]["InstanceIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -10187,7 +10255,10 @@ export interface operations {
   };
   export_invites: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -10250,7 +10321,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["InviteIds"][];
+          "application/json": components["schemas"]["InviteIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -10719,7 +10790,10 @@ export interface operations {
   };
   export_notifications: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -10782,7 +10856,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["NotificationIds"][];
+          "application/json": components["schemas"]["NotificationIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -11251,7 +11325,10 @@ export interface operations {
   };
   export_players: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -11314,7 +11391,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["PlayerIds"][];
+          "application/json": components["schemas"]["PlayerIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -11783,7 +11860,10 @@ export interface operations {
   };
   export_player_awards: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -12427,7 +12507,10 @@ export interface operations {
   };
   export_submissions: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -12920,7 +13003,10 @@ export interface operations {
   };
   export_tags: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -12983,7 +13069,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["TagIds"][];
+          "application/json": components["schemas"]["TagIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -13452,7 +13538,10 @@ export interface operations {
   };
   export_teams: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -13515,7 +13604,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["TeamIds"][];
+          "application/json": components["schemas"]["TeamIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -13984,7 +14073,10 @@ export interface operations {
   };
   export_tickets: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -14047,7 +14139,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["TicketIds"][];
+          "application/json": components["schemas"]["TicketIdSchema"][];
         };
       };
       /** @description Action is permissible after login */
@@ -14584,7 +14676,10 @@ export interface operations {
   };
   export_unlocks: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description Format to export table */
+        format: components["schemas"]["ExportFormat"];
+      };
       header?: never;
       path?: never;
       cookie?: never;

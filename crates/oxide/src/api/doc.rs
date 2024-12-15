@@ -2,6 +2,7 @@ use utoipa::openapi::security::{Http, HttpAuthScheme, SecurityScheme};
 use utoipa::{Modify, OpenApi};
 
 use crate::handlers::*;
+use crate::schemas::ExportFormat;
 
 #[derive(OpenApi)]
 #[openapi(
@@ -242,7 +243,7 @@ use crate::handlers::*;
         unlock::export,
         unlock::import,
     ),
-    components(),
+    components(schemas(ExportFormat)),
     modifiers(&SecurityAddon),
     security(
         ("bearerAuth" = [])
