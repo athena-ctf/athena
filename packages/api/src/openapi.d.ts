@@ -63,10 +63,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import admins */
-    get: operations["import_admins"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import admins */
+    post: operations["import_admins"];
     delete?: never;
     options?: never;
     head?: never;
@@ -168,10 +168,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import awards */
-    get: operations["import_awards"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import awards */
+    post: operations["import_awards"];
     delete?: never;
     options?: never;
     head?: never;
@@ -273,10 +273,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import bans */
-    get: operations["import_bans"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import bans */
+    post: operations["import_bans"];
     delete?: never;
     options?: never;
     head?: never;
@@ -395,10 +395,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import challenges */
-    get: operations["import_challenges"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import challenges */
+    post: operations["import_challenges"];
     delete?: never;
     options?: never;
     head?: never;
@@ -483,10 +483,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import challenge_files */
-    get: operations["import_challenge_files"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import challenge_files */
+    post: operations["import_challenge_files"];
     delete?: never;
     options?: never;
     head?: never;
@@ -571,10 +571,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import challenge_tags */
-    get: operations["import_challenge_tags"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import challenge_tags */
+    post: operations["import_challenge_tags"];
     delete?: never;
     options?: never;
     head?: never;
@@ -676,10 +676,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import containers */
-    get: operations["import_containers"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import containers */
+    post: operations["import_containers"];
     delete?: never;
     options?: never;
     head?: never;
@@ -798,10 +798,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import deployments */
-    get: operations["import_deployments"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import deployments */
+    post: operations["import_deployments"];
     delete?: never;
     options?: never;
     head?: never;
@@ -903,10 +903,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import files */
-    get: operations["import_files"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import files */
+    post: operations["import_files"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1008,10 +1008,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import flags */
-    get: operations["import_flags"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import flags */
+    post: operations["import_flags"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1113,10 +1113,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import hints */
-    get: operations["import_hints"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import hints */
+    post: operations["import_hints"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1218,10 +1218,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import instances */
-    get: operations["import_instances"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import instances */
+    post: operations["import_instances"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1323,10 +1323,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import invites */
-    get: operations["import_invites"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import invites */
+    post: operations["import_invites"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1428,10 +1428,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import notifications */
-    get: operations["import_notifications"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import notifications */
+    post: operations["import_notifications"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1533,10 +1533,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import players */
-    get: operations["import_players"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import players */
+    post: operations["import_players"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1621,10 +1621,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import player_awards */
-    get: operations["import_player_awards"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import player_awards */
+    post: operations["import_player_awards"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1744,10 +1744,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import submissions */
-    get: operations["import_submissions"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import submissions */
+    post: operations["import_submissions"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1849,10 +1849,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import tags */
-    get: operations["import_tags"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import tags */
+    post: operations["import_tags"];
     delete?: never;
     options?: never;
     head?: never;
@@ -1954,10 +1954,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import teams */
-    get: operations["import_teams"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import teams */
+    post: operations["import_teams"];
     delete?: never;
     options?: never;
     head?: never;
@@ -2059,10 +2059,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import tickets */
-    get: operations["import_tickets"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import tickets */
+    post: operations["import_tickets"];
     delete?: never;
     options?: never;
     head?: never;
@@ -2164,10 +2164,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Import unlocks */
-    get: operations["import_unlocks"];
+    get?: never;
     put?: never;
-    post?: never;
+    /** Import unlocks */
+    post: operations["import_unlocks"];
     delete?: never;
     options?: never;
     head?: never;
@@ -2919,7 +2919,7 @@ export interface components {
     ContainerModel: {
       /** Format: uuid */
       challenge_id: string;
-      command: string[];
+      command: string;
       /** Format: date-time */
       created_at: string;
       depends_on: string[];
@@ -2989,7 +2989,7 @@ export interface components {
     CreateContainerSchema: {
       /** Format: uuid */
       challenge_id: string;
-      command: string[];
+      command: string;
       depends_on: string[];
       environment: string[];
       image: string;
@@ -3775,7 +3775,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -3865,7 +3868,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -4304,7 +4307,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -4394,7 +4400,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -4833,7 +4839,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -4923,7 +4932,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -5434,7 +5443,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -5524,7 +5536,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -5963,7 +5975,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -6006,7 +6021,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -6453,7 +6468,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -6496,7 +6514,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -6943,7 +6961,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -7033,7 +7054,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -7519,7 +7540,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -7609,7 +7633,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -8048,7 +8072,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -8138,7 +8165,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -8577,7 +8604,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -8667,7 +8697,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -9106,7 +9136,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -9196,7 +9229,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -9635,7 +9668,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -9725,7 +9761,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -10164,7 +10200,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -10254,7 +10293,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -10693,7 +10732,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -10783,7 +10825,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -11222,7 +11264,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -11312,7 +11357,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -11751,7 +11796,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -11794,7 +11842,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -12392,7 +12440,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -12435,7 +12486,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -12882,7 +12933,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -12972,7 +13026,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -13411,7 +13465,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -13501,7 +13558,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -13940,7 +13997,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -14030,7 +14090,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };
@@ -14537,7 +14597,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["JsonResponse"];
+          "text/csv": {
+            /** Format: binary */
+            file: string;
+          };
         };
       };
       /** @description Action is permissible after login */
@@ -14580,7 +14643,7 @@ export interface operations {
       content: {
         "multipart/form-data": {
           /** Format: binary */
-          csv_file: string;
+          file: string;
         };
       };
     };

@@ -55,7 +55,7 @@ export const UpdateForm: Story = {
       id: faker.string.uuid(),
       updated_at: faker.date.anytime().toISOString(),
       challenge_id: faker.string.uuid(),
-      command: [],
+      command: "echo 'hello world'",
       depends_on: [],
       environment: [],
       image: faker.lorem.word(),

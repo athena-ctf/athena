@@ -190,7 +190,13 @@ impl Manager {
                                     .concat(),
                             ),
                             exposed_ports: Some(exposed_ports),
-                            cmd: Some(container.command.clone()),
+                            cmd: Some(
+                                container
+                                    .command
+                                    .split(' ')
+                                    .map(ToString::to_string)
+                                    .collect(),
+                            ),
                             host_config: Some(bollard::models::HostConfig {
                                 port_bindings: Some(port_bindings),
                                 memory: Some(i64::from(container.memory_limit) * 1024 * 1024),

@@ -1,7 +1,6 @@
 use crate::redis_keys::PLAYER_LAST_UPDATED;
-use crate::schemas::{Ban, BanModel, CreateBanSchema, JsonResponse, Player, PlayerModel};
 
-oxide_macros::crud!(Ban, single: [Player], optional: [], multiple: [], id_descriptor: reason);
+oxide_macros::crud!(Ban, single: [Player], optional: [], multiple: []);
 
 #[utoipa::path(
     post,

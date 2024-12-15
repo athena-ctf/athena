@@ -56,7 +56,6 @@ export function ContainerForm({
       key: env.split("=")[0],
       value: env.split("=")[1],
     })),
-    command: _defaultValues.command.join(" "),
   };
 
   const form = useForm<Schema>({
@@ -79,14 +78,12 @@ export function ContainerForm({
             body: {
               ...values,
               environment: Object.entries(values.environment).map(([k, v]) => `${k}=${v}`),
-              command: values.command.split(" "),
             },
           })
         : await apiClient.PUT("/admin/container/{id}", {
             body: {
               ...values,
               environment: Object.entries(values.environment).map(([k, v]) => `${k}=${v}`),
-              command: values.command.split(" "),
             },
             params: {
               path: {

@@ -2,9 +2,9 @@ import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { ChallengeForm as Component } from "@/components/forms/challenge";
+import { ctf } from "@/utils/ctf-data";
 import { cardDecorator, tooltipDecorator } from "@/utils/decorators";
 import { openapiHttp } from "@/utils/msw";
-import { ctf } from "@/utils/ctf-data";
 
 const meta = {
   title: "Components/Forms/ChallengeForm",

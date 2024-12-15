@@ -9,7 +9,6 @@ struct CrudMacroInput {
     single: Vec<Ident>,
     multiple: Vec<Ident>,
     optional: Vec<Ident>,
-    id_descriptor: Option<Ident>,
 }
 
 impl Parse for CrudMacroInput {
@@ -40,22 +39,11 @@ impl Parse for CrudMacroInput {
         let multiple: Punctuated<Ident, Token![,]> =
             content.parse_terminated(Ident::parse, Token![,])?;
 
-        let id_descriptor = if input.is_empty() {
-            None
-        } else {
-            input.parse::<Token![,]>()?;
-            input.parse::<Ident>()?;
-            input.parse::<Token![:]>()?;
-
-            Some(input.parse::<Ident>()?)
-        };
-
         Ok(Self {
             entity,
             single: single.into_iter().collect(),
             multiple: multiple.into_iter().collect(),
             optional: optional.into_iter().collect(),
-            id_descriptor,
         })
     }
 }
@@ -89,48 +77,32 @@ fn gen_list_fn(entity: &Ident) -> impl ToTokens {
     }
 }
 
-fn gen_list_ids_fn(entity: &Ident, id_descriptor: Option<Ident>) -> impl ToTokens {
+fn gen_list_ids_fn(entity: &Ident) -> impl ToTokens {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
-    let entity_str = entity.to_string();
 
     let doc = format!("List {entity_snake} ids");
     let path = format!("/admin/{entity_snake}/ids");
     let operation_id = format!("list_{entity_snake}_ids");
     let description = format!("Listed {entity_snake} ids successfully");
 
-    let ids_struct = format_ident!("{entity}Ids");
-
-    let id_descriptor = id_descriptor.map(|desc| quote! { #desc: String, });
+    let entity_id_schema = format_ident!("{}IdSchema", entity);
 
     quote! {
-        #[derive(
-            serde::Serialize,
-            serde::Deserialize,
-            sea_orm::FromQueryResult,
-            utoipa::ToSchema,
-            sea_orm::DerivePartialModel,
-        )]
-        #[sea_orm(entity = #entity_str)]
-        pub struct #ids_struct {
-            id: Uuid,
-            #id_descriptor
-        }
-
         #[doc = #doc]
         #[utoipa::path(
             get,
             path = #path,
             operation_id = #operation_id,
             responses(
-                (status = 200, description = #description, body = [#ids_struct]),
+                (status = 200, description = #description, body = [#entity_id_schema]),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
                 (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
-        )]pub async fn list_ids(state: State<Arc<AppState>>) -> Result<Json<Vec<#ids_struct>>> {
+        )]pub async fn list_ids(state: State<Arc<AppState>>) -> Result<Json<Vec<#entity_id_schema>>> {
             Ok(Json(
                 #entity::find()
-                    .into_partial_model::<#ids_struct>()
+                    .into_partial_model::<#entity_id_schema>()
                     .all(&state.db_conn)
                     .await?,
             ))
@@ -313,7 +285,7 @@ fn gen_relations_fn(
 
     let single_fields = single.iter().map(|ident| {
         let ident_snake = format_ident!("{}", heck::AsSnakeCase(ident.to_string()).to_string());
-        let ident_model = format_ident!("{}Model", ident);
+        let ident_model = format_ident!("{}IdSchema", ident);
 
         quote! {
             pub #ident_snake: #ident_model,
@@ -322,7 +294,7 @@ fn gen_relations_fn(
 
     let optional_fields = optional.iter().map(|ident| {
         let ident_snake = format_ident!("{}", heck::AsSnakeCase(ident.to_string()).to_string());
-        let ident_model = format_ident!("{}Model", ident);
+        let ident_model = format_ident!("{}IdSchema", ident);
 
         quote! {
             pub #ident_snake: Option<#ident_model>,
@@ -331,7 +303,7 @@ fn gen_relations_fn(
 
     let multiple_fields = multiple.iter().map(|ident| {
         let ident_snake = format_ident!("{}s", heck::AsSnakeCase(ident.to_string()).to_string());
-        let ident_model = format_ident!("{}Model", ident);
+        let ident_model = format_ident!("{}IdSchema", ident);
 
         quote! {
             pub #ident_snake: Vec<#ident_model>,
@@ -340,25 +312,28 @@ fn gen_relations_fn(
 
     let single_relations = single.iter().map(|ident| {
         let ident_snake = format_ident!("{}", heck::AsSnakeCase(ident.to_string()).to_string());
+        let ident_model = format_ident!("{}IdSchema", ident);
 
         quote! {
-            #ident_snake: model.find_related(#ident).one(&state.db_conn).await?.unwrap(),
+            #ident_snake: model.find_related(#ident).into_partial_model::<#ident_model>().one(&state.db_conn).await?.unwrap(),
         }
     });
 
     let optional_relations = optional.iter().map(|ident| {
         let ident_snake = format_ident!("{}", heck::AsSnakeCase(ident.to_string()).to_string());
+        let ident_model = format_ident!("{}IdSchema", ident);
 
         quote! {
-            #ident_snake: model.find_related(#ident).one(&state.db_conn).await?,
+            #ident_snake: model.find_related(#ident).into_partial_model::<#ident_model>().one(&state.db_conn).await?,
         }
     });
 
     let multiple_relations = multiple.iter().map(|ident| {
         let ident_snake = format_ident!("{}s", heck::AsSnakeCase(ident.to_string()).to_string());
+        let ident_model = format_ident!("{}IdSchema", ident);
 
         quote! {
-            #ident_snake: model.find_related(#ident).all(&state.db_conn).await?,
+            #ident_snake: model.find_related(#ident).into_partial_model::<#ident_model>().all(&state.db_conn).await?,
         }
     });
 
@@ -415,11 +390,11 @@ fn gen_import_fn(entity: &Ident) -> impl ToTokens {
     quote! {
         #[doc = #doc]
         #[utoipa::path(
-            get,
+            post,
             path = #path,
             operation_id = #operation_id,
             request_body(
-                content = inline(ImportFile),
+                content = inline(FileSchema),
                 content_type = "multipart/form-data",
             ),
             responses(
@@ -431,7 +406,7 @@ fn gen_import_fn(entity: &Ident) -> impl ToTokens {
         )]
         pub async fn import(state: State<Arc<AppState>>, mut multipart: Multipart) -> Result<Json<JsonResponse>> {
             while let Some(field) = multipart.next_field().await.unwrap() {
-                if field.name().unwrap() == "csv_file" {
+                if field.name().unwrap() == "file" {
                     let mut temp_file = NamedTempFile::new()?;
                     let file_path = temp_file.path().to_str().unwrap().to_owned();
 
@@ -451,13 +426,12 @@ fn gen_import_fn(entity: &Ident) -> impl ToTokens {
 }
 
 fn gen_export_fn(entity: &Ident) -> impl ToTokens {
-    let entity_snake = heck::AsSnakeCase(entity.to_string());
+    let entity_snake = heck::AsSnakeCase(entity.to_string()).to_string();
 
     let doc = format!("Export {entity_snake}s");
     let path = format!("/admin/{entity_snake}/export");
     let operation_id = format!("export_{entity_snake}s");
     let description = format!("Exported {entity_snake}s successfully");
-    let query = format!("COPY {entity_snake} TO '{{}}' WITH (FORMAT CSV, HEADER);");
     let filename = format!("{entity_snake}.csv");
 
     quote! {
@@ -466,24 +440,21 @@ fn gen_export_fn(entity: &Ident) -> impl ToTokens {
             get,
             path = #path,
             operation_id = #operation_id,
+            params(("format" = ExportFormat, Query, description = "Format to export table")),
             responses(
-                (status = 200, description = #description, body = JsonResponse),
+                (status = 200, description = #description, body = inline(FileSchema), content_type = "text/csv"),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
                 (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]
-        async fn export(state: State<Arc<AppState>>) -> Result<Attachment<Body>> {
+        async fn export(state: State<Arc<AppState>>, Query(query): Query<ExportQuery>) -> Result<Attachment<Body>> {
             let temp_file = NamedTempFile::new()?;
-            let file_path = temp_file.path().to_str().unwrap();
+            let file_path = temp_file.path().display().to_string();
 
-            let query = format!(#query, file_path);
-
-            sqlx::query(&query)
+            sqlx::query(&query.sql_query(#entity_snake, &file_path))
                 .execute(state.db_conn.get_postgres_connection_pool())
                 .await?;
-
-            let file_path = temp_file.path().display().to_string();
 
             let csv_stream = CsvStream::new(temp_file).await.map_err(|err| Error::Fs {
                 source: err,
@@ -501,11 +472,10 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
         single,
         multiple,
         optional,
-        id_descriptor,
     } = parse_macro_input!(input as CrudMacroInput);
 
     let list_fn = gen_list_fn(&entity);
-    let list_ids_fn = gen_list_ids_fn(&entity, id_descriptor);
+    let list_ids_fn = gen_list_ids_fn(&entity);
     let create_fn = gen_create_fn(&entity);
     let retrieve_fn = gen_retrieve_fn(&entity);
     let update_fn = gen_update_fn(&entity);
@@ -522,12 +492,37 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
     let route_import = format!("{route_base}/import");
     let route_export = format!("{route_base}/export");
 
+    let mut imports = vec![
+        entity.clone(),
+        format_ident!("{entity}Model"),
+        format_ident!("Create{entity}Schema"),
+        format_ident!("{entity}IdSchema"),
+    ];
+    imports.extend(
+        single
+            .iter()
+            .map(|single| vec![format_ident!("{single}IdSchema"), single.clone()])
+            .flatten(),
+    );
+    imports.extend(
+        optional
+            .iter()
+            .map(|optional| vec![format_ident!("{optional}IdSchema"), optional.clone()])
+            .flatten(),
+    );
+    imports.extend(
+        multiple
+            .iter()
+            .map(|multiple| vec![format_ident!("{multiple}IdSchema"), multiple.clone()])
+            .flatten(),
+    );
+
     quote! {
         use std::io;
         use std::sync::Arc;
 
         use axum::body::Body;
-        use axum::extract::{Json, Multipart, Path, State};
+        use axum::extract::{Json, Multipart, Path, Query, State};
         use axum::response::IntoResponse;
         use axum::routing::{get, post};
         use axum::Router;
@@ -544,7 +539,7 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
 
         use super::CsvStream;
         use crate::errors::{Error, Result};
-        use crate::schemas::{ImportFile};
+        use crate::schemas::{FileSchema, ExportQuery, ExportFormat, JsonResponse, #(#imports,)*};
         use crate::service::AppState;
 
         #list_fn

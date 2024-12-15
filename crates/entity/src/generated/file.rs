@@ -6,18 +6,11 @@ use serde::{Deserialize, Serialize};
 use super::sea_orm_active_enums::BackendEnum;
 
 #[derive(
-    Clone,
-    Debug,
-    PartialEq,
-    DeriveEntityModel,
-    Eq,
-    Serialize,
-    Deserialize,
-    utoipa::ToSchema,
-    oxide_macros::Details,
+    Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize, utoipa::ToSchema,
 )]
 #[sea_orm(table_name = "file")]
 #[schema(as = FileModel)]
+#[oxide_macros::gen_schemas(table_name = "file", id_descriptor = "name")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,

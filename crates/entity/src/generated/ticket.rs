@@ -6,18 +6,11 @@ use serde::{Deserialize, Serialize};
 use super::sea_orm_active_enums::TicketStatusEnum;
 
 #[derive(
-    Clone,
-    Debug,
-    PartialEq,
-    DeriveEntityModel,
-    Eq,
-    Serialize,
-    Deserialize,
-    utoipa::ToSchema,
-    oxide_macros::Details,
+    Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize, utoipa::ToSchema,
 )]
 #[sea_orm(table_name = "ticket")]
 #[schema(as = TicketModel)]
+#[oxide_macros::gen_schemas(table_name = "ticket", id_descriptor = "title")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,

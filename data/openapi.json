@@ -158,9 +158,18 @@
           "200": {
             "description": "Exported admins successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -253,7 +262,7 @@
       }
     },
     "/admin/admin/import": {
-      "get": {
+      "post": {
         "tags": [
           "admin"
         ],
@@ -265,10 +274,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -787,9 +796,18 @@
           "200": {
             "description": "Exported awards successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -882,7 +900,7 @@
       }
     },
     "/admin/award/import": {
-      "get": {
+      "post": {
         "tags": [
           "award"
         ],
@@ -894,10 +912,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -1416,9 +1434,18 @@
           "200": {
             "description": "Exported bans successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -1511,7 +1538,7 @@
       }
     },
     "/admin/ban/import": {
-      "get": {
+      "post": {
         "tags": [
           "ban"
         ],
@@ -1523,10 +1550,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -2138,9 +2165,18 @@
           "200": {
             "description": "Exported challenges successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -2233,7 +2269,7 @@
       }
     },
     "/admin/challenge/import": {
-      "get": {
+      "post": {
         "tags": [
           "challenge"
         ],
@@ -2245,10 +2281,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -2767,9 +2803,18 @@
           "200": {
             "description": "Exported challenge_files successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -2808,7 +2853,7 @@
       }
     },
     "/admin/challenge_file/import": {
-      "get": {
+      "post": {
         "tags": [
           "challenge_file"
         ],
@@ -2820,10 +2865,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -3382,9 +3427,18 @@
           "200": {
             "description": "Exported challenge_tags successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -3423,7 +3477,7 @@
       }
     },
     "/admin/challenge_tag/import": {
-      "get": {
+      "post": {
         "tags": [
           "challenge_tag"
         ],
@@ -3435,10 +3489,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -3997,9 +4051,18 @@
           "200": {
             "description": "Exported containers successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -4092,7 +4155,7 @@
       }
     },
     "/admin/container/import": {
-      "get": {
+      "post": {
         "tags": [
           "container"
         ],
@@ -4104,10 +4167,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -4677,9 +4740,18 @@
           "200": {
             "description": "Exported deployments successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -4772,7 +4844,7 @@
       }
     },
     "/admin/deployment/import": {
-      "get": {
+      "post": {
         "tags": [
           "deployment"
         ],
@@ -4784,10 +4856,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -5306,9 +5378,18 @@
           "200": {
             "description": "Exported files successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -5401,7 +5482,7 @@
       }
     },
     "/admin/file/import": {
-      "get": {
+      "post": {
         "tags": [
           "file"
         ],
@@ -5413,10 +5494,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -5935,9 +6016,18 @@
           "200": {
             "description": "Exported flags successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -6030,7 +6120,7 @@
       }
     },
     "/admin/flag/import": {
-      "get": {
+      "post": {
         "tags": [
           "flag"
         ],
@@ -6042,10 +6132,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -6564,9 +6654,18 @@
           "200": {
             "description": "Exported hints successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -6659,7 +6758,7 @@
       }
     },
     "/admin/hint/import": {
-      "get": {
+      "post": {
         "tags": [
           "hint"
         ],
@@ -6671,10 +6770,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -7193,9 +7292,18 @@
           "200": {
             "description": "Exported instances successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -7288,7 +7396,7 @@
       }
     },
     "/admin/instance/import": {
-      "get": {
+      "post": {
         "tags": [
           "instance"
         ],
@@ -7300,10 +7408,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -7822,9 +7930,18 @@
           "200": {
             "description": "Exported invites successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -7917,7 +8034,7 @@
       }
     },
     "/admin/invite/import": {
-      "get": {
+      "post": {
         "tags": [
           "invite"
         ],
@@ -7929,10 +8046,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -8451,9 +8568,18 @@
           "200": {
             "description": "Exported notifications successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -8546,7 +8672,7 @@
       }
     },
     "/admin/notification/import": {
-      "get": {
+      "post": {
         "tags": [
           "notification"
         ],
@@ -8558,10 +8684,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -9080,9 +9206,18 @@
           "200": {
             "description": "Exported players successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -9175,7 +9310,7 @@
       }
     },
     "/admin/player/import": {
-      "get": {
+      "post": {
         "tags": [
           "player"
         ],
@@ -9187,10 +9322,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -9709,9 +9844,18 @@
           "200": {
             "description": "Exported player_awards successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -9750,7 +9894,7 @@
       }
     },
     "/admin/player_award/import": {
-      "get": {
+      "post": {
         "tags": [
           "player_award"
         ],
@@ -9762,10 +9906,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -10505,9 +10649,18 @@
           "200": {
             "description": "Exported submissions successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -10546,7 +10699,7 @@
       }
     },
     "/admin/submission/import": {
-      "get": {
+      "post": {
         "tags": [
           "submission"
         ],
@@ -10558,10 +10711,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -11120,9 +11273,18 @@
           "200": {
             "description": "Exported tags successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -11215,7 +11377,7 @@
       }
     },
     "/admin/tag/import": {
-      "get": {
+      "post": {
         "tags": [
           "tag"
         ],
@@ -11227,10 +11389,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -11749,9 +11911,18 @@
           "200": {
             "description": "Exported teams successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -11844,7 +12015,7 @@
       }
     },
     "/admin/team/import": {
-      "get": {
+      "post": {
         "tags": [
           "team"
         ],
@@ -11856,10 +12027,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -12378,9 +12549,18 @@
           "200": {
             "description": "Exported tickets successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -12473,7 +12653,7 @@
       }
     },
     "/admin/ticket/import": {
-      "get": {
+      "post": {
         "tags": [
           "ticket"
         ],
@@ -12485,10 +12665,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -13090,9 +13270,18 @@
           "200": {
             "description": "Exported unlocks successfully",
             "content": {
-              "application/json": {
+              "text/csv": {
                 "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
+                  "type": "object",
+                  "required": [
+                    "file"
+                  ],
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
                 }
               }
             }
@@ -13131,7 +13320,7 @@
       }
     },
     "/admin/unlock/import": {
-      "get": {
+      "post": {
         "tags": [
           "unlock"
         ],
@@ -13143,10 +13332,10 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "csv_file"
+                  "file"
                 ],
                 "properties": {
-                  "csv_file": {
+                  "file": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -16402,10 +16591,7 @@
             "format": "uuid"
           },
           "command": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "created_at": {
             "type": "string",
@@ -16624,10 +16810,7 @@
             "format": "uuid"
           },
           "command": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "depends_on": {
             "type": "array",

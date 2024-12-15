@@ -277,8 +277,32 @@ pub struct LoginResponse<T> {
 }
 
 #[derive(ToSchema)]
-pub struct ImportFile {
+pub struct FileSchema {
     #[schema(value_type = String, format = Binary)]
     #[allow(dead_code)]
-    pub csv_file: Vec<u8>,
+    pub file: Vec<u8>,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub enum ExportFormat {
+    Csv,
+    Xml,
+    Json,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct ExportQuery {
+    format: ExportFormat,
+}
+
+impl ExportQuery {
+    pub fn sql_query(&self, table_name: &str, out_path: &str) -> String {
+        match self.format {
+            ExportFormat::Csv => {
+                format!("COPY {table_name} TO '{out_path}' WITH (FORMAT CSV, HEADER);")
+            }
+            ExportFormat::Json => format!(""),
+            ExportFormat::Xml => format!(""),
+        }
+    }
 }

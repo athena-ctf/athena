@@ -1,12 +1,9 @@
 use sea_orm::TransactionTrait;
 
 use crate::jwt::AuthPlayer;
-use crate::schemas::{
-    Challenge, ChallengeModel, CreateHintSchema, Hint, HintModel, JsonResponse, Player,
-    PlayerModel, Unlock, UnlockModel,
-};
+use crate::schemas::UnlockModel;
 
-oxide_macros::crud!(Hint, single: [Challenge], optional: [], multiple: [Unlock, Player], id_descriptor: description);
+oxide_macros::crud!(Hint, single: [Challenge], optional: [], multiple: [Unlock, Player]);
 
 #[utoipa::path(
     get,

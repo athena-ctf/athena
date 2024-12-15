@@ -5,12 +5,9 @@ use sea_orm::{Iterable, QuerySelect};
 
 use crate::jwt::AuthPlayer;
 use crate::leaderboard;
-use crate::schemas::{
-    AwardsReceived, CreateTeamSchema, Invite, InviteModel, JsonResponse, Player, PlayerModel, Tag,
-    TagSolves, Team, TeamDetails, TeamMember, TeamModel, TeamProfile,
-};
+use crate::schemas::{AwardsReceived, Tag, TagSolves, TeamDetails, TeamMember, TeamProfile};
 
-oxide_macros::crud!(Team, single: [], optional: [], multiple: [Invite, Player], id_descriptor: name);
+oxide_macros::crud!(Team, single: [], optional: [], multiple: [Invite, Player]);
 
 async fn get_team_profile(
     team: TeamModel,

@@ -6,19 +6,14 @@ use crate::jwt::AuthPlayer;
 use crate::leaderboard;
 use crate::redis_keys::PLAYER_LAST_UPDATED;
 use crate::schemas::{
-    Award, AwardModel, AwardsReceived, Ban, BanModel, Challenge, ChallengeModel,
-    CreatePlayerSchema, Deployment, DeploymentModel, Flag, FlagModel, Hint, HintModel,
-    JsonResponse, Notification, NotificationModel, Player, PlayerAward, PlayerAwardModel,
-    PlayerDetails, PlayerModel, PlayerProfile, Submission, SubmissionModel, Tag, TagSolves, Team,
-    TeamModel, Ticket, TicketModel, Unlock, UnlockModel, UpdateProfileSchema,
+    AwardsReceived, PlayerDetails, PlayerProfile, Tag, TagSolves, UpdateProfileSchema,
 };
 
 oxide_macros::crud!(
     Player,
     single: [Team],
     optional: [Deployment, Ban],
-    multiple: [Flag, Award, PlayerAward, Notification, Submission, Unlock, Challenge, Hint, Ticket],
-    id_descriptor: username
+    multiple: [Flag, Award, PlayerAward, Notification, Submission, Unlock, Challenge, Hint, Ticket]
 );
 
 pub async fn get_user_profile(

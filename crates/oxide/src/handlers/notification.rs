@@ -1,9 +1,6 @@
 use crate::jwt::AuthPlayer;
-use crate::schemas::{
-    CreateNotificationSchema, JsonResponse, Notification, NotificationModel, Player, PlayerModel,
-};
 
-oxide_macros::crud!(Notification, single: [], optional: [Player], multiple: [], id_descriptor: title);
+oxide_macros::crud!(Notification, single: [], optional: [Player], multiple: []);
 
 #[utoipa::path(
     get,

@@ -2,8 +2,8 @@ import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { ChallengeTable as Component } from "@/components/tables/challenge";
-import { openapiHttp } from "@/utils/msw";
 import { ctf } from "@/utils/ctf-data";
+import { openapiHttp } from "@/utils/msw";
 
 const meta = {
   title: "Components/Tables/ChallengeTable",

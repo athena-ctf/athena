@@ -3,6 +3,7 @@ import { ColumnHeader } from "@/components/data-table/column-header";
 import { RowActions } from "@/components/data-table/row-actions";
 import { ChallengeForm } from "@/components/forms/challenge";
 import { apiClient } from "@/utils/api-client";
+import { ctf } from "@/utils/ctf-data";
 import type { components } from "@repo/api";
 import {
   AlertDialog,
@@ -17,12 +18,11 @@ import {
 import { Checkbox } from "@repo/ui/components/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@repo/ui/components/dialog";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { Badge } from "@ui/components/ui/badge";
 import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { formatDate } from "./utils";
-import { Badge } from "@ui/components/ui/badge";
-import { ctf } from "@/utils/ctf-data";
 
 type TData = components["schemas"]["ChallengeModel"];
 

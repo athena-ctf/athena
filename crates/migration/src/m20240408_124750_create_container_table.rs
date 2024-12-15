@@ -27,11 +27,7 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Container::Image).string().not_null())
                     .col(ColumnDef::new(Container::Internal).boolean().not_null())
                     .col(ColumnDef::new(Container::MemoryLimit).integer().not_null())
-                    .col(
-                        ColumnDef::new(Container::Command)
-                            .array(ColumnType::String(StringLen::None))
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(Container::Command).string().not_null())
                     .col(
                         ColumnDef::new(Container::Environment)
                             .array(ColumnType::String(StringLen::None))

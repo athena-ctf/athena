@@ -8,12 +8,12 @@ use sea_orm::{Iterable, TransactionTrait};
 use crate::jwt::AuthPlayer;
 use crate::redis_keys::CHALLENGE_SOLVES;
 use crate::schemas::{
-    Award, Challenge, ChallengeKindEnum, ChallengeModel, CreateFlagSchema, Flag, FlagModel,
-    FlagVerificationResult, JsonResponse, Player, PlayerAward, PlayerAwardModel, PlayerModel,
+    Award, ChallengeKindEnum,
+    FlagVerificationResult, PlayerAward, PlayerAwardModel,
     Submission, SubmissionModel, VerifyFlagSchema,
 };
 
-oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: [], id_descriptor: value);
+oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: []);
 
 static REGEX_CACHE: LazyLock<DashMap<Uuid, Arc<Regex>>> = LazyLock::new(DashMap::new);
 

@@ -1,9 +1,9 @@
+import { ctf } from "@/utils/ctf-data";
 import type { components } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import { X } from "lucide-react";
 import { useState } from "react";
 import { FilterPopover } from "./filter-popover";
-import { ctf } from "@/utils/ctf-data";
 
 const STATUS_OPTIONS = ["solved", "unsolved", "challenge_limit_reached"];
 const DIFFICULTIES = ctf.levels.map((level) => ({

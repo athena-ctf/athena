@@ -261,8 +261,8 @@ fn gen_join_relations_fn(
     let not_found = format!("No {entity_snake} found with specified id");
 
     let entity_relations = format_ident!("{entity}Relations");
-    let related_from_model = format_ident!("{related_from}Model");
-    let related_to_model = format_ident!("{related_to}Model");
+    let related_from_model = format_ident!("{related_from}IdSchema");
+    let related_to_model = format_ident!("{related_to}IdSchema");
 
     quote! {
         #[derive(Clone, Debug, serde::Serialize, serde::Deserialize, utoipa::ToSchema)]
@@ -297,8 +297,8 @@ fn gen_join_relations_fn(
             };
 
             Ok(Json(#entity_relations {
-                #related_from_snake: #related_from::find_by_id(id.0).one(&state.db_conn).await?.unwrap(),
-                #related_to_snake: #related_to::find_by_id(id.1).one(&state.db_conn).await?.unwrap(),
+                #related_from_snake: #related_from::find_by_id(id.0).into_partial_model::<#related_from_model>().one(&state.db_conn).await?.unwrap(),
+                #related_to_snake: #related_to::find_by_id(id.1).into_partial_model::<#related_to_model>().one(&state.db_conn).await?.unwrap(),
             }))
         }
     }
@@ -316,11 +316,11 @@ fn gen_join_import_fn(entity: &Ident) -> impl ToTokens {
     quote! {
         #[doc = #doc]
         #[utoipa::path(
-            get,
+            post,
             path = #path,
             operation_id = #operation_id,
             request_body(
-                content = inline(ImportFile),
+                content = inline(FileSchema),
                 content_type = "multipart/form-data",
             ),
             responses(
@@ -332,7 +332,7 @@ fn gen_join_import_fn(entity: &Ident) -> impl ToTokens {
         )]
         pub async fn import(state: State<Arc<AppState>>, mut multipart: Multipart) -> Result<Json<JsonResponse>> {
             while let Some(field) = multipart.next_field().await.unwrap() {
-                if field.name().unwrap() == "csv_file" {
+                if field.name().unwrap() == "file" {
                     let mut temp_file = NamedTempFile::new()?;
                     let file_path = temp_file.path().to_str().unwrap().to_owned();
 
@@ -352,13 +352,12 @@ fn gen_join_import_fn(entity: &Ident) -> impl ToTokens {
 }
 
 fn gen_join_export_fn(entity: &Ident) -> impl ToTokens {
-    let entity_snake = heck::AsSnakeCase(entity.to_string());
+    let entity_snake = heck::AsSnakeCase(entity.to_string()).to_string();
 
     let doc = format!("Export {entity_snake}s");
     let path = format!("/admin/{entity_snake}/export");
     let operation_id = format!("export_{entity_snake}s");
     let description = format!("Exported {entity_snake}s successfully");
-    let query = format!("COPY {entity_snake} TO '{{}}' WITH (FORMAT CSV, HEADER);");
     let filename = format!("{entity_snake}.csv");
 
     quote! {
@@ -367,20 +366,19 @@ fn gen_join_export_fn(entity: &Ident) -> impl ToTokens {
             get,
             path = #path,
             operation_id = #operation_id,
+            params(("format" = ExportFormat, Query, description = "Format to export table")),
             responses(
-                (status = 200, description = #description, body = JsonResponse),
+                (status = 200, description = #description, body = inline(FileSchema), content_type = "text/csv"),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
                 (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]
-        async fn export(state: State<Arc<AppState>>) -> Result<Attachment<Body>> {
+        async fn export(state: State<Arc<AppState>>, Query(query): Query<ExportQuery>) -> Result<Attachment<Body>> {
             let temp_file = NamedTempFile::new()?;
-            let file_path = temp_file.path().to_str().unwrap().to_owned();
+            let file_path = temp_file.path().display().to_string();
 
-            let query = format!(#query, file_path);
-
-            sqlx::query(&query)
+            sqlx::query(&query.sql_query(#entity_snake, &file_path))
                 .execute(state.db_conn.get_postgres_connection_pool())
                 .await?;
 
@@ -418,12 +416,28 @@ pub fn crud_join_impl(input: TokenStream) -> TokenStream {
     let route_import = format!("{route_base}/import");
     let route_export = format!("{route_base}/export");
 
+    let mut imports = vec![
+        entity.clone(),
+        format_ident!("{entity}Model"),
+        format_ident!("Create{entity}Schema"),
+        format_ident!("Update{entity}Schema"),
+        format_ident!("{entity}IdSchema"),
+    ];
+    imports.extend(vec![
+        format_ident!("{related_from}IdSchema"),
+        related_from.clone(),
+    ]);
+    imports.extend(vec![
+        format_ident!("{related_to}IdSchema"),
+        related_to.clone(),
+    ]);
+
     quote! {
         use std::io;
         use std::sync::Arc;
 
         use axum::body::Body;
-        use axum::extract::{Json, Multipart, Path, State};
+        use axum::extract::{Json, Multipart, Path, Query, State};
         use axum::response::IntoResponse;
         use axum::routing::{get, post};
         use axum::Router;
@@ -440,7 +454,7 @@ pub fn crud_join_impl(input: TokenStream) -> TokenStream {
 
         use super::CsvStream;
         use crate::errors::{Error, Result};
-        use crate::schemas::{ImportFile};
+        use crate::schemas::{FileSchema, ExportQuery, ExportFormat, JsonResponse, #(#imports,)*};
         use crate::service::AppState;
 
         #list_fn

@@ -4,18 +4,11 @@ use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(
-    Clone,
-    Debug,
-    PartialEq,
-    DeriveEntityModel,
-    Eq,
-    Serialize,
-    Deserialize,
-    utoipa::ToSchema,
-    oxide_macros::Details,
+    Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize, utoipa::ToSchema,
 )]
 #[sea_orm(table_name = "container")]
 #[schema(as = ContainerModel)]
+#[oxide_macros::gen_schemas(table_name = "container", id_descriptor = "name")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
@@ -26,7 +19,7 @@ pub struct Model {
     pub image: String,
     pub internal: bool,
     pub memory_limit: i32,
-    pub command: Vec<String>,
+    pub command: String,
     pub environment: Vec<String>,
     pub ports: Vec<i32>,
     pub networks: Vec<String>,

@@ -1,16 +1,14 @@
 use std::time::Duration;
 
+use entity::prelude::ChallengeKindEnum;
 use sea_orm::{Iterable, QueryFilter, QueryOrder, QuerySelect};
 use tokio_cron_scheduler::Job;
 
 use crate::jwt::AuthPlayer;
 use crate::redis_keys::CHALLENGE_SOLVES;
 use crate::schemas::{
-    Challenge, ChallengeFile, ChallengeFileModel, ChallengeInstance, ChallengeKindEnum,
-    ChallengeModel, ChallengeSummary, ChallengeTag, ChallengeTagModel, Container, ContainerModel,
-    CreateChallengeSchema, Deployment, DeploymentModel, DetailedChallenge, File, FileModel, Flag,
-    FlagModel, Hint, HintModel, HintSummary, Instance, JsonResponse, Player, PlayerChallengeState,
-    PlayerChallenges, PlayerModel, Submission, SubmissionModel, Tag, TagModel, Unlock, UnlockModel,
+    ChallengeInstance, ChallengeSummary, DeploymentModel, DetailedChallenge, HintModel,
+    HintSummary, Instance, PlayerChallengeState, PlayerChallenges, Unlock, UnlockModel,
     UnlockStatus,
 };
 
@@ -18,8 +16,7 @@ oxide_macros::crud!(
     Challenge,
     single: [],
     optional: [],
-    multiple: [Container, File, Hint, Deployment, Tag, Submission, ChallengeTag, ChallengeFile, Flag, Player],
-    id_descriptor: title
+    multiple: [Container, File, Hint, Deployment, Tag, Submission, ChallengeTag, ChallengeFile, Flag, Player]
 );
 
 #[utoipa::path(
