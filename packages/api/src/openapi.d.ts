@@ -3140,7 +3140,7 @@ export interface components {
       instances?: components["schemas"]["ChallengeInstance"][] | null;
     };
     /** @enum {string} */
-    ExportFormat: "Csv" | "Xml" | "Json";
+    ExportFormat: "csv" | "xml" | "json";
     FileIdSchema: {
       /** Format: uuid */
       id: string;

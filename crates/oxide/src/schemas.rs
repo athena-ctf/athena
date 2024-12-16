@@ -284,6 +284,7 @@ pub struct FileSchema {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+#[serde(rename_all = "lowercase")]
 pub enum ExportFormat {
     Csv,
     Xml,
@@ -291,7 +292,6 @@ pub enum ExportFormat {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-#[serde(rename_all = "lowercase")]
 pub struct ExportQuery {
     pub format: ExportFormat,
 }
@@ -302,8 +302,12 @@ impl ExportQuery {
             ExportFormat::Csv => {
                 format!("COPY {table_name} TO '{out_path}' WITH (FORMAT CSV, HEADER);")
             }
-            ExportFormat::Json => format!(""),
-            ExportFormat::Xml => format!(""),
+            ExportFormat::Json => format!(
+                "COPY (SELECT json_agg(row_to_json({table_name}))::text FROM {table_name}) to '{out_path}';"
+            ),
+            ExportFormat::Xml => format!(
+                "COPY (SELECT table_to_xml({table_name}, true , false, '')) TO '{out_path}';"
+            ),
         }
     }
 }

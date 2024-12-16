@@ -31,7 +31,7 @@ import { type FormProps, buttonText } from "./props";
 const schema = z.object({
   container_id: z.string(),
   container_name: z.string(),
-  port_mapping: z.array(z.object({ hostPort: z.string(), destPort: z.string() })),
+  port_mapping: z.array(z.object({ hostPort: z.string(), containerPort: z.string() })),
   deployment_id: z.string().uuid(),
 });
 
@@ -45,8 +45,8 @@ export function InstanceForm({
   const defaultValues = _defaultValues && {
     ..._defaultValues,
     port_mapping: _defaultValues.port_mapping.map((port) => ({
-      hostPort: port.split(":")[0],
-      destPort: port.split(":")[1],
+      containerPort: port.split(":")[0],
+      hostPort: port.split(":")[1],
     })),
   };
 
@@ -65,18 +65,18 @@ export function InstanceForm({
         ? await apiClient.POST("/admin/instance", {
             body: {
               ...values,
-              port_mapping: Object.entries(values.port_mapping).map(
-                ([host, dest]) => `${host}:${dest}`,
+              port_mapping: values.port_mapping.map(
+                ({ containerPort, hostPort }) => `${containerPort}:${hostPort}`,
               ),
-            }, // TODO: check port mapping order
+            },
           })
         : await apiClient.PUT("/admin/instance/{id}", {
             body: {
               ...values,
-              port_mapping: Object.entries(values.port_mapping).map(
-                ([host, dest]) => `${host}:${dest}`,
+              port_mapping: values.port_mapping.map(
+                ({ containerPort, hostPort }) => `${containerPort}:${hostPort}`,
               ),
-            }, // TODO: check port mapping order
+            },
             params: {
               path: {
                 id: _defaultValues.id,
@@ -91,7 +91,9 @@ export function InstanceForm({
       onSuccess(resp.data);
     }
   };
-  const [deploymentIds, setDeploymentIds] = useState<components["schemas"]["DeploymentIds"][]>([]);
+  const [deploymentIds, setDeploymentIds] = useState<components["schemas"]["DeploymentIdSchema"][]>(
+    [],
+  );
 
   const { fields, append, remove } = useFieldArray({
     name: "port_mapping",
@@ -211,10 +213,10 @@ export function InstanceForm({
               />
               <FormField
                 control={form.control}
-                name={`port_mapping.${index}.destPort`}
+                name={`port_mapping.${index}.containerPort`}
                 render={({ field }) => (
                   <FormItem>
-                    {index === 0 && <FormLabel>Dest Port</FormLabel>}
+                    {index === 0 && <FormLabel>Container Port</FormLabel>}
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -234,7 +236,7 @@ export function InstanceForm({
             variant="outline"
             size="sm"
             className="mt-2"
-            onClick={() => append({ hostPort: "", destPort: "" })}
+            onClick={() => append({ hostPort: "", containerPort: "" })}
           >
             <PlusCircle className="h-4 w-4 mr-2" />
             Add Port Mapping

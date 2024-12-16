@@ -18,10 +18,11 @@ import { Badge } from "@repo/ui/components/badge";
 import { Checkbox } from "@repo/ui/components/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@repo/ui/components/dialog";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { PlusCircle } from "lucide-react";
+import { Download, PlusCircle, Upload } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { formatDate } from "./utils";
+import { FileUploadDialog } from "../file-upload";
 
 type TData = components["schemas"]["AdminModel"];
 
@@ -158,6 +159,19 @@ export function AdminTable() {
   const [data, setData] = useState<TData[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const onFileUpload = async (file: File) => {
+    apiClient.POST("/admin/admin/import", {
+      body: {
+        file,
+      },
+      bodySerializer: (body) => {
+        const formData = new FormData();
+        formData.set("file", body.file);
+        return formData;
+      },
+    });
+  };
+
   useEffect(() => {
     apiClient.GET("/admin/admin").then((res) => {
       if (res.error) {
@@ -190,6 +204,31 @@ export function AdminTable() {
         ]}
         actions={[
           {
+            kind: "dropdown",
+            label: "Export",
+            icon: Upload,
+            options: [
+              { value: "csv", label: "as CSV" },
+              { value: "xml", label: "as XML" },
+              { value: "json", label: "as JSON" },
+            ],
+            action(selected) {
+              apiClient.GET("/admin/admin/export", {
+                params: { query: { format: selected as "csv" | "xml" | "json" } },
+                parseAs: "stream",
+              });
+            },
+          },
+          {
+            kind: "button",
+            label: "Import",
+            icon: Download,
+            action() {
+              // TODO: add import logic
+            },
+          },
+          {
+            kind: "button",
             label: "New",
             icon: PlusCircle,
             action() {
@@ -212,6 +251,8 @@ export function AdminTable() {
           />
         </DialogContent>
       </Dialog>
+
+      <FileUploadDialog onFileUpload={onFileUpload} />
     </>
   );
 }

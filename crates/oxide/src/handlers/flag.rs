@@ -8,9 +8,8 @@ use sea_orm::{Iterable, TransactionTrait};
 use crate::jwt::AuthPlayer;
 use crate::redis_keys::CHALLENGE_SOLVES;
 use crate::schemas::{
-    Award, ChallengeKindEnum,
-    FlagVerificationResult, PlayerAward, PlayerAwardModel,
-    Submission, SubmissionModel, VerifyFlagSchema,
+    Award, ChallengeKindEnum, FlagVerificationResult, PlayerAward, PlayerAwardModel, Submission,
+    SubmissionModel, VerifyFlagSchema,
 };
 
 oxide_macros::crud!(Flag, single: [Challenge], optional: [Player], multiple: []);

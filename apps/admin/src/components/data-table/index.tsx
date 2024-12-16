@@ -1,6 +1,6 @@
 import type { FacetedFilterProps } from "@/components/data-table/faceted-filter";
 import { Pagination } from "@/components/data-table/pagination";
-import { Toolbar, type ToolbarAction } from "@/components/data-table/toolbar";
+import { Toolbar } from "@/components/data-table/toolbar";
 import {
   Table,
   TableBody,
@@ -26,13 +26,14 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
+import type { ToolbarActionProps } from "@/components/data-table/toolbar-action";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   filters: (Omit<FacetedFilterProps<TData, TValue>, "column"> & { columnName: string })[];
   search?: string;
-  actions: ToolbarAction[];
+  actions: ToolbarActionProps[];
 }
 
 declare module "@tanstack/table-core" {
@@ -110,7 +111,7 @@ export function DataTable<TData, TValue>({
         filters={filters.map((filter) => ({
           title: filter.title,
           options: filter.options,
-          column: table.getColumn(filter.columnName)!, // TODO: typecheck this
+          column: table.getColumn(filter.columnName)!,
         }))}
         search={search}
         actions={actions}

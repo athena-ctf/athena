@@ -6,7 +6,7 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "generate": "openapi-typescript -o ./src/openapi.d.ts",
+    "generate": "node openapi-gen.js",
     "check": "tsc --noEmit"
   },
   "devDependencies": {

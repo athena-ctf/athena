@@ -17551,9 +17551,9 @@
       "ExportFormat": {
         "type": "string",
         "enum": [
-          "Csv",
-          "Xml",
-          "Json"
+          "csv",
+          "xml",
+          "json"
         ]
       },
       "FileIdSchema": {

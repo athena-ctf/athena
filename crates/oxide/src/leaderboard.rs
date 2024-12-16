@@ -16,6 +16,8 @@ pub struct Manager {
     num_digits: u32,
 }
 
+// TODO: fix history storage and extraction
+
 impl Manager {
     pub fn new(redis_pool: Pool, end_timestamp: i64, max_duration: i64) -> Self {
         Self {

@@ -432,7 +432,6 @@ fn gen_export_fn(entity: &Ident) -> impl ToTokens {
     let path = format!("/admin/{entity_snake}/export");
     let operation_id = format!("export_{entity_snake}s");
     let description = format!("Exported {entity_snake}s successfully");
-    let filename = format!("{entity_snake}.csv");
 
     quote! {
         #[doc = #doc]
@@ -448,7 +447,7 @@ fn gen_export_fn(entity: &Ident) -> impl ToTokens {
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]
-        async fn export(state: State<Arc<AppState>>, Query(query): Query<ExportQuery>) -> Result<Attachment<Body>> {
+        async fn export(state: State<Arc<AppState>>, Query(query): Query<ExportQuery>) -> Result<impl IntoResponse> {
             let temp_file = NamedTempFile::new()?;
             let file_path = temp_file.path().display().to_string();
 
@@ -461,7 +460,10 @@ fn gen_export_fn(entity: &Ident) -> impl ToTokens {
                 path: file_path,
             })?;
 
-            Ok(Attachment::new(Body::from_stream(csv_stream)).content_type("text/csv").filename(#filename))
+            Ok((
+                [(header::CONTENT_TYPE, "application/octet-stream")],
+                Body::from_stream(csv_stream)
+            ))
         }
     }
 }
@@ -501,20 +503,17 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
     imports.extend(
         single
             .iter()
-            .map(|single| vec![format_ident!("{single}IdSchema"), single.clone()])
-            .flatten(),
+            .flat_map(|single| vec![format_ident!("{single}IdSchema"), single.clone()]),
     );
     imports.extend(
         optional
             .iter()
-            .map(|optional| vec![format_ident!("{optional}IdSchema"), optional.clone()])
-            .flatten(),
+            .flat_map(|optional| vec![format_ident!("{optional}IdSchema"), optional.clone()]),
     );
     imports.extend(
         multiple
             .iter()
-            .map(|multiple| vec![format_ident!("{multiple}IdSchema"), multiple.clone()])
-            .flatten(),
+            .flat_map(|multiple| vec![format_ident!("{multiple}IdSchema"), multiple.clone()]),
     );
 
     quote! {
@@ -523,10 +522,10 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
 
         use axum::body::Body;
         use axum::extract::{Json, Multipart, Path, Query, State};
+        use axum::http::header;
         use axum::response::IntoResponse;
         use axum::routing::{get, post};
         use axum::Router;
-        use axum_extra::response::Attachment;
         use bytes::Buf;
         use fred::prelude::*;
         use futures::TryStreamExt;

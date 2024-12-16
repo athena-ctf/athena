@@ -29,7 +29,7 @@ ring = "0.17.8"
 sea-orm = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-thiserror = "2.0.6"
+thiserror = "2.0.7"
 tokio = { workspace = true }
 tower-http = { workspace = true }
 tracing = { workspace = true }
@@ -47,7 +47,6 @@ bytes = "1.9.0"
 base62 = "2.0.3"
 jsonwebtoken = "9.3.0"
 axum-extra = { version = "0.9.6", features = [
-    "attachment",
     "cookie",
     "cookie-signed",
     "typed-header",

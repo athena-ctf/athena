@@ -1,4 +1,4 @@
-import { ChevronDown, GalleryVerticalEnd, type LucideIcon, Table } from "lucide-react";
+import { ChevronDown, GalleryVerticalEnd, type LucideIcon, Table2 } from "lucide-react";
 
 import type { FileRouteTypes } from "@/routeTree.gen";
 import {
@@ -28,8 +28,13 @@ interface SidebarItem {
 
 const sidebarItems: SidebarItem[] = [
   {
+    title: "Docker",
+    icon: Table2,
+    items: [],
+  },
+  {
     title: "Tables",
-    icon: Table,
+    icon: Table2,
     items: [
       { title: "Admin", url: "/table/admin" },
       { title: "Award", url: "/table/award" },

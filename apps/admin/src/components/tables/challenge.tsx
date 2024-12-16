@@ -19,7 +19,7 @@ import { Checkbox } from "@repo/ui/components/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@repo/ui/components/dialog";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { Badge } from "@ui/components/ui/badge";
-import { PlusCircle } from "lucide-react";
+import { Download, PlusCircle, Upload } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { formatDate } from "./utils";
@@ -223,6 +223,28 @@ export function ChallengeTable() {
         ]}
         actions={[
           {
+            kind: "dropdown",
+            label: "Export",
+            icon: Upload,
+            options: [
+              { value: "csv", label: "as CSV" },
+              { value: "xml", label: "as XML" },
+              { value: "json", label: "as JSON" },
+            ],
+            action(selected: string) {
+              // TODO: add import logic
+            },
+          },
+          {
+            kind: "button",
+            label: "Import",
+            icon: Download,
+            action() {
+              // TODO: add import logic
+            },
+          },
+          {
+            kind: "button",
             label: "New",
             icon: PlusCircle,
             action() {
