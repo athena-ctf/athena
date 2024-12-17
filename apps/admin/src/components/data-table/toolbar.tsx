@@ -1,10 +1,10 @@
 import { FacetedFilter, type FacetedFilterProps } from "@/components/data-table/faceted-filter";
+import { ToolbarAction, type ToolbarActionProps } from "@/components/data-table/toolbar-action";
 import { ViewOptions } from "@/components/data-table/view-options";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import type { Table } from "@tanstack/react-table";
 import { X } from "lucide-react";
-import { ToolbarAction, type ToolbarActionProps } from "@/components/data-table/toolbar-action";
 
 interface ToolbarProps<TData, TValue> {
   table: Table<TData>;

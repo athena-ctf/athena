@@ -24,11 +24,11 @@ export const DetailsForm: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.post("https://static.athena.io/upload/local", () => {
-          return HttpResponse.json({
+        http.post("https://static.athena.io/upload/local", () =>
+          HttpResponse.json({
             url: `https://static.athena.io/download/${faker.string.uuid()}`,
-          });
-        }),
+          }),
+        ),
         openapiHttp.get("/auth/player/register/verify/email", ({ response }) =>
           response(200).json({ message: "verified email successfully" }),
         ),

@@ -1,7 +1,7 @@
-import { DataTable } from "@/components/data-table";
 import { ColumnHeader } from "@/components/data-table/column-header";
 import { RowActions } from "@/components/data-table/row-actions";
-import { PlayerForm } from "@/components/forms/player";
+import { AdminForm } from "@/components/forms/admin";
+import { formatDate } from "@/utils";
 import { apiClient } from "@/utils/api-client";
 import type { components } from "@repo/api";
 import {
@@ -14,15 +14,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@repo/ui/components/alert-dialog";
+import { Badge } from "@repo/ui/components/badge";
 import { Checkbox } from "@repo/ui/components/checkbox";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@repo/ui/components/dialog";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { PlusCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@ui/components/ui/dialog";
+import { useState } from "react";
 import { toast } from "sonner";
-import { formatDate } from "./utils";
 
-type TData = components["schemas"]["PlayerModel"];
+export type TData = components["schemas"]["AdminModel"];
 
 const columnHelper = createColumnHelper<TData>();
 
@@ -64,22 +63,21 @@ export const columns = [
     header: ({ column }) => <ColumnHeader column={column} title="Updated At" />,
     cell: ({ table, getValue }) => formatDate(getValue(), table.options.meta?.dateStyle),
   }),
-  columnHelper.accessor("reason", {
-    header: ({ column }) => <ColumnHeader column={column} title="Value" />,
+  columnHelper.accessor("username", {
+    header: ({ column }) => <ColumnHeader column={column} title="Username" />,
     cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
   }),
-  columnHelper.accessor("duration", {
-    header: ({ column }) => <ColumnHeader column={column} title="Prize" />,
-    cell: ({ getValue }) => (
-      <div className="max-w-[350px] truncate font-medium">
-        {getValue()} {getValue() > 1 ? "days" : "day"}
-      </div>
-    ),
+  columnHelper.accessor("role", {
+    header: ({ column }) => <ColumnHeader column={column} title="Role" />,
+    cell: ({ getValue }) => <Badge variant="outline">{getValue()}</Badge>,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   }),
   columnHelper.display({
     id: "actions",
-    enableSorting: false,
     enableHiding: false,
+    enableSorting: false,
     cell: ({ row, table }) => {
       const [isAlertOpen, setIsAlertOpen] = useState(false);
       const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -87,7 +85,7 @@ export const columns = [
       const handleDelete = () => {
         toast.promise(
           async () => {
-            const resp = await apiClient.DELETE("/admin/player/{id}", {
+            const resp = await apiClient.DELETE("/admin/admin/{id}", {
               params: { path: { id: row.original.id } },
             });
 
@@ -98,14 +96,14 @@ export const columns = [
             return resp.data;
           },
           {
-            loading: "Deleting player...",
+            loading: "Deleting admin...",
             error: (err: string) => {
               console.error(err);
-              return "Could not remove player";
+              return "Could not remove admin";
             },
             success: () => {
               table.options.meta?.removeRow(row.index);
-              return "Successfully deleted player";
+              return "Successfully deleted admin";
             },
           },
         );
@@ -137,11 +135,11 @@ export const columns = [
           </AlertDialog>
 
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent>
+            <DialogContent className="overflow-y-auto max-h-screen">
               <DialogHeader>
-                <DialogTitle>Update player</DialogTitle>
+                <DialogTitle>Update admin</DialogTitle>
               </DialogHeader>
-              <PlayerForm
+              <AdminForm
                 kind="update"
                 defaultValues={row.original}
                 onSuccess={(model) => table.options.meta?.updateRow(model, row.index)}
@@ -153,47 +151,3 @@ export const columns = [
     },
   }),
 ] as ColumnDef<TData, unknown>[];
-
-export function PlayerTable() {
-  const [data, setData] = useState<TData[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  useEffect(() => {
-    apiClient.GET("/admin/player").then((res) => {
-      if (res.error) {
-        toast.error("Could not fetch data");
-        console.error(res.error.message);
-      } else {
-        setData(res.data);
-      }
-    });
-  }, []);
-
-  return (
-    <>
-      <DataTable
-        data={data}
-        columns={columns}
-        search="reason"
-        filters={[]}
-        actions={[
-          {
-            label: "New",
-            icon: PlusCircle,
-            action() {
-              setIsDialogOpen(true);
-            },
-          },
-        ]}
-      />
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create player</DialogTitle>
-          </DialogHeader>
-          <PlayerForm kind="create" onSuccess={(model) => setData([...data, model])} />
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-}

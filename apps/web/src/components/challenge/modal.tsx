@@ -111,7 +111,7 @@ export function ChallengeModal({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="overflow-y-auto max-h-screen">
         <DialogHeader>
           <div className="flex flex-1 space-x-3">
             <Circle

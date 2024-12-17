@@ -441,7 +441,7 @@ fn gen_export_fn(entity: &Ident) -> impl ToTokens {
             operation_id = #operation_id,
             params(("format" = ExportFormat, Query, description = "Format to export table")),
             responses(
-                (status = 200, description = #description, body = inline(FileSchema), content_type = "text/csv"),
+                (status = 200, description = #description, body = inline(FileSchema), content_type = "application/octet-stream"),
                 (status = 401, description = "Action is permissible after login", body = JsonResponse),
                 (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
                 (status = 500, description = "Unexpected error", body = JsonResponse)

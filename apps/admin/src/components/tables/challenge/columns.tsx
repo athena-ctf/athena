@@ -1,8 +1,9 @@
-import { DataTable } from "@/components/data-table";
 import { ColumnHeader } from "@/components/data-table/column-header";
 import { RowActions } from "@/components/data-table/row-actions";
-import { BanForm } from "@/components/forms/ban";
+import { ChallengeForm } from "@/components/forms/challenge";
+import { formatDate } from "@/utils";
 import { apiClient } from "@/utils/api-client";
+import { ctf } from "@/utils/ctf-data";
 import type { components } from "@repo/api";
 import {
   AlertDialog,
@@ -17,12 +18,11 @@ import {
 import { Checkbox } from "@repo/ui/components/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@repo/ui/components/dialog";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { Download, PlusCircle, Upload } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Badge } from "@ui/components/ui/badge";
+import { useState } from "react";
 import { toast } from "sonner";
-import { formatDate } from "./utils";
 
-type TData = components["schemas"]["BanModel"];
+export type TData = components["schemas"]["ChallengeModel"];
 
 const columnHelper = createColumnHelper<TData>();
 
@@ -64,17 +64,41 @@ export const columns = [
     header: ({ column }) => <ColumnHeader column={column} title="Updated At" />,
     cell: ({ table, getValue }) => formatDate(getValue(), table.options.meta?.dateStyle),
   }),
-  columnHelper.accessor("reason", {
-    header: ({ column }) => <ColumnHeader column={column} title="Reason" />,
+  columnHelper.accessor("title", {
+    header: ({ column }) => <ColumnHeader column={column} title="Title" />,
     cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
   }),
-  columnHelper.accessor("duration", {
-    header: ({ column }) => <ColumnHeader column={column} title="Duration" />,
+  columnHelper.accessor("author_name", {
+    header: ({ column }) => <ColumnHeader column={column} title="Author name" />,
+    cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
+    enableSorting: false,
+  }),
+  columnHelper.accessor("description", {
+    header: ({ column }) => <ColumnHeader column={column} title="Description" />,
+    cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
+    enableSorting: false,
+  }),
+  columnHelper.accessor("points", {
+    header: ({ column }) => <ColumnHeader column={column} title="Points" />,
+    cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
+  }),
+  columnHelper.accessor("kind", {
+    header: ({ column }) => <ColumnHeader column={column} title="Kind" />,
+    cell: ({ getValue }) => <Badge variant="outline">{getValue()}</Badge>,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  }),
+  columnHelper.accessor("level", {
+    header: ({ column }) => <ColumnHeader column={column} title="Level" />,
     cell: ({ getValue }) => (
-      <div className="max-w-[350px] truncate font-medium">
-        {getValue()} {getValue() > 1 ? "days" : "day"}
-      </div>
+      <Badge variant="outline" className="text-nowrap">
+        {ctf.levels.find((level) => level.value === getValue())?.name}
+      </Badge>
     ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   }),
   columnHelper.display({
     id: "actions",
@@ -87,7 +111,7 @@ export const columns = [
       const handleDelete = () => {
         toast.promise(
           async () => {
-            const resp = await apiClient.DELETE("/admin/ban/{id}", {
+            const resp = await apiClient.DELETE("/admin/challenge/{id}", {
               params: { path: { id: row.original.id } },
             });
 
@@ -98,14 +122,14 @@ export const columns = [
             return resp.data;
           },
           {
-            loading: "Deleting ban...",
+            loading: "Deleting challenge...",
             error: (err: string) => {
               console.error(err);
-              return "Could not remove ban";
+              return "Could not remove challenge";
             },
             success: () => {
               table.options.meta?.removeRow(row.index);
-              return "Successfully deleted ban";
+              return "Successfully deleted challenge";
             },
           },
         );
@@ -137,11 +161,11 @@ export const columns = [
           </AlertDialog>
 
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent>
+            <DialogContent className="overflow-y-auto max-h-screen">
               <DialogHeader>
-                <DialogTitle>Update ban</DialogTitle>
+                <DialogTitle>Update challenge</DialogTitle>
               </DialogHeader>
-              <BanForm
+              <ChallengeForm
                 kind="update"
                 defaultValues={row.original}
                 onSuccess={(model) => table.options.meta?.updateRow(model, row.index)}
@@ -153,69 +177,3 @@ export const columns = [
     },
   }),
 ] as ColumnDef<TData, unknown>[];
-
-export function BanTable() {
-  const [data, setData] = useState<TData[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  useEffect(() => {
-    apiClient.GET("/admin/ban").then((res) => {
-      if (res.error) {
-        toast.error("Could not fetch data");
-        console.error(res.error.message);
-      } else {
-        setData(res.data);
-      }
-    });
-  }, []);
-
-  return (
-    <>
-      <DataTable
-        data={data}
-        columns={columns}
-        search="reason"
-        filters={[]}
-        actions={[
-          {
-            kind: "dropdown",
-            label: "Export",
-            icon: Upload,
-            options: [
-              { value: "csv", label: "as CSV" },
-              { value: "xml", label: "as XML" },
-              { value: "json", label: "as JSON" },
-            ],
-            action(selected: string) {
-              // TODO: add import logic
-            },
-          },
-          {
-            kind: "button",
-            label: "Import",
-            icon: Download,
-            action() {
-              // TODO: add import logic
-            },
-          },
-          {
-            kind: "button",
-            label: "New",
-            icon: PlusCircle,
-            action() {
-              setIsDialogOpen(true);
-            },
-          },
-        ]}
-      />
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create ban</DialogTitle>
-          </DialogHeader>
-          <BanForm kind="create" onSuccess={(model) => setData([...data, model])} />
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-}

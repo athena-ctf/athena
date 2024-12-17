@@ -1,7 +1,7 @@
-import { DataTable } from "@/components/data-table";
 import { ColumnHeader } from "@/components/data-table/column-header";
 import { RowActions } from "@/components/data-table/row-actions";
-import { InviteForm } from "@/components/forms/invite";
+import { AwardForm } from "@/components/forms/award";
+import { formatDate } from "@/utils";
 import { apiClient } from "@/utils/api-client";
 import type { components } from "@repo/api";
 import {
@@ -17,12 +17,10 @@ import {
 import { Checkbox } from "@repo/ui/components/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@repo/ui/components/dialog";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { PlusCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
-import { formatDate } from "./utils";
 
-type TData = components["schemas"]["InviteModel"];
+export type TData = components["schemas"]["AwardModel"];
 
 const columnHelper = createColumnHelper<TData>();
 
@@ -64,17 +62,18 @@ export const columns = [
     header: ({ column }) => <ColumnHeader column={column} title="Updated At" />,
     cell: ({ table, getValue }) => formatDate(getValue(), table.options.meta?.dateStyle),
   }),
-  columnHelper.accessor("reason", {
-    header: ({ column }) => <ColumnHeader column={column} title="Value" />,
+  columnHelper.accessor("logo_url", {
+    header: ({ column }) => <ColumnHeader column={column} title="Logo URL" />,
+    cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
+    enableSorting: false,
+  }),
+  columnHelper.accessor("prize", {
+    header: ({ column }) => <ColumnHeader column={column} title="Prize" />,
     cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
   }),
-  columnHelper.accessor("duration", {
-    header: ({ column }) => <ColumnHeader column={column} title="Prize" />,
-    cell: ({ getValue }) => (
-      <div className="max-w-[350px] truncate font-medium">
-        {getValue()} {getValue() > 1 ? "days" : "day"}
-      </div>
-    ),
+  columnHelper.accessor("value", {
+    header: ({ column }) => <ColumnHeader column={column} title="Value" />,
+    cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
   }),
   columnHelper.display({
     id: "actions",
@@ -87,7 +86,7 @@ export const columns = [
       const handleDelete = () => {
         toast.promise(
           async () => {
-            const resp = await apiClient.DELETE("/admin/invite/{id}", {
+            const resp = await apiClient.DELETE("/admin/award/{id}", {
               params: { path: { id: row.original.id } },
             });
 
@@ -98,14 +97,14 @@ export const columns = [
             return resp.data;
           },
           {
-            loading: "Deleting invite...",
+            loading: "Deleting award...",
             error: (err: string) => {
               console.error(err);
-              return "Could not remove invite";
+              return "Could not remove award";
             },
             success: () => {
               table.options.meta?.removeRow(row.index);
-              return "Successfully deleted invite";
+              return "Successfully deleted award";
             },
           },
         );
@@ -137,11 +136,11 @@ export const columns = [
           </AlertDialog>
 
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent>
+            <DialogContent className="overflow-y-auto max-h-screen">
               <DialogHeader>
-                <DialogTitle>Update invite</DialogTitle>
+                <DialogTitle>Update award</DialogTitle>
               </DialogHeader>
-              <InviteForm
+              <AwardForm
                 kind="update"
                 defaultValues={row.original}
                 onSuccess={(model) => table.options.meta?.updateRow(model, row.index)}
@@ -153,47 +152,3 @@ export const columns = [
     },
   }),
 ] as ColumnDef<TData, unknown>[];
-
-export function InviteTable() {
-  const [data, setData] = useState<TData[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  useEffect(() => {
-    apiClient.GET("/admin/invite").then((res) => {
-      if (res.error) {
-        toast.error("Could not fetch data");
-        console.error(res.error.message);
-      } else {
-        setData(res.data);
-      }
-    });
-  }, []);
-
-  return (
-    <>
-      <DataTable
-        data={data}
-        columns={columns}
-        search="reason"
-        filters={[]}
-        actions={[
-          {
-            label: "New",
-            icon: PlusCircle,
-            action() {
-              setIsDialogOpen(true);
-            },
-          },
-        ]}
-      />
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create invite</DialogTitle>
-          </DialogHeader>
-          <InviteForm kind="create" onSuccess={(model) => setData([...data, model])} />
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-}

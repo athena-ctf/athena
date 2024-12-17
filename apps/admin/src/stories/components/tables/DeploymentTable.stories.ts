@@ -1,38 +1,38 @@
 import { faker } from "@faker-js/faker";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { AdminTable as Component } from "@/components/tables/admin";
+import { DeploymentTable as Component } from "@/components/tables/deployment";
 import { genExports } from "@/utils/gen-exports";
 import { openapiHttp } from "@/utils/msw";
-import type { components } from "@repo/api";
 import { HttpResponse } from "msw";
 
 const meta = {
-  title: "Components/Tables/AdminTable",
+  title: "Components/Tables/DeploymentTable",
   component: Component,
 } satisfies Meta<typeof Component>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const admins = Array(100)
+const deployments = Array(100)
   .fill(0)
   .map(() => ({
     created_at: faker.date.anytime().toISOString(),
     id: faker.string.uuid(),
-    role: "analyst" as components["schemas"]["RoleEnum"],
     updated_at: faker.date.anytime().toISOString(),
-    username: faker.internet.username(),
+    challenge_id: faker.string.uuid(),
+    expires_at: faker.date.anytime().toISOString(),
+    player_id: faker.helpers.maybe(() => faker.string.uuid()),
   }));
 
-const exports = genExports("admin", admins);
+const exports = genExports("deployment", deployments);
 
-export const AdminTable: Story = {
+export const DeploymentTable: Story = {
   parameters: {
     msw: {
       handlers: [
-        openapiHttp.get("/admin/admin", ({ response }) => response(200).json(admins)),
-        openapiHttp.post("/admin/admin", async ({ request, response }) =>
+        openapiHttp.get("/admin/deployment", ({ response }) => response(200).json(deployments)),
+        openapiHttp.post("/admin/deployment", async ({ request, response }) =>
           response(201).json({
             ...(await request.json()),
             id: faker.string.uuid(),
@@ -40,7 +40,7 @@ export const AdminTable: Story = {
             updated_at: faker.date.anytime().toISOString(),
           }),
         ),
-        openapiHttp.put("/admin/admin/{id}", async ({ request, response, params: { id } }) =>
+        openapiHttp.put("/admin/deployment/{id}", async ({ request, response, params: { id } }) =>
           response(200).json({
             ...(await request.json()),
             id,
@@ -48,11 +48,11 @@ export const AdminTable: Story = {
             created_at: faker.date.anytime().toISOString(),
           }),
         ),
-        openapiHttp.delete("/admin/admin/{id}", ({ response }) => response(204).empty()),
-        openapiHttp.post("/admin/admin/import", ({ response }) =>
+        openapiHttp.delete("/admin/deployment/{id}", ({ response }) => response(204).empty()),
+        openapiHttp.post("/admin/deployment/import", ({ response }) =>
           response(200).json({ message: "successfully imported" }),
         ),
-        openapiHttp.get("/admin/admin/export", ({ response, query }) =>
+        openapiHttp.get("/admin/deployment/export", ({ response, query }) =>
           response.untyped(
             HttpResponse.arrayBuffer(new TextEncoder().encode(exports[query.get("format")]), {
               headers: {

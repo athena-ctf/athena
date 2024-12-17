@@ -1,7 +1,7 @@
-import { DataTable } from "@/components/data-table";
 import { ColumnHeader } from "@/components/data-table/column-header";
 import { RowActions } from "@/components/data-table/row-actions";
 import { ContainerForm } from "@/components/forms/container";
+import { formatDate } from "@/utils";
 import { apiClient } from "@/utils/api-client";
 import type { components } from "@repo/api";
 import {
@@ -17,12 +17,12 @@ import {
 import { Checkbox } from "@repo/ui/components/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@repo/ui/components/dialog";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { PlusCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Badge } from "@ui/components/ui/badge";
+import { Minus } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
-import { formatDate } from "./utils";
 
-type TData = components["schemas"]["ContainerModel"];
+export type TData = components["schemas"]["ContainerModel"];
 
 const columnHelper = createColumnHelper<TData>();
 
@@ -64,17 +64,133 @@ export const columns = [
     header: ({ column }) => <ColumnHeader column={column} title="Updated At" />,
     cell: ({ table, getValue }) => formatDate(getValue(), table.options.meta?.dateStyle),
   }),
-  columnHelper.accessor("reason", {
-    header: ({ column }) => <ColumnHeader column={column} title="Value" />,
+  columnHelper.accessor("name", {
+    header: ({ column }) => <ColumnHeader column={column} title="Name" />,
     cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
   }),
-  columnHelper.accessor("duration", {
-    header: ({ column }) => <ColumnHeader column={column} title="Prize" />,
+  columnHelper.accessor("image", {
+    header: ({ column }) => <ColumnHeader column={column} title="Image" />,
+    cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
+  }),
+  columnHelper.accessor("internal", {
+    header: ({ column }) => <ColumnHeader column={column} title="Internal" />,
     cell: ({ getValue }) => (
-      <div className="max-w-[350px] truncate font-medium">
-        {getValue()} {getValue() > 1 ? "days" : "day"}
+      <Badge variant="outline" className="font-mono">
+        {getValue() ? "true" : "false"}
+      </Badge>
+    ),
+    filterFn(row, id, value) {
+      return value.includes(row.getValue(id));
+    },
+  }),
+  columnHelper.accessor("memory_limit", {
+    header: ({ column }) => <ColumnHeader column={column} title="Memory Limit" />,
+    cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
+  }),
+  columnHelper.accessor("command", {
+    header: ({ column }) => <ColumnHeader column={column} title="Command" />,
+    cell: ({ getValue }) => (
+      <div className="font-mono bg-gray-200 rounded-sm max-w-[350px] p-1 text-xs truncate font-medium">
+        {getValue()}
       </div>
     ),
+    enableSorting: false,
+  }),
+  columnHelper.accessor("challenge_id", {
+    header: ({ column }) => <ColumnHeader column={column} title="Challenge Id" />,
+    cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
+  }),
+  columnHelper.accessor("depends_on", {
+    header: ({ column }) => <ColumnHeader column={column} title="Dependencies" />,
+    cell: ({ getValue }) => {
+      const dependencies = getValue();
+
+      return (
+        <div className="flex flex-wrap gap-1">
+          {dependencies.length === 0 ? (
+            <Minus />
+          ) : (
+            dependencies.slice(0, 2).map((dependency) => (
+              <Badge key={dependency} variant="outline">
+                {dependency}
+              </Badge>
+            ))
+          )}
+          {dependencies.length > 2 && (
+            <Badge variant="outline">+{dependencies.length - 2} more</Badge>
+          )}
+        </div>
+      );
+    },
+    enableSorting: false,
+  }),
+  columnHelper.accessor("networks", {
+    header: ({ column }) => <ColumnHeader column={column} title="Networks" />,
+    cell: ({ getValue }) => {
+      const networks = getValue();
+
+      return (
+        <div className="flex flex-wrap gap-1">
+          {networks.length === 0 ? (
+            <Minus />
+          ) : (
+            networks.slice(0, 2).map((network) => (
+              <Badge key={network} variant="outline">
+                {network}
+              </Badge>
+            ))
+          )}
+          {networks.length > 2 && <Badge variant="outline">+{networks.length - 2} more</Badge>}
+        </div>
+      );
+    },
+    enableSorting: false,
+  }),
+  columnHelper.accessor("ports", {
+    header: ({ column }) => <ColumnHeader column={column} title="Ports" />,
+    cell: ({ getValue }) => {
+      const ports = getValue();
+
+      return (
+        <div className="flex flex-wrap gap-1 min-w-20">
+          {ports.length === 0 ? (
+            <Minus />
+          ) : (
+            ports.slice(0, 2).map((port) => (
+              <Badge key={port} variant="outline">
+                {port}
+              </Badge>
+            ))
+          )}
+          {ports.length > 2 && <Badge variant="outline">+{ports.length - 2} more</Badge>}
+        </div>
+      );
+    },
+    enableSorting: false,
+  }),
+  columnHelper.accessor("environment", {
+    header: ({ column }) => <ColumnHeader column={column} title="Environment" />,
+    cell: ({ getValue }) => {
+      const environment = getValue();
+
+      return (
+        <div className="flex flex-wrap gap-1">
+          {environment.length === 0 ? (
+            <Minus />
+          ) : (
+            environment.slice(0, 2).map((env) => (
+              <Badge key={env} variant="outline">
+                {env}
+              </Badge>
+            ))
+          )}
+          {environment.length > 2 && (
+            <Badge variant="outline">+{environment.length - 2} more</Badge>
+          )}
+        </div>
+      );
+    },
+    enableSorting: false,
   }),
   columnHelper.display({
     id: "actions",
@@ -137,7 +253,7 @@ export const columns = [
           </AlertDialog>
 
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent>
+            <DialogContent className="overflow-y-auto max-h-screen">
               <DialogHeader>
                 <DialogTitle>Update container</DialogTitle>
               </DialogHeader>
@@ -153,47 +269,3 @@ export const columns = [
     },
   }),
 ] as ColumnDef<TData, unknown>[];
-
-export function ContainerTable() {
-  const [data, setData] = useState<TData[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  useEffect(() => {
-    apiClient.GET("/admin/container").then((res) => {
-      if (res.error) {
-        toast.error("Could not fetch data");
-        console.error(res.error.message);
-      } else {
-        setData(res.data);
-      }
-    });
-  }, []);
-
-  return (
-    <>
-      <DataTable
-        data={data}
-        columns={columns}
-        search="reason"
-        filters={[]}
-        actions={[
-          {
-            label: "New",
-            icon: PlusCircle,
-            action() {
-              setIsDialogOpen(true);
-            },
-          },
-        ]}
-      />
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create container</DialogTitle>
-          </DialogHeader>
-          <ContainerForm kind="create" onSuccess={(model) => setData([...data, model])} />
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-}

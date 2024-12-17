@@ -1,6 +1,6 @@
+import { Upload } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Upload } from "lucide-react";
 
 import { Button } from "@repo/ui/components/button";
 import {
@@ -10,17 +10,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@repo/ui/components/dialog";
 import { Progress } from "@repo/ui/components/progress";
 
 interface FileUploadDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   onFileUpload: (file: File) => Promise<void>;
 }
 
-export function FileUploadDialog({ onFileUpload }: FileUploadDialogProps) {
+export function FileUploadDialog({ open, onOpenChange, onFileUpload }: FileUploadDialogProps) {
   const [isUploading, setIsUploading] = useState(false);
-  const [open, setOpen] = useState(false);
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -30,20 +30,17 @@ export function FileUploadDialog({ onFileUpload }: FileUploadDialogProps) {
           await onFileUpload(acceptedFiles[0]);
         } finally {
           setIsUploading(false);
-          setOpen(false);
+          onOpenChange(false);
         }
       }
     },
-    [onFileUpload],
+    [onOpenChange, onFileUpload],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Upload File</Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Upload File</DialogTitle>

@@ -1,7 +1,7 @@
-import { DataTable } from "@/components/data-table";
 import { ColumnHeader } from "@/components/data-table/column-header";
 import { RowActions } from "@/components/data-table/row-actions";
-import { TagForm } from "@/components/forms/tag";
+import { DeploymentForm } from "@/components/forms/deployment";
+import { formatDate } from "@/utils";
 import { apiClient } from "@/utils/api-client";
 import type { components } from "@repo/api";
 import {
@@ -17,12 +17,11 @@ import {
 import { Checkbox } from "@repo/ui/components/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@repo/ui/components/dialog";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { PlusCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Minus } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
-import { formatDate } from "./utils";
 
-type TData = components["schemas"]["TagModel"];
+export type TData = components["schemas"]["DeploymentModel"];
 
 const columnHelper = createColumnHelper<TData>();
 
@@ -64,17 +63,24 @@ export const columns = [
     header: ({ column }) => <ColumnHeader column={column} title="Updated At" />,
     cell: ({ table, getValue }) => formatDate(getValue(), table.options.meta?.dateStyle),
   }),
-  columnHelper.accessor("reason", {
-    header: ({ column }) => <ColumnHeader column={column} title="Value" />,
+  columnHelper.accessor("expires_at", {
+    header: ({ column }) => <ColumnHeader column={column} title="Expires At" />,
+    cell: ({ table, getValue }) => formatDate(getValue(), table.options.meta?.dateStyle),
+  }),
+  columnHelper.accessor("challenge_id", {
+    header: ({ column }) => <ColumnHeader column={column} title="Challenge Id" />,
     cell: ({ getValue }) => <div className="max-w-[350px] truncate font-medium">{getValue()}</div>,
   }),
-  columnHelper.accessor("duration", {
-    header: ({ column }) => <ColumnHeader column={column} title="Prize" />,
-    cell: ({ getValue }) => (
-      <div className="max-w-[350px] truncate font-medium">
-        {getValue()} {getValue() > 1 ? "days" : "day"}
-      </div>
-    ),
+  columnHelper.accessor("player_id", {
+    header: ({ column }) => <ColumnHeader column={column} title="Player Id" />,
+    cell: ({ getValue }) => {
+      const player_id = getValue();
+      return (
+        <div className="max-w-[350px] truncate font-medium">
+          {player_id ? <>{player_id}</> : <Minus />}
+        </div>
+      );
+    },
   }),
   columnHelper.display({
     id: "actions",
@@ -87,7 +93,7 @@ export const columns = [
       const handleDelete = () => {
         toast.promise(
           async () => {
-            const resp = await apiClient.DELETE("/admin/tag/{id}", {
+            const resp = await apiClient.DELETE("/admin/deployment/{id}", {
               params: { path: { id: row.original.id } },
             });
 
@@ -98,14 +104,14 @@ export const columns = [
             return resp.data;
           },
           {
-            loading: "Deleting tag...",
+            loading: "Deleting deployment...",
             error: (err: string) => {
               console.error(err);
-              return "Could not remove tag";
+              return "Could not remove deployment";
             },
             success: () => {
               table.options.meta?.removeRow(row.index);
-              return "Successfully deleted tag";
+              return "Successfully deleted deployment";
             },
           },
         );
@@ -137,11 +143,11 @@ export const columns = [
           </AlertDialog>
 
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent>
+            <DialogContent className="overflow-y-auto max-h-screen">
               <DialogHeader>
-                <DialogTitle>Update tag</DialogTitle>
+                <DialogTitle>Update deployment</DialogTitle>
               </DialogHeader>
-              <TagForm
+              <DeploymentForm
                 kind="update"
                 defaultValues={row.original}
                 onSuccess={(model) => table.options.meta?.updateRow(model, row.index)}
@@ -153,47 +159,3 @@ export const columns = [
     },
   }),
 ] as ColumnDef<TData, unknown>[];
-
-export function TagTable() {
-  const [data, setData] = useState<TData[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  useEffect(() => {
-    apiClient.GET("/admin/tag").then((res) => {
-      if (res.error) {
-        toast.error("Could not fetch data");
-        console.error(res.error.message);
-      } else {
-        setData(res.data);
-      }
-    });
-  }, []);
-
-  return (
-    <>
-      <DataTable
-        data={data}
-        columns={columns}
-        search="reason"
-        filters={[]}
-        actions={[
-          {
-            label: "New",
-            icon: PlusCircle,
-            action() {
-              setIsDialogOpen(true);
-            },
-          },
-        ]}
-      />
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create tag</DialogTitle>
-          </DialogHeader>
-          <TagForm kind="create" onSuccess={(model) => setData([...data, model])} />
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-}

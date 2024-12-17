@@ -1,6 +1,7 @@
 import type { FacetedFilterProps } from "@/components/data-table/faceted-filter";
 import { Pagination } from "@/components/data-table/pagination";
 import { Toolbar } from "@/components/data-table/toolbar";
+import type { ToolbarActionProps } from "@/components/data-table/toolbar-action";
 import {
   Table,
   TableBody,
@@ -26,7 +27,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import type { ToolbarActionProps } from "@/components/data-table/toolbar-action";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -109,8 +109,7 @@ export function DataTable<TData, TValue>({
       <Toolbar
         table={table}
         filters={filters.map((filter) => ({
-          title: filter.title,
-          options: filter.options,
+          ...filter,
           column: table.getColumn(filter.columnName)!,
         }))}
         search={search}
