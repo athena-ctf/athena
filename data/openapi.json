@@ -15423,7 +15423,7 @@
       }
     },
     "/player/leaderboard/rankings": {
-      "post": {
+      "get": {
         "tags": [
           "leaderboard"
         ],
@@ -15506,7 +15506,7 @@
       }
     },
     "/player/leaderboard/team/rankings": {
-      "post": {
+      "get": {
         "tags": [
           "leaderboard"
         ],
@@ -15589,7 +15589,7 @@
       }
     },
     "/player/leaderboard/team/top10": {
-      "post": {
+      "get": {
         "tags": [
           "leaderboard"
         ],
@@ -15653,7 +15653,7 @@
       }
     },
     "/player/leaderboard/top10": {
-      "post": {
+      "get": {
         "tags": [
           "leaderboard"
         ],

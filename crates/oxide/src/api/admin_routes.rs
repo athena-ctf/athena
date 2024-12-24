@@ -3,8 +3,8 @@ use std::sync::Arc;
 use axum::Router;
 use axum::routing::{get, post};
 
+use crate::app_state::AppState;
 use crate::handlers;
-use crate::service::AppState;
 
 pub fn utils_router() -> Router<Arc<AppState>> {
     Router::new()
@@ -33,6 +33,7 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(handlers::challenge::router())
             .merge(handlers::container::router())
             .merge(handlers::deployment::router())
+            .merge(handlers::docker::router())
             .merge(handlers::file::router())
             .merge(handlers::flag::router())
             .merge(handlers::hint::router())

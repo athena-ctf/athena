@@ -18,6 +18,7 @@ use lettre::{AsyncTransport, Message};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, Condition, IntoActiveModel, TransactionTrait};
 
+use crate::app_state::AppState;
 use crate::errors::{Error, Result};
 use crate::jwt::{RefreshClaims, TokenPair};
 use crate::redis_keys::{PLAYER_LAST_UPDATED, REFRESH_TOKEN_BLACKLIST};
@@ -26,7 +27,6 @@ use crate::schemas::{
     PlayerModel, RegisterPlayer, RegisterVerifyEmailQuery, RegisterVerifyInviteQuery,
     ResetPasswordSchema, SendTokenSchema, Team, TeamModel, TeamRegister,
 };
-use crate::service::AppState;
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
 
 #[utoipa::path(

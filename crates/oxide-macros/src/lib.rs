@@ -2,6 +2,7 @@ use proc_macro::TokenStream;
 
 mod crud;
 mod crud_join;
+mod docker_wrapper;
 mod gen_schemas;
 mod json_path;
 
@@ -23,4 +24,9 @@ pub fn crud_join(input: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn gen_schemas(attrs: TokenStream, input: TokenStream) -> TokenStream {
     gen_schemas::gen_schemas_impl(attrs, input)
+}
+
+#[proc_macro_attribute]
+pub fn docker_wrapper(attrs: TokenStream, input: TokenStream) -> TokenStream {
+    docker_wrapper::docker_wrapper_impl(attrs, input)
 }

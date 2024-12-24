@@ -1,4 +1,4 @@
-use bollard::secret::ContainerStateStatusEnum;
+use bollard::models::ContainerStateStatusEnum;
 use fred::prelude::*;
 use sea_orm::prelude::*;
 use sea_orm::{Condition, QuerySelect};

@@ -3,8 +3,8 @@ use std::sync::Arc;
 use axum::Router;
 use axum::routing::{delete, patch, post};
 
+use crate::app_state::AppState;
 use crate::handlers::invite;
-use crate::service::AppState;
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()

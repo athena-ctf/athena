@@ -6,8 +6,8 @@ use bollard::container::{
     Config, CreateContainerOptions, RestartContainerOptions, StartContainerOptions,
 };
 use bollard::image::CreateImageOptions;
+use bollard::models::ContainerStateStatusEnum;
 use bollard::network::{ConnectNetworkOptions, CreateNetworkOptions};
-use bollard::secret::ContainerStateStatusEnum;
 use chrono::{Duration, Utc};
 use entity::prelude::*;
 use futures::StreamExt;
@@ -53,6 +53,10 @@ impl Manager {
             flag_len: challenge_settings.player_flag_len,
             container_timeout: challenge_settings.container_timeout,
         })
+    }
+
+    pub fn conn(&self) -> &Docker {
+        &self.docker
     }
 
     async fn ensure_image(&self, image: &str) -> Result<()> {
@@ -226,6 +230,7 @@ impl Manager {
                         .docker
                         .inspect_container(&container_info.id, None)
                         .await?;
+
                     if let Some(network_settings) = details.network_settings {
                         if let Some(ports) = network_settings.ports {
                             for (container_port, bindings) in ports {

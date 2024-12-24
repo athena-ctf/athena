@@ -14,7 +14,7 @@ config = { path = "../config" }
 chrono = { workspace = true }
 entity = { path = "../entity" }
 fastrand = { workspace = true }
-fred = { version = "10.0.1", features = ["partial-tracing", "i-hexpire"] }
+fred = { version = "10.0.2", features = ["partial-tracing", "i-hexpire"] }
 lettre = { version = "0.11.11", default-features = false, features = [
     "tokio1-rustls-tls",
     "smtp-transport",
@@ -29,7 +29,7 @@ ring = "0.17.8"
 sea-orm = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-thiserror = "2.0.7"
+thiserror = "2.0.9"
 tokio = { workspace = true }
 tower-http = { workspace = true }
 tracing = { workspace = true }
@@ -52,6 +52,7 @@ axum-extra = { version = "0.9.6", features = [
     "typed-header",
 ] }
 tokio-cron-scheduler = { version = "0.13.0", features = ["signal"] }
+axum_typed_multipart = "0.14.0"
 
 [build-dependencies]
 heck = "0.5.0"

@@ -2569,10 +2569,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get?: never;
-    put?: never;
     /** List leaderboard rankings of players with offset and count */
-    post: operations["player_rankings"];
+    get: operations["player_rankings"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -2586,10 +2586,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get?: never;
-    put?: never;
     /** List leaderboard rankings of teams with offset and count */
-    post: operations["team_rankings"];
+    get: operations["team_rankings"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -2603,10 +2603,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get?: never;
-    put?: never;
     /** List top 10 teams of leaderboard */
-    post: operations["team_top_10"];
+    get: operations["team_top_10"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -2620,10 +2620,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get?: never;
-    put?: never;
     /** List top 10 players of leaderboard */
-    post: operations["player_top_10"];
+    get: operations["player_top_10"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;

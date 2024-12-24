@@ -6,6 +6,7 @@ pub mod challenge_file;
 pub mod challenge_tag;
 pub mod container;
 pub mod deployment;
+pub mod docker;
 pub mod file;
 pub mod flag;
 pub mod hint;

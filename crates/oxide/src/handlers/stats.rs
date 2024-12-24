@@ -4,9 +4,9 @@ use axum::Json;
 use axum::extract::State;
 use sea_orm::{EntityTrait, PaginatorTrait};
 
+use crate::app_state::AppState;
 use crate::errors::Result;
 use crate::schemas::{JsonResponse, StatSchema};
-use crate::service::AppState;
 
 #[utoipa::path(
     get,

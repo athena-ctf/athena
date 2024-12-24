@@ -11,11 +11,11 @@ use axum_extra::headers::authorization::Bearer;
 use fred::prelude::*;
 use jsonwebtoken::{DecodingKey, Validation};
 
+use crate::app_state::AppState;
 use crate::errors::{Error, Result};
 use crate::jwt::{AdminAccessClaims, PlayerAccessClaims, RefreshClaims};
 use crate::permissions::has_permission;
 use crate::redis_keys::{ADMIN_LAST_UPDATED, PLAYER_LAST_UPDATED};
-use crate::service::AppState;
 
 // TODO: check for invalid jwt in all the errors and return instead of simply returning
 

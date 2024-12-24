@@ -539,7 +539,7 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
         use super::CsvStream;
         use crate::errors::{Error, Result};
         use crate::schemas::{FileSchema, ExportQuery, ExportFormat, JsonResponse, #(#imports,)*};
-        use crate::service::AppState;
+        use crate::app_state::AppState;
 
         #list_fn
 

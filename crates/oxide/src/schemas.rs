@@ -1,4 +1,4 @@
-use bollard::secret::ContainerStateStatusEnum;
+use bollard::models::ContainerStateStatusEnum;
 use chrono::{DateTime, FixedOffset};
 pub use entity::extensions::*;
 pub use entity::prelude::*;

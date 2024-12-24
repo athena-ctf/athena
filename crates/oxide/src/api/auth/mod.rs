@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use axum::Router;
 
-use crate::service::AppState;
+use crate::app_state::AppState;
 
 pub mod admin;
 pub mod player;

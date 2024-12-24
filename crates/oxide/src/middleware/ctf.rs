@@ -9,9 +9,9 @@ use axum::response::IntoResponse;
 use chrono::Utc;
 use fred::prelude::*;
 
+use crate::app_state::AppState;
 use crate::jwt::PlayerAccessClaims;
 use crate::schemas::JsonResponse;
-use crate::service::AppState;
 
 pub async fn middleware(
     state: State<Arc<AppState>>,

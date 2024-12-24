@@ -1,5 +1,6 @@
 pub mod api;
 
+mod app_state;
 mod docker;
 mod errors;
 mod handlers;
@@ -9,7 +10,6 @@ mod middleware;
 mod permissions;
 mod redis_keys;
 mod schemas;
-mod service;
 mod tasks;
 mod templates;
 mod token;
@@ -26,8 +26,8 @@ use tokio::signal;
 use tokio::sync::RwLock;
 use tokio_cron_scheduler::{Job, JobScheduler};
 
+use crate::app_state::{AppState, Settings};
 use crate::errors::{Error, Result};
-use crate::service::{AppState, Settings};
 
 pub mod utils {
     pub fn gen_random(size: usize) -> String {

@@ -11,11 +11,11 @@ use jsonwebtoken::{DecodingKey, Validation};
 use sea_orm::TransactionTrait;
 use sea_orm::prelude::*;
 
+use crate::app_state::AppState;
 use crate::errors::{Error, Result};
 use crate::jwt::{RefreshClaims, TokenPair};
 use crate::redis_keys::REFRESH_TOKEN_BLACKLIST;
 use crate::schemas::{Admin, AdminModel, JsonResponse, LoginRequest, LoginResponse};
-use crate::service::AppState;
 
 #[utoipa::path(
     post,

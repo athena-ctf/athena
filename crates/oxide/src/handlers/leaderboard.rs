@@ -3,12 +3,12 @@ use std::sync::Arc;
 use axum::Json;
 use axum::extract::{Query, State};
 
+use crate::app_state::AppState;
 use crate::errors::Result;
 use crate::schemas::{JsonResponse, LeaderboardRankings, Ranking, RankingQuery};
-use crate::service::AppState;
 
 #[utoipa::path(
-    post,
+    get,
     path = "/player/leaderboard/top10",
     responses(
         (status = 200, description = "Listed top 10 players successfully", body = [Ranking]),
@@ -24,7 +24,7 @@ pub async fn player_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranki
 }
 
 #[utoipa::path(
-    post,
+    get,
     path = "/player/leaderboard/rankings",
     params(
         ("offset" = i64, Query, description = "Offset of the rankings"),
@@ -58,7 +58,7 @@ pub async fn player_rankings(
 }
 
 #[utoipa::path(
-    post,
+    get,
     path = "/player/leaderboard/team/top10",
     responses(
         (status = 200, description = "Listed top 10 teams successfully", body = [Ranking]),
@@ -74,7 +74,7 @@ pub async fn team_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranking
 }
 
 #[utoipa::path(
-    post,
+    get,
     path = "/player/leaderboard/team/rankings",
     params(
         ("offset" = i64, Query, description = "Offset of the rankings"),

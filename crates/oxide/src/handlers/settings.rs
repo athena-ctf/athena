@@ -5,9 +5,9 @@ use axum::extract::{Path, State};
 use config::JsonPath;
 use serde_json::Value;
 
+use crate::app_state::AppState;
 use crate::errors::{Error, Result};
 use crate::schemas::JsonResponse;
-use crate::service::AppState;
 
 #[utoipa::path(
     get,

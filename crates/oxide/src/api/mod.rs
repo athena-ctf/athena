@@ -2,7 +2,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use axum::Router;
-use axum::extract::{MatchedPath, Request};
+use axum::extract::{DefaultBodyLimit, MatchedPath, Request};
 use axum::http::Method;
 use axum::routing::get;
 use tower_http::cors::{Any, CorsLayer};
@@ -11,9 +11,9 @@ use tower_http::trace::TraceLayer;
 use tracing::info_span;
 use utoipa::OpenApi;
 
+use crate::app_state::AppState;
 use crate::errors::Result;
 use crate::middleware;
-use crate::service::AppState;
 
 mod admin_routes;
 mod auth;
@@ -63,6 +63,7 @@ pub fn router(state: Arc<AppState>) -> axum::Router {
             }),
         )
         .layer(TimeoutLayer::new(Duration::from_secs(5)))
+        .layer(DefaultBodyLimit::max(1024 * 1024 * 512))
         .with_state(state)
 }
 
