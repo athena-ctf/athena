@@ -13,28 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Filter: Story = {
   args: {
-    tags: Array(5)
-      .fill(0)
-      .map(() => ({
-        created_at: faker.date.anytime().toISOString(),
-        id: faker.string.uuid(),
-        value: faker.lorem.word(),
-        updated_at: faker.date.anytime().toISOString(),
-      })),
-    difficulties: [
-      {
-        level: "0",
-        value: "Easy",
-      },
-      {
-        level: "1",
-        value: "Medium",
-      },
-      {
-        level: "2",
-        value: "Hard",
-      },
-    ],
+    tags: faker.lorem.words(3).split(" "),
     onChange(tags, difficulties, status) {
       console.log("changed: ", tags, difficulties, status);
     },

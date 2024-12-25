@@ -5,7 +5,7 @@ use sea_orm::{Iterable, QuerySelect};
 
 use crate::jwt::AuthPlayer;
 use crate::leaderboard;
-use crate::schemas::{AwardsReceived, Tag, TagSolves, TeamDetails, TeamMember, TeamProfile};
+use crate::schemas::{AwardsReceived, Challenge, TagSolves, TeamDetails, TeamMember, TeamProfile};
 
 oxide_macros::crud!(Team, single: [], optional: [], multiple: [Invite, Player]);
 
@@ -30,34 +30,33 @@ async fn get_team_profile(
         });
     }
 
-    let mut tags_map = Tag::find()
+    let mut tags_map = Challenge::find()
+        .select_only()
+        .column(entity::challenge::Column::Tags)
+        .into_tuple::<(Vec<String>,)>()
         .all(db)
         .await?
         .into_iter()
-        .map(|tag| {
-            (tag.id, TagSolves {
-                tag_value: tag.value,
-                solves: 0,
+        .flat_map(|tags| {
+            tags.0.into_iter().map(|tag| {
+                (tag.clone(), TagSolves {
+                    tag_value: tag,
+                    solves: 0,
+                })
             })
         })
         .collect::<HashMap<_, _>>();
 
-    let mut challenges = Vec::new();
-
-    for submitted_challenge in team
+    let solved_challenges = team
         .find_linked(TeamToChallenge)
         .filter(entity::submission::Column::IsCorrect.eq(true))
         .all(db)
-        .await?
-    {
-        let tags = submitted_challenge.find_related(Tag).all(db).await?;
-        for tag in tags {
-            tags_map
-                .entry(tag.id)
-                .and_modify(|tag_solves| tag_solves.solves += 1);
-        }
+        .await?;
 
-        challenges.push(submitted_challenge);
+    for solved_challenge in &solved_challenges {
+        for tag in &solved_challenge.tags {
+            tags_map.get_mut(tag).unwrap().solves += 1;
+        }
     }
 
     let history = leaderboard_manager.team_history(team.id).await?;
@@ -73,7 +72,7 @@ async fn get_team_profile(
 
     Ok(TeamProfile {
         team,
-        solved_challenges: challenges,
+        solved_challenges,
         tag_solves: tags_map.values().cloned().collect(),
         awards,
         history,
@@ -179,35 +178,6 @@ pub async fn retrieve_summary(
     else {
         return Err(Error::NotFound("Player team not found".to_owned()));
     };
-
-    let mut tags_map = Tag::find()
-        .all(&state.db_conn)
-        .await?
-        .into_iter()
-        .map(|tag| {
-            (tag.id, TagSolves {
-                tag_value: tag.value,
-                solves: 0,
-            })
-        })
-        .collect::<HashMap<_, _>>();
-
-    for submitted_challenge in team_model
-        .find_linked(TeamToChallenge)
-        .filter(entity::submission::Column::IsCorrect.eq(true))
-        .all(&state.db_conn)
-        .await?
-    {
-        let tags = submitted_challenge
-            .find_related(Tag)
-            .all(&state.db_conn)
-            .await?;
-        for tag in tags {
-            tags_map
-                .entry(tag.id)
-                .and_modify(|tag_solves| tag_solves.solves += 1);
-        }
-    }
 
     let invites = team_model.find_related(Invite).all(&state.db_conn).await?;
 

@@ -28,6 +28,7 @@ const challenges = Array(100)
     level: faker.helpers.arrayElement(ctf.levels).value,
     points: faker.number.int(500),
     title: faker.lorem.words(3),
+    tags: faker.lorem.words(3).split(" "),
   }));
 
 const exports = genExports("challenge", challenges);

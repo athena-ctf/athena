@@ -16,7 +16,7 @@ oxide_macros::crud!(
     Challenge,
     single: [],
     optional: [],
-    multiple: [Container, File, Hint, Deployment, Tag, Submission, ChallengeTag, ChallengeFile, Flag, Player]
+    multiple: [Container, File, Hint, Deployment, Submission, ChallengeFile, Flag, Player]
 );
 
 #[utoipa::path(
@@ -52,7 +52,6 @@ pub async fn player_challenges(
 
     let mut summaries = Vec::with_capacity(challenges.len());
     for challenge in challenges {
-        let tags = challenge.find_related(Tag).all(&state.db_conn).await?;
         let max_attempts = state.settings.read().await.challenge.max_attempts;
 
         let player_state = submissions
@@ -87,17 +86,13 @@ pub async fn player_challenges(
 
         summaries.push(ChallengeSummary {
             challenge,
-            tags,
             state: player_state,
             deployment,
             solves,
         });
     }
 
-    Ok(Json(PlayerChallenges {
-        summaries,
-        tags: Tag::find().all(&state.db_conn).await?,
-    }))
+    Ok(Json(PlayerChallenges { summaries }))
 }
 
 #[utoipa::path(

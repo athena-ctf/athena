@@ -45,8 +45,10 @@ export function FlagForm({ onSuccess, kind, defaultValues }: FormProps<"FlagMode
     defaultValues,
   });
 
-  const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIds"][]>([]);
-  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIds"][]>([]);
+  const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIdSchema"][]>(
+    [],
+  );
+  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIdSchema"][]>([]);
 
   useEffect(() => {
     apiClient.GET("/admin/challenge/ids").then((res) => {

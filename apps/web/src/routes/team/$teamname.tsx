@@ -5,5 +5,5 @@ export const Route = createFileRoute("/team/$teamname")({
 });
 
 function Index() {
-  return <></>;
+  return <></>; // TODO
 }

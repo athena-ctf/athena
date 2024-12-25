@@ -1,5 +1,4 @@
 import { ctf } from "@/utils/ctf-data";
-import type { components } from "@repo/api";
 import { Button } from "@repo/ui/components/button";
 import { X } from "lucide-react";
 import { useState } from "react";
@@ -12,7 +11,7 @@ const DIFFICULTIES = ctf.levels.map((level) => ({
 }));
 
 interface FilterProps {
-  tags: components["schemas"]["TagModel"][];
+  tags: string[];
   onChange: (tags: string[], difficulties: string[], status: string[]) => void;
 }
 
@@ -63,7 +62,7 @@ export function Filter({ tags, onChange }: FilterProps) {
         <FilterPopover
           open={tagOpen}
           setOpen={setTagOpen}
-          options={tags.map((tag) => ({ label: tag.value, value: tag.id }))}
+          options={tags.map((tag) => ({ label: tag, value: tag }))}
           selected={selectedTags}
           onSelect={handleTagSelect}
           placeholder="Search tags..."

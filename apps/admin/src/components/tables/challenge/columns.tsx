@@ -19,6 +19,7 @@ import { Checkbox } from "@repo/ui/components/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@repo/ui/components/dialog";
 import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { Badge } from "@ui/components/ui/badge";
+import { Minus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -99,6 +100,28 @@ export const columns = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+  }),
+  columnHelper.accessor("tags", {
+    header: ({ column }) => <ColumnHeader column={column} title="Tags" />,
+    cell: ({ getValue }) => {
+      const tags = getValue();
+
+      return (
+        <div className="flex flex-wrap gap-1">
+          {tags.length === 0 ? (
+            <Minus />
+          ) : (
+            tags.slice(0, 2).map((tag) => (
+              <Badge key={tag} variant="outline">
+                {tag}
+              </Badge>
+            ))
+          )}
+          {tags.length > 2 && <Badge variant="outline">+{tags.length - 2} more</Badge>}
+        </div>
+      );
+    },
+    enableSorting: false,
   }),
   columnHelper.display({
     id: "actions",

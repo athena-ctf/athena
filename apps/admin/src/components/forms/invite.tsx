@@ -71,7 +71,7 @@ export function InviteForm({ onSuccess, kind, defaultValues }: FormProps<"Invite
     }
   };
 
-  const [teamIds, setTeamIds] = useState<components["schemas"]["TeamIds"][]>([]);
+  const [teamIds, setTeamIds] = useState<components["schemas"]["TeamIdSchema"][]>([]);
 
   useEffect(() => {
     apiClient.GET("/admin/team/ids").then((res) => {

@@ -53,8 +53,8 @@ export function CreateUnlockForm({ onSuccess, kind }: FormProps<"UnlockModel", "
     }
   };
 
-  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIds"][]>([]);
-  const [hintIds, setHintIds] = useState<components["schemas"]["HintIds"][]>([]);
+  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIdSchema"][]>([]);
+  const [hintIds, setHintIds] = useState<components["schemas"]["HintIdSchema"][]>([]);
 
   useEffect(() => {
     apiClient.GET("/admin/player/ids").then((res) => {

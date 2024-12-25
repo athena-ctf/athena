@@ -26,17 +26,10 @@ export const Card: Story = {
         points: faker.number.int(),
         title: faker.lorem.sentence(4),
         updated_at: faker.date.anytime().toISOString(),
+        tags: faker.lorem.words(3).split(" "),
       },
       solves: 0,
       state: "solved",
-      tags: Array(5)
-        .fill(0)
-        .map(() => ({
-          created_at: faker.date.anytime().toISOString(),
-          id: faker.string.uuid(),
-          value: faker.lorem.word(),
-          updated_at: faker.date.anytime().toISOString(),
-        })),
     },
   },
 };

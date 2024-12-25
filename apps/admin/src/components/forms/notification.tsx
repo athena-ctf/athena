@@ -77,7 +77,7 @@ export function NotificationForm({
       onSuccess(resp.data);
     }
   };
-  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIds"][]>([]);
+  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIdSchema"][]>([]);
 
   useEffect(() => {
     apiClient.GET("/admin/player/ids").then((res) => {

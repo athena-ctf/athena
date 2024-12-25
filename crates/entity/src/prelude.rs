@@ -6,10 +6,6 @@ pub use super::challenge_file::{
     ChallengeFileIdSchema, CreateChallengeFileSchema, Model as ChallengeFileModel,
     UpdateChallengeFileSchema,
 };
-pub use super::challenge_tag::{
-    ChallengeTagIdSchema, CreateChallengeTagSchema, Model as ChallengeTagModel,
-    UpdateChallengeTagSchema,
-};
 pub use super::container::{ContainerIdSchema, CreateContainerSchema, Model as ContainerModel};
 pub use super::deployment::{CreateDeploymentSchema, DeploymentIdSchema, Model as DeploymentModel};
 pub use super::file::{CreateFileSchema, FileIdSchema, Model as FileModel};
@@ -29,7 +25,6 @@ pub use super::sea_orm_active_enums::*;
 pub use super::submission::{
     CreateSubmissionSchema, Model as SubmissionModel, SubmissionIdSchema, UpdateSubmissionSchema,
 };
-pub use super::tag::{CreateTagSchema, Model as TagModel, TagIdSchema};
 pub use super::team::{CreateTeamSchema, Model as TeamModel, TeamIdSchema};
 pub use super::ticket::{CreateTicketSchema, Model as TicketModel, TicketIdSchema};
 pub use super::unlock::{

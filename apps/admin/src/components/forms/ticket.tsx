@@ -71,8 +71,8 @@ export function TicketForm({ onSuccess, kind, defaultValues }: FormProps<"Ticket
     }
   };
 
-  const [adminIds, setAdminIds] = useState<components["schemas"]["AdminIds"][]>([]);
-  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIds"][]>([]);
+  const [adminIds, setAdminIds] = useState<components["schemas"]["AdminIdSchema"][]>([]);
+  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIdSchema"][]>([]);
 
   useEffect(() => {
     apiClient.GET("/admin/admin/ids").then((res) => {

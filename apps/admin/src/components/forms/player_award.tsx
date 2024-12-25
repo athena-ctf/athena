@@ -63,8 +63,8 @@ export function CreatePlayerAwardForm({
     }
   };
 
-  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIds"][]>([]);
-  const [awardIds, setAwardIds] = useState<components["schemas"]["AwardIds"][]>([]);
+  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIdSchema"][]>([]);
+  const [awardIds, setAwardIds] = useState<components["schemas"]["AwardIdSchema"][]>([]);
 
   useEffect(() => {
     apiClient.GET("/admin/player/ids").then((res) => {

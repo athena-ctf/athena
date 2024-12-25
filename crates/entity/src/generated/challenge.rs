@@ -19,14 +19,13 @@ pub struct Model {
     pub level: i32,
     pub kind: ChallengeKindEnum,
     pub author_name: String,
+    pub tags: Vec<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
     #[sea_orm(has_many = "super::challenge_file::Entity")]
     ChallengeFile,
-    #[sea_orm(has_many = "super::challenge_tag::Entity")]
-    ChallengeTag,
     #[sea_orm(has_many = "super::container::Entity")]
     Container,
     #[sea_orm(has_many = "super::deployment::Entity")]
@@ -42,12 +41,6 @@ pub enum Relation {
 impl Related<super::challenge_file::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::ChallengeFile.def()
-    }
-}
-
-impl Related<super::challenge_tag::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::ChallengeTag.def()
     }
 }
 
@@ -98,16 +91,6 @@ impl Related<super::player::Entity> for Entity {
 
     fn via() -> Option<RelationDef> {
         Some(super::submission::Relation::Challenge.def().rev())
-    }
-}
-
-impl Related<super::tag::Entity> for Entity {
-    fn to() -> RelationDef {
-        super::challenge_tag::Relation::Tag.def()
-    }
-
-    fn via() -> Option<RelationDef> {
-        Some(super::challenge_tag::Relation::Challenge.def().rev())
     }
 }
 

@@ -6,7 +6,7 @@ use crate::jwt::AuthPlayer;
 use crate::leaderboard;
 use crate::redis_keys::PLAYER_LAST_UPDATED;
 use crate::schemas::{
-    AwardsReceived, PlayerDetails, PlayerProfile, Tag, TagSolves, UpdateProfileSchema,
+    AwardsReceived, PlayerDetails, PlayerProfile, TagSolves, UpdateProfileSchema,
 };
 
 oxide_macros::crud!(
@@ -23,14 +23,19 @@ pub async fn get_user_profile(
 ) -> Result<PlayerProfile> {
     let (rank, score) = leaderboard_manager.player_rank(player.id).await?;
 
-    let mut tags_map = Tag::find()
+    let mut tags_map = Challenge::find()
+        .select_only()
+        .column(entity::challenge::Column::Tags)
+        .into_tuple::<(Vec<String>,)>()
         .all(db)
         .await?
         .into_iter()
-        .map(|tag| {
-            (tag.id, TagSolves {
-                tag_value: tag.value,
-                solves: 0,
+        .flat_map(|tags| {
+            tags.0.into_iter().map(|tag| {
+                (tag.clone(), TagSolves {
+                    tag_value: tag,
+                    solves: 0,
+                })
             })
         })
         .collect::<HashMap<_, _>>();
@@ -42,11 +47,8 @@ pub async fn get_user_profile(
         .await?;
 
     for submitted_challenge in &solved_challenges {
-        let tags = submitted_challenge.find_related(Tag).all(db).await?;
-        for tag in tags {
-            tags_map
-                .entry(tag.id)
-                .and_modify(|tag_solves| tag_solves.solves += 1);
+        for tag in &submitted_challenge.tags {
+            tags_map.get_mut(tag).unwrap().solves += 1;
         }
     }
 

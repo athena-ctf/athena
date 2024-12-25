@@ -3338,641 +3338,6 @@
         }
       }
     },
-    "/admin/challenge_tag": {
-      "get": {
-        "tags": [
-          "challenge_tag"
-        ],
-        "summary": "List challenge_tags",
-        "operationId": "list_challenge_tags",
-        "responses": {
-          "200": {
-            "description": "Listed challenge_tags successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChallengeTagModel"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "challenge_tag"
-        ],
-        "summary": "Create challenge_tag",
-        "operationId": "create_challenge_tag",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateChallengeTagSchema"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created challenge_tag successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChallengeTagModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge_tag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge_tag/export": {
-      "get": {
-        "tags": [
-          "challenge_tag"
-        ],
-        "summary": "Export challenge_tags",
-        "operationId": "export_challenge_tags",
-        "parameters": [
-          {
-            "name": "format",
-            "in": "query",
-            "description": "Format to export table",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ExportFormat"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Exported challenge_tags successfully",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "file"
-                  ],
-                  "properties": {
-                    "file": {
-                      "type": "string",
-                      "format": "binary"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge_tag/import": {
-      "post": {
-        "tags": [
-          "challenge_tag"
-        ],
-        "summary": "Import challenge_tags",
-        "operationId": "import_challenge_tags",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "file"
-                ],
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Imported challenge_tags successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge_tag/{challenge_id}-{tag_id}": {
-      "get": {
-        "tags": [
-          "challenge_tag"
-        ],
-        "summary": "Retrieve challenge_tag by id",
-        "operationId": "retrieve_challenge_tag_by_id",
-        "parameters": [
-          {
-            "name": "challenge_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "tag_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved challenge_tag by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChallengeTagModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge_tag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "challenge_tag"
-        ],
-        "summary": "Update challenge_tag by id",
-        "operationId": "update_challenge_tag_by_id",
-        "parameters": [
-          {
-            "name": "challenge_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "tag_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateChallengeTagSchema"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Updated challenge_tag by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChallengeTagModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters/request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge_tag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "challenge_tag"
-        ],
-        "summary": "Delete challenge_tag by id",
-        "operationId": "delete_challenge_tag_by_id",
-        "parameters": [
-          {
-            "name": "challenge_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "tag_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted challenge_tag by id successfully"
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge_tag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/challenge_tag/{challenge_id}-{tag_id}/relations": {
-      "get": {
-        "tags": [
-          "challenge_tag"
-        ],
-        "summary": "Retrieve challenge_tag relations by id",
-        "operationId": "retrieve_challenge_tag_relations_by_id",
-        "parameters": [
-          {
-            "name": "challenge_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "tag_id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved challenge_tag relations by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChallengeTagRelations"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No challenge_tag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/admin/container": {
       "get": {
         "tags": [
@@ -14057,655 +13422,6 @@
         }
       }
     },
-    "/admin/tag": {
-      "get": {
-        "tags": [
-          "tag"
-        ],
-        "summary": "List tags",
-        "operationId": "list_tags",
-        "responses": {
-          "200": {
-            "description": "Listed tags successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TagModel"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "tag"
-        ],
-        "summary": "Create tag",
-        "operationId": "create_tag",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTagSchema"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created tag successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No tag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/tag/export": {
-      "get": {
-        "tags": [
-          "tag"
-        ],
-        "summary": "Export tags",
-        "operationId": "export_tags",
-        "parameters": [
-          {
-            "name": "format",
-            "in": "query",
-            "description": "Format to export table",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ExportFormat"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Exported tags successfully",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "file"
-                  ],
-                  "properties": {
-                    "file": {
-                      "type": "string",
-                      "format": "binary"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/tag/ids": {
-      "get": {
-        "tags": [
-          "tag"
-        ],
-        "summary": "List tag ids",
-        "operationId": "list_tag_ids",
-        "responses": {
-          "200": {
-            "description": "Listed tag ids successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TagIdSchema"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/tag/import": {
-      "post": {
-        "tags": [
-          "tag"
-        ],
-        "summary": "Import tags",
-        "operationId": "import_tags",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "file"
-                ],
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Imported tags successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/tag/{id}": {
-      "get": {
-        "tags": [
-          "tag"
-        ],
-        "summary": "Retrieve tag by id",
-        "operationId": "retrieve_tag_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved tag by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No tag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "tag"
-        ],
-        "summary": "Update tag by id",
-        "operationId": "update_tag_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTagSchema"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Updated tag by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters/request body format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No tag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "tag"
-        ],
-        "summary": "Delete tag by id",
-        "operationId": "delete_tag_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted tag by id successfully"
-          },
-          "400": {
-            "description": "Invalid parameters format",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No tag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/tag/{id}/relations": {
-      "get": {
-        "tags": [
-          "tag"
-        ],
-        "summary": "Retrieve tag relations by id",
-        "operationId": "retrieve_tag_relations_by_id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Id of entity",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieved tag relations by id successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TagRelations"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No tag found with specified id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/admin/team": {
       "get": {
         "tags": [
@@ -19558,7 +18274,8 @@
           "points",
           "level",
           "kind",
-          "author_name"
+          "author_name",
+          "tags"
         ],
         "properties": {
           "author_name": {
@@ -19586,6 +18303,12 @@
             "type": "integer",
             "format": "int32"
           },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "title": {
             "type": "string"
           },
@@ -19602,9 +18325,7 @@
           "files",
           "hints",
           "deployments",
-          "tags",
           "submissions",
-          "challenge_tags",
           "challenge_files",
           "flags",
           "players"
@@ -19614,12 +18335,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ChallengeFileIdSchema"
-            }
-          },
-          "challenge_tags": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChallengeTagIdSchema"
             }
           },
           "containers": {
@@ -19663,12 +18378,6 @@
             "items": {
               "$ref": "#/components/schemas/SubmissionIdSchema"
             }
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TagIdSchema"
-            }
           }
         }
       },
@@ -19676,7 +18385,6 @@
         "type": "object",
         "required": [
           "challenge",
-          "tags",
           "state",
           "solves"
         ],
@@ -19701,71 +18409,6 @@
           },
           "state": {
             "$ref": "#/components/schemas/PlayerChallengeState"
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TagModel"
-            }
-          }
-        }
-      },
-      "ChallengeTagIdSchema": {
-        "type": "object",
-        "required": [
-          "challenge_id",
-          "tag_id"
-        ],
-        "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "tag_id": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
-      },
-      "ChallengeTagModel": {
-        "type": "object",
-        "required": [
-          "created_at",
-          "updated_at",
-          "challenge_id",
-          "tag_id"
-        ],
-        "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "tag_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "ChallengeTagRelations": {
-        "type": "object",
-        "required": [
-          "challenge",
-          "tag"
-        ],
-        "properties": {
-          "challenge": {
-            "$ref": "#/components/schemas/ChallengeIdSchema"
-          },
-          "tag": {
-            "$ref": "#/components/schemas/TagIdSchema"
           }
         }
       },
@@ -21064,7 +19707,8 @@
           "points",
           "level",
           "kind",
-          "author_name"
+          "author_name",
+          "tags"
         ],
         "properties": {
           "author_name": {
@@ -21084,25 +19728,14 @@
             "type": "integer",
             "format": "int32"
           },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "title": {
             "type": "string"
-          }
-        }
-      },
-      "CreateChallengeTagSchema": {
-        "type": "object",
-        "required": [
-          "challenge_id",
-          "tag_id"
-        ],
-        "properties": {
-          "challenge_id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "tag_id": {
-            "type": "string",
-            "format": "uuid"
           }
         }
       },
@@ -21543,17 +20176,6 @@
           "player_id": {
             "type": "string",
             "format": "uuid"
-          }
-        }
-      },
-      "CreateTagSchema": {
-        "type": "object",
-        "required": [
-          "value"
-        ],
-        "properties": {
-          "value": {
-            "type": "string"
           }
         }
       },
@@ -25609,20 +24231,13 @@
       "PlayerChallenges": {
         "type": "object",
         "required": [
-          "summaries",
-          "tags"
+          "summaries"
         ],
         "properties": {
           "summaries": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ChallengeSummary"
-            }
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TagModel"
             }
           }
         }
@@ -26131,11 +24746,11 @@
       "StatSchema": {
         "type": "object",
         "required": [
-          "award",
           "admin",
+          "award",
           "ban",
-          "challenge_tag",
           "challenge",
+          "challenge_file",
           "container",
           "deployment",
           "file",
@@ -26145,11 +24760,11 @@
           "invite",
           "notification",
           "player",
+          "player_award",
           "submission",
-          "tag",
           "team",
           "ticket",
-          "unlocks"
+          "unlock"
         ],
         "properties": {
           "admin": {
@@ -26172,7 +24787,7 @@
             "format": "int64",
             "minimum": 0
           },
-          "challenge_tag": {
+          "challenge_file": {
             "type": "integer",
             "format": "int64",
             "minimum": 0
@@ -26222,12 +24837,12 @@
             "format": "int64",
             "minimum": 0
           },
-          "submission": {
+          "player_award": {
             "type": "integer",
             "format": "int64",
             "minimum": 0
           },
-          "tag": {
+          "submission": {
             "type": "integer",
             "format": "int64",
             "minimum": 0
@@ -26242,7 +24857,7 @@
             "format": "int64",
             "minimum": 0
           },
-          "unlocks": {
+          "unlock": {
             "type": "integer",
             "format": "int64",
             "minimum": 0
@@ -26445,22 +25060,6 @@
           }
         }
       },
-      "TagIdSchema": {
-        "type": "object",
-        "required": [
-          "id",
-          "value"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
       "TagImageBody": {
         "type": "object",
         "required": [
@@ -26473,53 +25072,6 @@
           },
           "tag": {
             "type": "string"
-          }
-        }
-      },
-      "TagModel": {
-        "type": "object",
-        "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "value"
-        ],
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
-      "TagRelations": {
-        "type": "object",
-        "required": [
-          "challenge_tags",
-          "challenges"
-        ],
-        "properties": {
-          "challenge_tags": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChallengeTagIdSchema"
-            }
-          },
-          "challenges": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChallengeIdSchema"
-            }
           }
         }
       },
@@ -26991,9 +25543,6 @@
         ]
       },
       "UpdateChallengeFileSchema": {
-        "type": "object"
-      },
-      "UpdateChallengeTagSchema": {
         "type": "object"
       },
       "UpdateInviteSchema": {

@@ -75,7 +75,6 @@ pub enum PlayerChallengeState {
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct ChallengeSummary {
     pub challenge: ChallengeModel,
-    pub tags: Vec<TagModel>,
     pub state: PlayerChallengeState,
     pub deployment: Option<DeploymentModel>,
     pub solves: u64,
@@ -116,7 +115,6 @@ pub struct ChallengeInstance {
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct PlayerChallenges {
     pub summaries: Vec<ChallengeSummary>,
-    pub tags: Vec<TagModel>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -128,11 +126,11 @@ pub struct DetailedChallenge {
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct StatSchema {
-    pub award: u64,
     pub admin: u64,
+    pub award: u64,
     pub ban: u64,
-    pub challenge_tag: u64,
     pub challenge: u64,
+    pub challenge_file: u64,
     pub container: u64,
     pub deployment: u64,
     pub file: u64,
@@ -142,11 +140,11 @@ pub struct StatSchema {
     pub invite: u64,
     pub notification: u64,
     pub player: u64,
+    pub player_award: u64,
     pub submission: u64,
-    pub tag: u64,
     pub team: u64,
     pub ticket: u64,
-    pub unlocks: u64,
+    pub unlock: u64,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

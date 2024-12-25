@@ -74,8 +74,10 @@ export function CreateSubmissionForm({
     }
   };
 
-  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIds"][]>([]);
-  const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIds"][]>([]);
+  const [playerIds, setPlayerIds] = useState<components["schemas"]["PlayerIdSchema"][]>([]);
+  const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIdSchema"][]>(
+    [],
+  );
 
   useEffect(() => {
     apiClient.GET("/admin/player/ids").then((res) => {

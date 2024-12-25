@@ -43,7 +43,9 @@ export function HintForm({ onSuccess, kind, defaultValues }: FormProps<"HintMode
     defaultValues,
   });
 
-  const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIds"][]>([]);
+  const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIdSchema"][]>(
+    [],
+  );
 
   useEffect(() => {
     apiClient.GET("/admin/challenge/ids").then((res) => {

@@ -46,9 +46,9 @@ export function ChallengeCard({
                 </CardTitle>
               </div>
               <div className="flex flex-row space-x-2 py-3">
-                {challengeSummary.tags.map((tag) => (
-                  <Badge className="h-7" key={tag.value}>
-                    {tag.value}
+                {challengeSummary.challenge.tags.map((tag) => (
+                  <Badge className="h-7" key={tag}>
+                    {tag}
                   </Badge>
                 ))}
               </div>

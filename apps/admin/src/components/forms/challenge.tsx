@@ -27,6 +27,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { type FormProps, buttonText } from "./props";
+import { TagsInput } from "@repo/ui/components/tags-input";
 
 const kinds = [
   "dynamic_containerized",
@@ -42,6 +43,7 @@ const schema = z.object({
   level: z.number(),
   kind: z.enum(kinds),
   author_name: z.string(),
+  tags: z.array(z.string()),
 });
 
 type Schema = z.infer<typeof schema>;
@@ -50,7 +52,7 @@ export function ChallengeForm({ onSuccess, kind, defaultValues }: FormProps<"Cha
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues,
+    defaultValues: { tags: [], ...defaultValues },
   });
 
   const onSubmit = async (values: Schema) => {
@@ -251,6 +253,21 @@ export function ChallengeForm({ onSuccess, kind, defaultValues }: FormProps<"Cha
                   editorClassName="focus:outline-none px-5 py-4 h-full grow"
                 />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="tags"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Dependencies</FormLabel>
+              <TagsInput
+                value={field.value}
+                onValueChange={field.onChange}
+                placeholder="Enter tags"
+              />
               <FormMessage />
             </FormItem>
           )}

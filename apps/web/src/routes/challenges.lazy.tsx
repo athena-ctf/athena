@@ -14,7 +14,7 @@ export const Route = createLazyFileRoute("/challenges")({
 
 function Index() {
   const [challenges, setChallenges] = useState<components["schemas"]["ChallengeSummary"][]>([]);
-  const [tags, setTags] = useState<components["schemas"]["TagModel"][]>([]);
+  const [tags, setTags] = useState<string[]>([]);
 
   const [filtered, setFiltered] = useState<components["schemas"]["ChallengeSummary"][]>([]);
   const [results, setResults] = useState<components["schemas"]["ChallengeSummary"][]>([]);
@@ -25,7 +25,7 @@ function Index() {
         toast.error("Could not fetch challenges");
       } else {
         setChallenges(resp.data.summaries);
-        setTags(resp.data.tags);
+        setTags([...new Set(resp.data.summaries.flatMap((summary) => summary.challenge.tags))]);
       }
     });
   }, []);
@@ -39,7 +39,7 @@ function Index() {
             setFiltered(
               challenges.filter((challenge) => {
                 const hasMatchingTag = tags.some((tag) =>
-                  challenge.tags.some((newTag) => newTag.value === tag),
+                  challenge.challenge.tags.some((newTag) => newTag === tag),
                 );
                 const hasMatchingDifficulty = difficulties.some(
                   (difficulty) => challenge.challenge.level.toString() === difficulty,

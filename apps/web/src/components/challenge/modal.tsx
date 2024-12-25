@@ -123,9 +123,9 @@ export function ChallengeModal({
             <DialogTitle>{challengeSummary.challenge.title}</DialogTitle>
           </div>
           <div className="flex flex-row space-x-2 w-full ml-7">
-            {challengeSummary.tags.map((tag) => (
-              <Badge className="my-auto" key={tag.value}>
-                {tag.value}
+            {challengeSummary.challenge.tags.map((tag) => (
+              <Badge className="my-auto" key={tag}>
+                {tag}
               </Badge>
             ))}
           </div>

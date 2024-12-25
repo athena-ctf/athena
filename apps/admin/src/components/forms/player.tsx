@@ -122,8 +122,8 @@ export function PlayerForm({ onSuccess, kind, defaultValues }: FormProps<"Player
     }
   };
 
-  const [teamIds, setTeamIds] = useState<components["schemas"]["TeamIds"][]>([]);
-  const [banIds, setBanIds] = useState<components["schemas"]["BanIds"][]>([]);
+  const [teamIds, setTeamIds] = useState<components["schemas"]["TeamIdSchema"][]>([]);
+  const [banIds, setBanIds] = useState<components["schemas"]["BanIdSchema"][]>([]);
 
   useEffect(() => {
     apiClient.GET("/admin/team/ids").then((res) => {

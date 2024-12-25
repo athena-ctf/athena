@@ -56,8 +56,10 @@ export function CreateChallengeFileForm({
     }
   };
 
-  const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIds"][]>([]);
-  const [fileIds, setFileIds] = useState<components["schemas"]["FileIds"][]>([]);
+  const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIdSchema"][]>(
+    [],
+  );
+  const [fileIds, setFileIds] = useState<components["schemas"]["FileIdSchema"][]>([]);
 
   useEffect(() => {
     apiClient.GET("/admin/challenge/ids").then((res) => {

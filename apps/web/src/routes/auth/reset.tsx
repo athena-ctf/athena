@@ -8,17 +8,7 @@ export const Route = createFileRoute("/auth/reset")({
   component: Index,
 });
 
-const { useStepper } = defineStepper(
-  {
-    id: "1",
-  },
-  {
-    id: "2",
-  },
-  {
-    id: "3",
-  },
-);
+const { useStepper } = defineStepper({ id: "1" }, { id: "2" }, { id: "3" });
 
 export default function Index() {
   const stepper = useStepper();

@@ -21,13 +21,13 @@ use crate::schemas::{JsonResponse, StatSchema};
 /// Retrieve stats of all tables
 pub async fn retrieve(state: State<Arc<AppState>>) -> Result<Json<StatSchema>> {
     Ok(Json(StatSchema {
-        award: entity::award::Entity::find().count(&state.db_conn).await?,
         admin: entity::admin::Entity::find().count(&state.db_conn).await?,
+        award: entity::award::Entity::find().count(&state.db_conn).await?,
         ban: entity::ban::Entity::find().count(&state.db_conn).await?,
-        challenge_tag: entity::challenge_tag::Entity::find()
+        challenge: entity::challenge::Entity::find()
             .count(&state.db_conn)
             .await?,
-        challenge: entity::challenge::Entity::find()
+        challenge_file: entity::challenge_file::Entity::find()
             .count(&state.db_conn)
             .await?,
         container: entity::container::Entity::find()
@@ -47,12 +47,14 @@ pub async fn retrieve(state: State<Arc<AppState>>) -> Result<Json<StatSchema>> {
             .count(&state.db_conn)
             .await?,
         player: entity::player::Entity::find().count(&state.db_conn).await?,
+        player_award: entity::player_award::Entity::find()
+            .count(&state.db_conn)
+            .await?,
         submission: entity::submission::Entity::find()
             .count(&state.db_conn)
             .await?,
-        tag: entity::tag::Entity::find().count(&state.db_conn).await?,
         team: entity::team::Entity::find().count(&state.db_conn).await?,
         ticket: entity::ticket::Entity::find().count(&state.db_conn).await?,
-        unlocks: entity::unlock::Entity::find().count(&state.db_conn).await?,
+        unlock: entity::unlock::Entity::find().count(&state.db_conn).await?,
     }))
 }
