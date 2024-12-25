@@ -64,7 +64,9 @@ export function ContainerForm({
     defaultValues: { environment: [], ports: [], networks: [], depends_on: [], ...defaultValues },
   });
 
-  const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIds"][]>([]);
+  const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIdSchema"][]>(
+    [],
+  );
 
   const { fields, append, remove } = useFieldArray({
     name: "environment",
@@ -304,7 +306,7 @@ export function ContainerForm({
               <TagsInput
                 value={field.value}
                 onValueChange={field.onChange}
-                placeholder="Enter dependecies"
+                placeholder="Enter dependencies"
               />
               <FormMessage />
             </FormItem>

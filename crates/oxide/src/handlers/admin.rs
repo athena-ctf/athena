@@ -7,7 +7,7 @@ oxide_macros::crud!(Admin, single: [], optional: [], multiple: [Ticket]);
     path = "/admin/current",
     operation_id = "admin_get_current",
     responses(
-        (status = 200, description = "Password reset email sent successful", body = AdminModel),
+        (status = 200, description = "Retrieved current logged in admin successfully", body = AdminModel),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 404, description = "Admin not found", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)

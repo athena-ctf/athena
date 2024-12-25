@@ -543,6 +543,7 @@ pub struct ImageSearchResponseItem {
 pub struct BuildImageBody {
     pub tag: String,
     pub image_name: String,
+    #[schema(value_type = String, format = Binary)]
     pub file: Vec<u8>,
 }
 
@@ -614,17 +615,17 @@ pub struct InspectContainerQuery {
 }
 
 #[oxide_macros::docker_wrapper(path = "bollard::container::KillContainerOptions<String>")]
-pub struct KillContainerQuery {
+pub struct KillContainerBody {
     pub signal: String,
 }
 
 #[oxide_macros::docker_wrapper(path = "bollard::container::StopContainerOptions")]
-pub struct StopContainerQuery {
+pub struct StopContainerBody {
     pub t: i64,
 }
 
 #[oxide_macros::docker_wrapper(path = "bollard::container::StartContainerOptions<String>")]
-pub struct StartContainerQuery {
+pub struct StartContainerBody {
     pub detach_keys: String,
 }
 
@@ -1125,7 +1126,7 @@ impl From<ChangeType> for bollard::models::ChangeType {
 }
 
 #[oxide_macros::docker_wrapper(path = "bollard::container::RestartContainerOptions")]
-pub struct RestartContainerQuery {
+pub struct RestartContainerBody {
     pub t: isize,
 }
 

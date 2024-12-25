@@ -4,19 +4,19 @@ use axum::Router;
 
 use crate::app_state::AppState;
 
-pub mod containers;
-pub mod images;
-pub mod networks;
+pub mod container;
+pub mod image;
+pub mod network;
 pub mod schemas;
-pub mod volumes;
+pub mod volume;
 
 pub fn router() -> Router<Arc<AppState>> {
     Router::new().nest(
         "/docker",
         Router::new()
-            .merge(containers::router())
-            .merge(volumes::router())
-            .merge(networks::router())
-            .merge(images::router()),
+            .merge(container::router())
+            .merge(volume::router())
+            .merge(network::router())
+            .merge(image::router()),
     )
 }

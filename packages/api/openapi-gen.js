@@ -5,6 +5,7 @@ import openapiTS, { astToString } from "openapi-typescript";
 import ts from "typescript";
 
 const baseDir = path.dirname(fileURLToPath(import.meta.url));
+const outPath = path.resolve(baseDir, "./src/openapi.d.ts");
 
 const BLOB = ts.factory.createTypeReferenceNode(ts.factory.createIdentifier("Blob"));
 const FILE = ts.factory.createTypeReferenceNode(ts.factory.createIdentifier("File"));
@@ -23,6 +24,6 @@ openapiTS(localPath, {
     }
     return undefined;
   },
-}).then((output) =>
-  fs.writeFileSync(path.resolve(baseDir, "./src/openapi.d.ts"), astToString(output)),
-);
+})
+  .then((output) => fs.writeFileSync(outPath, astToString(output)))
+  .then(() => console.log(`Written file to "${outPath}"`));

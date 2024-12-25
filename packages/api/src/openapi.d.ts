@@ -839,6 +839,426 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/admin/docker/container": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List all docker containers */
+    get: operations["docker_container_list"];
+    put?: never;
+    /** Create docker containers */
+    post: operations["docker_container_create"];
+    /** Pruned docker containers */
+    delete: operations["docker_container_prune"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Inspect docker container */
+    get: operations["docker_container_inspect"];
+    put?: never;
+    post?: never;
+    /** Remove docker container */
+    delete: operations["docker_container_remove"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}/changes": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Retrieve docker container changes */
+    get: operations["docker_container_changes"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}/export": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Export docker container */
+    get: operations["docker_container_export"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}/kill": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Kill docker container */
+    post: operations["docker_container_kill"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}/logs": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Retrieve docker container logs */
+    get: operations["docker_container_logs"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}/pause": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Pause docker container */
+    post: operations["docker_container_pause"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}/restart": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Restart docker container */
+    post: operations["docker_container_restart"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}/start": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Start docker container */
+    post: operations["docker_container_start"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}/stats": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Retrieve docker container stats */
+    get: operations["docker_container_stats"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}/stop": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Stop docker container */
+    post: operations["docker_container_stop"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}/top": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Retrieve docker container top processes */
+    get: operations["docker_container_top"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/container/{name}/unpause": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Unpause docker container */
+    post: operations["docker_container_unpause"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/image": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List all docker images */
+    get: operations["docker_image_list"];
+    put?: never;
+    /** Create docker image */
+    post: operations["docker_image_create"];
+    /** Pruned docker images */
+    delete: operations["docker_image_prune"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/image/search": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Searches all docker images */
+    get: operations["docker_image_search"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/image/{name}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Inspect docker image */
+    get: operations["docker_image_inspect"];
+    put?: never;
+    post?: never;
+    /** Remove docker image */
+    delete: operations["docker_image_remove"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/image/{name}/history": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Retrieve docker image history */
+    get: operations["docker_image_history"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/image/{name}/tag": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Tag docker image */
+    patch: operations["docker_image_tag"];
+    trace?: never;
+  };
+  "/admin/docker/network": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List all docker networks */
+    get: operations["docker_network_list"];
+    put?: never;
+    /** Create docker network */
+    post: operations["docker_network_create"];
+    /** Pruned docker networks */
+    delete: operations["docker_network_prune"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/network/{name}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Inspect docker network */
+    get: operations["docker_network_inspect"];
+    put?: never;
+    post?: never;
+    /** Remove docker network */
+    delete: operations["docker_network_remove"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/network/{name}/connect": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Connect docker network */
+    post: operations["docker_network_connect"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/network/{name}/disconnect": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Disconnect docker network */
+    post: operations["docker_network_disconnect"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/volume": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List all docker volumes */
+    get: operations["docker_volume_list"];
+    put?: never;
+    /** Create docker volumes */
+    post: operations["docker_volume_create"];
+    /** Pruned docker volumes */
+    delete: operations["docker_volume_prune"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/admin/docker/volume/{name}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Inspect docker volume */
+    get: operations["docker_volume_inspect"];
+    put?: never;
+    post?: never;
+    /** Removed docker volume */
+    delete: operations["docker_volume_remove"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/admin/file": {
     parameters: {
       query?: never;
@@ -2753,6 +3173,11 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    Address: {
+      addr?: string | null;
+      /** Format: int64 */
+      prefix_len?: number | null;
+    };
     AdminIdSchema: {
       /** Format: uuid */
       id: string;
@@ -2826,6 +3251,48 @@ export interface components {
     };
     BanRelations: {
       player: components["schemas"]["PlayerIdSchema"];
+    };
+    BlkioStats: {
+      io_merged_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+      io_queue_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+      io_service_bytes_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+      io_service_time_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+      io_serviced_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+      io_time_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+      io_wait_time_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+      sectors_recursive?: components["schemas"]["BlkioStatsEntry"][] | null;
+    };
+    BlkioStatsEntry: {
+      /** Format: int64 */
+      major: number;
+      /** Format: int64 */
+      minor: number;
+      op: string;
+      /** Format: int64 */
+      value: number;
+    };
+    BuildImageBody: {
+      /** Format: binary */
+      file: string;
+      image_name: string;
+      tag: string;
+    };
+    CPUStats: {
+      cpu_usage: components["schemas"]["CPUUsage"];
+      /** Format: int64 */
+      online_cpus?: number | null;
+      /** Format: int64 */
+      system_cpu_usage?: number | null;
+      throttling_data: components["schemas"]["ThrottlingData"];
+    };
+    CPUUsage: {
+      percpu_usage?: number[] | null;
+      /** Format: int64 */
+      total_usage: number;
+      /** Format: int64 */
+      usage_in_kernelmode: number;
+      /** Format: int64 */
+      usage_in_usermode: number;
     };
     ChallengeFileIdSchema: {
       /** Format: uuid */
@@ -2918,10 +3385,170 @@ export interface components {
       challenge: components["schemas"]["ChallengeIdSchema"];
       tag: components["schemas"]["TagIdSchema"];
     };
+    /** @enum {string} */
+    ChangeType: "Modified" | "Added" | "Deleted";
+    ClusterVolume: {
+      /** Format: date-time */
+      created_at?: string | null;
+      id?: string | null;
+      info?: null | components["schemas"]["ClusterVolumeInfo"];
+      publish_status?: components["schemas"]["ClusterVolumePublishStatus"][] | null;
+      spec?: null | components["schemas"]["ClusterVolumeSpec"];
+      /** Format: date-time */
+      updated_at?: string | null;
+      version?: null | components["schemas"]["ObjectVersion"];
+    };
+    ClusterVolumeInfo: {
+      accessible_topology?:
+        | {
+            [key: string]: components["schemas"]["PortBinding"][] | null;
+          }[]
+        | null;
+      /** Format: int64 */
+      capacity_bytes?: number | null;
+      volume_context?: {
+        [key: string]: string;
+      } | null;
+      volume_id?: string | null;
+    };
+    ClusterVolumePublishStatus: {
+      node_id?: string | null;
+      publish_context?: {
+        [key: string]: string;
+      } | null;
+      state?: null | components["schemas"]["ClusterVolumePublishStatusStateEnum"];
+    };
+    /** @enum {string} */
+    ClusterVolumePublishStatusStateEnum:
+      | "EMPTY"
+      | "pending-publish"
+      | "published"
+      | "pending-node-unpublish"
+      | "pending-controller-unpublish";
+    ClusterVolumeSpec: {
+      access_mode?: null | components["schemas"]["ClusterVolumeSpecAccessMode"];
+      group?: string | null;
+    };
+    ClusterVolumeSpecAccessMode: {
+      accessibility_requirements?:
+        | null
+        | components["schemas"]["ClusterVolumeSpecAccessModeAccessibilityRequirements"];
+      availability?: null | components["schemas"]["ClusterVolumeSpecAccessModeAvailabilityEnum"];
+      capacity_range?: null | components["schemas"]["ClusterVolumeSpecAccessModeCapacityRange"];
+      mount_volume?: {
+        [key: string]: unknown;
+      } | null;
+      scope?: null | components["schemas"]["ClusterVolumeSpecAccessModeScopeEnum"];
+      secrets?: components["schemas"]["ClusterVolumeSpecAccessModeSecrets"][] | null;
+      sharing?: null | components["schemas"]["ClusterVolumeSpecAccessModeSharingEnum"];
+    };
+    ClusterVolumeSpecAccessModeAccessibilityRequirements: {
+      preferred?:
+        | {
+            [key: string]: components["schemas"]["PortBinding"][] | null;
+          }[]
+        | null;
+      requisite?:
+        | {
+            [key: string]: components["schemas"]["PortBinding"][] | null;
+          }[]
+        | null;
+    };
+    /** @enum {string} */
+    ClusterVolumeSpecAccessModeAvailabilityEnum: "EMPTY" | "active" | "pause" | "drain";
+    ClusterVolumeSpecAccessModeCapacityRange: {
+      /** Format: int64 */
+      limit_bytes?: number | null;
+      /** Format: int64 */
+      required_bytes?: number | null;
+    };
+    /** @enum {string} */
+    ClusterVolumeSpecAccessModeScopeEnum: "EMPTY" | "single" | "multi";
+    ClusterVolumeSpecAccessModeSecrets: {
+      key?: string | null;
+      secret?: string | null;
+    };
+    /** @enum {string} */
+    ClusterVolumeSpecAccessModeSharingEnum: "EMPTY" | "none" | "readonly" | "onewriter" | "all";
+    ConfigReference: {
+      network?: string | null;
+    };
+    ConnectNetworkBody: {
+      container: string;
+      endpoint_config: components["schemas"]["EndpointSettings"];
+    };
+    ContainerConfig: {
+      args_escaped?: boolean | null;
+      attach_stderr?: boolean | null;
+      attach_stdin?: boolean | null;
+      attach_stdout?: boolean | null;
+      cmd?: string[] | null;
+      domainname?: string | null;
+      entrypoint?: string[] | null;
+      env?: string[] | null;
+      exposed_ports?: {
+        [key: string]: {
+          [key: string]: unknown;
+        };
+      } | null;
+      healthcheck?: null | components["schemas"]["HealthConfig"];
+      hostname?: string | null;
+      image?: string | null;
+      labels?: {
+        [key: string]: string;
+      } | null;
+      mac_address?: string | null;
+      network_disabled?: boolean | null;
+      on_build?: string[] | null;
+      open_stdin?: boolean | null;
+      shell?: string[] | null;
+      stdin_once?: boolean | null;
+      stop_signal?: string | null;
+      /** Format: int64 */
+      stop_timeout?: number | null;
+      tty?: boolean | null;
+      user?: string | null;
+      volumes?: {
+        [key: string]: {
+          [key: string]: unknown;
+        };
+      } | null;
+      working_dir?: string | null;
+    };
     ContainerIdSchema: {
       /** Format: uuid */
       id: string;
       name: string;
+    };
+    ContainerInspectResponse: {
+      app_armor_profile?: string | null;
+      args?: string[] | null;
+      config?: null | components["schemas"]["ContainerConfig"];
+      created?: string | null;
+      driver?: string | null;
+      exec_ids?: string[] | null;
+      graph_driver?: null | components["schemas"]["DriverData"];
+      host_config?: null | components["schemas"]["HostConfig"];
+      hostname_path?: string | null;
+      hosts_path?: string | null;
+      id?: string | null;
+      image?: string | null;
+      log_path?: string | null;
+      mount_label?: string | null;
+      mounts?: components["schemas"]["MountPoint"][] | null;
+      name?: string | null;
+      network_settings?: null | components["schemas"]["NetworkSettings"];
+      path?: string | null;
+      platform?: string | null;
+      process_label?: string | null;
+      resolv_conf_path?: string | null;
+      /** Format: int64 */
+      restart_count?: number | null;
+      /** Format: int64 */
+      size_root_fs?: number | null;
+      /** Format: int64 */
+      size_rw?: number | null;
+      state?: null | components["schemas"]["ContainerState"];
     };
     ContainerModel: {
       /** Format: uuid */
@@ -2943,8 +3570,29 @@ export interface components {
       /** Format: date-time */
       updated_at: string;
     };
+    ContainerPruneResponse: {
+      containers_deleted?: string[] | null;
+      /** Format: int64 */
+      space_reclaimed?: number | null;
+    };
     ContainerRelations: {
       challenge: components["schemas"]["ChallengeIdSchema"];
+    };
+    ContainerState: {
+      dead?: boolean | null;
+      error?: string | null;
+      /** Format: int64 */
+      exit_code?: number | null;
+      finished_at?: string | null;
+      health?: null | components["schemas"]["Health"];
+      oom_killed?: boolean | null;
+      paused?: boolean | null;
+      /** Format: int64 */
+      pid?: number | null;
+      restarting?: boolean | null;
+      running?: boolean | null;
+      started_at?: string | null;
+      status?: null | components["schemas"]["ContainerStateStatusEnum"];
     };
     /** @enum {string} */
     ContainerStateEnum:
@@ -2955,6 +3603,53 @@ export interface components {
       | "Removing"
       | "Exited"
       | "Dead";
+    /** @enum {string} */
+    ContainerStateStatusEnum:
+      | "EMPTY"
+      | "created"
+      | "running"
+      | "paused"
+      | "restarting"
+      | "removing"
+      | "exited"
+      | "dead";
+    ContainerSummary: {
+      command?: string | null;
+      /** Format: int64 */
+      created?: number | null;
+      host_config?: null | components["schemas"]["ContainerSummaryHostConfig"];
+      id?: string | null;
+      image?: string | null;
+      image_id?: string | null;
+      labels?: {
+        [key: string]: string;
+      } | null;
+      mounts?: components["schemas"]["MountPoint"][] | null;
+      names?: string[] | null;
+      network_settings?: null | components["schemas"]["ContainerSummaryNetworkSettings"];
+      ports?: components["schemas"]["Port"][] | null;
+      /** Format: int64 */
+      size_root_fs?: number | null;
+      /** Format: int64 */
+      size_rw?: number | null;
+      state?: string | null;
+      status?: string | null;
+    };
+    ContainerSummaryHostConfig: {
+      annotations?: {
+        [key: string]: string;
+      } | null;
+      network_mode?: string | null;
+    };
+    ContainerSummaryNetworkSettings: {
+      networks?: {
+        [key: string]: components["schemas"]["EndpointSettings"];
+      } | null;
+    };
+    ContainerTopResponse: {
+      processes?: string[][] | null;
+      titles?: string[] | null;
+    };
     CreateAdminSchema: {
       password: string;
       role: components["schemas"]["RoleEnum"];
@@ -2992,6 +3687,18 @@ export interface components {
       challenge_id: string;
       /** Format: uuid */
       tag_id: string;
+    };
+    CreateContainerBody: {
+      config: components["schemas"]["ContainerConfig"];
+      options: components["schemas"]["CreateContainerOptions"];
+    };
+    CreateContainerOptions: {
+      name: string;
+      platform?: string | null;
+    };
+    CreateContainerResponse: {
+      id: string;
+      warnings: string[];
     };
     CreateContainerSchema: {
       /** Format: uuid */
@@ -3048,6 +3755,26 @@ export interface components {
       remaining: number;
       /** Format: uuid */
       team_id: string;
+    };
+    CreateNetworkBody: {
+      attachable: boolean;
+      check_duplicate: boolean;
+      driver: string;
+      enable_ipv6: boolean;
+      ingress: boolean;
+      internal: boolean;
+      ipam: components["schemas"]["Ipam"];
+      labels: {
+        [key: string]: string;
+      };
+      name: string;
+      options: {
+        [key: string]: string;
+      };
+    };
+    CreateNetworkResponse: {
+      id: string;
+      warning: string;
     };
     CreateNotificationSchema: {
       content: string;
@@ -3106,6 +3833,16 @@ export interface components {
       /** Format: uuid */
       player_id: string;
     };
+    CreateVolumeBody: {
+      driver: string;
+      driver_opts: {
+        [key: string]: string;
+      };
+      labels: {
+        [key: string]: string;
+      };
+      name: string;
+    };
     DeploymentIdSchema: {
       /** Format: uuid */
       id: string;
@@ -3134,6 +3871,56 @@ export interface components {
       hints: components["schemas"]["HintSummary"][];
       instances?: components["schemas"]["ChallengeInstance"][] | null;
     };
+    DeviceMapping: {
+      cgroup_permissions?: string | null;
+      path_in_container?: string | null;
+      path_on_host?: string | null;
+    };
+    DeviceRequest: {
+      capabilities?: string[][] | null;
+      /** Format: int64 */
+      count?: number | null;
+      device_ids?: string[] | null;
+      driver?: string | null;
+      options?: {
+        [key: string]: string;
+      } | null;
+    };
+    DisconnectNetworkBody: {
+      container: string;
+      force: boolean;
+    };
+    DriverData: {
+      data: {
+        [key: string]: string;
+      };
+      name: string;
+    };
+    EndpointIpamConfig: {
+      ipv4_address?: string | null;
+      ipv6_address?: string | null;
+      link_local_ips?: string[] | null;
+    };
+    EndpointSettings: {
+      aliases?: string[] | null;
+      dns_names?: string[] | null;
+      driver_opts?: {
+        [key: string]: string;
+      } | null;
+      endpoint_id?: string | null;
+      gateway?: string | null;
+      global_ipv6_address?: string | null;
+      /** Format: int64 */
+      global_ipv6_prefix_len?: number | null;
+      ip_address?: string | null;
+      /** Format: int64 */
+      ip_prefix_len?: number | null;
+      ipam_config?: null | components["schemas"]["EndpointIpamConfig"];
+      ipv6_gateway?: string | null;
+      links?: string[] | null;
+      mac_address?: string | null;
+      network_id?: string | null;
+    };
     /** @enum {string} */
     ExportFormat: "csv" | "xml" | "json";
     FileIdSchema: {
@@ -3153,6 +3940,10 @@ export interface components {
     };
     FileRelations: {
       challenge: components["schemas"]["ChallengeIdSchema"];
+    };
+    FilesystemChange: {
+      kind: components["schemas"]["ChangeType"];
+      path: string;
     };
     FlagIdSchema: {
       /** Format: uuid */
@@ -3179,6 +3970,36 @@ export interface components {
     };
     FlagVerificationResult: {
       is_correct: boolean;
+    };
+    Health: {
+      /** Format: int64 */
+      failing_streak?: number | null;
+      log?: components["schemas"]["HealthcheckResult"][] | null;
+      status?: null | components["schemas"]["HealthStatusEnum"];
+    };
+    HealthConfig: {
+      /** Format: int64 */
+      interval?: number | null;
+      /** Format: int64 */
+      retries?: number | null;
+      /** Format: int64 */
+      start_interval?: number | null;
+      /** Format: int64 */
+      start_period?: number | null;
+      test?: string[] | null;
+      /** Format: int64 */
+      timeout?: number | null;
+    };
+    /** @enum {string} */
+    HealthStatusEnum: "EMPTY" | "none" | "starting" | "healthy" | "unhealthy";
+    HealthcheckResult: {
+      /** Format: date-time */
+      end?: string | null;
+      /** Format: int64 */
+      exit_code?: number | null;
+      output?: string | null;
+      /** Format: date-time */
+      start?: string | null;
     };
     HintIdSchema: {
       description: string;
@@ -3209,6 +4030,262 @@ export interface components {
       /** Format: uuid */
       id: string;
       status: components["schemas"]["UnlockStatus"];
+    };
+    HistoryResponseItem: {
+      comment: string;
+      /** Format: int64 */
+      created: number;
+      created_by: string;
+      id: string;
+      /** Format: int64 */
+      size: number;
+      tags: string[];
+    };
+    HostConfig: {
+      annotations?: {
+        [key: string]: string;
+      } | null;
+      auto_remove?: boolean | null;
+      binds?: string[] | null;
+      blkio_device_read_bps?: components["schemas"]["ThrottleDevice"][] | null;
+      blkio_device_read_iops?: components["schemas"]["ThrottleDevice"][] | null;
+      blkio_device_write_bps?: components["schemas"]["ThrottleDevice"][] | null;
+      blkio_device_write_iops?: components["schemas"]["ThrottleDevice"][] | null;
+      /** Format: int32 */
+      blkio_weight?: number | null;
+      blkio_weight_device?: components["schemas"]["ResourcesBlkioWeightDevice"][] | null;
+      cap_add?: string[] | null;
+      cap_drop?: string[] | null;
+      cgroup?: string | null;
+      cgroup_parent?: string | null;
+      cgroupns_mode?: null | components["schemas"]["HostConfigCgroupnsModeEnum"];
+      console_size?: number[] | null;
+      container_id_file?: string | null;
+      /** Format: int64 */
+      cpu_count?: number | null;
+      /** Format: int64 */
+      cpu_percent?: number | null;
+      /** Format: int64 */
+      cpu_period?: number | null;
+      /** Format: int64 */
+      cpu_quota?: number | null;
+      /** Format: int64 */
+      cpu_realtime_period?: number | null;
+      /** Format: int64 */
+      cpu_realtime_runtime?: number | null;
+      /** Format: int64 */
+      cpu_shares?: number | null;
+      cpuset_cpus?: string | null;
+      cpuset_mems?: string | null;
+      device_cgroup_rules?: string[] | null;
+      device_requests?: components["schemas"]["DeviceRequest"][] | null;
+      devices?: components["schemas"]["DeviceMapping"][] | null;
+      dns?: string[] | null;
+      dns_options?: string[] | null;
+      dns_search?: string[] | null;
+      extra_hosts?: string[] | null;
+      group_add?: string[] | null;
+      init?: boolean | null;
+      /** Format: int64 */
+      io_maximum_bandwidth?: number | null;
+      /** Format: int64 */
+      io_maximum_iops?: number | null;
+      ipc_mode?: string | null;
+      isolation?: null | components["schemas"]["HostConfigIsolationEnum"];
+      /** Format: int64 */
+      kernel_memory_tcp?: number | null;
+      links?: string[] | null;
+      log_config?: null | components["schemas"]["HostConfigLogConfig"];
+      masked_paths?: string[] | null;
+      /** Format: int64 */
+      memory?: number | null;
+      /** Format: int64 */
+      memory_reservation?: number | null;
+      /** Format: int64 */
+      memory_swap?: number | null;
+      /** Format: int64 */
+      memory_swappiness?: number | null;
+      mounts?: components["schemas"]["Mount"][] | null;
+      /** Format: int64 */
+      nano_cpus?: number | null;
+      network_mode?: string | null;
+      oom_kill_disable?: boolean | null;
+      /** Format: int64 */
+      oom_score_adj?: number | null;
+      pid_mode?: string | null;
+      /** Format: int64 */
+      pids_limit?: number | null;
+      port_bindings?: {
+        [key: string]: components["schemas"]["PortBinding"][] | null;
+      } | null;
+      privileged?: boolean | null;
+      publish_all_ports?: boolean | null;
+      readonly_paths?: string[] | null;
+      readonly_rootfs?: boolean | null;
+      restart_policy?: null | components["schemas"]["RestartPolicy"];
+      runtime?: string | null;
+      security_opt?: string[] | null;
+      /** Format: int64 */
+      shm_size?: number | null;
+      storage_opt?: {
+        [key: string]: string;
+      } | null;
+      sysctls?: {
+        [key: string]: string;
+      } | null;
+      tmpfs?: {
+        [key: string]: string;
+      } | null;
+      ulimits?: components["schemas"]["ResourcesUlimits"][] | null;
+      userns_mode?: string | null;
+      uts_mode?: string | null;
+      volume_driver?: string | null;
+      volumes_from?: string[] | null;
+    };
+    /** @enum {string} */
+    HostConfigCgroupnsModeEnum: "EMPTY" | "private" | "host";
+    /** @enum {string} */
+    HostConfigIsolationEnum: "EMPTY" | "default" | "process" | "hyperv";
+    HostConfigLogConfig: {
+      config?: {
+        [key: string]: string;
+      } | null;
+      type?: string | null;
+    };
+    ImageConfig: {
+      args_escaped?: boolean | null;
+      attach_stderr?: boolean | null;
+      attach_stdin?: boolean | null;
+      attach_stdout?: boolean | null;
+      cmd?: string[] | null;
+      domainname?: string | null;
+      entrypoint?: string[] | null;
+      env?: string[] | null;
+      exposed_ports?: {
+        [key: string]: {
+          [key: string]: unknown;
+        };
+      } | null;
+      healthcheck?: null | components["schemas"]["HealthConfig"];
+      hostname?: string | null;
+      image?: string | null;
+      labels?: {
+        [key: string]: string;
+      } | null;
+      mac_address?: string | null;
+      network_disabled?: boolean | null;
+      on_build?: string[] | null;
+      open_stdin?: boolean | null;
+      shell?: string[] | null;
+      stdin_once?: boolean | null;
+      stop_signal?: string | null;
+      /** Format: int64 */
+      stop_timeout?: number | null;
+      tty?: boolean | null;
+      user?: string | null;
+      volumes?: {
+        [key: string]: {
+          [key: string]: unknown;
+        };
+      } | null;
+      working_dir?: string | null;
+    };
+    ImageDeleteResponseItem: {
+      deleted?: string | null;
+      untagged?: string | null;
+    };
+    ImageInspect: {
+      architecture?: string | null;
+      author?: string | null;
+      comment?: string | null;
+      config?: null | components["schemas"]["ImageConfig"];
+      /** Format: date-time */
+      created?: string | null;
+      docker_version?: string | null;
+      graph_driver?: null | components["schemas"]["DriverData"];
+      id?: string | null;
+      metadata?: null | components["schemas"]["ImageInspectMetadata"];
+      os?: string | null;
+      os_version?: string | null;
+      parent?: string | null;
+      repo_digests?: string[] | null;
+      repo_tags?: string[] | null;
+      root_fs?: null | components["schemas"]["ImageInspectRootFs"];
+      /** Format: int64 */
+      size?: number | null;
+      variant?: string | null;
+      /** Format: int64 */
+      virtual_size?: number | null;
+    };
+    ImageInspectMetadata: {
+      /** Format: date-time */
+      last_tag_time?: string | null;
+    };
+    ImageInspectRootFs: {
+      layers?: string[] | null;
+      typ: string;
+    };
+    ImageManifestSummary: {
+      attestation_data?: null | components["schemas"]["ImageManifestSummaryAttestationData"];
+      available: boolean;
+      descriptor: components["schemas"]["OciDescriptor"];
+      id: string;
+      image_data?: null | components["schemas"]["ImageManifestSummaryImageData"];
+      kind?: null | components["schemas"]["ImageManifestSummaryKindEnum"];
+      size: components["schemas"]["ImageManifestSummarySize"];
+    };
+    ImageManifestSummaryAttestationData: {
+      for: string;
+    };
+    ImageManifestSummaryImageData: {
+      containers: string[];
+      platform: components["schemas"]["OciPlatform"];
+      size: components["schemas"]["ImageManifestSummaryImageDataSize"];
+    };
+    ImageManifestSummaryImageDataSize: {
+      /** Format: int64 */
+      unpacked: number;
+    };
+    /** @enum {string} */
+    ImageManifestSummaryKindEnum: "EMPTY" | "image" | "attestation" | "unknown";
+    ImageManifestSummarySize: {
+      /** Format: int64 */
+      content: number;
+      /** Format: int64 */
+      total: number;
+    };
+    ImagePruneResponse: {
+      images_deleted?: components["schemas"]["ImageDeleteResponseItem"][] | null;
+      /** Format: int64 */
+      space_reclaimed?: number | null;
+    };
+    ImageSearchResponseItem: {
+      description?: string | null;
+      is_automated?: boolean | null;
+      is_official?: boolean | null;
+      name?: string | null;
+      /** Format: int64 */
+      star_count?: number | null;
+    };
+    ImageSummary: {
+      /** Format: int64 */
+      containers: number;
+      /** Format: int64 */
+      created: number;
+      id: string;
+      labels: {
+        [key: string]: string;
+      };
+      manifests?: components["schemas"]["ImageManifestSummary"][] | null;
+      parent_id: string;
+      repo_digests: string[];
+      repo_tags: string[];
+      /** Format: int64 */
+      shared_size: number;
+      /** Format: int64 */
+      size: number;
+      /** Format: int64 */
+      virtual_size?: number | null;
     };
     InstanceIdSchema: {
       container_id: string;
@@ -3258,8 +4335,26 @@ export interface components {
       /** Format: uuid */
       team_id: string;
     };
+    Ipam: {
+      config?: components["schemas"]["IpamConfig"][] | null;
+      driver?: string | null;
+      options?: {
+        [key: string]: string;
+      } | null;
+    };
+    IpamConfig: {
+      auxiliary_addresses?: {
+        [key: string]: string;
+      } | null;
+      gateway?: string | null;
+      ip_range?: string | null;
+      subnet?: string | null;
+    };
     JsonResponse: {
       message: string;
+    };
+    KillContainerBody: {
+      signal: string;
     };
     LeaderboardRankings: {
       /** Format: int64 */
@@ -3270,6 +4365,27 @@ export interface components {
       /** Format: int64 */
       total: number;
     };
+    LogOutput:
+      | {
+          message: string;
+          /** @enum {string} */
+          type: "StdErr";
+        }
+      | {
+          message: string;
+          /** @enum {string} */
+          type: "StdOut";
+        }
+      | {
+          message: string;
+          /** @enum {string} */
+          type: "StdIn";
+        }
+      | {
+          message: string;
+          /** @enum {string} */
+          type: "Console";
+        };
     LoginRequest: {
       password: string;
       username: string;
@@ -3306,6 +4422,310 @@ export interface components {
         username: string;
       };
     };
+    MemoryStats: {
+      /** Format: int64 */
+      commit?: number | null;
+      /** Format: int64 */
+      commit_peak?: number | null;
+      /** Format: int64 */
+      commitbytes?: number | null;
+      /** Format: int64 */
+      commitpeakbytes?: number | null;
+      /** Format: int64 */
+      failcnt?: number | null;
+      /** Format: int64 */
+      limit?: number | null;
+      /** Format: int64 */
+      max_usage?: number | null;
+      /** Format: int64 */
+      privateworkingset?: number | null;
+      stats?: null | components["schemas"]["MemoryStatsStats"];
+      /** Format: int64 */
+      usage?: number | null;
+    };
+    MemoryStatsStats:
+      | {
+          V1: components["schemas"]["MemoryStatsStatsV1"];
+        }
+      | {
+          V2: components["schemas"]["MemoryStatsStatsV2"];
+        };
+    MemoryStatsStatsV1: {
+      /** Format: int64 */
+      active_anon: number;
+      /** Format: int64 */
+      active_file: number;
+      /** Format: int64 */
+      cache: number;
+      /** Format: int64 */
+      dirty: number;
+      /** Format: int64 */
+      hierarchical_memory_limit: number;
+      /** Format: int64 */
+      hierarchical_memsw_limit?: number | null;
+      /** Format: int64 */
+      inactive_anon: number;
+      /** Format: int64 */
+      inactive_file: number;
+      /** Format: int64 */
+      mapped_file: number;
+      /** Format: int64 */
+      pgfault: number;
+      /** Format: int64 */
+      pgmajfault: number;
+      /** Format: int64 */
+      pgpgin: number;
+      /** Format: int64 */
+      pgpgout: number;
+      /** Format: int64 */
+      rss: number;
+      /** Format: int64 */
+      rss_huge: number;
+      /** Format: int64 */
+      shmem?: number | null;
+      /** Format: int64 */
+      total_active_anon: number;
+      /** Format: int64 */
+      total_active_file: number;
+      /** Format: int64 */
+      total_cache: number;
+      /** Format: int64 */
+      total_dirty: number;
+      /** Format: int64 */
+      total_inactive_anon: number;
+      /** Format: int64 */
+      total_inactive_file: number;
+      /** Format: int64 */
+      total_mapped_file: number;
+      /** Format: int64 */
+      total_pgfault: number;
+      /** Format: int64 */
+      total_pgmajfault: number;
+      /** Format: int64 */
+      total_pgpgin: number;
+      /** Format: int64 */
+      total_pgpgout: number;
+      /** Format: int64 */
+      total_rss: number;
+      /** Format: int64 */
+      total_rss_huge: number;
+      /** Format: int64 */
+      total_shmem?: number | null;
+      /** Format: int64 */
+      total_unevictable: number;
+      /** Format: int64 */
+      total_writeback: number;
+      /** Format: int64 */
+      unevictable: number;
+      /** Format: int64 */
+      writeback: number;
+    };
+    MemoryStatsStatsV2: {
+      /** Format: int64 */
+      active_anon: number;
+      /** Format: int64 */
+      active_file: number;
+      /** Format: int64 */
+      anon: number;
+      /** Format: int64 */
+      anon_thp: number;
+      /** Format: int64 */
+      file: number;
+      /** Format: int64 */
+      file_dirty: number;
+      /** Format: int64 */
+      file_mapped: number;
+      /** Format: int64 */
+      file_writeback: number;
+      /** Format: int64 */
+      inactive_anon: number;
+      /** Format: int64 */
+      inactive_file: number;
+      /** Format: int64 */
+      kernel_stack: number;
+      /** Format: int64 */
+      pgactivate: number;
+      /** Format: int64 */
+      pgdeactivate: number;
+      /** Format: int64 */
+      pgfault: number;
+      /** Format: int64 */
+      pglazyfree: number;
+      /** Format: int64 */
+      pglazyfreed: number;
+      /** Format: int64 */
+      pgmajfault: number;
+      /** Format: int64 */
+      pgrefill: number;
+      /** Format: int64 */
+      pgscan: number;
+      /** Format: int64 */
+      pgsteal: number;
+      /** Format: int64 */
+      shmem: number;
+      /** Format: int64 */
+      slab: number;
+      /** Format: int64 */
+      slab_reclaimable: number;
+      /** Format: int64 */
+      slab_unreclaimable: number;
+      /** Format: int64 */
+      sock: number;
+      /** Format: int64 */
+      thp_collapse_alloc: number;
+      /** Format: int64 */
+      thp_fault_alloc: number;
+      /** Format: int64 */
+      unevictable: number;
+      /** Format: int64 */
+      workingset_activate: number;
+      /** Format: int64 */
+      workingset_nodereclaim: number;
+      /** Format: int64 */
+      workingset_refault: number;
+    };
+    Mount: {
+      bind_options?: null | components["schemas"]["MountBindOptions"];
+      consistency?: string | null;
+      read_only?: boolean | null;
+      source?: string | null;
+      target?: string | null;
+      tmpfs_options?: null | components["schemas"]["MountTmpfsOptions"];
+      typ?: null | components["schemas"]["MountTypeEnum"];
+      volume_options?: null | components["schemas"]["MountVolumeOptions"];
+    };
+    MountBindOptions: {
+      create_mountpoint?: boolean | null;
+      non_recursive?: boolean | null;
+      propagation?: null | components["schemas"]["MountBindOptionsPropagationEnum"];
+      read_only_force_recursive?: boolean | null;
+      read_only_non_recursive?: boolean | null;
+    };
+    /** @enum {string} */
+    MountBindOptionsPropagationEnum:
+      | "EMPTY"
+      | "private"
+      | "rprivate"
+      | "shared"
+      | "rshared"
+      | "slave"
+      | "rslave";
+    MountPoint: {
+      destination?: string | null;
+      driver?: string | null;
+      mode?: string | null;
+      name?: string | null;
+      propagation?: string | null;
+      rw?: boolean | null;
+      source?: string | null;
+      typ?: null | components["schemas"]["MountPointTypeEnum"];
+    };
+    /** @enum {string} */
+    MountPointTypeEnum: "EMPTY" | "bind" | "volume" | "tmpfs" | "npipe" | "cluster";
+    MountTmpfsOptions: {
+      /** Format: int64 */
+      mode?: number | null;
+      options?: string[][] | null;
+      /** Format: int64 */
+      size_bytes?: number | null;
+    };
+    /** @enum {string} */
+    MountTypeEnum: "EMPTY" | "bind" | "volume" | "tmpfs" | "npipe" | "cluster";
+    MountVolumeOptions: {
+      driver_config?: null | components["schemas"]["MountVolumeOptionsDriverConfig"];
+      labels?: {
+        [key: string]: string;
+      } | null;
+      no_copy?: boolean | null;
+      subpath?: string | null;
+    };
+    MountVolumeOptionsDriverConfig: {
+      name?: string | null;
+      options?: {
+        [key: string]: string;
+      } | null;
+    };
+    Network: {
+      attachable?: boolean | null;
+      config_from?: null | components["schemas"]["ConfigReference"];
+      config_only?: boolean | null;
+      containers?: {
+        [key: string]: components["schemas"]["NetworkContainer"];
+      } | null;
+      /** Format: date-time */
+      created?: string | null;
+      driver?: string | null;
+      enable_ipv4?: boolean | null;
+      enable_ipv6?: boolean | null;
+      id?: string | null;
+      ingress?: boolean | null;
+      internal?: boolean | null;
+      ipam?: null | components["schemas"]["Ipam"];
+      labels?: {
+        [key: string]: string;
+      } | null;
+      name?: string | null;
+      options?: {
+        [key: string]: string;
+      } | null;
+      peers?: components["schemas"]["PeerInfo"][] | null;
+      scope?: string | null;
+    };
+    NetworkContainer: {
+      endpoint_id?: string | null;
+      ipv4_address?: string | null;
+      ipv6_address?: string | null;
+      mac_address?: string | null;
+      name?: string | null;
+    };
+    NetworkPruneResponse: {
+      networks_deleted?: string[] | null;
+    };
+    NetworkSettings: {
+      bridge?: string | null;
+      endpoint_id?: string | null;
+      gateway?: string | null;
+      global_ipv6_address?: string | null;
+      /** Format: int64 */
+      global_ipv6_prefix_len?: number | null;
+      hairpin_mode?: boolean | null;
+      ip_address?: string | null;
+      /** Format: int64 */
+      ip_prefix_len?: number | null;
+      ipv6_gateway?: string | null;
+      link_local_ipv6_address?: string | null;
+      /** Format: int64 */
+      link_local_ipv6_prefix_len?: number | null;
+      mac_address?: string | null;
+      networks?: {
+        [key: string]: components["schemas"]["EndpointSettings"];
+      } | null;
+      ports?: {
+        [key: string]: components["schemas"]["PortBinding"][] | null;
+      } | null;
+      sandbox_id?: string | null;
+      sandbox_key?: string | null;
+      secondary_ip_addresses?: components["schemas"]["Address"][] | null;
+      secondary_ipv6_addresses?: components["schemas"]["Address"][] | null;
+    };
+    NetworkStats: {
+      /** Format: int64 */
+      rx_bytes: number;
+      /** Format: int64 */
+      rx_dropped: number;
+      /** Format: int64 */
+      rx_errors: number;
+      /** Format: int64 */
+      rx_packets: number;
+      /** Format: int64 */
+      tx_bytes: number;
+      /** Format: int64 */
+      tx_dropped: number;
+      /** Format: int64 */
+      tx_errors: number;
+      /** Format: int64 */
+      tx_packets: number;
+    };
     NotificationIdSchema: {
       /** Format: uuid */
       id: string;
@@ -3327,6 +4747,33 @@ export interface components {
     };
     NotificationRelations: {
       player?: null | components["schemas"]["PlayerIdSchema"];
+    };
+    ObjectVersion: {
+      /** Format: int64 */
+      index?: number | null;
+    };
+    OciDescriptor: {
+      digest?: string | null;
+      media_type?: string | null;
+      /** Format: int64 */
+      size?: number | null;
+    };
+    OciPlatform: {
+      architecture?: string | null;
+      os?: string | null;
+      os_features?: string[] | null;
+      os_version?: string | null;
+      variant?: string | null;
+    };
+    PeerInfo: {
+      ip?: string | null;
+      name?: string | null;
+    };
+    PidsStats: {
+      /** Format: int64 */
+      current?: number | null;
+      /** Format: int64 */
+      limit?: number | null;
     };
     PlayerAwardIdSchema: {
       /** Format: uuid */
@@ -3413,6 +4860,20 @@ export interface components {
       /** Format: int64 */
       timestamp: number;
     };
+    Port: {
+      ip?: string | null;
+      /** Format: int32 */
+      private_port: number;
+      /** Format: int32 */
+      public_port?: number | null;
+      typ?: null | components["schemas"]["PortTypeEnum"];
+    };
+    PortBinding: {
+      host_ip?: string | null;
+      host_port?: string | null;
+    };
+    /** @enum {string} */
+    PortTypeEnum: "EMPTY" | "tcp" | "udp" | "sctp";
     Ranking: {
       member: string;
       /** Format: double */
@@ -3431,10 +4892,34 @@ export interface components {
       new_password: string;
       token: string;
     };
+    ResourcesBlkioWeightDevice: {
+      path?: string | null;
+      weight?: number | null;
+    };
+    ResourcesUlimits: {
+      /** Format: int64 */
+      hard?: number | null;
+      name?: string | null;
+      /** Format: int64 */
+      soft?: number | null;
+    };
+    RestartContainerBody: {
+      t: number;
+    };
+    RestartPolicy: {
+      /** Format: int64 */
+      maximum_retry_count?: number | null;
+      name?: null | components["schemas"]["RestartPolicyNameEnum"];
+    };
+    /** @enum {string} */
+    RestartPolicyNameEnum: "EMPTY" | "no" | "always" | "unless-stopped" | "on-failure";
     /** @enum {string} */
     RoleEnum: "analyst" | "editor" | "judge" | "manager" | "moderator";
     SendTokenSchema: {
       email: string;
+    };
+    StartContainerBody: {
+      detach_keys: string;
     };
     StatSchema: {
       /** Format: int64 */
@@ -3476,6 +4961,40 @@ export interface components {
       /** Format: int64 */
       unlocks: number;
     };
+    Stats: {
+      blkio_stats: components["schemas"]["BlkioStats"];
+      cpu_stats: components["schemas"]["CPUStats"];
+      id: string;
+      memory_stats: components["schemas"]["MemoryStats"];
+      name: string;
+      network?: null | components["schemas"]["NetworkStats"];
+      networks?: {
+        [key: string]: components["schemas"]["NetworkStats"];
+      } | null;
+      /** Format: int32 */
+      num_procs: number;
+      pids_stats: components["schemas"]["PidsStats"];
+      precpu_stats: components["schemas"]["CPUStats"];
+      /** Format: date-time */
+      preread: string;
+      /** Format: date-time */
+      read: string;
+      storage_stats: components["schemas"]["StorageStats"];
+    };
+    StopContainerBody: {
+      /** Format: int64 */
+      t: number;
+    };
+    StorageStats: {
+      /** Format: int64 */
+      read_count_normalized?: number | null;
+      /** Format: int64 */
+      read_size_bytes?: number | null;
+      /** Format: int64 */
+      write_count_normalized?: number | null;
+      /** Format: int64 */
+      write_size_bytes?: number | null;
+    };
     SubmissionIdSchema: {
       /** Format: uuid */
       challenge_id: string;
@@ -3502,6 +5021,10 @@ export interface components {
       /** Format: uuid */
       id: string;
       value: string;
+    };
+    TagImageBody: {
+      repo: string;
+      tag: string;
     };
     TagModel: {
       /** Format: date-time */
@@ -3578,6 +5101,19 @@ export interface components {
     TeamRelations: {
       invites: components["schemas"]["InviteIdSchema"][];
       players: components["schemas"]["PlayerIdSchema"][];
+    };
+    ThrottleDevice: {
+      path?: string | null;
+      /** Format: int64 */
+      rate?: number | null;
+    };
+    ThrottlingData: {
+      /** Format: int64 */
+      periods: number;
+      /** Format: int64 */
+      throttled_periods: number;
+      /** Format: int64 */
+      throttled_time: number;
     };
     TicketIdSchema: {
       /** Format: uuid */
@@ -3661,6 +5197,40 @@ export interface components {
       /** Format: uuid */
       challenge_id: string;
       flag: string;
+    };
+    Volume: {
+      cluster_volume?: null | components["schemas"]["ClusterVolume"];
+      /** Format: date-time */
+      created_at?: string | null;
+      driver: string;
+      labels: {
+        [key: string]: string;
+      };
+      mountpoint: string;
+      name: string;
+      options: {
+        [key: string]: string;
+      };
+      scope?: null | components["schemas"]["VolumeScopeEnum"];
+      status?: {
+        [key: string]: {
+          [key: string]: unknown;
+        };
+      } | null;
+      usage_data?: null | components["schemas"]["VolumeUsageData"];
+    };
+    VolumePruneResponse: {
+      /** Format: int64 */
+      space_reclaimed?: number | null;
+      volumes_deleted?: string[] | null;
+    };
+    /** @enum {string} */
+    VolumeScopeEnum: "EMPTY" | "local" | "global";
+    VolumeUsageData: {
+      /** Format: int64 */
+      ref_count: number;
+      /** Format: int64 */
+      size: number;
     };
   };
   responses: never;
@@ -7419,7 +8989,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
-      /** @description Password reset email sent successful */
+      /** @description Retrieved current logged in admin successfully */
       200: {
         headers: {
           [name: string]: unknown;
@@ -7974,6 +9544,2150 @@ export interface operations {
       };
       /** @description No deployment found with specified id */
       404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_list: {
+    parameters: {
+      query: {
+        all: boolean;
+        limit?: number;
+        size: boolean;
+        filters: {
+          [key: string]: string[];
+        };
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed docker containers successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ContainerSummary"][];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateContainerBody"];
+      };
+    };
+    responses: {
+      /** @description Created docker container successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CreateContainerResponse"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_prune: {
+    parameters: {
+      query: {
+        filters: {
+          [key: string]: string[];
+        };
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Pruned docker containers successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ContainerPruneResponse"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_inspect: {
+    parameters: {
+      query: {
+        size: boolean;
+      };
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Inspected docker container successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ContainerInspectResponse"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Container not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_remove: {
+    parameters: {
+      query: {
+        v: boolean;
+        force: boolean;
+        link: boolean;
+      };
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Removed docker container successfully */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_changes: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Retrieved docker container changes successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["FilesystemChange"][];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_export: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Exported docker container successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/octet-stream": {
+            /** Format: binary */
+            file: Blob;
+          };
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_kill: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["KillContainerBody"];
+      };
+    };
+    responses: {
+      /** @description Killed docker container successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_logs: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Retrieved docker container logs successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["LogOutput"][];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_pause: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Paused docker container successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_restart: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RestartContainerBody"];
+      };
+    };
+    responses: {
+      /** @description Restarted docker container successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_start: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["StartContainerBody"];
+      };
+    };
+    responses: {
+      /** @description Started docker container successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_stats: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Retrieved docker container stats successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Stats"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_stop: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["StopContainerBody"];
+      };
+    };
+    responses: {
+      /** @description Stopped docker container successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_top: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Retrieved docker container top processes successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ContainerTopResponse"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_container_unpause: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Unpaused docker container successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_image_list: {
+    parameters: {
+      query: {
+        all: boolean;
+        digests: boolean;
+        filters: {
+          [key: string]: string[];
+        };
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed docker images successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ImageSummary"][];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_image_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": components["schemas"]["BuildImageBody"];
+      };
+    };
+    responses: {
+      /** @description Created docker image successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_image_prune: {
+    parameters: {
+      query: {
+        filters: {
+          [key: string]: string[];
+        };
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Pruned docker images successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ImagePruneResponse"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_image_search: {
+    parameters: {
+      query: {
+        term: string;
+        limit?: number;
+        filters: {
+          [key: string]: string[];
+        };
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Searched docker images successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ImageSearchResponseItem"][];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_image_inspect: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Inspected docker image successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ImageInspect"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Container not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_image_remove: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Removed docker image successfully */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_image_history: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Retrieved docker image history successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HistoryResponseItem"][];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_image_tag: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["TagImageBody"];
+      };
+    };
+    responses: {
+      /** @description Tagged docker image successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_network_list: {
+    parameters: {
+      query: {
+        filters: {
+          [key: string]: string[];
+        };
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed docker networks successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Network"][];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_network_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateNetworkBody"];
+      };
+    };
+    responses: {
+      /** @description Created docker network successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CreateNetworkResponse"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_network_prune: {
+    parameters: {
+      query: {
+        filters: {
+          [key: string]: string[];
+        };
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Pruned docker networks successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["NetworkPruneResponse"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_network_inspect: {
+    parameters: {
+      query: {
+        verbose: boolean;
+        scope: string;
+      };
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Inspected docker network successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Network"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Container not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_network_remove: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Removed docker network successfully */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_network_connect: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ConnectNetworkBody"];
+      };
+    };
+    responses: {
+      /** @description Connected docker network successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_network_disconnect: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DisconnectNetworkBody"];
+      };
+    };
+    responses: {
+      /** @description Disconnected docker network successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_volume_list: {
+    parameters: {
+      query: {
+        filters: {
+          [key: string]: string[];
+        };
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed docker volumes successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Volume"][];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_volume_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateVolumeBody"];
+      };
+    };
+    responses: {
+      /** @description Created docker volume successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Volume"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_volume_prune: {
+    parameters: {
+      query: {
+        filters: {
+          [key: string]: string[];
+        };
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Pruned docker volumes successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["VolumePruneResponse"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_volume_inspect: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Inspected docker volume successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Volume"];
+        };
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Container not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  docker_volume_remove: {
+    parameters: {
+      query: {
+        force: boolean;
+      };
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Removed docker volume successfully */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid request body format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
         headers: {
           [name: string]: unknown;
         };

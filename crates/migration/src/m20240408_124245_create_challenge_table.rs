@@ -68,6 +68,7 @@ impl MigrationTrait for Migration {
     }
 }
 
+// TODO: add requirements, grouping and state in a json
 #[derive(DeriveIden)]
 enum Challenge {
     Table,
