@@ -11,7 +11,7 @@ use axum_extra::headers::authorization::Bearer;
 use fred::prelude::*;
 use jsonwebtoken::{DecodingKey, Validation};
 
-use crate::app_state::AppState;
+use crate::AppState;
 use crate::errors::{Error, Result};
 use crate::jwt::{AdminAccessClaims, PlayerAccessClaims, RefreshClaims};
 use crate::permissions::has_permission;

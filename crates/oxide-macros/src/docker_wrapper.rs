@@ -41,8 +41,7 @@ fn get_field_conversion(field_type: &Type) -> impl quote::ToTokens {
                 "HashMap" => {
                     if let syn::PathArguments::AngleBracketed(args) = &first_segment.arguments {
                         if args.args.len() == 2 {
-                            if let Some(syn::GenericArgument::Type(inner_type)) = args.args.get(1)
-                            {
+                            if let Some(syn::GenericArgument::Type(inner_type)) = args.args.get(1) {
                                 let inner_conversion = get_field_conversion(inner_type);
                                 return quote! { .into_iter().map(|(k, v)| (k, v #inner_conversion)).collect() };
                             }
@@ -55,7 +54,6 @@ fn get_field_conversion(field_type: &Type) -> impl quote::ToTokens {
         }
         _ => quote! { .into() },
     }
-    .into()
 }
 
 pub fn docker_wrapper_impl(attrs: TokenStream, input: TokenStream) -> TokenStream {

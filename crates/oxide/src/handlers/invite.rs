@@ -21,7 +21,7 @@ pub async fn new(
     state: State<Arc<AppState>>,
     AuthPlayer(player_claims): AuthPlayer,
     Json(body): Json<CreateInviteSchema>,
-) -> Result<Json<InviteModel>> {
+) -> Result<ApiResponse<Json<InviteModel>>> {
     let Some(team_model) = Team::find_by_id(player_claims.team_id)
         .one(&state.db_conn)
         .await?
@@ -37,7 +37,7 @@ pub async fn new(
 
     let invite_model = body.into_active_model().insert(&state.db_conn).await?;
 
-    Ok(Json(invite_model))
+    Ok(ApiResponse::json(invite_model))
 }
 
 #[utoipa::path(
@@ -60,7 +60,7 @@ pub async fn destroy(
     state: State<Arc<AppState>>,
     AuthPlayer(player_claims): AuthPlayer,
     Path(value): Path<String>,
-) -> Result<Json<JsonResponse>> {
+) -> Result<ApiResponse<Json<JsonResponse>>> {
     let Some(team_model) = Team::find_by_id(player_claims.team_id)
         .one(&state.db_conn)
         .await?
@@ -87,7 +87,7 @@ pub async fn destroy(
 
     invite_model.delete(&state.db_conn).await?;
 
-    Ok(Json(JsonResponse {
+    Ok(ApiResponse::json(JsonResponse {
         message: "successfully destroyed invite".to_owned(),
     }))
 }
@@ -114,7 +114,7 @@ pub async fn update(
     AuthPlayer(player_claims): AuthPlayer,
     Path(value): Path<String>,
     Json(body): Json<UpdateInviteSchema>,
-) -> Result<Json<InviteModel>> {
+) -> Result<ApiResponse<Json<InviteModel>>> {
     let Some(team_model) = Team::find_by_id(player_claims.team_id)
         .one(&state.db_conn)
         .await?
@@ -152,5 +152,5 @@ pub async fn update(
         .update(&state.db_conn)
         .await?;
 
-    Ok(Json(invite_model))
+    Ok(ApiResponse::json(invite_model))
 }

@@ -12,9 +12,9 @@ use super::schemas::{
     ImageSearchResponseItem, ImageSummary, ListImagesQuery, PruneImagesQuery, RemoveImageQuery,
     SearchImageQuery, TagImageBody,
 };
-use crate::app_state::AppState;
 use crate::errors::Result;
 use crate::schemas::JsonResponse;
+use crate::{ApiResponse, AppState};
 
 #[utoipa::path(
     get,
@@ -37,8 +37,8 @@ use crate::schemas::JsonResponse;
 pub async fn list(
     state: State<Arc<AppState>>,
     Query(query): Query<ListImagesQuery>,
-) -> Result<Json<Vec<ImageSummary>>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<Vec<ImageSummary>>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -69,8 +69,8 @@ pub async fn list(
 pub async fn prune(
     state: State<Arc<AppState>>,
     Query(query): Query<PruneImagesQuery>,
-) -> Result<Json<ImagePruneResponse>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<ImagePruneResponse>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -88,7 +88,7 @@ pub async fn prune(
         ("name" = String, Path),
     ),
     responses(
-        (status = 204, description = "Removed docker image successfully"),
+        (status = 200, description = "Removed docker image successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
@@ -100,8 +100,8 @@ pub async fn remove(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Query(query): Query<RemoveImageQuery>,
-) -> Result<Json<Vec<ImageDeleteResponseItem>>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<Vec<ImageDeleteResponseItem>>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -133,8 +133,8 @@ pub async fn remove(
 pub async fn inspect(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
-) -> Result<Json<ImageInspect>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<ImageInspect>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -163,8 +163,8 @@ pub async fn inspect(
 pub async fn history(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
-) -> Result<Json<Vec<HistoryResponseItem>>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<Vec<HistoryResponseItem>>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -185,7 +185,7 @@ pub async fn history(
         ("name" = String, Path),
     ),
     responses(
-        (status = 200, description = "Tagged docker image successfully"),
+        (status = 200, description = "Tagged docker image successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
@@ -197,12 +197,16 @@ pub async fn tag(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Json(body): Json<TagImageBody>,
-) -> Result<()> {
-    Ok(state
+) -> Result<ApiResponse<Json<JsonResponse>>> {
+    state
         .docker_manager
         .conn()
         .tag_image(&name, Some(body.into()))
-        .await?)
+        .await?;
+
+    Ok(ApiResponse::json(JsonResponse {
+        message: "Successfully added tag to image".to_owned(),
+    }))
 }
 
 #[utoipa::path(
@@ -226,8 +230,8 @@ pub async fn tag(
 pub async fn search(
     state: State<Arc<AppState>>,
     Query(query): Query<SearchImageQuery>,
-) -> Result<Json<Vec<ImageSearchResponseItem>>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<Vec<ImageSearchResponseItem>>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -248,7 +252,7 @@ pub async fn search(
         content_type = "multipart/form-data",
     ),
     responses(
-        (status = 200, description = "Created docker image successfully"),
+        (status = 200, description = "Created docker image successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
@@ -259,7 +263,7 @@ pub async fn search(
 pub async fn create(
     state: State<Arc<AppState>>,
     TypedMultipart(body): TypedMultipart<BuildImageBody>,
-) -> Result<()> {
+) -> Result<ApiResponse<Json<JsonResponse>>> {
     tokio::spawn(async move {
         let mut build_stream = state.docker_manager.conn().build_image(
             body.to_build_options(),
@@ -278,7 +282,9 @@ pub async fn create(
         while push_stream.next().await.is_some() {}
     });
 
-    Ok(())
+    Ok(ApiResponse::json(JsonResponse {
+        message: "Successfully started image creation".to_owned(),
+    }))
 }
 
 pub fn router() -> Router<Arc<AppState>> {

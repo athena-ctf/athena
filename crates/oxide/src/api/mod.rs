@@ -4,16 +4,14 @@ use std::time::Duration;
 use axum::Router;
 use axum::extract::{DefaultBodyLimit, MatchedPath, Request};
 use axum::http::Method;
-use axum::routing::get;
 use tower_http::cors::{Any, CorsLayer};
 use tower_http::timeout::TimeoutLayer;
 use tower_http::trace::TraceLayer;
 use tracing::info_span;
 use utoipa::OpenApi;
 
-use crate::app_state::AppState;
 use crate::errors::Result;
-use crate::middleware;
+use crate::{AppState, middleware};
 
 mod admin_routes;
 mod auth;
@@ -25,7 +23,6 @@ pub fn router(state: Arc<AppState>) -> axum::Router {
         .merge(auth::router())
         .merge(admin_routes::router())
         .merge(player_routes::router())
-        .route("/stats", get(crate::handlers::stats::retrieve))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
             middleware::ctf,

@@ -8,9 +8,9 @@ use super::schemas::{
     CreateVolumeBody, ListVolumesQuery, PruneVolumesQuery, RemoveVolumeQuery, Volume,
     VolumePruneResponse,
 };
-use crate::app_state::AppState;
 use crate::errors::Result;
 use crate::schemas::JsonResponse;
+use crate::{ApiResponse, AppState};
 
 #[utoipa::path(
     get,
@@ -31,8 +31,8 @@ use crate::schemas::JsonResponse;
 pub async fn list(
     state: State<Arc<AppState>>,
     Query(query): Query<ListVolumesQuery>,
-) -> Result<Json<Vec<Volume>>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<Vec<Volume>>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -63,8 +63,8 @@ pub async fn list(
 pub async fn create(
     state: State<Arc<AppState>>,
     Json(body): Json<CreateVolumeBody>,
-) -> Result<Json<Volume>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<Volume>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -94,8 +94,8 @@ pub async fn create(
 pub async fn inspect(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
-) -> Result<Json<Volume>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<Volume>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -126,12 +126,14 @@ pub async fn remove(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Query(query): Query<RemoveVolumeQuery>,
-) -> Result<()> {
-    Ok(state
+) -> Result<ApiResponse<()>> {
+    state
         .docker_manager
         .conn()
         .remove_volume(&name, Some(query.into()))
-        .await?)
+        .await?;
+
+    Ok(ApiResponse::no_content())
 }
 
 #[utoipa::path(
@@ -153,8 +155,8 @@ pub async fn remove(
 pub async fn prune(
     state: State<Arc<AppState>>,
     Query(query): Query<PruneVolumesQuery>,
-) -> Result<Json<VolumePruneResponse>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<VolumePruneResponse>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()

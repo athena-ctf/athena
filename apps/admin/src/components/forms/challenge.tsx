@@ -21,13 +21,13 @@ import {
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
+import { TagsInput } from "@repo/ui/components/tags-input";
 import { cn } from "@repo/ui/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { type FormProps, buttonText } from "./props";
-import { TagsInput } from "@repo/ui/components/tags-input";
 
 const kinds = [
   "dynamic_containerized",

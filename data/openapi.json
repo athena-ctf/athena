@@ -1670,7 +1670,7 @@
           "required": true
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Banned player by id successfully",
             "content": {
               "application/json": {
@@ -5289,7 +5289,14 @@
         },
         "responses": {
           "200": {
-            "description": "Killed docker container successfully"
+            "description": "Killed docker container successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid request body format",
@@ -5427,7 +5434,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Paused docker container successfully"
+            "description": "Paused docker container successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
           },
           "401": {
             "description": "Action is permissible after login",
@@ -5491,7 +5505,14 @@
         },
         "responses": {
           "200": {
-            "description": "Restarted docker container successfully"
+            "description": "Restarted docker container successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid request body format",
@@ -5565,7 +5586,14 @@
         },
         "responses": {
           "200": {
-            "description": "Started docker container successfully"
+            "description": "Started docker container successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid request body format",
@@ -5710,7 +5738,14 @@
         },
         "responses": {
           "200": {
-            "description": "Stopped docker container successfully"
+            "description": "Stopped docker container successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid request body format",
@@ -5845,7 +5880,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Unpaused docker container successfully"
+            "description": "Unpaused docker container successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
           },
           "401": {
             "description": "Action is permissible after login",
@@ -5996,7 +6038,14 @@
         },
         "responses": {
           "200": {
-            "description": "Created docker image successfully"
+            "description": "Created docker image successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid request body format",
@@ -6316,8 +6365,15 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Removed docker image successfully"
+          "200": {
+            "description": "Removed docker image successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid request body format",
@@ -6465,7 +6521,14 @@
         },
         "responses": {
           "200": {
-            "description": "Tagged docker image successfully"
+            "description": "Tagged docker image successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid request body format",
@@ -6928,7 +6991,14 @@
         },
         "responses": {
           "200": {
-            "description": "Connected docker network successfully"
+            "description": "Connected docker network successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid request body format",
@@ -7002,7 +7072,14 @@
         },
         "responses": {
           "200": {
-            "description": "Disconnected docker network successfully"
+            "description": "Disconnected docker network successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid request body format",
@@ -12736,57 +12813,6 @@
         }
       }
     },
-    "/admin/stats": {
-      "get": {
-        "tags": [
-          "stats"
-        ],
-        "summary": "Retrieve stats of all tables",
-        "operationId": "retrieve",
-        "responses": {
-          "200": {
-            "description": "Retrieved stats successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StatSchema"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Action is permissible after login",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Admin does not have sufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/admin/submission": {
       "get": {
         "tags": [
@@ -14740,7 +14766,7 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "Unbanned player by id successfully",
             "content": {
               "application/json": {
@@ -17183,6 +17209,70 @@
         "responses": {
           "200": {
             "description": "Listed notifications successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificationModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Action is permissible after login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin does not have sufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No hint found with specified id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/player/notifications/unread": {
+      "get": {
+        "tags": [
+          "notification"
+        ],
+        "summary": "List unread player notifications",
+        "operationId": "player_list_unread",
+        "responses": {
+          "200": {
+            "description": "Listed unread notifications successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -24740,127 +24830,6 @@
         "properties": {
           "detach_keys": {
             "type": "string"
-          }
-        }
-      },
-      "StatSchema": {
-        "type": "object",
-        "required": [
-          "admin",
-          "award",
-          "ban",
-          "challenge",
-          "challenge_file",
-          "container",
-          "deployment",
-          "file",
-          "flag",
-          "hint",
-          "instance",
-          "invite",
-          "notification",
-          "player",
-          "player_award",
-          "submission",
-          "team",
-          "ticket",
-          "unlock"
-        ],
-        "properties": {
-          "admin": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "award": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "ban": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "challenge": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "challenge_file": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "container": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "deployment": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "file": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "flag": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "hint": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "instance": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "invite": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "notification": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "player": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "player_award": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "submission": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "team": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "ticket": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
-          },
-          "unlock": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
           }
         }
       },

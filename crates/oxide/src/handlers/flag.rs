@@ -33,7 +33,7 @@ pub async fn verify(
     AuthPlayer(player_claims): AuthPlayer,
     state: State<Arc<AppState>>,
     Json(body): Json<VerifyFlagSchema>,
-) -> Result<Json<FlagVerificationResult>> {
+) -> Result<ApiResponse<Json<FlagVerificationResult>>> {
     let txn = state.db_conn.begin().await?;
 
     let prev_model = if let Some(submission_model) =
@@ -201,5 +201,5 @@ pub async fn verify(
 
     txn.commit().await?;
 
-    Ok(Json(FlagVerificationResult { is_correct }))
+    Ok(ApiResponse::json(FlagVerificationResult { is_correct }))
 }

@@ -3,8 +3,7 @@ use std::sync::Arc;
 use axum::Router;
 use axum::routing::{get, post};
 
-use crate::app_state::AppState;
-use crate::handlers;
+use crate::{AppState, handlers};
 
 pub fn utils_router() -> Router<Arc<AppState>> {
     Router::new()
@@ -13,7 +12,6 @@ pub fn utils_router() -> Router<Arc<AppState>> {
             "/unban/player/:id",
             post(handlers::ban::remove_player_by_id),
         )
-        .route("/stats", get(handlers::stats::retrieve))
         .route("/current", get(handlers::admin::get_current_logged_in))
         .route(
             "/settings/*path",

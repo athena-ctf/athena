@@ -50,8 +50,8 @@ fn gen_join_list_fn(entity: &Ident) -> impl ToTokens {
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]
-        pub async fn list(state: State<Arc<AppState>>) -> Result<Json<Vec<#entity_model>>> {
-            Ok(Json(#entity::find().all(&state.db_conn).await?))
+        pub async fn list(state: State<Arc<AppState>>) -> Result<ApiResponse<Json<Vec<#entity_model>>>> {
+            Ok(ApiResponse::json(#entity::find().all(&state.db_conn).await?))
         }
     }
 }
@@ -87,11 +87,11 @@ fn gen_join_create_fn(entity: &Ident) -> impl ToTokens {
         pub async fn create(
             state: State<Arc<AppState>>,
             Json(body): Json<#request_body>,
-        ) -> Result<Json<#entity_model>> {
+        ) -> Result<ApiResponse<Json<#entity_model>>> {
             let mut model = body.into_active_model();
             model.created_at = model.updated_at.clone();
 
-            Ok(Json(model.insert(&state.db_conn).await?))
+            Ok(ApiResponse::json_created(model.insert(&state.db_conn).await?))
         }
     }
 }
@@ -132,9 +132,9 @@ fn gen_join_retrieve_fn(entity: &Ident, related_from: &Ident, related_to: &Ident
         pub async fn retrieve_by_id(
             state: State<Arc<AppState>>,
             Path(id): Path<(Uuid, Uuid)>,
-        ) -> Result<Json<#entity_model>> {
+        ) -> Result<ApiResponse<Json<#entity_model>>> {
             if let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? {
-                Ok(Json(model))
+                Ok(ApiResponse::json(model))
             } else {
                 Err(Error::NotFound(#not_found.to_owned()))
             }
@@ -184,7 +184,7 @@ fn gen_join_update_fn(entity: &Ident, related_from: &Ident, related_to: &Ident) 
             state: State<Arc<AppState>>,
             Path(id): Path<(Uuid, Uuid)>,
             Json(body): Json<#request_body>,
-        ) -> Result<Json<#entity_model>> {
+        ) -> Result<ApiResponse<Json<#entity_model>>> {
             let mut active_model = body.into_active_model();
 
             active_model.#related_from_snake = ActiveValue::Set(id.0);
@@ -192,7 +192,7 @@ fn gen_join_update_fn(entity: &Ident, related_from: &Ident, related_to: &Ident) 
 
             let model = active_model.update(&state.db_conn).await?;
 
-            Ok(Json(model))
+            Ok(ApiResponse::json(model))
         }
     }
 }
@@ -228,10 +228,10 @@ fn gen_join_delete_fn(entity: &Ident, related_from: &Ident, related_to: &Ident) 
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]
-        pub async fn delete_by_id(state: State<Arc<AppState>>, Path(id): Path<(Uuid, Uuid)>) -> Result<()> {
+        pub async fn delete_by_id(state: State<Arc<AppState>>, Path(id): Path<(Uuid, Uuid)>) -> Result<ApiResponse<()>> {
             #entity::delete_by_id(id).exec(&state.db_conn).await?;
 
-            Ok(())
+            Ok(ApiResponse::no_content())
         }
     }
 }
@@ -291,12 +291,12 @@ fn gen_join_relations_fn(
         pub async fn retrieve_relations_by_id(
             state: State<Arc<AppState>>,
             Path(id): Path<(Uuid, Uuid)>,
-        ) -> Result<Json<#entity_relations>> {
+        ) -> Result<ApiResponse<Json<#entity_relations>>> {
             let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? else {
                 return Err(Error::NotFound(#not_found.to_owned()))
             };
 
-            Ok(Json(#entity_relations {
+            Ok(ApiResponse::json(#entity_relations {
                 #related_from_snake: #related_from::find_by_id(id.0).into_partial_model::<#related_from_model>().one(&state.db_conn).await?.unwrap(),
                 #related_to_snake: #related_to::find_by_id(id.1).into_partial_model::<#related_to_model>().one(&state.db_conn).await?.unwrap(),
             }))
@@ -330,7 +330,7 @@ fn gen_join_import_fn(entity: &Ident) -> impl ToTokens {
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]
-        pub async fn import(state: State<Arc<AppState>>, mut multipart: Multipart) -> Result<Json<JsonResponse>> {
+        pub async fn import(state: State<Arc<AppState>>, mut multipart: Multipart) -> Result<ApiResponse<Json<JsonResponse>>> {
             while let Some(field) = multipart.next_field().await.unwrap() {
                 if field.name().unwrap() == "file" {
                     let mut temp_file = NamedTempFile::new()?;
@@ -346,7 +346,7 @@ fn gen_join_import_fn(entity: &Ident) -> impl ToTokens {
                 }
             }
 
-            Ok(Json(JsonResponse { message: "successfully imported".to_owned() }))
+            Ok(ApiResponse::json(JsonResponse { message: "successfully imported".to_owned() }))
         }
     }
 }
@@ -373,7 +373,7 @@ fn gen_join_export_fn(entity: &Ident) -> impl ToTokens {
                 (status = 500, description = "Unexpected error", body = JsonResponse)
             )
         )]
-        async fn export(state: State<Arc<AppState>>, Query(query): Query<ExportQuery>) -> Result<impl IntoResponse> {
+        async fn export(state: State<Arc<AppState>>, Query(query): Query<ExportQuery>) -> Result<ApiResponse<impl IntoResponse>> {
             let temp_file = NamedTempFile::new()?;
             let file_path = temp_file.path().display().to_string();
 
@@ -386,10 +386,10 @@ fn gen_join_export_fn(entity: &Ident) -> impl ToTokens {
                 path: file_path,
             })?;
 
-            Ok((
+            Ok(ApiResponse(StatusCode::OK, (
                 [(header::CONTENT_TYPE, "application/octet-stream")],
                 Body::from_stream(csv_stream)
-            ))
+            )))
         }
     }
 }
@@ -440,7 +440,7 @@ pub fn crud_join_impl(input: TokenStream) -> TokenStream {
 
         use axum::body::Body;
         use axum::extract::{Json, Multipart, Path, Query, State};
-        use axum::http::header;
+        use axum::http::{header, StatusCode};
         use axum::response::IntoResponse;
         use axum::routing::{get, post};
         use axum::Router;
@@ -457,7 +457,7 @@ pub fn crud_join_impl(input: TokenStream) -> TokenStream {
         use super::CsvStream;
         use crate::errors::{Error, Result};
         use crate::schemas::{FileSchema, ExportQuery, ExportFormat, JsonResponse, #(#imports,)*};
-        use crate::app_state::AppState;
+        use crate::{AppState, ApiResponse};
 
         #list_fn
 

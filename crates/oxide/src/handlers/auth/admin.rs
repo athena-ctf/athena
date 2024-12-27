@@ -4,6 +4,7 @@ use std::time::Duration;
 use argon2::{Argon2, PasswordHash, PasswordVerifier};
 use axum::Json;
 use axum::extract::State;
+use axum::http::StatusCode;
 use axum_extra::extract::CookieJar;
 use axum_extra::extract::cookie::Cookie;
 use fred::prelude::*;
@@ -11,11 +12,11 @@ use jsonwebtoken::{DecodingKey, Validation};
 use sea_orm::TransactionTrait;
 use sea_orm::prelude::*;
 
-use crate::app_state::AppState;
 use crate::errors::{Error, Result};
 use crate::jwt::{RefreshClaims, TokenPair};
 use crate::redis_keys::REFRESH_TOKEN_BLACKLIST;
 use crate::schemas::{Admin, AdminModel, JsonResponse, LoginRequest, LoginResponse};
+use crate::{ApiResponse, AppState};
 
 #[utoipa::path(
     post,
@@ -35,7 +36,7 @@ pub async fn token(
     state: State<Arc<AppState>>,
     jar: CookieJar,
     Json(body): Json<LoginRequest>,
-) -> Result<(CookieJar, Json<LoginResponse<AdminModel>>)> {
+) -> Result<ApiResponse<(CookieJar, Json<LoginResponse<AdminModel>>)>> {
     let txn = state.db_conn.begin().await?;
 
     let Some(admin_model) = Admin::find()
@@ -73,12 +74,15 @@ pub async fn token(
 
     txn.commit().await?;
 
-    Ok((
-        jar.add(cookie),
-        Json(LoginResponse {
-            model: admin_model,
-            access_token,
-        }),
+    Ok(ApiResponse(
+        StatusCode::OK,
+        (
+            jar.add(cookie),
+            Json(LoginResponse {
+                model: admin_model,
+                access_token,
+            }),
+        ),
     ))
 }
 
@@ -98,7 +102,7 @@ pub async fn token(
 pub async fn token_refresh(
     state: State<Arc<AppState>>,
     jar: CookieJar,
-) -> Result<(CookieJar, Json<JsonResponse>)> {
+) -> Result<ApiResponse<(CookieJar, Json<JsonResponse>)>> {
     let Some(refresh_token) = jar.get("refresh_token") else {
         return Err(Error::Unauthorized(
             None,
@@ -172,10 +176,13 @@ pub async fn token_refresh(
                 .unwrap(),
         );
 
-    Ok((
-        jar.add(cookie),
-        Json(JsonResponse {
-            message: access_token,
-        }),
+    Ok(ApiResponse(
+        StatusCode::OK,
+        (
+            jar.add(cookie),
+            Json(JsonResponse {
+                message: access_token,
+            }),
+        ),
     ))
 }

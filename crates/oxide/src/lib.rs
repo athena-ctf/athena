@@ -1,6 +1,5 @@
 pub mod api;
 
-mod app_state;
 mod docker;
 mod errors;
 mod handlers;
@@ -18,15 +17,19 @@ use std::net::{Ipv4Addr, SocketAddrV4};
 use std::sync::Arc;
 use std::time::Duration;
 
+use axum::Json;
+use axum::http::StatusCode;
+use axum::response::IntoResponse;
+use config::Settings;
 use fred::prelude::*;
 use fred::types::RespVersion;
 use lettre::Tokio1Executor;
-use sea_orm::Database;
+use sea_orm::{Database, DbConn};
+use serde::Serialize;
 use tokio::signal;
 use tokio::sync::RwLock;
 use tokio_cron_scheduler::{Job, JobScheduler};
 
-use crate::app_state::{AppState, Settings};
 use crate::errors::{Error, Result};
 
 pub mod utils {
@@ -35,6 +38,51 @@ pub mod utils {
             .take(size)
             .collect()
     }
+}
+
+pub struct ApiResponse<T: IntoResponse>(StatusCode, T);
+
+impl<T: IntoResponse> IntoResponse for ApiResponse<T> {
+    fn into_response(self) -> axum::response::Response {
+        (self.0, self.1).into_response()
+    }
+}
+
+impl<T: Serialize> ApiResponse<Json<T>> {
+    pub fn json_with_status(status_code: StatusCode, data: T) -> Self {
+        Self(status_code, Json(data))
+    }
+
+    pub fn json(data: T) -> Self {
+        Self::json_with_status(StatusCode::OK, data)
+    }
+
+    pub fn json_created(data: T) -> Self {
+        Self::json_with_status(StatusCode::CREATED, data)
+    }
+}
+
+impl ApiResponse<()> {
+    fn no_content() -> Self {
+        Self(StatusCode::NO_CONTENT, ())
+    }
+}
+
+pub struct AppState {
+    pub db_conn: DbConn,
+    pub settings: Arc<RwLock<Settings>>,
+
+    pub redis_client: Pool,
+    pub docker_manager: Arc<docker::Manager>,
+    pub token_manager: Arc<token::Manager>,
+    pub leaderboard_manager: Arc<leaderboard::Manager>,
+    pub scheduler: JobScheduler,
+
+    #[cfg(feature = "file-transport")]
+    pub mail_transport: lettre::AsyncFileTransport<Tokio1Executor>,
+
+    #[cfg(not(feature = "file-transport"))]
+    pub mail_transport: lettre::AsyncSmtpTransport<Tokio1Executor>,
 }
 
 pub async fn start(settings: Settings) -> Result<()> {

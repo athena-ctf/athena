@@ -9,7 +9,7 @@ use axum::response::IntoResponse;
 use chrono::Utc;
 use fred::prelude::*;
 
-use crate::app_state::AppState;
+use crate::AppState;
 use crate::jwt::PlayerAccessClaims;
 use crate::schemas::JsonResponse;
 

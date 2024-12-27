@@ -35,7 +35,7 @@ oxide_macros::crud!(
 pub async fn player_challenges(
     AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
-) -> Result<Json<PlayerChallenges>> {
+) -> Result<ApiResponse<Json<PlayerChallenges>>> {
     let challenges = Challenge::find().all(&state.db_conn).await?;
     let submissions = Submission::find()
         .select_only()
@@ -92,7 +92,7 @@ pub async fn player_challenges(
         });
     }
 
-    Ok(Json(PlayerChallenges { summaries }))
+    Ok(ApiResponse::json(PlayerChallenges { summaries }))
 }
 
 #[utoipa::path(
@@ -115,7 +115,7 @@ pub async fn detailed_challenge(
     AuthPlayer(player): AuthPlayer,
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
-) -> Result<Json<DetailedChallenge>> {
+) -> Result<ApiResponse<Json<DetailedChallenge>>> {
     let hints = Hint::find()
         .find_also_related(Unlock)
         .select_only()
@@ -168,7 +168,7 @@ pub async fn detailed_challenge(
         None
     };
 
-    Ok(Json(DetailedChallenge {
+    Ok(ApiResponse::json(DetailedChallenge {
         files: File::find()
             .inner_join(ChallengeFile)
             .filter(entity::challenge_file::Column::ChallengeId.eq(id))
@@ -199,7 +199,7 @@ pub async fn start_challenge(
     AuthPlayer(player_claims): AuthPlayer,
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
-) -> Result<Json<DeploymentModel>> {
+) -> Result<ApiResponse<Json<DeploymentModel>>> {
     let Some(challenge_model) = Challenge::find_by_id(id).one(&state.db_conn).await? else {
         return Err(Error::NotFound("Challenge not found".to_owned()));
     };
@@ -231,7 +231,7 @@ pub async fn start_challenge(
         )?)
         .await?;
 
-    Ok(Json(deployment_model))
+    Ok(ApiResponse::json(deployment_model))
 }
 
 #[utoipa::path(
@@ -254,13 +254,13 @@ pub async fn stop_challenge(
     AuthPlayer(player_claims): AuthPlayer,
     Path(id): Path<Uuid>,
     state: State<Arc<AppState>>,
-) -> Result<Json<JsonResponse>> {
+) -> Result<ApiResponse<Json<JsonResponse>>> {
     state
         .docker_manager
         .cleanup_challenge(id, Some(player_claims.sub))
         .await?;
 
-    Ok(Json(JsonResponse {
+    Ok(ApiResponse::json(JsonResponse {
         message: "successfully stopped challenge deployment".to_owned(),
     }))
 }

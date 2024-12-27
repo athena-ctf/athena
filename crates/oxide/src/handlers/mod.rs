@@ -16,7 +16,6 @@ pub mod notification;
 pub mod player;
 pub mod player_award;
 pub mod settings;
-pub mod stats;
 pub mod submission;
 pub mod team;
 pub mod ticket;

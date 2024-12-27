@@ -8,6 +8,7 @@ use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use askama::Template;
 use axum::Json;
 use axum::extract::{Query, State};
+use axum::http::StatusCode;
 use axum_extra::extract::CookieJar;
 use axum_extra::extract::cookie::Cookie;
 use fred::prelude::*;
@@ -18,7 +19,6 @@ use lettre::{AsyncTransport, Message};
 use sea_orm::prelude::*;
 use sea_orm::{ActiveValue, Condition, IntoActiveModel, TransactionTrait};
 
-use crate::app_state::AppState;
 use crate::errors::{Error, Result};
 use crate::jwt::{RefreshClaims, TokenPair};
 use crate::redis_keys::{PLAYER_LAST_UPDATED, REFRESH_TOKEN_BLACKLIST};
@@ -28,6 +28,7 @@ use crate::schemas::{
     ResetPasswordSchema, SendTokenSchema, Team, TeamModel, TeamRegister,
 };
 use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, VerifyEmailPlain};
+use crate::{ApiResponse, AppState};
 
 #[utoipa::path(
     get,
@@ -48,7 +49,7 @@ use crate::templates::{ResetPasswordHtml, ResetPasswordPlain, VerifyEmailHtml, V
 pub async fn register_verify_email(
     state: State<Arc<AppState>>,
     Query(query): Query<RegisterVerifyEmailQuery>,
-) -> Result<Json<JsonResponse>> {
+) -> Result<ApiResponse<Json<JsonResponse>>> {
     if Player::find()
         .filter(Condition::any().add(entity::player::Column::Email.eq(query.email)))
         .one(&state.db_conn)
@@ -60,7 +61,7 @@ pub async fn register_verify_email(
         ));
     }
 
-    Ok(Json(JsonResponse {
+    Ok(ApiResponse::json(JsonResponse {
         message: "Player exists".to_owned(),
     }))
 }
@@ -81,7 +82,7 @@ pub async fn register_verify_email(
 pub async fn register(
     state: State<Arc<AppState>>,
     Json(body): Json<RegisterPlayer>,
-) -> Result<Json<JsonResponse>> {
+) -> Result<ApiResponse<Json<JsonResponse>>> {
     let txn = state.db_conn.begin().await?;
 
     let verified = state
@@ -146,7 +147,7 @@ pub async fn register(
 
     state.leaderboard_manager.init_player(team_id).await?;
 
-    Ok(Json(JsonResponse {
+    Ok(ApiResponse::json(JsonResponse {
         message: "Successfully registered".to_string(),
     }))
 }
@@ -168,7 +169,7 @@ pub async fn register(
 pub async fn register_send_token(
     state: State<Arc<AppState>>,
     Json(body): Json<SendTokenSchema>,
-) -> Result<Json<JsonResponse>> {
+) -> Result<ApiResponse<Json<JsonResponse>>> {
     let token = state
         .token_manager
         .generate("register", &body.email)
@@ -203,7 +204,7 @@ pub async fn register_send_token(
         }
     });
 
-    Ok(Json(JsonResponse {
+    Ok(ApiResponse::json(JsonResponse {
         message: "Successfully sent mail".to_owned(),
     }))
 }
@@ -228,7 +229,7 @@ pub async fn register_send_token(
 pub async fn register_verify_invite(
     state: State<Arc<AppState>>,
     Query(body): Query<RegisterVerifyInviteQuery>,
-) -> Result<Json<InviteVerificationResult>> {
+) -> Result<ApiResponse<Json<InviteVerificationResult>>> {
     let Some(team_model) = Team::find()
         .filter(entity::team::Column::Name.eq(body.team_name))
         .one(&state.db_conn)
@@ -255,7 +256,7 @@ pub async fn register_verify_invite(
         return Err(Error::BadRequest("invite used up".to_owned()));
     }
 
-    Ok(Json(InviteVerificationResult {
+    Ok(ApiResponse::json(InviteVerificationResult {
         team_id: team_model.id,
         invite_id,
     }))
@@ -277,7 +278,7 @@ pub async fn register_verify_invite(
 pub async fn reset_password(
     state: State<Arc<AppState>>,
     Json(body): Json<ResetPasswordSchema>,
-) -> Result<Json<JsonResponse>> {
+) -> Result<ApiResponse<Json<JsonResponse>>> {
     let verified = state
         .token_manager
         .verify("reset", &body.email, &body.token)
@@ -323,7 +324,7 @@ pub async fn reset_password(
         )
         .await?;
 
-    Ok(Json(JsonResponse {
+    Ok(ApiResponse::json(JsonResponse {
         message: "Successfully reset password".to_owned(),
     }))
 }
@@ -345,7 +346,7 @@ pub async fn reset_password(
 pub async fn reset_password_send_token(
     state: State<Arc<AppState>>,
     Json(body): Json<SendTokenSchema>,
-) -> Result<Json<JsonResponse>> {
+) -> Result<ApiResponse<Json<JsonResponse>>> {
     let token = state.token_manager.generate("reset", &body.email).await?;
 
     let email = Message::builder()
@@ -377,7 +378,7 @@ pub async fn reset_password_send_token(
         }
     });
 
-    Ok(Json(JsonResponse {
+    Ok(ApiResponse::json(JsonResponse {
         message: "Successfully sent mail".to_owned(),
     }))
 }
@@ -400,7 +401,7 @@ pub async fn token(
     state: State<Arc<AppState>>,
     jar: CookieJar,
     Json(body): Json<LoginRequest>,
-) -> Result<(CookieJar, Json<LoginResponse<PlayerModel>>)> {
+) -> Result<ApiResponse<(CookieJar, Json<LoginResponse<PlayerModel>>)>> {
     let Some(player_model) = Player::find()
         .filter(entity::admin::Column::Username.eq(&body.username))
         .one(&state.db_conn)
@@ -439,12 +440,15 @@ pub async fn token(
                 .unwrap(),
         );
 
-    Ok((
-        jar.add(cookie),
-        Json(LoginResponse {
-            model: player_model,
-            access_token,
-        }),
+    Ok(ApiResponse(
+        StatusCode::OK,
+        (
+            jar.add(cookie),
+            Json(LoginResponse {
+                model: player_model,
+                access_token,
+            }),
+        ),
     ))
 }
 
@@ -464,7 +468,7 @@ pub async fn token(
 pub async fn token_refresh(
     state: State<Arc<AppState>>,
     jar: CookieJar,
-) -> Result<(CookieJar, Json<JsonResponse>)> {
+) -> Result<ApiResponse<(CookieJar, Json<JsonResponse>)>> {
     let Some(refresh_token) = jar.get("refresh_token") else {
         return Err(Error::Unauthorized(
             None,
@@ -539,10 +543,13 @@ pub async fn token_refresh(
                 .unwrap(),
         );
 
-    Ok((
-        jar.add(cookie),
-        Json(JsonResponse {
-            message: access_token,
-        }),
+    Ok(ApiResponse(
+        StatusCode::OK,
+        (
+            jar.add(cookie),
+            Json(JsonResponse {
+                message: access_token,
+            }),
+        ),
     ))
 }

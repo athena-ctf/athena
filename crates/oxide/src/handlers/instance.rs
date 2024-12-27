@@ -19,7 +19,7 @@ oxide_macros::crud!(Instance, single: [Deployment], optional: [], multiple: []);
 pub async fn restart(
     state: State<Arc<AppState>>,
     Path(id): Path<Uuid>,
-) -> Result<Json<JsonResponse>> {
+) -> Result<ApiResponse<Json<JsonResponse>>> {
     let Some(instance_model) = Instance::find_by_id(id).one(&state.db_conn).await? else {
         return Err(Error::NotFound("Instance not found".to_owned()));
     };
@@ -29,7 +29,7 @@ pub async fn restart(
         .restart_container(&instance_model.container_id)
         .await?;
 
-    Ok(Json(JsonResponse {
+    Ok(ApiResponse::json(JsonResponse {
         message: "Successfully restarted container".to_owned(),
     }))
 }

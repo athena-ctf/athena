@@ -1,4 +1,4 @@
-import { ChevronDown, GalleryVerticalEnd, type LucideIcon, Table2 } from "lucide-react";
+import { ChevronDown, GalleryVerticalEnd, type LucideIcon } from "lucide-react";
 
 import type { FileRouteTypes } from "@/routeTree.gen";
 import {
@@ -18,48 +18,21 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@repo/ui/components/sidebar";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 
-interface SidebarItem {
+export interface SidebarItem {
   title: string;
   icon: LucideIcon;
   items: { title: string; url: FileRouteTypes["to"] }[];
 }
 
-const sidebarItems: SidebarItem[] = [
-  {
-    title: "Docker",
-    icon: Table2,
-    items: [],
-  },
-  {
-    title: "Tables",
-    icon: Table2,
-    items: [
-      { title: "Admin", url: "/table/admin" },
-      { title: "Award", url: "/table/award" },
-      { title: "Ban", url: "/table/ban" },
-      { title: "Challenge File", url: "/table/challenge_file" },
-      { title: "Challenge", url: "/table/challenge" },
-      { title: "Container", url: "/table/container" },
-      { title: "Deployment", url: "/table/deployment" },
-      { title: "File", url: "/table/file" },
-      { title: "Flag", url: "/table/flag" },
-      { title: "Hint", url: "/table/hint" },
-      { title: "Instance", url: "/table/instance" },
-      { title: "Invite", url: "/table/invite" },
-      { title: "Notification", url: "/table/notification" },
-      { title: "Player Award", url: "/table/player_award" },
-      { title: "Player", url: "/table/player" },
-      { title: "Submission", url: "/table/submission" },
-      { title: "Team", url: "/table/team" },
-      { title: "Ticket", url: "/table/ticket" },
-      { title: "Unlock", url: "/table/unlock" },
-    ],
-  },
-];
+interface AppSidebarProps {
+  items: SidebarItem[];
+}
 
-export function AppSidebar() {
+export function AppSidebar({ items }: AppSidebarProps) {
+  const location = useLocation();
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -71,7 +44,7 @@ export function AppSidebar() {
                   <GalleryVerticalEnd className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">My App</span>
+                  <span className="font-semibold">Athena CTF</span>
                   <span className="">v1.0.0</span>
                 </div>
               </a>
@@ -80,7 +53,7 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {sidebarItems.map((group) => (
+        {items.map((group) => (
           <Collapsible defaultOpen className="group/collapsible" key={group.title}>
             <SidebarGroup>
               <SidebarGroupLabel asChild>
@@ -95,8 +68,7 @@ export function AppSidebar() {
                   <SidebarMenu>
                     {group.items.map((item) => (
                       <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild isActive={false}>
-                          {/* TODO: check `isActive` */}
+                        <SidebarMenuButton asChild isActive={location.pathname === item.url}>
                           <Link to={item.url}>{item.title}</Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>

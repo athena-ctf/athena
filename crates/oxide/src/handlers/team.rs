@@ -99,7 +99,7 @@ async fn get_team_profile(
 pub async fn retrieve_team_by_teamname(
     state: State<Arc<AppState>>,
     Path(team_name): Path<String>,
-) -> Result<Json<TeamProfile>> {
+) -> Result<ApiResponse<Json<TeamProfile>>> {
     let Some(team_model) = Team::find()
         .filter(entity::team::Column::Name.eq(&team_name))
         .one(&state.db_conn)
@@ -110,7 +110,7 @@ pub async fn retrieve_team_by_teamname(
 
     get_team_profile(team_model, &state.leaderboard_manager, &state.db_conn)
         .await
-        .map(Json)
+        .map(ApiResponse::json)
 }
 
 #[utoipa::path(
@@ -132,7 +132,7 @@ pub async fn update_details(
     state: State<Arc<AppState>>,
     AuthPlayer(player_claims): AuthPlayer,
     Json(details): Json<CreateTeamSchema>,
-) -> Result<Json<TeamModel>> {
+) -> Result<ApiResponse<Json<TeamModel>>> {
     let Some(team_model) = Team::find_by_id(player_claims.team_id)
         .one(&state.db_conn)
         .await?
@@ -149,7 +149,7 @@ pub async fn update_details(
     let mut active_team = details.into_active_model();
     active_team.id = ActiveValue::Set(player_claims.team_id);
 
-    Ok(active_team.update(&state.db_conn).await.map(Json)?)
+    Ok(ApiResponse::json(active_team.update(&state.db_conn).await?))
 }
 
 #[utoipa::path(
@@ -169,7 +169,7 @@ pub async fn update_details(
 pub async fn retrieve_summary(
     AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
-) -> Result<Json<TeamDetails>> {
+) -> Result<ApiResponse<Json<TeamDetails>>> {
     let Some(team_model) = Team::find()
         .left_join(Player)
         .filter(entity::player::Column::Id.eq(player.sub))
@@ -181,7 +181,7 @@ pub async fn retrieve_summary(
 
     let invites = team_model.find_related(Invite).all(&state.db_conn).await?;
 
-    Ok(Json(TeamDetails {
+    Ok(ApiResponse::json(TeamDetails {
         submissions: team_model
             .find_linked(TeamToSubmission)
             .all(&state.db_conn)

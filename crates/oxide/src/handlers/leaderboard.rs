@@ -3,9 +3,9 @@ use std::sync::Arc;
 use axum::Json;
 use axum::extract::{Query, State};
 
-use crate::app_state::AppState;
 use crate::errors::Result;
 use crate::schemas::{JsonResponse, LeaderboardRankings, Ranking, RankingQuery};
+use crate::{ApiResponse, AppState};
 
 #[utoipa::path(
     get,
@@ -19,8 +19,12 @@ use crate::schemas::{JsonResponse, LeaderboardRankings, Ranking, RankingQuery};
     )
 )]
 /// List top 10 players of leaderboard
-pub async fn player_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranking>>> {
-    state.leaderboard_manager.top_10_players().await.map(Json)
+pub async fn player_top_10(state: State<Arc<AppState>>) -> Result<ApiResponse<Json<Vec<Ranking>>>> {
+    state
+        .leaderboard_manager
+        .top_10_players()
+        .await
+        .map(ApiResponse::json)
 }
 
 #[utoipa::path(
@@ -42,14 +46,14 @@ pub async fn player_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranki
 pub async fn player_rankings(
     Query(RankingQuery { offset, count }): Query<RankingQuery>,
     state: State<Arc<AppState>>,
-) -> Result<Json<LeaderboardRankings>> {
+) -> Result<ApiResponse<Json<LeaderboardRankings>>> {
     let rankings = state
         .leaderboard_manager
         .list_players(offset, count)
         .await?;
     let total = state.leaderboard_manager.player_count().await?;
 
-    Ok(Json(LeaderboardRankings {
+    Ok(ApiResponse::json(LeaderboardRankings {
         total,
         offset,
         count,
@@ -69,8 +73,12 @@ pub async fn player_rankings(
     )
 )]
 /// List top 10 teams of leaderboard
-pub async fn team_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranking>>> {
-    state.leaderboard_manager.top_10_teams().await.map(Json)
+pub async fn team_top_10(state: State<Arc<AppState>>) -> Result<ApiResponse<Json<Vec<Ranking>>>> {
+    state
+        .leaderboard_manager
+        .top_10_teams()
+        .await
+        .map(ApiResponse::json)
 }
 
 #[utoipa::path(
@@ -92,11 +100,11 @@ pub async fn team_top_10(state: State<Arc<AppState>>) -> Result<Json<Vec<Ranking
 pub async fn team_rankings(
     Query(RankingQuery { offset, count }): Query<RankingQuery>,
     state: State<Arc<AppState>>,
-) -> Result<Json<LeaderboardRankings>> {
+) -> Result<ApiResponse<Json<LeaderboardRankings>>> {
     let rankings = state.leaderboard_manager.list_teams(offset, count).await?;
     let total = state.leaderboard_manager.team_count().await?;
 
-    Ok(Json(LeaderboardRankings {
+    Ok(ApiResponse::json(LeaderboardRankings {
         total,
         offset,
         count,

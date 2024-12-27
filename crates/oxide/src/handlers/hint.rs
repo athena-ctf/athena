@@ -23,7 +23,7 @@ pub async fn unlock_by_id(
     AuthPlayer(player_claims): AuthPlayer,
     state: State<Arc<AppState>>,
     Path(id): Path<Uuid>,
-) -> Result<Json<HintModel>> {
+) -> Result<ApiResponse<Json<HintModel>>> {
     let txn = state.db_conn.begin().await?;
 
     if let Some((_, Some(hint_model))) = Unlock::find_by_id((player_claims.sub, id))
@@ -31,7 +31,7 @@ pub async fn unlock_by_id(
         .one(&txn)
         .await?
     {
-        return Ok(Json(hint_model));
+        return Ok(ApiResponse::json(hint_model));
     }
 
     UnlockModel::new(player_claims.sub, id)
@@ -53,5 +53,5 @@ pub async fn unlock_by_id(
         .update_team(player_claims.team_id, -hint_model.cost)
         .await?;
 
-    Ok(Json(hint_model))
+    Ok(ApiResponse::json(hint_model))
 }

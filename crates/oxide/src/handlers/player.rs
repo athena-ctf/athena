@@ -92,7 +92,7 @@ pub async fn get_user_profile(
 pub async fn retrieve_profile_by_username(
     state: State<Arc<AppState>>,
     Path(username): Path<String>,
-) -> Result<Json<PlayerProfile>> {
+) -> Result<ApiResponse<Json<PlayerProfile>>> {
     let Some(player_model) = Player::find()
         .filter(entity::player::Column::Username.eq(&username))
         .one(&state.db_conn)
@@ -103,7 +103,7 @@ pub async fn retrieve_profile_by_username(
 
     get_user_profile(player_model, &state.leaderboard_manager, &state.db_conn)
         .await
-        .map(Json)
+        .map(ApiResponse::json)
 }
 
 #[utoipa::path(
@@ -125,7 +125,7 @@ pub async fn update_profile_by_id(
     state: State<Arc<AppState>>,
     AuthPlayer(player_claims): AuthPlayer,
     Json(body): Json<UpdateProfileSchema>,
-) -> Result<Json<PlayerModel>> {
+) -> Result<ApiResponse<Json<PlayerModel>>> {
     let mut active_player = body.into_active_model();
     active_player.id = ActiveValue::Set(player_claims.sub);
 
@@ -142,7 +142,7 @@ pub async fn update_profile_by_id(
         )
         .await?;
 
-    Ok(Json(player_model))
+    Ok(ApiResponse::json(player_model))
 }
 
 #[utoipa::path(
@@ -162,12 +162,12 @@ pub async fn update_profile_by_id(
 pub async fn retrieve_summary(
     AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
-) -> Result<Json<PlayerDetails>> {
+) -> Result<ApiResponse<Json<PlayerDetails>>> {
     let Some(player_model) = Player::find_by_id(player.sub).one(&state.db_conn).await? else {
         return Err(Error::NotFound("Player not found".to_owned()));
     };
 
-    Ok(Json(PlayerDetails {
+    Ok(ApiResponse::json(PlayerDetails {
         submissions: player_model
             .find_related(Submission)
             .all(&state.db_conn)
@@ -195,10 +195,10 @@ pub async fn retrieve_summary(
 pub async fn get_current_logged_in(
     AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
-) -> Result<Json<PlayerModel>> {
+) -> Result<ApiResponse<Json<PlayerModel>>> {
     let Some(model) = Player::find_by_id(player.sub).one(&state.db_conn).await? else {
         return Err(Error::NotFound("Player not found".to_owned()));
     };
 
-    Ok(Json(model))
+    Ok(ApiResponse::json(model))
 }

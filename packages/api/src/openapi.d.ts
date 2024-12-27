@@ -2012,23 +2012,6 @@ export interface paths {
     patch: operations["settings_update"];
     trace?: never;
   };
-  "/admin/stats": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Retrieve stats of all tables */
-    get: operations["retrieve"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   "/admin/submission": {
     parameters: {
       query?: never;
@@ -2866,6 +2849,23 @@ export interface paths {
     };
     /** List player notifications */
     get: operations["player_list"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/player/notifications/unread": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List unread player notifications */
+    get: operations["player_list_unread"];
     put?: never;
     post?: never;
     delete?: never;
@@ -4697,46 +4697,6 @@ export interface components {
     StartContainerBody: {
       detach_keys: string;
     };
-    StatSchema: {
-      /** Format: int64 */
-      admin: number;
-      /** Format: int64 */
-      award: number;
-      /** Format: int64 */
-      ban: number;
-      /** Format: int64 */
-      challenge: number;
-      /** Format: int64 */
-      challenge_file: number;
-      /** Format: int64 */
-      container: number;
-      /** Format: int64 */
-      deployment: number;
-      /** Format: int64 */
-      file: number;
-      /** Format: int64 */
-      flag: number;
-      /** Format: int64 */
-      hint: number;
-      /** Format: int64 */
-      instance: number;
-      /** Format: int64 */
-      invite: number;
-      /** Format: int64 */
-      notification: number;
-      /** Format: int64 */
-      player: number;
-      /** Format: int64 */
-      player_award: number;
-      /** Format: int64 */
-      submission: number;
-      /** Format: int64 */
-      team: number;
-      /** Format: int64 */
-      ticket: number;
-      /** Format: int64 */
-      unlock: number;
-    };
     Stats: {
       blkio_stats: components["schemas"]["BlkioStats"];
       cpu_stats: components["schemas"]["CPUStats"];
@@ -6355,7 +6315,7 @@ export interface operations {
     };
     responses: {
       /** @description Banned player by id successfully */
-      201: {
+      200: {
         headers: {
           [name: string]: unknown;
         };
@@ -9265,7 +9225,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Invalid request body format */
       400: {
@@ -9379,7 +9341,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Action is permissible after login */
       401: {
@@ -9430,7 +9394,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Invalid request body format */
       400: {
@@ -9490,7 +9456,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Invalid request body format */
       400: {
@@ -9608,7 +9576,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Invalid request body format */
       400: {
@@ -9722,7 +9692,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Action is permissible after login */
       401: {
@@ -9833,7 +9805,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Invalid request body format */
       400: {
@@ -10074,11 +10048,13 @@ export interface operations {
     requestBody?: never;
     responses: {
       /** @description Removed docker image successfully */
-      204: {
+      200: {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Invalid request body format */
       400: {
@@ -10196,7 +10172,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Invalid request body format */
       400: {
@@ -10562,7 +10540,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Invalid request body format */
       400: {
@@ -10622,7 +10602,9 @@ export interface operations {
         headers: {
           [name: string]: unknown;
         };
-        content?: never;
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
       };
       /** @description Invalid request body format */
       400: {
@@ -15312,53 +15294,6 @@ export interface operations {
       };
     };
   };
-  retrieve: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Retrieved stats successfully */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["StatSchema"];
-        };
-      };
-      /** @description Action is permissible after login */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Admin does not have sufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-      /** @description Unexpected error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["JsonResponse"];
-        };
-      };
-    };
-  };
   list_submissions: {
     parameters: {
       query?: never;
@@ -16938,7 +16873,7 @@ export interface operations {
     requestBody?: never;
     responses: {
       /** @description Unbanned player by id successfully */
-      201: {
+      200: {
         headers: {
           [name: string]: unknown;
         };
@@ -18911,6 +18846,62 @@ export interface operations {
     requestBody?: never;
     responses: {
       /** @description Listed notifications successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["NotificationModel"][];
+        };
+      };
+      /** @description Action is permissible after login */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Admin does not have sufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description No hint found with specified id */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      /** @description Unexpected error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  player_list_unread: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Listed unread notifications successfully */
       200: {
         headers: {
           [name: string]: unknown;

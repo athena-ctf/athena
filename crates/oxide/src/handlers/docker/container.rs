@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use axum::body::Body;
 use axum::extract::{Path, Query, State};
-use axum::http::header;
+use axum::http::{StatusCode, header};
 use axum::response::IntoResponse;
 use axum::routing::{get, post};
 use axum::{Json, Router};
@@ -14,9 +14,9 @@ use super::schemas::{
     KillContainerBody, ListContainersQuery, LogOutput, PruneContainersQuery, RemoveContainerQuery,
     RestartContainerBody, StartContainerBody, Stats, StopContainerBody,
 };
-use crate::app_state::AppState;
 use crate::errors::Result;
 use crate::schemas::{FileSchema, JsonResponse};
+use crate::{ApiResponse, AppState};
 
 #[utoipa::path(
     get,
@@ -40,8 +40,8 @@ use crate::schemas::{FileSchema, JsonResponse};
 pub async fn list(
     state: State<Arc<AppState>>,
     Query(query): Query<ListContainersQuery>,
-) -> Result<Json<Vec<ContainerSummary>>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<Vec<ContainerSummary>>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -70,8 +70,8 @@ pub async fn list(
 pub async fn create(
     state: State<Arc<AppState>>,
     Json(container): Json<CreateContainerBody>,
-) -> Result<Json<CreateContainerResponse>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<CreateContainerResponse>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -106,8 +106,8 @@ pub async fn inspect(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Query(query): Query<InspectContainerQuery>,
-) -> Result<Json<ContainerInspectResponse>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<ContainerInspectResponse>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -140,12 +140,14 @@ pub async fn remove(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Query(query): Query<RemoveContainerQuery>,
-) -> Result<()> {
-    Ok(state
+) -> Result<ApiResponse<()>> {
+    state
         .docker_manager
         .conn()
         .remove_container(&name, Some(query.into()))
-        .await?)
+        .await?;
+
+    Ok(ApiResponse::no_content())
 }
 
 #[utoipa::path(
@@ -167,8 +169,8 @@ pub async fn remove(
 pub async fn prune(
     state: State<Arc<AppState>>,
     Query(query): Query<PruneContainersQuery>,
-) -> Result<Json<ContainerPruneResponse>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<ContainerPruneResponse>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -187,7 +189,7 @@ pub async fn prune(
     ),
     request_body = KillContainerBody,
     responses(
-        (status = 200, description = "Killed docker container successfully"),
+        (status = 200, description = "Killed docker container successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
@@ -199,12 +201,16 @@ pub async fn kill(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Json(body): Json<KillContainerBody>,
-) -> Result<()> {
-    Ok(state
+) -> Result<ApiResponse<Json<JsonResponse>>> {
+    state
         .docker_manager
         .conn()
         .kill_container(&name, Some(body.into()))
-        .await?)
+        .await?;
+
+    Ok(ApiResponse::json(JsonResponse {
+        message: "Successfully killed container".to_owned(),
+    }))
 }
 
 #[utoipa::path(
@@ -216,7 +222,7 @@ pub async fn kill(
     ),
     request_body = StopContainerBody,
     responses(
-        (status = 200, description = "Stopped docker container successfully"),
+        (status = 200, description = "Stopped docker container successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
@@ -228,12 +234,16 @@ pub async fn stop(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Json(body): Json<StopContainerBody>,
-) -> Result<()> {
-    Ok(state
+) -> Result<ApiResponse<Json<JsonResponse>>> {
+    state
         .docker_manager
         .conn()
         .stop_container(&name, Some(body.into()))
-        .await?)
+        .await?;
+
+    Ok(ApiResponse::json(JsonResponse {
+        message: "Successfully stopped container".to_owned(),
+    }))
 }
 
 #[utoipa::path(
@@ -255,8 +265,8 @@ pub async fn stop(
 pub async fn changes(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
-) -> Result<Json<Vec<FilesystemChange>>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<Vec<FilesystemChange>>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -277,15 +287,22 @@ pub async fn changes(
         ("name" = String, Path),
     ),
     responses(
-        (status = 200, description = "Paused docker container successfully"),
+        (status = 200, description = "Paused docker container successfully", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
 )]
 /// Pause docker container
-pub async fn pause(state: State<Arc<AppState>>, Path(name): Path<String>) -> Result<()> {
-    Ok(state.docker_manager.conn().pause_container(&name).await?)
+pub async fn pause(
+    state: State<Arc<AppState>>,
+    Path(name): Path<String>,
+) -> Result<ApiResponse<Json<JsonResponse>>> {
+    state.docker_manager.conn().pause_container(&name).await?;
+
+    Ok(ApiResponse::json(JsonResponse {
+        message: "Successfully paused container".to_owned(),
+    }))
 }
 
 #[utoipa::path(
@@ -296,15 +313,22 @@ pub async fn pause(state: State<Arc<AppState>>, Path(name): Path<String>) -> Res
         ("name" = String, Path),
     ),
     responses(
-        (status = 200, description = "Unpaused docker container successfully"),
+        (status = 200, description = "Unpaused docker container successfully", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
         (status = 500, description = "Unexpected error", body = JsonResponse)
     ),
 )]
 /// Unpause docker container
-pub async fn unpause(state: State<Arc<AppState>>, Path(name): Path<String>) -> Result<()> {
-    Ok(state.docker_manager.conn().unpause_container(&name).await?)
+pub async fn unpause(
+    state: State<Arc<AppState>>,
+    Path(name): Path<String>,
+) -> Result<ApiResponse<Json<JsonResponse>>> {
+    state.docker_manager.conn().unpause_container(&name).await?;
+
+    Ok(ApiResponse::json(JsonResponse {
+        message: "Successfully unpaused container".to_owned(),
+    }))
 }
 
 #[utoipa::path(
@@ -316,7 +340,7 @@ pub async fn unpause(state: State<Arc<AppState>>, Path(name): Path<String>) -> R
     ),
     request_body = StartContainerBody,
     responses(
-        (status = 200, description = "Started docker container successfully"),
+        (status = 200, description = "Started docker container successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
@@ -328,12 +352,16 @@ pub async fn start(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Json(body): Json<StartContainerBody>,
-) -> Result<()> {
-    Ok(state
+) -> Result<ApiResponse<Json<JsonResponse>>> {
+    state
         .docker_manager
         .conn()
         .start_container(&name, Some(body.into()))
-        .await?)
+        .await?;
+
+    Ok(ApiResponse::json(JsonResponse {
+        message: "Successfully started container".to_owned(),
+    }))
 }
 
 #[utoipa::path(
@@ -345,7 +373,7 @@ pub async fn start(
     ),
     request_body = RestartContainerBody,
     responses(
-        (status = 200, description = "Restarted docker container successfully"),
+        (status = 200, description = "Restarted docker container successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
@@ -357,12 +385,16 @@ pub async fn restart(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Json(body): Json<RestartContainerBody>,
-) -> Result<()> {
-    Ok(state
+) -> Result<ApiResponse<Json<JsonResponse>>> {
+    state
         .docker_manager
         .conn()
         .restart_container(&name, Some(body.into()))
-        .await?)
+        .await?;
+
+    Ok(ApiResponse::json(JsonResponse {
+        message: "Successfully restarted container".to_owned(),
+    }))
 }
 
 #[utoipa::path(
@@ -383,10 +415,13 @@ pub async fn restart(
 pub async fn export(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
-) -> Result<impl IntoResponse> {
-    Ok((
-        [(header::CONTENT_TYPE, "application/octet-stream")],
-        Body::from_stream(state.docker_manager.conn().export_container(&name)),
+) -> Result<ApiResponse<impl IntoResponse>> {
+    Ok(ApiResponse(
+        StatusCode::OK,
+        (
+            [(header::CONTENT_TYPE, "application/octet-stream")],
+            Body::from_stream(state.docker_manager.conn().export_container(&name)),
+        ),
     ))
 }
 
@@ -409,8 +444,8 @@ pub async fn export(
 pub async fn top(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
-) -> Result<Json<ContainerTopResponse>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<ContainerTopResponse>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -442,7 +477,7 @@ pub async fn top(
 pub async fn logs(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
-) -> Result<Json<Vec<LogOutput>>> {
+) -> Result<ApiResponse<Json<Vec<LogOutput>>>> {
     let mut log_stream = state.docker_manager.conn().logs(
         &name,
         Some(bollard::container::LogsOptions {
@@ -461,7 +496,7 @@ pub async fn logs(
         logs.push(log.into());
     }
 
-    Ok(Json(logs))
+    Ok(ApiResponse::json(logs))
 }
 
 #[utoipa::path(
@@ -480,8 +515,11 @@ pub async fn logs(
     ),
 )]
 /// Retrieve docker container stats
-pub async fn stats(state: State<Arc<AppState>>, Path(name): Path<String>) -> Result<Json<Stats>> {
-    Ok(Json(
+pub async fn stats(
+    state: State<Arc<AppState>>,
+    Path(name): Path<String>,
+) -> Result<ApiResponse<Json<Stats>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()

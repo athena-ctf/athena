@@ -5,9 +5,9 @@ use axum::extract::{Path, State};
 use config::JsonPath;
 use serde_json::Value;
 
-use crate::app_state::AppState;
 use crate::errors::{Error, Result};
 use crate::schemas::JsonResponse;
+use crate::{ApiResponse, AppState};
 
 #[utoipa::path(
     get,
@@ -27,7 +27,7 @@ use crate::schemas::JsonResponse;
 pub async fn retrieve(
     state: State<Arc<AppState>>,
     Path(path): Path<String>,
-) -> Result<Json<Value>> {
+) -> Result<ApiResponse<Json<Value>>> {
     state
         .settings
         .read()
@@ -45,7 +45,7 @@ pub async fn retrieve(
                     "The requested setting is not found".to_owned(),
                 ))
             },
-            |value| Ok(Json(value)),
+            |value| Ok(ApiResponse::json(value)),
         )
 }
 
@@ -69,7 +69,7 @@ pub async fn update(
     state: State<Arc<AppState>>,
     Path(path): Path<String>,
     Json(value): Json<Value>,
-) -> Result<Json<JsonResponse>> {
+) -> Result<ApiResponse<Json<JsonResponse>>> {
     if state.settings.write().await.update_at(
         &path
             .split('/')
@@ -78,7 +78,7 @@ pub async fn update(
             .collect::<Vec<_>>(),
         value,
     ) {
-        Ok(Json(JsonResponse {
+        Ok(ApiResponse::json(JsonResponse {
             message: "successfully updated settings".to_owned(),
         }))
     } else {

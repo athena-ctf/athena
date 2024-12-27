@@ -8,9 +8,9 @@ use super::schemas::{
     ConnectNetworkBody, CreateNetworkBody, CreateNetworkResponse, DisconnectNetworkBody,
     InspectNetworkQuery, ListNetworksQuery, Network, NetworkPruneResponse, PruneNetworksQuery,
 };
-use crate::app_state::AppState;
 use crate::errors::Result;
 use crate::schemas::JsonResponse;
+use crate::{ApiResponse, AppState};
 
 #[utoipa::path(
     get,
@@ -31,8 +31,8 @@ use crate::schemas::JsonResponse;
 pub async fn list(
     state: State<Arc<AppState>>,
     Query(query): Query<ListNetworksQuery>,
-) -> Result<Json<Vec<Network>>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<Vec<Network>>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -63,8 +63,8 @@ pub async fn list(
 pub async fn prune(
     state: State<Arc<AppState>>,
     Query(query): Query<PruneNetworksQuery>,
-) -> Result<Json<NetworkPruneResponse>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<NetworkPruneResponse>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -91,8 +91,8 @@ pub async fn prune(
 pub async fn create(
     state: State<Arc<AppState>>,
     Json(network): Json<CreateNetworkBody>,
-) -> Result<Json<CreateNetworkResponse>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<CreateNetworkResponse>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -125,8 +125,8 @@ pub async fn inspect(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Query(query): Query<InspectNetworkQuery>,
-) -> Result<Json<Network>> {
-    Ok(Json(
+) -> Result<ApiResponse<Json<Network>>> {
+    Ok(ApiResponse::json(
         state
             .docker_manager
             .conn()
@@ -152,8 +152,13 @@ pub async fn inspect(
     ),
 )]
 /// Remove docker network
-pub async fn remove(state: State<Arc<AppState>>, Path(name): Path<String>) -> Result<()> {
-    Ok(state.docker_manager.conn().remove_network(&name).await?)
+pub async fn remove(
+    state: State<Arc<AppState>>,
+    Path(name): Path<String>,
+) -> Result<ApiResponse<()>> {
+    state.docker_manager.conn().remove_network(&name).await?;
+
+    Ok(ApiResponse::no_content())
 }
 
 #[utoipa::path(
@@ -165,7 +170,7 @@ pub async fn remove(state: State<Arc<AppState>>, Path(name): Path<String>) -> Re
     ),
     request_body = ConnectNetworkBody,
     responses(
-        (status = 200, description = "Connected docker network successfully"),
+        (status = 200, description = "Connected docker network successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
@@ -177,12 +182,16 @@ pub async fn connect(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Json(body): Json<ConnectNetworkBody>,
-) -> Result<()> {
-    Ok(state
+) -> Result<ApiResponse<Json<JsonResponse>>> {
+    state
         .docker_manager
         .conn()
         .connect_network(&name, body.into())
-        .await?)
+        .await?;
+
+    Ok(ApiResponse::json(JsonResponse {
+        message: "Successfully connected network".to_owned(),
+    }))
 }
 
 #[utoipa::path(
@@ -194,7 +203,7 @@ pub async fn connect(
     ),
     request_body = DisconnectNetworkBody,
     responses(
-        (status = 200, description = "Disconnected docker network successfully"),
+        (status = 200, description = "Disconnected docker network successfully", body = JsonResponse),
         (status = 400, description = "Invalid request body format", body = JsonResponse),
         (status = 401, description = "Action is permissible after login", body = JsonResponse),
         (status = 403, description = "Admin does not have sufficient permissions", body = JsonResponse),
@@ -206,12 +215,16 @@ pub async fn disconnect(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
     Json(body): Json<DisconnectNetworkBody>,
-) -> Result<()> {
-    Ok(state
+) -> Result<ApiResponse<Json<JsonResponse>>> {
+    state
         .docker_manager
         .conn()
         .disconnect_network(&name, body.into())
-        .await?)
+        .await?;
+
+    Ok(ApiResponse::json(JsonResponse {
+        message: "Successfully disconnected network".to_owned(),
+    }))
 }
 
 pub fn router() -> Router<Arc<AppState>> {

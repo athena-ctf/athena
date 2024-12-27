@@ -16,7 +16,6 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as TableUnlockImport } from './routes/table/unlock'
 import { Route as TableTicketImport } from './routes/table/ticket'
 import { Route as TableTeamImport } from './routes/table/team'
-import { Route as TableTagImport } from './routes/table/tag'
 import { Route as TableSubmissionImport } from './routes/table/submission'
 import { Route as TablePlayerawardImport } from './routes/table/player_award'
 import { Route as TablePlayerImport } from './routes/table/player'
@@ -28,12 +27,15 @@ import { Route as TableFlagImport } from './routes/table/flag'
 import { Route as TableFileImport } from './routes/table/file'
 import { Route as TableDeploymentImport } from './routes/table/deployment'
 import { Route as TableContainerImport } from './routes/table/container'
-import { Route as TableChallengetagImport } from './routes/table/challenge_tag'
 import { Route as TableChallengefileImport } from './routes/table/challenge_file'
 import { Route as TableChallengeImport } from './routes/table/challenge'
 import { Route as TableBanImport } from './routes/table/ban'
 import { Route as TableAwardImport } from './routes/table/award'
 import { Route as TableAdminImport } from './routes/table/admin'
+import { Route as DockerVolumesImport } from './routes/docker/volumes'
+import { Route as DockerNetworksImport } from './routes/docker/networks'
+import { Route as DockerImagesImport } from './routes/docker/images'
+import { Route as DockerContainersImport } from './routes/docker/containers'
 
 // Create Virtual Routes
 
@@ -62,12 +64,6 @@ const TableTicketRoute = TableTicketImport.update({
 const TableTeamRoute = TableTeamImport.update({
   id: '/table/team',
   path: '/table/team',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const TableTagRoute = TableTagImport.update({
-  id: '/table/tag',
-  path: '/table/tag',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -137,12 +133,6 @@ const TableContainerRoute = TableContainerImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const TableChallengetagRoute = TableChallengetagImport.update({
-  id: '/table/challenge_tag',
-  path: '/table/challenge_tag',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const TableChallengefileRoute = TableChallengefileImport.update({
   id: '/table/challenge_file',
   path: '/table/challenge_file',
@@ -173,6 +163,30 @@ const TableAdminRoute = TableAdminImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const DockerVolumesRoute = DockerVolumesImport.update({
+  id: '/docker/volumes',
+  path: '/docker/volumes',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DockerNetworksRoute = DockerNetworksImport.update({
+  id: '/docker/networks',
+  path: '/docker/networks',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DockerImagesRoute = DockerImagesImport.update({
+  id: '/docker/images',
+  path: '/docker/images',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DockerContainersRoute = DockerContainersImport.update({
+  id: '/docker/containers',
+  path: '/docker/containers',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -182,6 +196,34 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/docker/containers': {
+      id: '/docker/containers'
+      path: '/docker/containers'
+      fullPath: '/docker/containers'
+      preLoaderRoute: typeof DockerContainersImport
+      parentRoute: typeof rootRoute
+    }
+    '/docker/images': {
+      id: '/docker/images'
+      path: '/docker/images'
+      fullPath: '/docker/images'
+      preLoaderRoute: typeof DockerImagesImport
+      parentRoute: typeof rootRoute
+    }
+    '/docker/networks': {
+      id: '/docker/networks'
+      path: '/docker/networks'
+      fullPath: '/docker/networks'
+      preLoaderRoute: typeof DockerNetworksImport
+      parentRoute: typeof rootRoute
+    }
+    '/docker/volumes': {
+      id: '/docker/volumes'
+      path: '/docker/volumes'
+      fullPath: '/docker/volumes'
+      preLoaderRoute: typeof DockerVolumesImport
       parentRoute: typeof rootRoute
     }
     '/table/admin': {
@@ -217,13 +259,6 @@ declare module '@tanstack/react-router' {
       path: '/table/challenge_file'
       fullPath: '/table/challenge_file'
       preLoaderRoute: typeof TableChallengefileImport
-      parentRoute: typeof rootRoute
-    }
-    '/table/challenge_tag': {
-      id: '/table/challenge_tag'
-      path: '/table/challenge_tag'
-      fullPath: '/table/challenge_tag'
-      preLoaderRoute: typeof TableChallengetagImport
       parentRoute: typeof rootRoute
     }
     '/table/container': {
@@ -303,13 +338,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TableSubmissionImport
       parentRoute: typeof rootRoute
     }
-    '/table/tag': {
-      id: '/table/tag'
-      path: '/table/tag'
-      fullPath: '/table/tag'
-      preLoaderRoute: typeof TableTagImport
-      parentRoute: typeof rootRoute
-    }
     '/table/team': {
       id: '/table/team'
       path: '/table/team'
@@ -338,12 +366,15 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/docker/containers': typeof DockerContainersRoute
+  '/docker/images': typeof DockerImagesRoute
+  '/docker/networks': typeof DockerNetworksRoute
+  '/docker/volumes': typeof DockerVolumesRoute
   '/table/admin': typeof TableAdminRoute
   '/table/award': typeof TableAwardRoute
   '/table/ban': typeof TableBanRoute
   '/table/challenge': typeof TableChallengeRoute
   '/table/challenge_file': typeof TableChallengefileRoute
-  '/table/challenge_tag': typeof TableChallengetagRoute
   '/table/container': typeof TableContainerRoute
   '/table/deployment': typeof TableDeploymentRoute
   '/table/file': typeof TableFileRoute
@@ -355,7 +386,6 @@ export interface FileRoutesByFullPath {
   '/table/player': typeof TablePlayerRoute
   '/table/player_award': typeof TablePlayerawardRoute
   '/table/submission': typeof TableSubmissionRoute
-  '/table/tag': typeof TableTagRoute
   '/table/team': typeof TableTeamRoute
   '/table/ticket': typeof TableTicketRoute
   '/table/unlock': typeof TableUnlockRoute
@@ -363,12 +393,15 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/docker/containers': typeof DockerContainersRoute
+  '/docker/images': typeof DockerImagesRoute
+  '/docker/networks': typeof DockerNetworksRoute
+  '/docker/volumes': typeof DockerVolumesRoute
   '/table/admin': typeof TableAdminRoute
   '/table/award': typeof TableAwardRoute
   '/table/ban': typeof TableBanRoute
   '/table/challenge': typeof TableChallengeRoute
   '/table/challenge_file': typeof TableChallengefileRoute
-  '/table/challenge_tag': typeof TableChallengetagRoute
   '/table/container': typeof TableContainerRoute
   '/table/deployment': typeof TableDeploymentRoute
   '/table/file': typeof TableFileRoute
@@ -380,7 +413,6 @@ export interface FileRoutesByTo {
   '/table/player': typeof TablePlayerRoute
   '/table/player_award': typeof TablePlayerawardRoute
   '/table/submission': typeof TableSubmissionRoute
-  '/table/tag': typeof TableTagRoute
   '/table/team': typeof TableTeamRoute
   '/table/ticket': typeof TableTicketRoute
   '/table/unlock': typeof TableUnlockRoute
@@ -389,12 +421,15 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/docker/containers': typeof DockerContainersRoute
+  '/docker/images': typeof DockerImagesRoute
+  '/docker/networks': typeof DockerNetworksRoute
+  '/docker/volumes': typeof DockerVolumesRoute
   '/table/admin': typeof TableAdminRoute
   '/table/award': typeof TableAwardRoute
   '/table/ban': typeof TableBanRoute
   '/table/challenge': typeof TableChallengeRoute
   '/table/challenge_file': typeof TableChallengefileRoute
-  '/table/challenge_tag': typeof TableChallengetagRoute
   '/table/container': typeof TableContainerRoute
   '/table/deployment': typeof TableDeploymentRoute
   '/table/file': typeof TableFileRoute
@@ -406,7 +441,6 @@ export interface FileRoutesById {
   '/table/player': typeof TablePlayerRoute
   '/table/player_award': typeof TablePlayerawardRoute
   '/table/submission': typeof TableSubmissionRoute
-  '/table/tag': typeof TableTagRoute
   '/table/team': typeof TableTeamRoute
   '/table/ticket': typeof TableTicketRoute
   '/table/unlock': typeof TableUnlockRoute
@@ -416,12 +450,15 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/docker/containers'
+    | '/docker/images'
+    | '/docker/networks'
+    | '/docker/volumes'
     | '/table/admin'
     | '/table/award'
     | '/table/ban'
     | '/table/challenge'
     | '/table/challenge_file'
-    | '/table/challenge_tag'
     | '/table/container'
     | '/table/deployment'
     | '/table/file'
@@ -433,19 +470,21 @@ export interface FileRouteTypes {
     | '/table/player'
     | '/table/player_award'
     | '/table/submission'
-    | '/table/tag'
     | '/table/team'
     | '/table/ticket'
     | '/table/unlock'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/docker/containers'
+    | '/docker/images'
+    | '/docker/networks'
+    | '/docker/volumes'
     | '/table/admin'
     | '/table/award'
     | '/table/ban'
     | '/table/challenge'
     | '/table/challenge_file'
-    | '/table/challenge_tag'
     | '/table/container'
     | '/table/deployment'
     | '/table/file'
@@ -457,19 +496,21 @@ export interface FileRouteTypes {
     | '/table/player'
     | '/table/player_award'
     | '/table/submission'
-    | '/table/tag'
     | '/table/team'
     | '/table/ticket'
     | '/table/unlock'
   id:
     | '__root__'
     | '/'
+    | '/docker/containers'
+    | '/docker/images'
+    | '/docker/networks'
+    | '/docker/volumes'
     | '/table/admin'
     | '/table/award'
     | '/table/ban'
     | '/table/challenge'
     | '/table/challenge_file'
-    | '/table/challenge_tag'
     | '/table/container'
     | '/table/deployment'
     | '/table/file'
@@ -481,7 +522,6 @@ export interface FileRouteTypes {
     | '/table/player'
     | '/table/player_award'
     | '/table/submission'
-    | '/table/tag'
     | '/table/team'
     | '/table/ticket'
     | '/table/unlock'
@@ -490,12 +530,15 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  DockerContainersRoute: typeof DockerContainersRoute
+  DockerImagesRoute: typeof DockerImagesRoute
+  DockerNetworksRoute: typeof DockerNetworksRoute
+  DockerVolumesRoute: typeof DockerVolumesRoute
   TableAdminRoute: typeof TableAdminRoute
   TableAwardRoute: typeof TableAwardRoute
   TableBanRoute: typeof TableBanRoute
   TableChallengeRoute: typeof TableChallengeRoute
   TableChallengefileRoute: typeof TableChallengefileRoute
-  TableChallengetagRoute: typeof TableChallengetagRoute
   TableContainerRoute: typeof TableContainerRoute
   TableDeploymentRoute: typeof TableDeploymentRoute
   TableFileRoute: typeof TableFileRoute
@@ -507,7 +550,6 @@ export interface RootRouteChildren {
   TablePlayerRoute: typeof TablePlayerRoute
   TablePlayerawardRoute: typeof TablePlayerawardRoute
   TableSubmissionRoute: typeof TableSubmissionRoute
-  TableTagRoute: typeof TableTagRoute
   TableTeamRoute: typeof TableTeamRoute
   TableTicketRoute: typeof TableTicketRoute
   TableUnlockRoute: typeof TableUnlockRoute
@@ -515,12 +557,15 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  DockerContainersRoute: DockerContainersRoute,
+  DockerImagesRoute: DockerImagesRoute,
+  DockerNetworksRoute: DockerNetworksRoute,
+  DockerVolumesRoute: DockerVolumesRoute,
   TableAdminRoute: TableAdminRoute,
   TableAwardRoute: TableAwardRoute,
   TableBanRoute: TableBanRoute,
   TableChallengeRoute: TableChallengeRoute,
   TableChallengefileRoute: TableChallengefileRoute,
-  TableChallengetagRoute: TableChallengetagRoute,
   TableContainerRoute: TableContainerRoute,
   TableDeploymentRoute: TableDeploymentRoute,
   TableFileRoute: TableFileRoute,
@@ -532,7 +577,6 @@ const rootRouteChildren: RootRouteChildren = {
   TablePlayerRoute: TablePlayerRoute,
   TablePlayerawardRoute: TablePlayerawardRoute,
   TableSubmissionRoute: TableSubmissionRoute,
-  TableTagRoute: TableTagRoute,
   TableTeamRoute: TableTeamRoute,
   TableTicketRoute: TableTicketRoute,
   TableUnlockRoute: TableUnlockRoute,
@@ -549,12 +593,15 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/docker/containers",
+        "/docker/images",
+        "/docker/networks",
+        "/docker/volumes",
         "/table/admin",
         "/table/award",
         "/table/ban",
         "/table/challenge",
         "/table/challenge_file",
-        "/table/challenge_tag",
         "/table/container",
         "/table/deployment",
         "/table/file",
@@ -566,7 +613,6 @@ export const routeTree = rootRoute
         "/table/player",
         "/table/player_award",
         "/table/submission",
-        "/table/tag",
         "/table/team",
         "/table/ticket",
         "/table/unlock"
@@ -574,6 +620,18 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/docker/containers": {
+      "filePath": "docker/containers.tsx"
+    },
+    "/docker/images": {
+      "filePath": "docker/images.tsx"
+    },
+    "/docker/networks": {
+      "filePath": "docker/networks.tsx"
+    },
+    "/docker/volumes": {
+      "filePath": "docker/volumes.tsx"
     },
     "/table/admin": {
       "filePath": "table/admin.tsx"
@@ -589,9 +647,6 @@ export const routeTree = rootRoute
     },
     "/table/challenge_file": {
       "filePath": "table/challenge_file.tsx"
-    },
-    "/table/challenge_tag": {
-      "filePath": "table/challenge_tag.tsx"
     },
     "/table/container": {
       "filePath": "table/container.tsx"
@@ -625,9 +680,6 @@ export const routeTree = rootRoute
     },
     "/table/submission": {
       "filePath": "table/submission.tsx"
-    },
-    "/table/tag": {
-      "filePath": "table/tag.tsx"
     },
     "/table/team": {
       "filePath": "table/team.tsx"
