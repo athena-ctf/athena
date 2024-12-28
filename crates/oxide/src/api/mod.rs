@@ -4,6 +4,7 @@ use std::time::Duration;
 use axum::Router;
 use axum::extract::{DefaultBodyLimit, MatchedPath, Request};
 use axum::http::Method;
+pub use doc::get_url_mappings;
 use tower_http::cors::{Any, CorsLayer};
 use tower_http::timeout::TimeoutLayer;
 use tower_http::trace::TraceLayer;

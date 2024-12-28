@@ -34,10 +34,12 @@ fn gen_join_list_fn(entity: &Ident) -> impl ToTokens {
     let path = format!("/admin/{entity_snake}");
     let operation_id = format!("list_{entity_snake}s");
     let description = format!("Listed {entity_snake}s successfully");
+    let permission = format!("{entity_snake}:read");
 
     let entity_model = format_ident!("{entity}Model");
 
     quote! {
+        #[oxide_macros::requires_permission(permission = #permission)]
         #[doc = #doc]
         #[utoipa::path(
             get,
@@ -64,11 +66,13 @@ fn gen_join_create_fn(entity: &Ident) -> impl ToTokens {
     let operation_id = format!("create_{entity_snake}");
     let description = format!("Created {entity_snake} successfully");
     let not_found = format!("No {entity_snake} found with specified id");
+    let permission = format!("{entity_snake}:create");
 
     let entity_model = format_ident!("{entity}Model");
     let request_body = format_ident!("Create{entity}Schema");
 
     quote! {
+        #[oxide_macros::requires_permission(permission = #permission)]
         #[doc = #doc]
         #[utoipa::path(
             post,
@@ -107,10 +111,12 @@ fn gen_join_retrieve_fn(entity: &Ident, related_from: &Ident, related_to: &Ident
     let operation_id = format!("retrieve_{entity_snake}_by_id");
     let description = format!("Retrieved {entity_snake} by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
+    let permission = format!("{entity_snake}:read");
 
     let entity_model = format_ident!("{entity}Model");
 
     quote! {
+        #[oxide_macros::requires_permission(permission = #permission)]
         #[doc = #doc]
         #[utoipa::path(
             get,
@@ -156,11 +162,13 @@ fn gen_join_update_fn(entity: &Ident, related_from: &Ident, related_to: &Ident) 
     let operation_id = format!("update_{entity_snake}_by_id");
     let description = format!("Updated {entity_snake} by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
+    let permission = format!("{entity_snake}:update");
 
     let entity_model = format_ident!("{entity}Model");
     let request_body = format_ident!("Update{entity}Schema");
 
     quote! {
+        #[oxide_macros::requires_permission(permission = #permission)]
         #[doc = #doc]
         #[utoipa::path(
             put,
@@ -208,8 +216,10 @@ fn gen_join_delete_fn(entity: &Ident, related_from: &Ident, related_to: &Ident) 
     let operation_id = format!("delete_{entity_snake}_by_id");
     let description = format!("Deleted {entity_snake} by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
+    let permission = format!("{entity_snake}:delete");
 
     quote! {
+        #[oxide_macros::requires_permission(permission = #permission)]
         #[doc = #doc]
         #[utoipa::path(
             delete,
@@ -259,6 +269,7 @@ fn gen_join_relations_fn(
     let operation_id = format!("retrieve_{entity_snake}_relations_by_id");
     let description = format!("Retrieved {entity_snake} relations by id successfully");
     let not_found = format!("No {entity_snake} found with specified id");
+    let permission = format!("{entity_snake}:read");
 
     let entity_relations = format_ident!("{entity}Relations");
     let related_from_model = format_ident!("{related_from}IdSchema");
@@ -271,6 +282,7 @@ fn gen_join_relations_fn(
             pub #related_to_snake: #related_to_model
         }
 
+        #[oxide_macros::requires_permission(permission = #permission)]
         #[doc = #doc]
         #[utoipa::path(
             get,
@@ -312,8 +324,10 @@ fn gen_join_import_fn(entity: &Ident) -> impl ToTokens {
     let operation_id = format!("import_{entity_snake}s");
     let description = format!("Imported {entity_snake}s successfully");
     let query = format!("COPY {entity_snake} FROM '{{}}' WITH (FORMAT CSV, HEADER);");
+    let permission = format!("{entity_snake}:create");
 
     quote! {
+        #[oxide_macros::requires_permission(permission = #permission)]
         #[doc = #doc]
         #[utoipa::path(
             post,
@@ -358,8 +372,10 @@ fn gen_join_export_fn(entity: &Ident) -> impl ToTokens {
     let path = format!("/admin/{entity_snake}/export");
     let operation_id = format!("export_{entity_snake}s");
     let description = format!("Exported {entity_snake}s successfully");
+    let permission = format!("{entity_snake}:read");
 
     quote! {
+        #[oxide_macros::requires_permission(permission = #permission)]
         #[doc = #doc]
         #[utoipa::path(
             get,

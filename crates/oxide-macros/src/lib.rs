@@ -5,6 +5,7 @@ mod crud_join;
 mod docker_wrapper;
 mod gen_schemas;
 mod json_path;
+mod requires_permission;
 
 #[proc_macro_derive(JsonPath)]
 pub fn derive_json_path(input: TokenStream) -> TokenStream {
@@ -29,4 +30,14 @@ pub fn gen_schemas(attrs: TokenStream, input: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn docker_wrapper(attrs: TokenStream, input: TokenStream) -> TokenStream {
     docker_wrapper::docker_wrapper_impl(attrs, input)
+}
+
+#[proc_macro_attribute]
+pub fn requires_permission(attrs: TokenStream, input: TokenStream) -> TokenStream {
+    requires_permission::requires_permission_impl(attrs, input)
+}
+
+#[proc_macro]
+pub fn url_mappings(input: TokenStream) -> TokenStream {
+    requires_permission::url_mappings_impl(input)
 }

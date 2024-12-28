@@ -9,6 +9,7 @@ use crate::errors::{Error, Result};
 use crate::schemas::JsonResponse;
 use crate::{ApiResponse, AppState};
 
+#[oxide_macros::requires_permission(permission = "settings:read")]
 #[utoipa::path(
     get,
     path = "/admin/settings/{*path}",
@@ -49,6 +50,7 @@ pub async fn retrieve(
         )
 }
 
+#[oxide_macros::requires_permission(permission = "settings:update")]
 #[utoipa::path(
     patch,
     path = "/admin/settings/{*path}",

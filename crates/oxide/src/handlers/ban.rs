@@ -2,6 +2,7 @@ use crate::redis_keys::PLAYER_LAST_UPDATED;
 
 oxide_macros::crud!(Ban, single: [Player], optional: [], multiple: []);
 
+#[oxide_macros::requires_permission(permission = "player:ban")]
 #[utoipa::path(
     post,
     path = "/admin/ban/player/{id}",
@@ -50,6 +51,7 @@ pub async fn add_player_by_id(
     }
 }
 
+#[oxide_macros::requires_permission(permission = "player:unban")]
 #[utoipa::path(
     post,
     path = "/admin/unban/player/{id}",

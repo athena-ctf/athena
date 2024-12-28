@@ -67,32 +67,6 @@ pub enum ChallengeKindEnum {
     Deserialize,
     utoipa::ToSchema,
 )]
-#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "role_enum")]
-#[serde(rename_all = "snake_case")]
-pub enum RoleEnum {
-    #[sea_orm(string_value = "analyst")]
-    Analyst,
-    #[sea_orm(string_value = "editor")]
-    Editor,
-    #[sea_orm(string_value = "judge")]
-    Judge,
-    #[sea_orm(string_value = "manager")]
-    Manager,
-    #[sea_orm(string_value = "moderator")]
-    Moderator,
-}
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    Eq,
-    EnumIter,
-    DeriveActiveEnum,
-    Copy,
-    Serialize,
-    Deserialize,
-    utoipa::ToSchema,
-)]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "ticket_status_enum")]
 #[serde(rename_all = "snake_case")]
 pub enum TicketStatusEnum {

@@ -5,7 +5,10 @@ use fred::types::{FromValue, Map, Value as RedisValue};
 use ring::digest::{SHA256, digest};
 
 use crate::errors::Result;
-use crate::redis_keys::token_key;
+
+pub fn token_key(key: &str, email: &str) -> String {
+    format!("token:{key}:{email}")
+}
 
 pub struct Manager {
     pub redis_pool: Pool,

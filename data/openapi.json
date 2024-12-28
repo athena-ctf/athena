@@ -17863,7 +17863,7 @@
             "format": "uuid"
           },
           "role": {
-            "$ref": "#/components/schemas/RoleEnum"
+            "type": "string"
           },
           "updated_at": {
             "type": "string",
@@ -19729,7 +19729,7 @@
             "type": "string"
           },
           "role": {
-            "$ref": "#/components/schemas/RoleEnum"
+            "type": "string"
           },
           "username": {
             "type": "string"
@@ -22787,7 +22787,7 @@
                 "format": "uuid"
               },
               "role": {
-                "$ref": "#/components/schemas/RoleEnum"
+                "type": "string"
               },
               "updated_at": {
                 "type": "string",
@@ -24799,16 +24799,6 @@
           "always",
           "unless-stopped",
           "on-failure"
-        ]
-      },
-      "RoleEnum": {
-        "type": "string",
-        "enum": [
-          "analyst",
-          "editor",
-          "judge",
-          "manager",
-          "moderator"
         ]
       },
       "SendTokenSchema": {

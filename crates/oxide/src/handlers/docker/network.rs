@@ -12,6 +12,7 @@ use crate::errors::Result;
 use crate::schemas::JsonResponse;
 use crate::{ApiResponse, AppState};
 
+#[oxide_macros::requires_permission(permission = "docker.network:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/network",
@@ -44,6 +45,7 @@ pub async fn list(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.network:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/network",
@@ -74,6 +76,7 @@ pub async fn prune(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.network:create")]
 #[utoipa::path(
     post,
     path = "/admin/docker/network",
@@ -102,6 +105,7 @@ pub async fn create(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.network:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/network/{name}",
@@ -136,6 +140,7 @@ pub async fn inspect(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.network:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/network/{name}",
@@ -161,6 +166,7 @@ pub async fn remove(
     Ok(ApiResponse::no_content())
 }
 
+#[oxide_macros::requires_permission(permission = "docker.network:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/network/{name}/connect",
@@ -194,6 +200,7 @@ pub async fn connect(
     }))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.network:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/network/{name}/disconnect",

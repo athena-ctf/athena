@@ -18,6 +18,7 @@ use crate::errors::Result;
 use crate::schemas::{FileSchema, JsonResponse};
 use crate::{ApiResponse, AppState};
 
+#[oxide_macros::requires_permission(permission = "docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container",
@@ -53,6 +54,7 @@ pub async fn list(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:create")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container",
@@ -84,6 +86,7 @@ pub async fn create(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}",
@@ -117,6 +120,7 @@ pub async fn inspect(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/container/{name}",
@@ -150,6 +154,7 @@ pub async fn remove(
     Ok(ApiResponse::no_content())
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/container",
@@ -180,6 +185,7 @@ pub async fn prune(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/kill",
@@ -213,6 +219,7 @@ pub async fn kill(
     }))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/stop",
@@ -246,6 +253,7 @@ pub async fn stop(
     }))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}/changes",
@@ -279,6 +287,7 @@ pub async fn changes(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/pause",
@@ -305,6 +314,7 @@ pub async fn pause(
     }))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/unpause",
@@ -331,6 +341,7 @@ pub async fn unpause(
     }))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/start",
@@ -364,6 +375,7 @@ pub async fn start(
     }))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/restart",
@@ -397,6 +409,7 @@ pub async fn restart(
     }))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}/export",
@@ -425,6 +438,7 @@ pub async fn export(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}/top",
@@ -458,6 +472,7 @@ pub async fn top(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}/logs",
@@ -499,6 +514,7 @@ pub async fn logs(
     Ok(ApiResponse::json(logs))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}/stats",
@@ -553,5 +569,3 @@ pub fn router() -> Router<Arc<AppState>> {
         .route("/container/:name/logs", get(logs))
         .route("/container/:name/top", get(top))
 }
-
-// TODO: add exec

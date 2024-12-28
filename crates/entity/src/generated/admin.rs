@@ -3,8 +3,6 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use super::sea_orm_active_enums::RoleEnum;
-
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[sea_orm(table_name = "admin")]
 #[oxide_macros::gen_schemas(id_descriptor = "username")]
@@ -13,7 +11,7 @@ pub struct Model {
     pub id: Uuid,
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
-    pub role: RoleEnum,
+    pub role: String,
     pub username: String,
     #[sea_orm(column_name = "_password")]
     #[serde(skip)]

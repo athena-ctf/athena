@@ -2995,7 +2995,7 @@ export interface components {
       created_at: string;
       /** Format: uuid */
       id: string;
-      role: components["schemas"]["RoleEnum"];
+      role: string;
       /** Format: date-time */
       updated_at: string;
       username: string;
@@ -3437,7 +3437,7 @@ export interface components {
     };
     CreateAdminSchema: {
       password: string;
-      role: components["schemas"]["RoleEnum"];
+      role: string;
       username: string;
     };
     CreateAwardSchema: {
@@ -4174,7 +4174,7 @@ export interface components {
         created_at: string;
         /** Format: uuid */
         id: string;
-        role: components["schemas"]["RoleEnum"];
+        role: string;
         /** Format: date-time */
         updated_at: string;
         username: string;
@@ -4689,8 +4689,6 @@ export interface components {
     };
     /** @enum {string} */
     RestartPolicyNameEnum: "EMPTY" | "no" | "always" | "unless-stopped" | "on-failure";
-    /** @enum {string} */
-    RoleEnum: "analyst" | "editor" | "judge" | "manager" | "moderator";
     SendTokenSchema: {
       email: string;
     };

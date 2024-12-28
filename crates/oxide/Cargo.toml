@@ -54,12 +54,6 @@ axum-extra = { version = "0.9.6", features = [
 tokio-cron-scheduler = { version = "0.13.0", features = ["signal"] }
 axum_typed_multipart = "0.14.0"
 
-[build-dependencies]
-heck = "0.5.0"
-quote = "1.0.38"
-serde = { workspace = true }
-toml = "0.8.19"
-utoipa-config = "0.1.2"
 
 [features]
 file-transport = ["lettre/file-transport"]

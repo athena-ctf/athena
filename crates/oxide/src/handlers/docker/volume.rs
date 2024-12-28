@@ -12,6 +12,7 @@ use crate::errors::Result;
 use crate::schemas::JsonResponse;
 use crate::{ApiResponse, AppState};
 
+#[oxide_macros::requires_permission(permission = "docker.volume:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/volume",
@@ -46,6 +47,7 @@ pub async fn list(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.volume:create")]
 #[utoipa::path(
     post,
     path = "/admin/docker/volume",
@@ -74,6 +76,7 @@ pub async fn create(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.volume:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/volume/{name}",
@@ -105,6 +108,7 @@ pub async fn inspect(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.volume:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/volume/{name}",
@@ -136,6 +140,7 @@ pub async fn remove(
     Ok(ApiResponse::no_content())
 }
 
+#[oxide_macros::requires_permission(permission = "docker.volume:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/volume",

@@ -11,12 +11,6 @@ impl IntoActiveValue<Self> for ChallengeKindEnum {
     }
 }
 
-impl IntoActiveValue<Self> for RoleEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
-    }
-}
-
 impl IntoActiveValue<Self> for TicketStatusEnum {
     fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
         sea_orm::ActiveValue::Set(self)

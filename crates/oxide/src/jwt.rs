@@ -1,7 +1,6 @@
 use axum::async_trait;
 use axum::extract::FromRequestParts;
 use axum::http::request::Parts;
-use entity::prelude::RoleEnum;
 use jsonwebtoken::{EncodingKey, Header};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -9,13 +8,13 @@ use uuid::Uuid;
 
 use crate::errors::{Error, Result};
 
-#[derive(Serialize, Debug, Deserialize, Clone, Copy, ToSchema)]
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct AdminAccessClaims {
     pub exp: u64,
     pub iat: u64,
     pub sub: Uuid,
     pub jti: Uuid,
-    pub role: RoleEnum,
+    pub role: String,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -39,7 +38,7 @@ pub struct RefreshClaims {
 pub struct TokenPair(pub String, pub String);
 
 impl TokenPair {
-    pub fn new_admin(conf: &config::Jwt, sub: Uuid, role: RoleEnum) -> Result<Self> {
+    pub fn new_admin(conf: &config::Jwt, sub: Uuid, role: String) -> Result<Self> {
         let exp = jsonwebtoken::get_current_timestamp();
         let access_token = jsonwebtoken::encode(
             &Header::new(jsonwebtoken::Algorithm::HS256),
@@ -116,7 +115,7 @@ where
             ));
         };
 
-        Ok(Self(*claims))
+        Ok(Self(claims.clone()))
     }
 }
 

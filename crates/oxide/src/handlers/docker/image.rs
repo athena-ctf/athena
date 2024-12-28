@@ -16,6 +16,7 @@ use crate::errors::Result;
 use crate::schemas::JsonResponse;
 use crate::{ApiResponse, AppState};
 
+#[oxide_macros::requires_permission(permission = "docker.image:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/image",
@@ -50,6 +51,7 @@ pub async fn list(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.image:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/image",
@@ -80,6 +82,7 @@ pub async fn prune(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.image:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/image/{name}",
@@ -113,6 +116,7 @@ pub async fn remove(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.image:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/image/{name}",
@@ -144,6 +148,7 @@ pub async fn inspect(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.image:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/image/{name}/history",
@@ -176,6 +181,7 @@ pub async fn history(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.image:update")]
 #[utoipa::path(
     patch,
     path = "/admin/docker/image/{name}/tag",
@@ -209,6 +215,7 @@ pub async fn tag(
     }))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.image:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/image/search",
@@ -243,6 +250,7 @@ pub async fn search(
     ))
 }
 
+#[oxide_macros::requires_permission(permission = "docker.image:create")]
 #[utoipa::path(
     post,
     path = "/admin/docker/image",

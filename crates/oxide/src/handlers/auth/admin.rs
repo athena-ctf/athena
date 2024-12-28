@@ -60,7 +60,7 @@ pub async fn token(
     let TokenPair(access_token, refresh_token) = TokenPair::new_admin(
         &state.settings.read().await.jwt,
         admin_model.id,
-        admin_model.role,
+        admin_model.role.clone(),
     )?;
 
     let cookie = Cookie::build(("refresh_token", refresh_token))
