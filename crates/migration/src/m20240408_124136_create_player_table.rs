@@ -12,26 +12,13 @@ impl MigrationTrait for Migration {
                     .table(Player::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Player::Id).uuid().primary_key().not_null())
-                    .col(
-                        ColumnDef::new(Player::CreatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(Player::UpdatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(Player::CreatedAt).timestamp_with_time_zone().not_null())
+                    .col(ColumnDef::new(Player::UpdatedAt).timestamp_with_time_zone().not_null())
                     .col(ColumnDef::new(Player::TeamId).uuid().not_null())
                     .col(ColumnDef::new(Player::BanId).uuid().unique_key())
                     .col(ColumnDef::new(Player::DiscordId).string().unique_key())
                     .col(ColumnDef::new(Player::Username).string().not_null())
-                    .col(
-                        ColumnDef::new(Player::Email)
-                            .string()
-                            .unique_key()
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(Player::Email).string().unique_key().not_null())
                     .col(ColumnDef::new(Player::Password).string().not_null())
                     .col(ColumnDef::new(Player::AvatarUrl).string().not_null())
                     .foreign_key(

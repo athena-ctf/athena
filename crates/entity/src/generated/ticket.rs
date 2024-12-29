@@ -7,7 +7,7 @@ use super::sea_orm_active_enums::TicketStatusEnum;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[sea_orm(table_name = "ticket")]
-#[oxide_macros::gen_schemas(id_descriptor = "title")]
+#[api_macros::gen_schemas(id_descriptor = "title")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,

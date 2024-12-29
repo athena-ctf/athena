@@ -46,10 +46,7 @@ impl Alert {
                     format!(r#""{}" has been removed"#, model.title),
                 )),
 
-                Action::Update {
-                    old_model,
-                    new_model,
-                } => {
+                Action::Update { old_model, new_model } => {
                     if old_model.title == new_model.title {
                         Some(PlayerAlert::Alert(
                             "Challenge updated".to_owned(),
@@ -58,20 +55,14 @@ impl Alert {
                     } else {
                         Some(PlayerAlert::Alert(
                             "Challenge renamed".to_owned(),
-                            format!(
-                                r#""{} is renamed to "{}"""#,
-                                old_model.title, new_model.title
-                            ),
+                            format!(r#""{} is renamed to "{}"""#, old_model.title, new_model.title),
                         ))
                     }
                 }
             },
             Self::Player(action) => match action {
                 Action::Delete { .. } | Action::Insert { .. } => None,
-                Action::Update {
-                    old_model,
-                    new_model,
-                } => {
+                Action::Update { old_model, new_model } => {
                     if old_model.ban_id.is_none() && new_model.ban_id.is_some() {
                         let ban_model = Ban::find_by_id(new_model.ban_id.unwrap())
                             .one(db)
@@ -93,18 +84,13 @@ impl Alert {
                 }
             },
             Self::Ticket(action) => match action {
-                Action::Delete { model } => {
-                    Some(PlayerAlert::Notification(NotificationModel::new(
-                        "Ticket removed",
-                        "Your ticket has been deleted",
-                        model.opened_by,
-                        None,
-                    )))
-                }
-                Action::Update {
-                    old_model,
-                    new_model,
-                } => {
+                Action::Delete { model } => Some(PlayerAlert::Notification(NotificationModel::new(
+                    "Ticket removed",
+                    "Your ticket has been deleted",
+                    model.opened_by,
+                    None,
+                ))),
+                Action::Update { old_model, new_model } => {
                     if old_model.title != new_model.title {
                         Some(PlayerAlert::Notification(NotificationModel::new(
                             "Ticket renamed",
@@ -145,22 +131,16 @@ impl Alert {
                         None
                     }
                 }
-                Action::Insert { model } => {
-                    Some(PlayerAlert::Notification(NotificationModel::new(
-                        "Ticket created",
-                        format!(r#"Your ticket "{}" has been created"#, model.title),
-                        model.opened_by,
-                        None,
-                    )))
-                }
+                Action::Insert { model } => Some(PlayerAlert::Notification(NotificationModel::new(
+                    "Ticket created",
+                    format!(r#"Your ticket "{}" has been created"#, model.title),
+                    model.opened_by,
+                    None,
+                ))),
             },
             Self::Invite(action) => match action {
                 Action::Delete { model } => {
-                    let _team_model = Team::find_by_id(model.team_id)
-                        .one(db)
-                        .await
-                        .unwrap()
-                        .unwrap();
+                    let _team_model = Team::find_by_id(model.team_id).one(db).await.unwrap().unwrap();
 
                     todo!()
                 }

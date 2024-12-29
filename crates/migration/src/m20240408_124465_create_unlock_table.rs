@@ -17,16 +17,8 @@ impl MigrationTrait for Migration {
                             .col(Unlock::PlayerId)
                             .col(Unlock::HintId),
                     )
-                    .col(
-                        ColumnDef::new(Unlock::CreatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(Unlock::UpdatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(Unlock::CreatedAt).timestamp_with_time_zone().not_null())
+                    .col(ColumnDef::new(Unlock::UpdatedAt).timestamp_with_time_zone().not_null())
                     .col(ColumnDef::new(Unlock::PlayerId).uuid().not_null())
                     .col(ColumnDef::new(Unlock::HintId).uuid().not_null())
                     .foreign_key(
@@ -51,9 +43,7 @@ impl MigrationTrait for Migration {
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        manager
-            .drop_table(Table::drop().table(Unlock::Table).to_owned())
-            .await
+        manager.drop_table(Table::drop().table(Unlock::Table).to_owned()).await
     }
 }
 

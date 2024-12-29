@@ -59,19 +59,19 @@ services:
         networks:
             - ctf_network
 
-    oxide:
+    api:
         container_name: "{{ services.api_server_host }}"
         build:
-            dockerfile: dockerfiles/oxide.Dockerfile
+            dockerfile: dockerfiles/api.Dockerfile
             context: .
-            tags: ["athena-ctf/oxide"]
+            tags: ["athena-ctf/api"]
         restart: unless-stopped
         depends_on:
             - postgres
             - caddy
             - redis
         volumes:
-            - emails:/oxide/emails
+            - emails:/api/emails
             - ./conf/config.json:/data/config.json
         networks:
             - ctf_network
@@ -96,7 +96,7 @@ services:
             tags: ["athena-ctf/web"]
         restart: unless-stopped
         depends_on:
-            - oxide
+            - api
         networks:
             - ctf_network
 
@@ -108,7 +108,7 @@ services:
             tags: ["athena-ctf/admin"]
         restart: unless-stopped
         depends_on:
-            - oxide
+            - api
         networks:
             - ctf_network
 

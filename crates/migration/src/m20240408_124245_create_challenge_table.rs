@@ -22,12 +22,7 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Challenge::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(Challenge::Id)
-                            .uuid()
-                            .not_null()
-                            .primary_key(),
-                    )
+                    .col(ColumnDef::new(Challenge::Id).uuid().not_null().primary_key())
                     .col(
                         ColumnDef::new(Challenge::CreatedAt)
                             .timestamp_with_time_zone()
@@ -53,6 +48,7 @@ impl MigrationTrait for Migration {
                             .array(ColumnType::String(StringLen::None))
                             .not_null(),
                     )
+                    .col(ColumnDef::new(Challenge::MaxAttempts).integer())
                     .to_owned(),
             )
             .await?;
@@ -87,6 +83,7 @@ enum Challenge {
     Level,
     Kind,
     Tags,
+    MaxAttempts,
 }
 
 #[derive(DeriveIden)]

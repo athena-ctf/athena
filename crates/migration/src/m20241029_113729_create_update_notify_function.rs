@@ -27,8 +27,7 @@ $$ LANGUAGE plpgsql;",
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         let db = manager.get_connection();
 
-        db.execute_unprepared("DDROP FUNCTION table_update_notify;")
-            .await?;
+        db.execute_unprepared("DDROP FUNCTION table_update_notify;").await?;
 
         Ok(())
     }

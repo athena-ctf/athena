@@ -7,7 +7,7 @@ use super::sea_orm_active_enums::BackendEnum;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[sea_orm(table_name = "file")]
-#[oxide_macros::gen_schemas(id_descriptor = "name")]
+#[api_macros::gen_schemas(id_descriptor = "name")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,

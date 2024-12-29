@@ -1,13 +1,11 @@
 use std::error::Error;
 use std::iter::repeat_with;
 
+use api_macros::JsonPath;
 use base64ct::{Base64, Encoding};
 use chrono::{DateTime, Days, Utc};
 use config_rs::{Config, File};
 use indexmap::IndexMap;
-use oxide_macros::JsonPath;
-use schemars::JsonSchema;
-use schemars::r#gen::SchemaSettings;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -15,14 +13,14 @@ mod json_path;
 
 pub use json_path::JsonPath;
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Level {
     value: i32,
     name: String,
     color: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Ctf {
     pub name: String,
     pub domain: String,
@@ -33,20 +31,20 @@ pub struct Ctf {
     pub levels: Vec<Level>,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Sponsor {
     name: String,
     logo: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Time {
     pub end: DateTime<Utc>,
     pub start: DateTime<Utc>,
     pub freeze: DateTime<Utc>,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Database {
     pub host: String,
     pub port: u16,
@@ -61,7 +59,7 @@ fn athena_db() -> String {
     "athena_db".to_owned()
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Redis {
     pub host: String,
     pub port: u16,
@@ -69,11 +67,33 @@ pub struct Redis {
     pub password: String,
 }
 
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
+pub struct Jwt {
+    pub secret: String,
+    pub access_expiry_duration: u64,
+    pub refresh_expiry_duration: u64,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone, Copy, JsonPath)]
+#[serde(rename_all = "lowercase")]
+pub enum CompressionKind {
+    Gzip,
+    Zstd,
+    Br,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
+pub struct Local {
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub compress: Option<CompressionKind>,
+    pub path: String,
+}
+
 fn default_region() -> String {
     "ap-south-1".to_owned()
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct AwsS3 {
     #[serde(default = "default_region")]
     pub region: String,
@@ -82,61 +102,13 @@ pub struct AwsS3 {
     pub bucket_name: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
-pub struct Jwt {
-    pub secret: String,
-    pub access_expiry_duration: u64,
-    pub refresh_expiry_duration: u64,
-}
-
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, Copy, JsonPath)]
-#[serde(rename_all = "lowercase")]
-pub enum CompressionKind {
-    Gzip,
-    Zstd,
-    Br,
-}
-
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
-pub struct Local {
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub compress: Option<CompressionKind>,
-    pub path: String,
-}
-
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
-pub struct Aws {}
-
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
-pub struct Gcp {}
-
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
-pub struct Azure {
-    account_name: String,
-    account_key: String,
-}
-
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
-pub struct RemoteStorageOptions {
-    bucket_name: String,
-    expires: i32,
-}
-
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct FileStorage {
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub remote_storage_options: Option<RemoteStorageOptions>,
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub local: Option<Local>,
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub aws: Option<Aws>,
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub gcp: Option<Gcp>,
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub azure: Option<Azure>,
+    pub local: Local,
+    pub backup: AwsS3,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Smtp {
     pub from: String,
     pub reply_to: String,
@@ -145,10 +117,8 @@ pub struct Smtp {
     pub server_url: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Challenge {
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub max_attempts: Option<usize>,
     pub container_registry: String,
     pub registry_username: String,
     pub registry_password: String,
@@ -156,14 +126,14 @@ pub struct Challenge {
     pub player_flag_len: usize,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Docker {
     pub registry_url: String,
     pub registry_username: String,
     pub registry_password: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Discord {
     pub welcome_channel_id: String,
     pub editor_role_id: String,
@@ -174,13 +144,13 @@ pub struct Discord {
     pub bot_token: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Token {
     pub max_retries: u8, // Max 256 retries
     pub token_expiry_in_secs: i64,
 }
 
-#[derive(Debug, Deserialize, Serialize, JsonSchema, Clone, JsonPath)]
+#[derive(Debug, Deserialize, Serialize, Clone, JsonPath)]
 pub struct Settings {
     #[serde(skip_serializing_if = "Option::is_none", default)]
     pub location: Option<String>,
@@ -197,9 +167,7 @@ pub struct Settings {
 }
 
 fn gen_random_password() -> String {
-    std::iter::repeat_with(fastrand::alphanumeric)
-        .take(12)
-        .collect()
+    std::iter::repeat_with(fastrand::alphanumeric).take(12).collect()
 }
 
 impl Default for Settings {
@@ -255,23 +223,21 @@ impl Default for Settings {
                 password: gen_random_password(),
             },
             jwt: Jwt {
-                secret: Base64::encode_string(
-                    &repeat_with(|| fastrand::u8(0..=255))
-                        .take(32)
-                        .collect::<Vec<_>>(),
-                ),
+                secret: Base64::encode_string(&repeat_with(|| fastrand::u8(0..=255)).take(32).collect::<Vec<_>>()),
                 access_expiry_duration: 600,
                 refresh_expiry_duration: 86400,
             },
             file_storage: FileStorage {
-                remote_storage_options: None,
-                local: Some(Local {
+                local: Local {
                     compress: Some(CompressionKind::Gzip),
                     path: "/var/athena/static".to_owned(),
-                }),
-                aws: None,
-                azure: None,
-                gcp: None,
+                },
+                backup: AwsS3 {
+                    region: default_region(),
+                    access_key_id: "".to_owned(),
+                    secret_access_key: "".to_owned(),
+                    bucket_name: "athena_file_backup".to_owned(),
+                },
             },
             smtp: Smtp {
                 from: "noreply@athena.io".to_owned(),
@@ -299,7 +265,6 @@ impl Default for Settings {
                 token_expiry_in_secs: 3600,
             },
             challenge: Challenge {
-                max_attempts: None,
                 container_registry: "registry.athena.io".to_owned(),
                 registry_username: "athena".to_owned(),
                 registry_password: gen_random_password(),
@@ -324,14 +289,6 @@ impl Settings {
 
     pub fn default_json(&self) -> Result<String, serde_json::Error> {
         serde_json::to_string_pretty(self)
-    }
-
-    pub fn json_schema() -> Result<String, serde_json::Error> {
-        let schema = SchemaSettings::default()
-            .with(|s| s.option_add_null_type = false)
-            .into_generator()
-            .into_root_schema_for::<Self>();
-        serde_json::to_string_pretty(&schema)
     }
 }
 

@@ -23,16 +23,8 @@ impl MigrationTrait for Migration {
                     .table(Ticket::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Ticket::Id).uuid().primary_key().not_null())
-                    .col(
-                        ColumnDef::new(Ticket::CreatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(Ticket::UpdatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(Ticket::CreatedAt).timestamp_with_time_zone().not_null())
+                    .col(ColumnDef::new(Ticket::UpdatedAt).timestamp_with_time_zone().not_null())
                     .col(ColumnDef::new(Ticket::Title).string().not_null())
                     .col(ColumnDef::new(Ticket::Description).text().not_null())
                     .col(

@@ -5,10 +5,10 @@
 - path: `crates/watcher`
 - usage: `watcher <config_path>`
 
-#### `oxide`
+#### `api`
 
-- path: `crates/oxide`
-- usage: `oxide run <config_path>`
+- path: `crates/api`
+- usage: `api run <config_path>`
 
 #### `file_server`
 

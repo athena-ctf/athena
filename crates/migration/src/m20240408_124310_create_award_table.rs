@@ -12,22 +12,9 @@ impl MigrationTrait for Migration {
                     .table(Award::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Award::Id).uuid().not_null().primary_key())
-                    .col(
-                        ColumnDef::new(Award::CreatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(Award::UpdatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(Award::Value)
-                            .string()
-                            .not_null()
-                            .unique_key(),
-                    )
+                    .col(ColumnDef::new(Award::CreatedAt).timestamp_with_time_zone().not_null())
+                    .col(ColumnDef::new(Award::UpdatedAt).timestamp_with_time_zone().not_null())
+                    .col(ColumnDef::new(Award::Value).string().not_null().unique_key())
                     .col(ColumnDef::new(Award::Prize).integer().not_null())
                     .col(ColumnDef::new(Award::LogoUrl).string().not_null())
                     .to_owned(),
@@ -38,9 +25,7 @@ impl MigrationTrait for Migration {
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        manager
-            .drop_table(Table::drop().table(Award::Table).to_owned())
-            .await?;
+        manager.drop_table(Table::drop().table(Award::Table).to_owned()).await?;
 
         Ok(())
     }

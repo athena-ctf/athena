@@ -28,14 +28,10 @@ pub struct Alert {
 
 static CONNECTED_CLIENTS: LazyLock<DashMap<Uuid, Sender<Alert>>> = LazyLock::new(DashMap::new);
 
-pub async fn start_listening(
-    channel_name: String,
-    db_conn: sea_orm::DbConn,
-) -> Result<(), sea_orm::DbErr> {
-    let mut listener =
-        sqlx::postgres::PgListener::connect_with(db_conn.get_postgres_connection_pool())
-            .await
-            .unwrap();
+pub async fn start_listening(channel_name: String, db_conn: sea_orm::DbConn) -> Result<(), sea_orm::DbErr> {
+    let mut listener = sqlx::postgres::PgListener::connect_with(db_conn.get_postgres_connection_pool())
+        .await
+        .unwrap();
     listener
         .listen(&channel_name)
         .await
@@ -47,10 +43,7 @@ pub async fn start_listening(
             .await
             .map_err(|err| sea_orm::DbErr::Exec(sea_orm::RuntimeErr::SqlxError(err)))?
         {
-            tracing::info!(
-                "received notification from channel {:?}",
-                pg_notification.channel()
-            );
+            tracing::info!("received notification from channel {:?}", pg_notification.channel());
 
             let payload = pg_notification.payload().to_owned();
             let payload = serde_json::from_str::<db::Alert>(&payload)
@@ -100,10 +93,7 @@ async fn main() {
     let settings = config::Settings::new(&std::env::args().nth(1).unwrap()).unwrap();
 
     let db_conn = Database::connect(&settings.database.url()).await.unwrap();
-    let listener_handle = tokio::spawn(start_listening(
-        settings.database.listener_channel,
-        db_conn.clone(),
-    ));
+    let listener_handle = tokio::spawn(start_listening(settings.database.listener_channel, db_conn.clone()));
 
     let listener = TcpListener::bind("127.0.0.1:3000").await.unwrap();
     let app = Router::new()
@@ -128,9 +118,7 @@ async fn main() {
     }
 }
 
-async fn sse_handler(
-    Extension(id): Extension<Uuid>,
-) -> Sse<impl Stream<Item = Result<Event, Error>>> {
+async fn sse_handler(Extension(id): Extension<Uuid>) -> Sse<impl Stream<Item = Result<Event, Error>>> {
     let (tx, mut rx) = mpsc::channel::<Alert>(100);
     CONNECTED_CLIENTS.insert(id, tx);
 

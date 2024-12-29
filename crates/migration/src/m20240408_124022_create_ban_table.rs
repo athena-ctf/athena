@@ -12,16 +12,8 @@ impl MigrationTrait for Migration {
                     .table(Ban::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Ban::Id).uuid().not_null().primary_key())
-                    .col(
-                        ColumnDef::new(Ban::CreatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(Ban::UpdatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(Ban::CreatedAt).timestamp_with_time_zone().not_null())
+                    .col(ColumnDef::new(Ban::UpdatedAt).timestamp_with_time_zone().not_null())
                     .col(ColumnDef::new(Ban::Reason).string().not_null())
                     .col(ColumnDef::new(Ban::Duration).integer().not_null())
                     .to_owned(),
@@ -32,9 +24,7 @@ impl MigrationTrait for Migration {
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        manager
-            .drop_table(Table::drop().table(Ban::Table).to_owned())
-            .await?;
+        manager.drop_table(Table::drop().table(Ban::Table).to_owned()).await?;
 
         Ok(())
     }

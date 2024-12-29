@@ -22,12 +22,7 @@ impl MigrationTrait for Migration {
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
-                    .col(
-                        ColumnDef::new(Instance::ContainerId)
-                            .string()
-                            .not_null()
-                            .unique_key(),
-                    )
+                    .col(ColumnDef::new(Instance::ContainerId).string().not_null().unique_key())
                     .col(ColumnDef::new(Instance::ContainerName).string().not_null())
                     .col(
                         ColumnDef::new(Instance::PortMapping)

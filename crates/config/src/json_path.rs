@@ -192,8 +192,7 @@ impl<V: JsonPath + Clone> JsonPath for IndexMap<i32, V> {
         }
 
         let first = segments[0].parse::<i32>().unwrap();
-        self.get(&first)
-            .and_then(|value| value.retrieve_at(&segments[1..]))
+        self.get(&first).and_then(|value| value.retrieve_at(&segments[1..]))
     }
 
     fn update_at(&mut self, segments: &[String], value: Value) -> bool {

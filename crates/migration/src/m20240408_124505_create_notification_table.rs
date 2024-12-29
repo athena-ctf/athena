@@ -11,12 +11,7 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Notification::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(Notification::Id)
-                            .uuid()
-                            .not_null()
-                            .primary_key(),
-                    )
+                    .col(ColumnDef::new(Notification::Id).uuid().not_null().primary_key())
                     .col(
                         ColumnDef::new(Notification::CreatedAt)
                             .timestamp_with_time_zone()

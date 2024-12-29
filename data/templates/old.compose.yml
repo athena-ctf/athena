@@ -76,16 +76,16 @@ services:
             - redis_data:/data/redis
             - redis.conf:/usr/local/etc/redis/redis.conf
 
-    oxide:
-        image: athena-ctf/oxide
-        container_name: "oxide"
+    api:
+        image: athena-ctf/api
+        container_name: "api"
         build:
-            context: ./oxide
+            context: ./api
         restart: always
         depends_on:
             - postgres
         volumes:
-            - ./emails:/oxide/emails
+            - ./emails:/api/emails
             - ./data/config.json:/data/config.json:ro
 
     codex:
@@ -97,7 +97,7 @@ services:
                 - PROJECT=codex
         restart: always
         depends_on:
-            - oxide
+            - api
         ports:
             - "3000:3000"
         entrypoint: ["node", "apps/codex/server.js"]
@@ -111,7 +111,7 @@ services:
                 - PROJECT=admin
         restart: always
         depends_on:
-            - oxide
+            - api
         ports:
             - "3001:3000"
         entrypoint: ["node", "apps/admin/server.js"]

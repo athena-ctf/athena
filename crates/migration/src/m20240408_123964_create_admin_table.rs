@@ -12,16 +12,8 @@ impl MigrationTrait for Migration {
                     .table(Admin::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Admin::Id).uuid().primary_key().not_null())
-                    .col(
-                        ColumnDef::new(Admin::CreatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
-                    .col(
-                        ColumnDef::new(Admin::UpdatedAt)
-                            .timestamp_with_time_zone()
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(Admin::CreatedAt).timestamp_with_time_zone().not_null())
+                    .col(ColumnDef::new(Admin::UpdatedAt).timestamp_with_time_zone().not_null())
                     .col(ColumnDef::new(Admin::Role).string().not_null())
                     .col(ColumnDef::new(Admin::Username).string().not_null())
                     .col(ColumnDef::new(Admin::Password).string().not_null())
@@ -31,9 +23,7 @@ impl MigrationTrait for Migration {
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        manager
-            .drop_table(Table::drop().table(Admin::Table).to_owned())
-            .await
+        manager.drop_table(Table::drop().table(Admin::Table).to_owned()).await
     }
 }
 

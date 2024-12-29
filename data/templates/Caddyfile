@@ -9,7 +9,7 @@ admin.{{ ctf.domain }} {
 }
 
 api.{{ ctf.domain }} {
-    reverse_proxy oxide:3000
+    reverse_proxy api:3000
     encode gzip zstd
 }
 

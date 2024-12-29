@@ -33,11 +33,7 @@ impl MigrationTrait for Migration {
                             .array(ColumnType::String(StringLen::None))
                             .not_null(),
                     )
-                    .col(
-                        ColumnDef::new(Container::Ports)
-                            .array(ColumnType::Integer)
-                            .not_null(),
-                    )
+                    .col(ColumnDef::new(Container::Ports).array(ColumnType::Integer).not_null())
                     .col(
                         ColumnDef::new(Container::Networks)
                             .array(ColumnType::String(StringLen::None))

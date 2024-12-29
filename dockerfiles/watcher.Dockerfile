@@ -3,7 +3,7 @@ RUN apt-get -y update
 
 COPY . .
 RUN cargo build --bin watcher --release
-RUN cp ./target/release/oxide /
+RUN cp ./target/release/api /
 
 FROM debian:bookworm-slim AS final
 
@@ -17,9 +17,9 @@ RUN adduser \
     --uid "10001" \
     appuser
 
-COPY --from=builder /oxide /usr/local/bin
+COPY --from=builder /api /usr/local/bin
 
-RUN chown appuser /usr/local/bin/oxide
+RUN chown appuser /usr/local/bin/api
 USER appuser
 
-ENTRYPOINT oxide run /data/config.json
+ENTRYPOINT api run /data/config.json

@@ -7,7 +7,7 @@ use super::sea_orm_active_enums::ChallengeKindEnum;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[sea_orm(table_name = "challenge")]
-#[oxide_macros::gen_schemas(id_descriptor = "title")]
+#[api_macros::gen_schemas(id_descriptor = "title")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
@@ -20,6 +20,7 @@ pub struct Model {
     pub kind: ChallengeKindEnum,
     pub author_name: String,
     pub tags: Vec<String>,
+    pub max_attempts: Option<i32>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

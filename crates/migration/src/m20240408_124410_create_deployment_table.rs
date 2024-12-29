@@ -11,12 +11,7 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Deployment::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(Deployment::Id)
-                            .uuid()
-                            .not_null()
-                            .primary_key(),
-                    )
+                    .col(ColumnDef::new(Deployment::Id).uuid().not_null().primary_key())
                     .col(
                         ColumnDef::new(Deployment::CreatedAt)
                             .timestamp_with_time_zone()
