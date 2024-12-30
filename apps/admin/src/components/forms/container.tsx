@@ -21,8 +21,8 @@ import {
 import { Input } from "@repo/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { Switch } from "@repo/ui/components/switch";
-import { type Tag, TagInput } from "emblor";
 import { cn } from "@repo/ui/lib/utils";
+import { type Tag, TagInput } from "emblor";
 import { Check, ChevronsUpDown, PlusCircle, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";

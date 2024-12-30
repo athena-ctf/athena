@@ -14,8 +14,6 @@ mod tasks;
 mod templates;
 mod token;
 
-// TODO: add static file module
-
 use std::net::{Ipv4Addr, SocketAddrV4};
 use std::sync::Arc;
 use std::time::Duration;
@@ -40,6 +38,10 @@ use crate::errors::{Error, Result};
 pub mod utils {
     pub fn gen_random(size: usize) -> String {
         std::iter::repeat_with(fastrand::alphanumeric).take(size).collect()
+    }
+
+    pub const fn to_mb(mb: usize) -> usize {
+        mb * 1024 * 1024
     }
 }
 

@@ -11,7 +11,7 @@ api_macros::crud!(File, single: [Challenge], optional: [], multiple: []);
 #[utoipa::path(
     get,
     path = "/player/file/{id}/download",
-    operation_id = "file_download",
+    operation_id = "player_file_download",
     params(
         ("id" = Uuid, Path),
     ),
@@ -23,7 +23,7 @@ api_macros::crud!(File, single: [Challenge], optional: [], multiple: []);
         (status = 500, body = JsonResponse)
     )
 )]
-pub async fn download(
+pub async fn player_download(
     State(state): State<Arc<AppState>>,
     range_header: Option<TypedHeader<Range>>,
     Path(id): Path<Uuid>,
@@ -67,4 +67,45 @@ pub async fn download(
             Response::builder().body(Body::from(body.bytes().await?)).unwrap(),
         ))
     }
+}
+
+#[utoipa::path(
+    post,
+    path = "/player/file/upload",
+    operation_id = "player_file_upload",
+    request_body(
+        content_type = "multipart/form-data",
+        content = inline(FileSchema)
+    ),
+    responses(
+        (status = 200, body = JsonResponse),
+        (status = 400, body = JsonResponse),
+        (status = 401, body = JsonResponse),
+        (status = 500, body = JsonResponse)
+    )
+)]
+pub async fn player_upload(
+    state: State<Arc<AppState>>,
+    mut multipart: Multipart,
+) -> Result<ApiResponse<Json<JsonResponse>>> {
+    while let Some(field) = multipart.next_field().await.unwrap() {
+        if field.name().unwrap() == "file" {
+            let file_name = field.file_name().unwrap();
+            let file_model = FileModel::new(file_name)
+                .into_active_model()
+                .insert(&state.db_conn)
+                .await?;
+
+            state
+                .fileserver_manager
+                .upload(file_model.id, field.bytes().await?)
+                .await?;
+
+            return Ok(ApiResponse::json_ok(JsonResponse {
+                message: "Successfully uploaded file".to_owned(),
+            }));
+        }
+    }
+
+    Err(Error::BadRequest("Invalid form data".to_owned()))
 }

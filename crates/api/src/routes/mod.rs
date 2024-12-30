@@ -50,7 +50,7 @@ pub fn router(state: Arc<AppState>) -> axum::Router {
             )
         }))
         .layer(TimeoutLayer::new(Duration::from_secs(5)))
-        .layer(DefaultBodyLimit::max(1024 * 1024 * 512))
+        .layer(DefaultBodyLimit::max(crate::utils::to_mb(100)))
         .with_state(state)
 }
 

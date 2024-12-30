@@ -164,7 +164,8 @@ pub async fn list(state: State<Arc<AppState>>) -> Result<ApiResponse<Json<Vec<St
     for model in models {
         let meta = state.fileserver_manager.meta(model.id).await?;
         files.push(StoredFile {
-            model,
+            id: model.id,
+            name: model.name,
             last_modified: meta.last_modified,
             location: meta.location.to_string(),
             size: meta.size,
@@ -218,7 +219,8 @@ pub async fn meta(state: State<Arc<AppState>>, Path(id): Path<Uuid>) -> Result<A
     let meta = state.fileserver_manager.meta(id).await?;
 
     Ok(ApiResponse::json_ok(StoredFile {
-        model,
+        id: model.id,
+        name: model.name,
         last_modified: meta.last_modified,
         location: meta.location.to_string(),
         size: meta.size,

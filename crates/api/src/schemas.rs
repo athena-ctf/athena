@@ -300,7 +300,8 @@ pub struct OverrideSchema {
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct StoredFile {
-    pub model: FileModel,
+    pub id: Uuid,
+    pub name: String,
     pub last_modified: chrono::DateTime<chrono::Utc>,
     pub location: String,
     pub size: usize,
