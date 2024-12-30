@@ -89,7 +89,7 @@ pub async fn player_challenges(
         });
     }
 
-    Ok(ApiResponse::json(PlayerChallenges { summaries }))
+    Ok(ApiResponse::json_ok(PlayerChallenges { summaries }))
 }
 
 #[utoipa::path(
@@ -158,7 +158,7 @@ pub async fn detailed_challenge(
         None
     };
 
-    Ok(ApiResponse::json(DetailedChallenge {
+    Ok(ApiResponse::json_ok(DetailedChallenge {
         files: File::find()
             .inner_join(ChallengeFile)
             .filter(entity::challenge_file::Column::ChallengeId.eq(id))
@@ -219,7 +219,7 @@ pub async fn start_challenge(
         )?)
         .await?;
 
-    Ok(ApiResponse::json(deployment_model))
+    Ok(ApiResponse::json_ok(deployment_model))
 }
 
 #[utoipa::path(
@@ -245,7 +245,7 @@ pub async fn stop_challenge(
         .cleanup_challenge(id, Some(player_claims.sub))
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "successfully stopped challenge deployment".to_owned(),
     }))
 }

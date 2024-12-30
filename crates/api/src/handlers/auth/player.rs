@@ -59,7 +59,7 @@ pub async fn register_verify_email(
         ));
     }
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Player exists".to_owned(),
     }))
 }
@@ -188,7 +188,7 @@ pub async fn register_send_token(
         }
     });
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully sent mail".to_owned(),
     }))
 }
@@ -237,7 +237,7 @@ pub async fn register_verify_invite(
         return Err(Error::BadRequest("invite used up".to_owned()));
     }
 
-    Ok(ApiResponse::json(InviteVerificationResult {
+    Ok(ApiResponse::json_ok(InviteVerificationResult {
         team_id: team_model.id,
         invite_id,
     }))
@@ -299,7 +299,7 @@ pub async fn reset_password(
         )
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully reset password".to_owned(),
     }))
 }
@@ -347,7 +347,7 @@ pub async fn reset_password_send_token(
         }
     });
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully sent mail".to_owned(),
     }))
 }

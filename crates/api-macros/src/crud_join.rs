@@ -50,7 +50,7 @@ fn gen_join_list_fn(entity: &Ident) -> impl ToTokens {
             )
         )]
         pub async fn list(state: State<Arc<AppState>>) -> Result<ApiResponse<Json<Vec<#entity_model>>>> {
-            Ok(ApiResponse::json(#entity::find().all(&state.db_conn).await?))
+            Ok(ApiResponse::json_ok(#entity::find().all(&state.db_conn).await?))
         }
     }
 }
@@ -128,7 +128,7 @@ fn gen_join_retrieve_fn(entity: &Ident, related_from: &Ident, related_to: &Ident
             Path(id): Path<(Uuid, Uuid)>,
         ) -> Result<ApiResponse<Json<#entity_model>>> {
             if let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? {
-                Ok(ApiResponse::json(model))
+                Ok(ApiResponse::json_ok(model))
             } else {
                 Err(Error::NotFound(#not_found.to_owned()))
             }
@@ -182,7 +182,7 @@ fn gen_join_update_fn(entity: &Ident, related_from: &Ident, related_to: &Ident) 
 
             let model = active_model.update(&state.db_conn).await?;
 
-            Ok(ApiResponse::json(model))
+            Ok(ApiResponse::json_ok(model))
         }
     }
 }
@@ -272,7 +272,7 @@ fn gen_join_relations_fn(entity: &Ident, related_from: &Ident, related_to: &Iden
                 return Err(Error::NotFound(#not_found.to_owned()))
             };
 
-            Ok(ApiResponse::json(#entity_relations {
+            Ok(ApiResponse::json_ok(#entity_relations {
                 #related_from_snake: #related_from::find_by_id(id.0).into_partial_model::<#related_from_model>().one(&state.db_conn).await?.unwrap(),
                 #related_to_snake: #related_to::find_by_id(id.1).into_partial_model::<#related_to_model>().one(&state.db_conn).await?.unwrap(),
             }))
@@ -321,7 +321,7 @@ fn gen_join_import_fn(entity: &Ident) -> impl ToTokens {
                 }
             }
 
-            Ok(ApiResponse::json(JsonResponse { message: "successfully imported".to_owned() }))
+            Ok(ApiResponse::json_ok(JsonResponse { message: "successfully imported".to_owned() }))
         }
     }
 }

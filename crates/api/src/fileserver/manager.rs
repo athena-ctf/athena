@@ -1,13 +1,14 @@
+use std::ops::Range;
+
 use bytes::Bytes;
-use futures::StreamExt;
+use futures::{StreamExt, TryStreamExt};
 use object_store::aws::AmazonS3;
 use object_store::local::LocalFileSystem;
 use object_store::path::Path;
-use object_store::{ObjectStore, PutPayload};
+use object_store::{GetOptions, ObjectMeta, ObjectStore, PutPayload};
 use uuid::Uuid;
 
-use crate::errors::Result;
-use crate::schemas::StoredFile;
+use crate::errors::{Error, Result};
 
 pub struct Manager {
     pub local: LocalFileSystem,
@@ -26,36 +27,42 @@ impl Manager {
         Ok(())
     }
 
-    pub async fn download(&self, id: Uuid) -> Result<Bytes> {
+    pub async fn download(&self, id: Uuid, range: Option<Range<usize>>) -> Result<Bytes> {
         Ok(self
             .local
-            .get(&Path::from(id.simple().to_string()))
-            .await?
+            .get_opts(&Path::from(id.simple().to_string()), GetOptions {
+                range: range.map(Into::into),
+                ..Default::default()
+            })
+            .await
+            .map_err(|err| match err {
+                object_store::Error::NotFound { .. } => Error::NotFound("File not found".to_owned()),
+                _ => err.into(),
+            })?
             .bytes()
             .await?)
     }
 
     pub async fn delete(&self, id: Uuid) -> Result<()> {
-        self.cloud.delete(&Path::from(id.simple().to_string())).await?;
+        self.cloud
+            .delete(&Path::from(id.simple().to_string()))
+            .await
+            .map_err(|err| match err {
+                object_store::Error::NotFound { .. } => Error::NotFound("File not found".to_owned()),
+                _ => err.into(),
+            })?;
 
-        Ok(self.local.delete(&Path::from(id.simple().to_string())).await?)
+        self.local
+            .delete(&Path::from(id.simple().to_string()))
+            .await
+            .map_err(|err| match err {
+                object_store::Error::NotFound { .. } => Error::NotFound("File not found".to_owned()),
+                _ => err.into(),
+            })
     }
 
-    pub async fn list(&self) -> Result<Vec<StoredFile>> {
-        let mut entries = self.local.list(None);
-        let mut files = Vec::with_capacity(entries.size_hint().0);
-
-        while let Some(entry) = entries.next().await {
-            let entry = entry?;
-
-            files.push(StoredFile {
-                last_modified: entry.last_modified,
-                size: entry.size,
-                location: entry.location.to_string(),
-            });
-        }
-
-        Ok(files)
+    pub async fn list(&self) -> Result<Vec<ObjectMeta>> {
+        Ok(self.local.list(None).try_collect().await?)
     }
 
     pub async fn sync(&self) -> Result<()> {
@@ -69,7 +76,16 @@ impl Manager {
                 Err(err) => return Err(err.into()),
             }
 
-            let data = self.local.get(&file.location).await?.bytes().await?;
+            let data = self
+                .local
+                .get(&file.location)
+                .await
+                .map_err(|err| match err {
+                    object_store::Error::NotFound { .. } => Error::NotFound("File not found".to_owned()),
+                    _ => err.into(),
+                })?
+                .bytes()
+                .await?;
             self.cloud.put(&file.location, data.into()).await?;
         }
 
@@ -83,10 +99,29 @@ impl Manager {
                 Err(err) => return Err(err.into()),
             }
 
-            let data = self.cloud.get(&file.location).await?.bytes().await?;
+            let data = self
+                .cloud
+                .get(&file.location)
+                .await
+                .map_err(|err| match err {
+                    object_store::Error::NotFound { .. } => Error::NotFound("File not found".to_owned()),
+                    _ => err.into(),
+                })?
+                .bytes()
+                .await?;
             self.local.put(&file.location, data.into()).await?;
         }
 
         Ok(())
+    }
+
+    pub async fn meta(&self, id: Uuid) -> Result<ObjectMeta> {
+        self.local
+            .head(&Path::from(id.simple().to_string()))
+            .await
+            .map_err(|err| match err {
+                object_store::Error::NotFound { .. } => Error::NotFound("File not found".to_owned()),
+                _ => err.into(),
+            })
     }
 }

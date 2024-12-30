@@ -41,7 +41,7 @@ pub async fn add_player_by_id(
             )
             .await?;
 
-        Ok(ApiResponse::json(ban_model))
+        Ok(ApiResponse::json_ok(ban_model))
     } else {
         Err(Error::NotFound("Player does not exist".to_owned()))
     }
@@ -85,7 +85,7 @@ pub async fn remove_player_by_id(
             )
             .await?;
 
-        Ok(ApiResponse::json(JsonResponse {
+        Ok(ApiResponse::json_ok(JsonResponse {
             message: "successfully unbanned player".to_owned(),
         }))
     } else {

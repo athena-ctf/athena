@@ -68,7 +68,7 @@ fn gen_list_fn(entity: &Ident) -> impl ToTokens {
             )
         )]
         pub async fn list(state: State<Arc<AppState>>) -> Result<ApiResponse<Json<Vec<#entity_model>>>> {
-            Ok(ApiResponse::json(#entity::find().all(&state.db_conn).await?))
+            Ok(ApiResponse::json_ok(#entity::find().all(&state.db_conn).await?))
         }
     }
 }
@@ -96,7 +96,7 @@ fn gen_list_ids_fn(entity: &Ident) -> impl ToTokens {
             )
         )]
         pub async fn list_ids(state: State<Arc<AppState>>) -> Result<ApiResponse<Json<Vec<#entity_id_schema>>>> {
-            Ok(ApiResponse::json(
+            Ok(ApiResponse::json_ok(
                 #entity::find()
                     .into_partial_model::<#entity_id_schema>()
                     .all(&state.db_conn)
@@ -175,7 +175,7 @@ fn gen_retrieve_fn(entity: &Ident) -> impl ToTokens {
             Path(id): Path<Uuid>,
         ) -> Result<ApiResponse<Json<#entity_model>>> {
             if let Some(model) = #entity::find_by_id(id).one(&state.db_conn).await? {
-                Ok(ApiResponse::json(model))
+                Ok(ApiResponse::json_ok(model))
             } else {
                 Err(Error::NotFound(#not_found.to_owned()))
             }
@@ -218,7 +218,7 @@ fn gen_update_fn(entity: &Ident) -> impl ToTokens {
             active_model.id = ActiveValue::Set(id);
             let model = active_model.update(&state.db_conn).await?;
 
-            Ok(ApiResponse::json(model))
+            Ok(ApiResponse::json_ok(model))
         }
     }
 }
@@ -351,7 +351,7 @@ fn gen_relations_fn(entity: &Ident, single: &[Ident], multiple: &[Ident], option
                 return Err(Error::NotFound(#not_found.to_owned()))
             };
 
-            Ok(ApiResponse::json(#entity_relations {
+            Ok(ApiResponse::json_ok(#entity_relations {
                 #(#single_relations)*
                 #(#optional_relations)*
                 #(#multiple_relations)*
@@ -398,10 +398,12 @@ fn gen_import_fn(entity: &Ident) -> impl ToTokens {
                     sqlx::query(&query)
                         .execute(state.db_conn.get_postgres_connection_pool())
                         .await?;
+
+                    break;
                 }
             }
 
-            Ok(ApiResponse::json(JsonResponse { message: "successfully imported".to_owned() }))
+            Ok(ApiResponse::json_ok(JsonResponse { message: "successfully imported".to_owned() }))
         }
     }
 }

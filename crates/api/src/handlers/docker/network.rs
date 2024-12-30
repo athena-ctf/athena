@@ -32,7 +32,7 @@ pub async fn list(
     state: State<Arc<AppState>>,
     Query(query): Query<ListNetworksQuery>,
 ) -> Result<ApiResponse<Json<Vec<Network>>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -64,7 +64,7 @@ pub async fn prune(
     state: State<Arc<AppState>>,
     Query(query): Query<PruneNetworksQuery>,
 ) -> Result<ApiResponse<Json<NetworkPruneResponse>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -120,7 +120,7 @@ pub async fn inspect(
     Path(name): Path<String>,
     Query(query): Query<InspectNetworkQuery>,
 ) -> Result<ApiResponse<Json<Network>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -175,7 +175,7 @@ pub async fn connect(
 ) -> Result<ApiResponse<Json<JsonResponse>>> {
     state.docker_manager.conn().connect_network(&name, body.into()).await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully connected network".to_owned(),
     }))
 }
@@ -208,7 +208,7 @@ pub async fn disconnect(
         .disconnect_network(&name, body.into())
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully disconnected network".to_owned(),
     }))
 }

@@ -1,4 +1,4 @@
-pub mod api;
+pub mod routes;
 
 mod docker;
 mod errors;
@@ -56,12 +56,18 @@ impl<T: Serialize> ApiResponse<Json<T>> {
         Self(status_code, Json(data))
     }
 
-    pub fn json(data: T) -> Self {
+    pub fn json_ok(data: T) -> Self {
         Self::json_with_status(StatusCode::OK, data)
     }
 
     pub fn json_created(data: T) -> Self {
         Self::json_with_status(StatusCode::CREATED, data)
+    }
+}
+
+impl<T: IntoResponse> ApiResponse<T> {
+    fn ok(response: T) -> Self {
+        Self(StatusCode::OK, response)
     }
 }
 
@@ -181,7 +187,7 @@ pub async fn start(settings: Settings) -> Result<()> {
         permission::Manager::new(
             redis_client.clone(),
             permission::get_defaults(),
-            api::get_url_mappings(),
+            routes::get_url_mappings(),
         )
         .await?,
     );
@@ -205,7 +211,7 @@ pub async fn start(settings: Settings) -> Result<()> {
 
     axum::serve(
         listener,
-        api::router(Arc::new(AppState {
+        routes::router(Arc::new(AppState {
             db_conn,
             settings: settings.clone(),
             token_manager,

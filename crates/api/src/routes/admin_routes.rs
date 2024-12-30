@@ -25,6 +25,7 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(handlers::deployment::router())
             .merge(handlers::docker::router())
             .merge(handlers::file::router())
+            .merge(handlers::fileserver::router())
             .merge(handlers::flag::router())
             .merge(handlers::hint::router())
             .merge(handlers::instance::router())

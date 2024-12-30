@@ -98,7 +98,7 @@ pub async fn retrieve_profile_by_username(
 
     get_user_profile(player_model, &state.leaderboard_manager, &state.db_conn)
         .await
-        .map(ApiResponse::json)
+        .map(ApiResponse::json_ok)
 }
 
 #[utoipa::path(
@@ -131,7 +131,7 @@ pub async fn update_profile_by_id(
         )
         .await?;
 
-    Ok(ApiResponse::json(player_model))
+    Ok(ApiResponse::json_ok(player_model))
 }
 
 #[utoipa::path(
@@ -152,7 +152,7 @@ pub async fn retrieve_summary(
         return Err(Error::NotFound("Player not found".to_owned()));
     };
 
-    Ok(ApiResponse::json(PlayerDetails {
+    Ok(ApiResponse::json_ok(PlayerDetails {
         submissions: player_model.find_related(Submission).all(&state.db_conn).await?,
         unlocks: player_model.find_related(Unlock).all(&state.db_conn).await?,
         profile: get_user_profile(player_model, &state.leaderboard_manager, &state.db_conn).await?,
@@ -177,5 +177,5 @@ pub async fn get_current_logged_in(
         return Err(Error::NotFound("Player not found".to_owned()));
     };
 
-    Ok(ApiResponse::json(model))
+    Ok(ApiResponse::json_ok(model))
 }

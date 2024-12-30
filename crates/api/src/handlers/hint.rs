@@ -29,7 +29,7 @@ pub async fn unlock_by_id(
         .one(&txn)
         .await?
     {
-        return Ok(ApiResponse::json(hint_model));
+        return Ok(ApiResponse::json_ok(hint_model));
     }
 
     UnlockModel::new(player_claims.sub, id)
@@ -51,5 +51,5 @@ pub async fn unlock_by_id(
         .update_team(player_claims.team_id, -hint_model.cost)
         .await?;
 
-    Ok(ApiResponse::json(hint_model))
+    Ok(ApiResponse::json_ok(hint_model))
 }

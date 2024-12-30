@@ -32,7 +32,7 @@ pub async fn new(
 
     let invite_model = body.into_active_model().insert(&state.db_conn).await?;
 
-    Ok(ApiResponse::json(invite_model))
+    Ok(ApiResponse::json_ok(invite_model))
 }
 
 #[utoipa::path(
@@ -78,7 +78,7 @@ pub async fn destroy(
 
     invite_model.delete(&state.db_conn).await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "successfully destroyed invite".to_owned(),
     }))
 }
@@ -136,5 +136,5 @@ pub async fn update(
 
     let invite_model = invite_model.into_active_model().update(&state.db_conn).await?;
 
-    Ok(ApiResponse::json(invite_model))
+    Ok(ApiResponse::json_ok(invite_model))
 }

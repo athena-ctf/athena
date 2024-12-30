@@ -24,7 +24,7 @@ pub async fn restart(state: State<Arc<AppState>>, Path(id): Path<Uuid>) -> Resul
         .restart_container(&instance_model.container_id)
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully restarted container".to_owned(),
     }))
 }

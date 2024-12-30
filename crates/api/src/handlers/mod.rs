@@ -7,6 +7,7 @@ pub mod container;
 pub mod deployment;
 pub mod docker;
 pub mod file;
+pub mod fileserver;
 pub mod flag;
 pub mod hint;
 pub mod instance;

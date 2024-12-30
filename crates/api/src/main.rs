@@ -49,7 +49,7 @@ pub async fn main() {
         SubCommand::Generate(generate) => {
             tokio::fs::write(&generate.out, match generate.kind {
                 GenerateKind::Config => Settings::default().default_json().unwrap(),
-                GenerateKind::OpenapiSchema => api::api::get_schema().unwrap(),
+                GenerateKind::OpenapiSchema => api::routes::get_schema().unwrap(),
             })
             .await
             .unwrap();

@@ -31,7 +31,7 @@ pub async fn list(
     state: State<Arc<AppState>>,
     Query(query): Query<ListVolumesQuery>,
 ) -> Result<ApiResponse<Json<Vec<Volume>>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -85,7 +85,7 @@ pub async fn create(
     ),
 )]
 pub async fn inspect(state: State<Arc<AppState>>, Path(name): Path<String>) -> Result<ApiResponse<Json<Volume>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state.docker_manager.conn().inspect_volume(&name).await?.into(),
     ))
 }
@@ -141,7 +141,7 @@ pub async fn prune(
     state: State<Arc<AppState>>,
     Query(query): Query<PruneVolumesQuery>,
 ) -> Result<ApiResponse<Json<VolumePruneResponse>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()

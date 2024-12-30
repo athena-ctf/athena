@@ -40,7 +40,7 @@ pub async fn retrieve(state: State<Arc<AppState>>, Path(path): Path<String>) -> 
         )
         .map_or_else(
             || Err(Error::NotFound("The requested setting is not found".to_owned())),
-            |value| Ok(ApiResponse::json(value)),
+            |value| Ok(ApiResponse::json_ok(value)),
         )
 }
 
@@ -74,7 +74,7 @@ pub async fn update(
             .collect::<Vec<_>>(),
         value,
     ) {
-        Ok(ApiResponse::json(JsonResponse {
+        Ok(ApiResponse::json_ok(JsonResponse {
             message: "successfully updated settings".to_owned(),
         }))
     } else {

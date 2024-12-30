@@ -107,7 +107,7 @@ pub async fn retrieve_team_by_teamname(
 
     get_team_profile(team_model, &state.leaderboard_manager, &state.db_conn)
         .await
-        .map(ApiResponse::json)
+        .map(ApiResponse::json_ok)
 }
 
 #[utoipa::path(
@@ -138,7 +138,7 @@ pub async fn update_details(
     let mut active_team = details.into_active_model();
     active_team.id = ActiveValue::Set(player_claims.team_id);
 
-    Ok(ApiResponse::json(active_team.update(&state.db_conn).await?))
+    Ok(ApiResponse::json_ok(active_team.update(&state.db_conn).await?))
 }
 
 #[utoipa::path(
@@ -167,7 +167,7 @@ pub async fn retrieve_summary(
 
     let invites = team_model.find_related(Invite).all(&state.db_conn).await?;
 
-    Ok(ApiResponse::json(TeamDetails {
+    Ok(ApiResponse::json_ok(TeamDetails {
         submissions: team_model.find_linked(TeamToSubmission).all(&state.db_conn).await?,
         unlocks: team_model.find_linked(TeamToUnlock).all(&state.db_conn).await?,
         profile: get_team_profile(team_model, &state.leaderboard_manager, &state.db_conn).await?,

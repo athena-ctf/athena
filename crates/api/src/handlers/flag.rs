@@ -192,5 +192,5 @@ pub async fn verify(
 
     txn.commit().await?;
 
-    Ok(ApiResponse::json(FlagVerificationResult { is_correct }))
+    Ok(ApiResponse::json_ok(FlagVerificationResult { is_correct }))
 }

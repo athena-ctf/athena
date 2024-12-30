@@ -30,7 +30,7 @@ pub async fn add_role_permissions(
         .add_role_permissions(body.role, body.permissions)
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully added role".to_owned(),
     }))
 }
@@ -56,7 +56,7 @@ pub async fn add_override_permission(
         .add_override_permission(body.id, body.permission)
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully added override permission".to_owned(),
     }))
 }
@@ -82,7 +82,7 @@ pub async fn remove_role_permissions(
         .remove_role_permissions(body.role, body.permissions)
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully removed role permissions".to_owned(),
     }))
 }
@@ -108,7 +108,7 @@ pub async fn remove_override_permission(
         .remove_override_permission(body.id, body.permission)
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully removed override permission".to_owned(),
     }))
 }

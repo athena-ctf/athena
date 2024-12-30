@@ -18,7 +18,11 @@ use crate::{ApiResponse, AppState};
     )
 )]
 pub async fn player_top_10(state: State<Arc<AppState>>) -> Result<ApiResponse<Json<Vec<Ranking>>>> {
-    state.leaderboard_manager.top_10_players().await.map(ApiResponse::json)
+    state
+        .leaderboard_manager
+        .top_10_players()
+        .await
+        .map(ApiResponse::json_ok)
 }
 
 #[utoipa::path(
@@ -42,7 +46,7 @@ pub async fn player_rankings(
     let rankings = state.leaderboard_manager.list_players(offset, count).await?;
     let total = state.leaderboard_manager.player_count().await?;
 
-    Ok(ApiResponse::json(LeaderboardRankings {
+    Ok(ApiResponse::json_ok(LeaderboardRankings {
         total,
         offset,
         count,
@@ -61,7 +65,7 @@ pub async fn player_rankings(
     )
 )]
 pub async fn team_top_10(state: State<Arc<AppState>>) -> Result<ApiResponse<Json<Vec<Ranking>>>> {
-    state.leaderboard_manager.top_10_teams().await.map(ApiResponse::json)
+    state.leaderboard_manager.top_10_teams().await.map(ApiResponse::json_ok)
 }
 
 #[utoipa::path(
@@ -85,7 +89,7 @@ pub async fn team_rankings(
     let rankings = state.leaderboard_manager.list_teams(offset, count).await?;
     let total = state.leaderboard_manager.team_count().await?;
 
-    Ok(ApiResponse::json(LeaderboardRankings {
+    Ok(ApiResponse::json_ok(LeaderboardRankings {
         total,
         offset,
         count,

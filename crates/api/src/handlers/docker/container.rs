@@ -41,7 +41,7 @@ pub async fn list(
     state: State<Arc<AppState>>,
     Query(query): Query<ListContainersQuery>,
 ) -> Result<ApiResponse<Json<Vec<ContainerSummary>>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -106,7 +106,7 @@ pub async fn inspect(
     Path(name): Path<String>,
     Query(query): Query<InspectContainerQuery>,
 ) -> Result<ApiResponse<Json<ContainerInspectResponse>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -169,7 +169,7 @@ pub async fn prune(
     state: State<Arc<AppState>>,
     Query(query): Query<PruneContainersQuery>,
 ) -> Result<ApiResponse<Json<ContainerPruneResponse>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -207,7 +207,7 @@ pub async fn kill(
         .kill_container(&name, Some(body.into()))
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully killed container".to_owned(),
     }))
 }
@@ -240,7 +240,7 @@ pub async fn stop(
         .stop_container(&name, Some(body.into()))
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully stopped container".to_owned(),
     }))
 }
@@ -264,7 +264,7 @@ pub async fn changes(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
 ) -> Result<ApiResponse<Json<Vec<FilesystemChange>>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -295,7 +295,7 @@ pub async fn changes(
 pub async fn pause(state: State<Arc<AppState>>, Path(name): Path<String>) -> Result<ApiResponse<Json<JsonResponse>>> {
     state.docker_manager.conn().pause_container(&name).await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully paused container".to_owned(),
     }))
 }
@@ -318,7 +318,7 @@ pub async fn pause(state: State<Arc<AppState>>, Path(name): Path<String>) -> Res
 pub async fn unpause(state: State<Arc<AppState>>, Path(name): Path<String>) -> Result<ApiResponse<Json<JsonResponse>>> {
     state.docker_manager.conn().unpause_container(&name).await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully unpaused container".to_owned(),
     }))
 }
@@ -351,7 +351,7 @@ pub async fn start(
         .start_container(&name, Some(body.into()))
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully started container".to_owned(),
     }))
 }
@@ -384,7 +384,7 @@ pub async fn restart(
         .restart_container(&name, Some(body.into()))
         .await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully restarted container".to_owned(),
     }))
 }
@@ -433,7 +433,7 @@ pub async fn top(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
 ) -> Result<ApiResponse<Json<ContainerTopResponse>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -477,7 +477,7 @@ pub async fn logs(state: State<Arc<AppState>>, Path(name): Path<String>) -> Resu
         logs.push(log.into());
     }
 
-    Ok(ApiResponse::json(logs))
+    Ok(ApiResponse::json_ok(logs))
 }
 
 #[api_macros::requires_permission(permission = "docker.container:read")]
@@ -496,7 +496,7 @@ pub async fn logs(state: State<Arc<AppState>>, Path(name): Path<String>) -> Resu
     ),
 )]
 pub async fn stats(state: State<Arc<AppState>>, Path(name): Path<String>) -> Result<ApiResponse<Json<Stats>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()

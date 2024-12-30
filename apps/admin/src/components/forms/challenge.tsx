@@ -21,13 +21,14 @@ import {
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
-import { TagsInput } from "@repo/ui/components/tags-input";
+import { type Tag, TagInput } from "emblor";
 import { cn } from "@repo/ui/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { type FormProps, buttonText } from "./props";
+import { useState } from "react";
 
 const kinds = [
   "dynamic_containerized",
@@ -54,6 +55,11 @@ export function ChallengeForm({ onSuccess, kind, defaultValues }: FormProps<"Cha
     mode: "onChange",
     defaultValues: { tags: [], ...defaultValues },
   });
+
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
+
+  const { setValue } = form;
 
   const onSubmit = async (values: Schema) => {
     const resp =
@@ -237,7 +243,7 @@ export function ChallengeForm({ onSuccess, kind, defaultValues }: FormProps<"Cha
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="sr-only">Description</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <MinimalTiptapEditor
                   {...field}
@@ -262,11 +268,23 @@ export function ChallengeForm({ onSuccess, kind, defaultValues }: FormProps<"Cha
           name="tags"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Dependencies</FormLabel>
-              <TagsInput
-                value={field.value}
-                onValueChange={field.onChange}
-                placeholder="Enter tags"
+              <FormLabel>Tags</FormLabel>
+              <TagInput
+                {...field}
+                tags={tags}
+                setTags={(newTags) => {
+                  setTags(newTags);
+                  if (Array.isArray(newTags)) {
+                    setValue(
+                      "tags",
+                      newTags.map((tag) => tag.text),
+                    );
+                  }
+                }}
+                activeTagIndex={activeTagIndex}
+                setActiveTagIndex={setActiveTagIndex}
+                inlineTags={false}
+                inputFieldPosition="bottom"
               />
               <FormMessage />
             </FormItem>

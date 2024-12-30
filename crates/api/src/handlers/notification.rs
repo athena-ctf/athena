@@ -17,7 +17,7 @@ pub async fn player_list(
     AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
 ) -> Result<ApiResponse<Json<Vec<NotificationModel>>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         Notification::find()
             .filter(entity::notification::Column::PlayerId.eq(player.sub))
             .all(&state.db_conn)
@@ -38,7 +38,7 @@ pub async fn player_list_unread(
     AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
 ) -> Result<ApiResponse<Json<Vec<NotificationModel>>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         Notification::update_many()
             .col_expr(
                 entity::notification::Column::ReadAt,

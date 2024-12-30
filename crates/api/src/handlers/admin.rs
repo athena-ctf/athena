@@ -21,5 +21,5 @@ pub async fn get_current_logged_in(
         return Err(Error::NotFound("Admin not found".to_owned()));
     };
 
-    Ok(ApiResponse::json(model))
+    Ok(ApiResponse::json_ok(model))
 }

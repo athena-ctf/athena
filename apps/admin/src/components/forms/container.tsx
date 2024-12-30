@@ -21,7 +21,7 @@ import {
 import { Input } from "@repo/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { Switch } from "@repo/ui/components/switch";
-import { TagsInput } from "@repo/ui/components/tags-input";
+import { type Tag, TagInput } from "emblor";
 import { cn } from "@repo/ui/lib/utils";
 import { Check, ChevronsUpDown, PlusCircle, X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -64,10 +64,20 @@ export function ContainerForm({
     defaultValues: { environment: [], ports: [], networks: [], depends_on: [], ...defaultValues },
   });
 
+  const [networkTags, setNetworkTags] = useState<Tag[]>([]);
+  const [activeNetworkTagIndex, setActiveNetworkTagIndex] = useState<number | null>(null);
+
+  const [dependencyTags, setDependencyTags] = useState<Tag[]>([]);
+  const [activeDependencyTagIndex, setActiveDependencyTagIndex] = useState<number | null>(null);
+
+  const [portTags, setPortTags] = useState<Tag[]>([]);
+  const [activePortTagIndex, setActivePortTagIndex] = useState<number | null>(null);
+
   const [challengeIds, setChallengeIds] = useState<components["schemas"]["ChallengeIdSchema"][]>(
     [],
   );
 
+  const { setValue } = form;
   const { fields, append, remove } = useFieldArray({
     name: "environment",
     control: form.control,
@@ -288,10 +298,22 @@ export function ContainerForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Networks</FormLabel>
-              <TagsInput
-                value={field.value}
-                onValueChange={field.onChange}
-                placeholder="Enter networks"
+              <TagInput
+                {...field}
+                tags={networkTags}
+                setTags={(newTags) => {
+                  setNetworkTags(newTags);
+                  if (Array.isArray(newTags)) {
+                    setValue(
+                      "networks",
+                      newTags.map((tag) => tag.text),
+                    );
+                  }
+                }}
+                activeTagIndex={activeNetworkTagIndex}
+                setActiveTagIndex={setActiveNetworkTagIndex}
+                inlineTags={false}
+                inputFieldPosition="bottom"
               />
               <FormMessage />
             </FormItem>
@@ -303,10 +325,22 @@ export function ContainerForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Dependencies</FormLabel>
-              <TagsInput
-                value={field.value}
-                onValueChange={field.onChange}
-                placeholder="Enter dependencies"
+              <TagInput
+                {...field}
+                tags={dependencyTags}
+                setTags={(newTags) => {
+                  setDependencyTags(newTags);
+                  if (Array.isArray(newTags)) {
+                    setValue(
+                      "depends_on",
+                      newTags.map((tag) => tag.text),
+                    );
+                  }
+                }}
+                activeTagIndex={activeDependencyTagIndex}
+                setActiveTagIndex={setActiveDependencyTagIndex}
+                inlineTags={false}
+                inputFieldPosition="bottom"
               />
               <FormMessage />
             </FormItem>
@@ -318,12 +352,23 @@ export function ContainerForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Ports</FormLabel>
-              <TagsInput
-                value={field.value.map((value) => value.toString())}
-                onValueChange={(values) =>
-                  field.onChange(values.map((value) => Number.parseInt(value)))
-                }
-                placeholder="Enter ports"
+              <TagInput
+                {...field}
+                value={portTags}
+                tags={portTags}
+                setTags={(newTags) => {
+                  setPortTags(newTags);
+                  if (Array.isArray(newTags)) {
+                    setValue(
+                      "ports",
+                      newTags.map((tag) => Number.parseInt(tag.text)),
+                    );
+                  }
+                }}
+                activeTagIndex={activePortTagIndex}
+                setActiveTagIndex={setActivePortTagIndex}
+                inlineTags={false}
+                inputFieldPosition="bottom"
               />
               <FormMessage />
             </FormItem>

@@ -78,6 +78,9 @@ pub enum Error {
 
     #[error("Forbidden: {0}")]
     Forbidden(String),
+
+    #[error("Range not satisfiable")]
+    RangeNotSatisfiable,
 }
 
 pub type Result<T, E = Error> = std::result::Result<T, E>;
@@ -100,6 +103,8 @@ impl IntoResponse for Error {
             }
 
             Self::Forbidden(message) => (StatusCode::FORBIDDEN, Json(JsonResponse { message })).into_response(),
+
+            Self::RangeNotSatisfiable => StatusCode::RANGE_NOT_SATISFIABLE.into_response(),
 
             _ => (
                 StatusCode::INTERNAL_SERVER_ERROR,

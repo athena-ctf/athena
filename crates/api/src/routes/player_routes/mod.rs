@@ -5,6 +5,7 @@ use axum::Router;
 use crate::AppState;
 
 mod challenge;
+mod file;
 mod flag;
 mod hint;
 mod instance;
@@ -19,6 +20,7 @@ pub fn router() -> Router<Arc<AppState>> {
         "/player",
         Router::new()
             .merge(challenge::router())
+            .merge(file::router())
             .merge(flag::router())
             .merge(hint::router())
             .merge(instance::router())

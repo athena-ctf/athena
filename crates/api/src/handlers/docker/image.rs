@@ -38,7 +38,7 @@ pub async fn list(
     state: State<Arc<AppState>>,
     Query(query): Query<ListImagesQuery>,
 ) -> Result<ApiResponse<Json<Vec<ImageSummary>>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -70,7 +70,7 @@ pub async fn prune(
     state: State<Arc<AppState>>,
     Query(query): Query<PruneImagesQuery>,
 ) -> Result<ApiResponse<Json<ImagePruneResponse>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -101,7 +101,7 @@ pub async fn remove(
     Path(name): Path<String>,
     Query(query): Query<RemoveImageQuery>,
 ) -> Result<ApiResponse<Json<Vec<ImageDeleteResponseItem>>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -129,7 +129,7 @@ pub async fn remove(
     ),
 )]
 pub async fn inspect(state: State<Arc<AppState>>, Path(name): Path<String>) -> Result<ApiResponse<Json<ImageInspect>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state.docker_manager.conn().inspect_image(&name).await?.into(),
     ))
 }
@@ -153,7 +153,7 @@ pub async fn history(
     state: State<Arc<AppState>>,
     Path(name): Path<String>,
 ) -> Result<ApiResponse<Json<Vec<HistoryResponseItem>>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
@@ -189,7 +189,7 @@ pub async fn tag(
 ) -> Result<ApiResponse<Json<JsonResponse>>> {
     state.docker_manager.conn().tag_image(&name, Some(body.into())).await?;
 
-    Ok(ApiResponse::json(JsonResponse {
+    Ok(ApiResponse::json_ok(JsonResponse {
         message: "Successfully added tag to image".to_owned(),
     }))
 }
@@ -216,7 +216,7 @@ pub async fn search(
     state: State<Arc<AppState>>,
     Query(query): Query<SearchImageQuery>,
 ) -> Result<ApiResponse<Json<Vec<ImageSearchResponseItem>>>> {
-    Ok(ApiResponse::json(
+    Ok(ApiResponse::json_ok(
         state
             .docker_manager
             .conn()
