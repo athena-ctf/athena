@@ -11,6 +11,15 @@ impl MigrationTrait for Migration {
         manager
             .create_type(
                 Type::create()
+                    .as_enum(StateEnum)
+                    .values(StateVariants::iter())
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_type(
+                Type::create()
                     .as_enum(ChallengeKindEnum)
                     .values(ChallengeKindVariants::iter())
                     .to_owned(),
@@ -49,6 +58,13 @@ impl MigrationTrait for Migration {
                             .not_null(),
                     )
                     .col(ColumnDef::new(Challenge::MaxAttempts).integer())
+                    .col(
+                        ColumnDef::new(Challenge::State)
+                            .enumeration(StateEnum, StateVariants::iter())
+                            .not_null(),
+                    )
+                    .col(ColumnDef::new(Challenge::Grouping).json_binary())
+                    .col(ColumnDef::new(Challenge::Requirements).json_binary())
                     .to_owned(),
             )
             .await?;
@@ -63,6 +79,10 @@ impl MigrationTrait for Migration {
 
         manager
             .drop_type(Type::drop().if_exists().name(ChallengeKindEnum).to_owned())
+            .await?;
+
+        manager
+            .drop_type(Type::drop().if_exists().name(StateEnum).to_owned())
             .await?;
 
         Ok(())
@@ -84,6 +104,9 @@ enum Challenge {
     Kind,
     Tags,
     MaxAttempts,
+    State,
+    Grouping,
+    Requirements,
 }
 
 #[derive(DeriveIden)]
@@ -95,4 +118,14 @@ enum ChallengeKindVariants {
     RegexFlag,
     StaticContainerized,
     DynamicContainerized,
+}
+
+#[derive(DeriveIden)]
+struct StateEnum;
+
+#[derive(DeriveIden, EnumIter)]
+enum StateVariants {
+    Disabled,
+    Hidden,
+    Visible,
 }

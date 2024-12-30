@@ -3,9 +3,9 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Copy, Serialize, Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Copy, Serialize, Deserialize)]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "challenge_kind_enum")]
-#[serde(rename_all = "snake_case")]
+#[api_macros::gen_schemas]
 pub enum ChallengeKindEnum {
     #[sea_orm(string_value = "dynamic_containerized")]
     DynamicContainerized,
@@ -16,9 +16,20 @@ pub enum ChallengeKindEnum {
     #[sea_orm(string_value = "static_flag")]
     StaticFlag,
 }
-#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Copy, Serialize, Deserialize, utoipa::ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Copy, Serialize, Deserialize)]
+#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "state_enum")]
+#[api_macros::gen_schemas]
+pub enum StateEnum {
+    #[sea_orm(string_value = "disabled")]
+    Disabled,
+    #[sea_orm(string_value = "hidden")]
+    Hidden,
+    #[sea_orm(string_value = "visible")]
+    Visible,
+}
+#[derive(Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Copy, Serialize, Deserialize)]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "ticket_status_enum")]
-#[serde(rename_all = "snake_case")]
+#[api_macros::gen_schemas]
 pub enum TicketStatusEnum {
     #[sea_orm(string_value = "closed")]
     Closed,

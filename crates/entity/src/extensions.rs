@@ -1,21 +1,7 @@
 use chrono::Utc;
-use sea_orm::{ActiveValue, IntoActiveModel, IntoActiveValue};
+use sea_orm::{ActiveValue, IntoActiveModel};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
-
-use super::sea_orm_active_enums::*;
-
-impl IntoActiveValue<Self> for ChallengeKindEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
-    }
-}
-
-impl IntoActiveValue<Self> for TicketStatusEnum {
-    fn into_active_value(self) -> sea_orm::ActiveValue<Self> {
-        sea_orm::ActiveValue::Set(self)
-    }
-}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 pub struct UpdateProfileSchema {
