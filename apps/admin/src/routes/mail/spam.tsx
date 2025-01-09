@@ -1,9 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/mail/spam')({
+export const Route = createFileRoute("/mail/spam")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div>Hello "/mail/spam"!</div>
+  return <div>Hello "/mail/spam"!</div>;
 }

@@ -1,9 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/mail/inbox')({
+export const Route = createFileRoute("/mail/inbox")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div>Hello "/mail/inbox"!</div>
+  return <div>Hello "/mail/inbox"!</div>;
 }

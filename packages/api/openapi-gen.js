@@ -24,11 +24,6 @@ openapiTS(localPath, {
     }
     return undefined;
   },
-
-  postTransform(type, opts) {
-    type._typeNodeBrand;
-    console.log(type, opts);
-  },
 })
   .then((output) => fs.writeFileSync(outPath, astToString(output)))
   .then(() => console.log(`Written file to "${outPath}"`));
