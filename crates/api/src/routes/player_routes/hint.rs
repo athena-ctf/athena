@@ -7,5 +7,5 @@ use crate::AppState;
 use crate::handlers::hint;
 
 pub fn router() -> Router<Arc<AppState>> {
-    Router::new().route("/hint/unlock/:id", get(hint::unlock_by_id))
+    Router::new().route("/hint/unlock/{id}", get(hint::unlock_by_id))
 }

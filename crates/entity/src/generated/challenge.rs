@@ -3,7 +3,8 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-use super::sea_orm_active_enums::ChallengeKindEnum;
+use super::sea_orm_active_enums::{ChallengeKindEnum, StateEnum};
+use crate::extensions::{Grouping, Requirements};
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
 #[sea_orm(table_name = "challenge")]
@@ -13,6 +14,7 @@ pub struct Model {
     pub id: Uuid,
     pub created_at: DateTimeWithTimeZone,
     pub updated_at: DateTimeWithTimeZone,
+    #[sea_orm(unique)]
     pub title: String,
     pub description: String,
     pub points: i32,
@@ -21,6 +23,11 @@ pub struct Model {
     pub author_name: String,
     pub tags: Vec<String>,
     pub max_attempts: Option<i32>,
+    pub state: StateEnum,
+    #[sea_orm(column_type = "JsonBinary", nullable)]
+    pub grouping: Option<Grouping>,
+    #[sea_orm(column_type = "JsonBinary", nullable)]
+    pub requirements: Option<Requirements>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

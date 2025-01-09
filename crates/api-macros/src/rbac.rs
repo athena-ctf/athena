@@ -1,34 +1,14 @@
-use darling::ast::NestedMeta;
-use darling::{Error, FromMeta};
 use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use syn::parse::Parse;
 use syn::punctuated::Punctuated;
-use syn::{ExprPath, ItemFn, Token, parse_macro_input};
+use syn::{ExprPath, ItemFn, LitStr, Token, parse_macro_input};
 
-#[derive(Debug, FromMeta)]
-struct MacroArgs {
-    permission: String,
-}
-
-pub fn requires_permission_impl(attrs: TokenStream, input: TokenStream) -> TokenStream {
+pub fn rbac_impl(attrs: TokenStream, input: TokenStream) -> TokenStream {
     let operation = parse_macro_input!(input as ItemFn);
-    let attr_args = match NestedMeta::parse_meta_list(attrs.into()) {
-        Ok(v) => v,
-        Err(e) => {
-            return TokenStream::from(Error::from(e).write_errors());
-        }
-    };
+    let permission = parse_macro_input!(attrs as LitStr);
 
-    let args = match MacroArgs::from_list(&attr_args) {
-        Ok(v) => v,
-        Err(e) => {
-            return TokenStream::from(e.write_errors());
-        }
-    };
-
-    let ident = format_ident!("__requires_permission_{}", operation.sig.ident);
-    let permission = args.permission;
+    let ident = format_ident!("__rbac_{}", operation.sig.ident);
 
     quote! {
         #operation
@@ -79,7 +59,7 @@ pub fn url_mappings_impl(input: TokenStream) -> TokenStream {
             if let Some(last) = perm_path.last_mut() {
                 let old = last.clone();
 
-                *last = format!("__requires_permission_{old}")
+                *last = format!("__rbac_{old}")
             }
             let perm_path = syn::parse_str::<ExprPath>(&perm_path.join("::")).unwrap();
 

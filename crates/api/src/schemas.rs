@@ -70,6 +70,7 @@ pub enum PlayerChallengeState {
     Solved,
     Unsolved,
     ChallengeLimitReached,
+    Disabled,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -77,8 +78,19 @@ pub struct ChallengeSummary {
     pub challenge: ChallengeModel,
     pub state: PlayerChallengeState,
     pub deployment: Option<DeploymentModel>,
-    pub solves: u64,
     pub attempts: usize,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+#[serde(tag = "type", content = "data", rename_all = "snake_case")]
+pub enum PlayerChallenge {
+    Single {
+        summary: ChallengeSummary,
+    },
+    Group {
+        group: Grouping,
+        summaries: Vec<ChallengeSummary>,
+    },
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -115,7 +127,7 @@ pub struct ChallengeInstance {
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
 pub struct PlayerChallenges {
-    pub summaries: Vec<ChallengeSummary>,
+    pub challenges: Vec<PlayerChallenge>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -123,6 +135,7 @@ pub struct DetailedChallenge {
     pub files: Vec<FileModel>,
     pub hints: Vec<HintSummary>,
     pub instances: Option<Vec<ChallengeInstance>>,
+    pub solves: u64,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
@@ -287,15 +300,34 @@ impl ExportQuery {
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct RoleSchema {
+pub struct RoleModel {
     pub role: String,
     pub permissions: Vec<String>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
-pub struct OverrideSchema {
+pub struct OverrideModel {
     pub id: Uuid,
-    pub permission: String,
+    pub permissions: Vec<String>,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+#[serde(rename_all = "lowercase")]
+pub enum RbacUpdateAction {
+    Add,
+    Remove,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct UpdateRoleSchema {
+    pub action: RbacUpdateAction,
+    pub permissions: Vec<String>,
+}
+
+#[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]
+pub struct UpdateOverrideSchema {
+    pub action: RbacUpdateAction,
+    pub permissions: Vec<String>,
 }
 
 #[derive(Serialize, Debug, Deserialize, Clone, ToSchema)]

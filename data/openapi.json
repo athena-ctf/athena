@@ -14556,10 +14556,71 @@
         }
       }
     },
+    "/player/file/upload": {
+      "post": {
+        "tags": ["file"],
+        "operationId": "player_file_upload",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/player/file/{id}/download": {
       "get": {
         "tags": ["file"],
-        "operationId": "file_download",
+        "operationId": "player_file_download",
         "parameters": [
           {
             "name": "id",
@@ -16061,7 +16122,8 @@
           "level",
           "kind",
           "author_name",
-          "tags"
+          "tags",
+          "state"
         ],
         "properties": {
           "author_name": {
@@ -16073,6 +16135,16 @@
           },
           "description": {
             "type": "string"
+          },
+          "grouping": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/Grouping"
+              }
+            ]
           },
           "id": {
             "type": "string",
@@ -16092,6 +16164,19 @@
           "points": {
             "type": "integer",
             "format": "int32"
+          },
+          "requirements": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/Requirements"
+              }
+            ]
+          },
+          "state": {
+            "$ref": "#/components/schemas/StateEnum"
           },
           "tags": {
             "type": "array",
@@ -16173,7 +16258,7 @@
       },
       "ChallengeSummary": {
         "type": "object",
-        "required": ["challenge", "state", "solves", "attempts"],
+        "required": ["challenge", "state", "attempts"],
         "properties": {
           "attempts": {
             "type": "integer",
@@ -16191,11 +16276,6 @@
                 "$ref": "#/components/schemas/DeploymentModel"
               }
             ]
-          },
-          "solves": {
-            "type": "integer",
-            "format": "int64",
-            "minimum": 0
           },
           "state": {
             "$ref": "#/components/schemas/PlayerChallengeState"
@@ -17166,7 +17246,8 @@
           "level",
           "kind",
           "author_name",
-          "tags"
+          "tags",
+          "state"
         ],
         "properties": {
           "author_name": {
@@ -17174,6 +17255,16 @@
           },
           "description": {
             "type": "string"
+          },
+          "grouping": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/Grouping"
+              }
+            ]
           },
           "kind": {
             "$ref": "#/components/schemas/ChallengeKindEnum"
@@ -17189,6 +17280,19 @@
           "points": {
             "type": "integer",
             "format": "int32"
+          },
+          "requirements": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/Requirements"
+              }
+            ]
+          },
+          "state": {
+            "$ref": "#/components/schemas/StateEnum"
           },
           "tags": {
             "type": "array",
@@ -17717,7 +17821,7 @@
       },
       "DetailedChallenge": {
         "type": "object",
-        "required": ["files", "hints"],
+        "required": ["files", "hints", "solves"],
         "properties": {
           "files": {
             "type": "array",
@@ -17736,6 +17840,11 @@
             "items": {
               "$ref": "#/components/schemas/ChallengeInstance"
             }
+          },
+          "solves": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
           }
         }
       },
@@ -18045,6 +18154,79 @@
             "type": "boolean"
           }
         }
+      },
+      "Grouping": {
+        "type": "object",
+        "required": ["kind", "name", "description"],
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/GroupingKind"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "GroupingKind": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["data", "type"],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": ["name", "description", "sequence", "skipable"],
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "sequence": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "skipable": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["linear"]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["data", "type"],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": ["name", "description"],
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["simultaneous"]
+              }
+            }
+          }
+        ]
       },
       "Health": {
         "type": "object",
@@ -19171,6 +19353,10 @@
             "$ref": "#/components/schemas/DeploymentIdSchema"
           }
         }
+      },
+      "InvalidAction": {
+        "type": "string",
+        "enum": ["hide", "disable"]
       },
       "InviteIdSchema": {
         "type": "object",
@@ -20654,18 +20840,66 @@
           }
         }
       },
+      "PlayerChallenge": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["data", "type"],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": ["summary"],
+                "properties": {
+                  "summary": {
+                    "$ref": "#/components/schemas/ChallengeSummary"
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["single"]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["data", "type"],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": ["group", "summaries"],
+                "properties": {
+                  "group": {
+                    "$ref": "#/components/schemas/Grouping"
+                  },
+                  "summaries": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ChallengeSummary"
+                    }
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["group"]
+              }
+            }
+          }
+        ]
+      },
       "PlayerChallengeState": {
         "type": "string",
-        "enum": ["solved", "unsolved", "challenge_limit_reached"]
+        "enum": ["solved", "unsolved", "challenge_limit_reached", "disabled"]
       },
       "PlayerChallenges": {
         "type": "object",
-        "required": ["summaries"],
+        "required": ["challenges"],
         "properties": {
-          "summaries": {
+          "challenges": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ChallengeSummary"
+              "$ref": "#/components/schemas/PlayerChallenge"
             }
           }
         }
@@ -20996,6 +21230,149 @@
           }
         }
       },
+      "RequirementKind": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["data", "type"],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": ["score"],
+                "properties": {
+                  "score": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 0
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["min_score"]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["data", "type"],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": ["score"],
+                "properties": {
+                  "score": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 0
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["max_score"]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["data", "type"],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": ["rank"],
+                "properties": {
+                  "rank": {
+                    "type": "integer",
+                    "format": "int64",
+                    "minimum": 0
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["min_rank"]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["data", "type"],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": ["time"],
+                "properties": {
+                  "time": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["after_time"]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["data", "type"],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": ["time"],
+                "properties": {
+                  "time": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["before_time"]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["data", "type"],
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": ["start", "end"],
+                "properties": {
+                  "end": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "start": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["during_time"]
+              }
+            }
+          }
+        ]
+      },
+      "Requirements": {
+        "type": "object",
+        "required": ["kind", "invalid_action"],
+        "properties": {
+          "invalid_action": {
+            "$ref": "#/components/schemas/InvalidAction"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/RequirementKind"
+          }
+        }
+      },
       "ResetPasswordSchema": {
         "type": "object",
         "required": ["token", "email", "new_password"],
@@ -21103,6 +21480,10 @@
             "type": "string"
           }
         }
+      },
+      "StateEnum": {
+        "type": "string",
+        "enum": ["disabled", "hidden", "visible"]
       },
       "Stats": {
         "type": "object",

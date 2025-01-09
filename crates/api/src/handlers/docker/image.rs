@@ -16,7 +16,7 @@ use crate::errors::Result;
 use crate::schemas::JsonResponse;
 use crate::{ApiResponse, AppState};
 
-#[api_macros::requires_permission(permission = "docker.image:read")]
+#[api_macros::rbac("docker.image:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/image",
@@ -50,7 +50,7 @@ pub async fn list(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.image:delete")]
+#[api_macros::rbac("docker.image:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/image",
@@ -80,7 +80,7 @@ pub async fn prune(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.image:delete")]
+#[api_macros::rbac("docker.image:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/image/{name}",
@@ -113,7 +113,7 @@ pub async fn remove(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.image:read")]
+#[api_macros::rbac("docker.image:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/image/{name}",
@@ -134,7 +134,7 @@ pub async fn inspect(state: State<Arc<AppState>>, Path(name): Path<String>) -> R
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.image:read")]
+#[api_macros::rbac("docker.image:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/image/{name}/history",
@@ -165,7 +165,7 @@ pub async fn history(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.image:update")]
+#[api_macros::rbac("docker.image:update")]
 #[utoipa::path(
     patch,
     path = "/admin/docker/image/{name}/tag",
@@ -194,7 +194,7 @@ pub async fn tag(
     }))
 }
 
-#[api_macros::requires_permission(permission = "docker.image:read")]
+#[api_macros::rbac("docker.image:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/image/search",
@@ -228,7 +228,8 @@ pub async fn search(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.image:create")]
+#[axum::debug_handler]
+#[api_macros::rbac("docker.image:create")]
 #[utoipa::path(
     post,
     path = "/admin/docker/image",
@@ -276,7 +277,7 @@ pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/image", get(list).post(create).delete(prune))
         .route("/image/search", get(search))
-        .route("/image/:name", get(inspect).delete(remove))
-        .route("/image/:name/history", get(history))
-        .route("/image/:name/tag", patch(tag))
+        .route("/image/{name}", get(inspect).delete(remove))
+        .route("/image/{name}/history", get(history))
+        .route("/image/{name}/tag", patch(tag))
 }

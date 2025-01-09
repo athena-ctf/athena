@@ -18,7 +18,7 @@ use crate::errors::{Error, Result};
 use crate::schemas::{File, FileModel, FileSchema, JsonResponse, StoredFile};
 use crate::{ApiResponse, AppState};
 
-#[api_macros::requires_permission(permission = "fileserver:upload")]
+#[api_macros::rbac("fileserver:upload")]
 #[utoipa::path(
     post,
     path = "/admin/fileserver",
@@ -58,7 +58,7 @@ pub async fn upload(state: State<Arc<AppState>>, mut multipart: Multipart) -> Re
     Err(Error::BadRequest("Invalid form data".to_owned()))
 }
 
-#[api_macros::requires_permission(permission = "fileserver:download")]
+#[api_macros::rbac("fileserver:download")]
 #[utoipa::path(
     get,
     path = "/admin/fileserver/{id}/download",
@@ -121,7 +121,7 @@ async fn download(
     }
 }
 
-#[api_macros::requires_permission(permission = "fileserver:delete")]
+#[api_macros::rbac("fileserver:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/fileserver/{id}",
@@ -145,7 +145,7 @@ pub async fn delete(state: State<Arc<AppState>>, Path(id): Path<Uuid>) -> Result
     Ok(ApiResponse::no_content())
 }
 
-#[api_macros::requires_permission(permission = "fileserver:read")]
+#[api_macros::rbac("fileserver:read")]
 #[utoipa::path(
     get,
     path = "/admin/fileserver",
@@ -175,7 +175,7 @@ pub async fn list(state: State<Arc<AppState>>) -> Result<ApiResponse<Json<Vec<St
     Ok(ApiResponse::json_ok(files))
 }
 
-#[api_macros::requires_permission(permission = "fileserver:sync")]
+#[api_macros::rbac("fileserver:sync")]
 #[utoipa::path(
     post,
     path = "/admin/fileserver/sync",
@@ -195,7 +195,7 @@ pub async fn sync(state: State<Arc<AppState>>) -> Result<ApiResponse<Json<JsonRe
     }))
 }
 
-#[api_macros::requires_permission(permission = "fileserver:read")]
+#[api_macros::rbac("fileserver:read")]
 #[utoipa::path(
     get,
     path = "/admin/fileserver/{id}",
@@ -232,8 +232,8 @@ pub fn router() -> Router<Arc<AppState>> {
         "/fileserver",
         Router::new()
             .route("", get(list).post(upload))
-            .route("/:id", head(meta).delete(delete))
+            .route("/{id}", head(meta).delete(delete))
             .route("/sync", post(sync))
-            .route("/:id/dowwnload", get(download)),
+            .route("/{id}/dowwnload", get(download)),
     )
 }

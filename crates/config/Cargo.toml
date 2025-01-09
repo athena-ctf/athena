@@ -6,7 +6,7 @@ edition = "2024"
 [dependencies]
 base64ct = { workspace = true }
 chrono = { workspace = true }
-config_rs = { package = "config", version = "0.14.1", default-features = false, features = [
+config_rs = { package = "config", version = "0.15.4", default-features = false, features = [
     "async",
     "convert-case",
     "json",

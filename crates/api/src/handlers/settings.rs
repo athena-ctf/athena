@@ -10,7 +10,7 @@ use crate::errors::{Error, Result};
 use crate::schemas::JsonResponse;
 use crate::{ApiResponse, AppState};
 
-#[api_macros::requires_permission(permission = "settings:read")]
+#[api_macros::rbac("settings:read")]
 #[utoipa::path(
     get,
     path = "/admin/settings/{*path}",
@@ -44,7 +44,7 @@ pub async fn retrieve(state: State<Arc<AppState>>, Path(path): Path<String>) -> 
         )
 }
 
-#[api_macros::requires_permission(permission = "settings:update")]
+#[api_macros::rbac("settings:update")]
 #[utoipa::path(
     patch,
     path = "/admin/settings/{*path}",
@@ -83,5 +83,5 @@ pub async fn update(
 }
 
 pub fn router() -> Router<Arc<AppState>> {
-    Router::new().route("/settings/*path", get(retrieve).patch(update))
+    Router::new().route("/settings/{*path}", get(retrieve).patch(update))
 }

@@ -12,7 +12,7 @@ use crate::errors::Result;
 use crate::schemas::JsonResponse;
 use crate::{ApiResponse, AppState};
 
-#[api_macros::requires_permission(permission = "docker.network:read")]
+#[api_macros::rbac("docker.network:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/network",
@@ -44,7 +44,7 @@ pub async fn list(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.network:delete")]
+#[api_macros::rbac("docker.network:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/network",
@@ -74,7 +74,7 @@ pub async fn prune(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.network:create")]
+#[api_macros::rbac("docker.network:create")]
 #[utoipa::path(
     post,
     path = "/admin/docker/network",
@@ -97,7 +97,7 @@ pub async fn create(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.network:read")]
+#[api_macros::rbac("docker.network:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/network/{name}",
@@ -130,7 +130,7 @@ pub async fn inspect(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.network:delete")]
+#[api_macros::rbac("docker.network:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/network/{name}",
@@ -151,7 +151,7 @@ pub async fn remove(state: State<Arc<AppState>>, Path(name): Path<String>) -> Re
     Ok(ApiResponse::no_content())
 }
 
-#[api_macros::requires_permission(permission = "docker.network:update")]
+#[api_macros::rbac("docker.network:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/network/{name}/connect",
@@ -180,7 +180,7 @@ pub async fn connect(
     }))
 }
 
-#[api_macros::requires_permission(permission = "docker.network:update")]
+#[api_macros::rbac("docker.network:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/network/{name}/disconnect",
@@ -216,7 +216,7 @@ pub async fn disconnect(
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/network", get(list).post(create).delete(prune))
-        .route("/network/:name", get(inspect).delete(remove))
-        .route("/network/:name/connect", post(connect))
-        .route("/network/:name/disconnect", post(disconnect))
+        .route("/network/{name}", get(inspect).delete(remove))
+        .route("/network/{name}/connect", post(connect))
+        .route("/network/{name}/disconnect", post(disconnect))
 }

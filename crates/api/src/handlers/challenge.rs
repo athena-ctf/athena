@@ -1,5 +1,8 @@
+use std::collections::HashMap;
 use std::time::Duration;
 
+use chrono::Utc;
+use entity::extensions::{InvalidAction, RequirementKind};
 use entity::prelude::ChallengeKindEnum;
 use sea_orm::{Iterable, QueryFilter, QueryOrder, QuerySelect};
 use tokio_cron_scheduler::Job;
@@ -8,7 +11,7 @@ use crate::jwt::AuthPlayer;
 use crate::redis_keys::CHALLENGE_SOLVES;
 use crate::schemas::{
     ChallengeInstance, ChallengeSummary, DeploymentModel, DetailedChallenge, HintModel, HintSummary, Instance,
-    PlayerChallengeState, PlayerChallenges, Unlock, UnlockModel, UnlockStatus,
+    PlayerChallenge, PlayerChallengeState, PlayerChallenges, Unlock, UnlockModel, UnlockStatus,
 };
 
 api_macros::crud!(
@@ -31,7 +34,10 @@ pub async fn player_challenges(
     AuthPlayer(player): AuthPlayer,
     state: State<Arc<AppState>>,
 ) -> Result<ApiResponse<Json<PlayerChallenges>>> {
-    let challenges = Challenge::find().all(&state.db_conn).await?;
+    let challenges = Challenge::find()
+        .filter(entity::challenge::Column::State.ne(entity::sea_orm_active_enums::StateEnum::Hidden))
+        .all(&state.db_conn)
+        .await?;
     let submissions = Submission::find()
         .select_only()
         .columns([
@@ -47,10 +53,10 @@ pub async fn player_challenges(
 
     let mut summaries = Vec::with_capacity(challenges.len());
     for challenge in challenges {
-        let player_state = submissions
+        let mut player_state = submissions
             .binary_search_by_key(&challenge.id, |(id, ..)| *id)
             .ok()
-            .map_or(PlayerChallengeState::ChallengeLimitReached, |idx: usize| {
+            .map_or(PlayerChallengeState::Unsolved, |idx: usize| {
                 let (_, flags, is_correct) = &submissions[idx];
 
                 if *is_correct {
@@ -75,21 +81,76 @@ pub async fn player_challenges(
             None
         };
 
-        let solves = state
-            .redis_client
-            .hget(CHALLENGE_SOLVES, challenge.id.to_string())
-            .await?;
+        if let Some(ref requirements) = challenge.requirements {
+            let (rank, score) = state.leaderboard_manager.player_rank(player.sub).await?;
+            let now = Utc::now();
 
-        summaries.push(ChallengeSummary {
+            let satisfied = match requirements.kind {
+                RequirementKind::MinScore { score: min_score } => score as u64 >= min_score,
+                RequirementKind::MaxScore { score: max_score } => score as u64 <= max_score,
+                RequirementKind::MinRank { rank: min_rank } => rank >= min_rank,
+                RequirementKind::AfterTime { time } => time <= now,
+                RequirementKind::BeforeTime { time } => time >= now,
+                RequirementKind::DuringTime { start, end } => start <= now && now <= end,
+            };
+
+            if !satisfied {
+                match requirements.invalid_action {
+                    InvalidAction::Hide => continue,
+                    InvalidAction::Disable => player_state = PlayerChallengeState::Disabled,
+                }
+            }
+        }
+
+        summaries.push((challenge.grouping.clone(), ChallengeSummary {
             challenge,
             state: player_state,
             deployment,
-            solves,
             attempts: submissions.len(),
-        });
+        }));
     }
 
-    Ok(ApiResponse::json_ok(PlayerChallenges { summaries }))
+    struct Accumulator {
+        group_indices: HashMap<String, usize>,
+        player_challenges: Vec<PlayerChallenge>,
+    }
+
+    Ok(ApiResponse::json_ok(PlayerChallenges {
+        challenges: summaries
+            .into_iter()
+            .fold(
+                Accumulator {
+                    group_indices: HashMap::new(),
+                    player_challenges: Vec::new(),
+                },
+                |mut acc, (grouping, challenge_summary)| {
+                    if let Some(grouping) = grouping {
+                        if let Some(idx) = acc.group_indices.get(&grouping.name) {
+                            match &mut acc.player_challenges[*idx] {
+                                PlayerChallenge::Group { group: _, summaries } => {
+                                    summaries.push(challenge_summary);
+                                }
+                                PlayerChallenge::Single { .. } => unreachable!(),
+                            }
+                        } else {
+                            acc.group_indices
+                                .insert(grouping.name.clone(), acc.player_challenges.len());
+                            acc.player_challenges.push(PlayerChallenge::Group {
+                                group: grouping,
+                                summaries: vec![challenge_summary],
+                            });
+                        }
+                    } else {
+                        acc.player_challenges.push(PlayerChallenge::Single {
+                            summary: challenge_summary,
+                        });
+                    }
+
+                    acc
+                },
+            )
+            .player_challenges,
+    }))
 }
 
 #[utoipa::path(
@@ -158,6 +219,8 @@ pub async fn detailed_challenge(
         None
     };
 
+    let solves = state.redis_client.hget(CHALLENGE_SOLVES, id.to_string()).await?;
+
     Ok(ApiResponse::json_ok(DetailedChallenge {
         files: File::find()
             .inner_join(ChallengeFile)
@@ -166,6 +229,7 @@ pub async fn detailed_challenge(
             .await?,
         hints,
         instances,
+        solves,
     }))
 }
 

@@ -1,7 +1,3 @@
-cargo upgrade
-cargo update
+cargo upgrade --verbose
+cargo update --verbose
 pnpm up -r
-
-for f in goprojects/*
-    do (cd $f && go get -u)
-done

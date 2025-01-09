@@ -7,8 +7,8 @@ use crate::{AppState, handlers};
 
 pub fn utils_router() -> Router<Arc<AppState>> {
     Router::new()
-        .route("/ban/player/:id", post(handlers::ban::add_player_by_id))
-        .route("/unban/player/:id", post(handlers::ban::remove_player_by_id))
+        .route("/ban/player/{id}", post(handlers::ban::add_player_by_id))
+        .route("/unban/player/{id}", post(handlers::ban::remove_player_by_id))
         .route("/current", get(handlers::admin::get_current_logged_in))
 }
 
@@ -31,7 +31,7 @@ pub fn router() -> Router<Arc<AppState>> {
             .merge(handlers::instance::router())
             .merge(handlers::invite::router())
             .merge(handlers::notification::router())
-            .merge(handlers::permission::router())
+            .merge(handlers::rbac::router())
             .merge(handlers::player_award::router())
             .merge(handlers::player::router())
             .merge(handlers::settings::router())

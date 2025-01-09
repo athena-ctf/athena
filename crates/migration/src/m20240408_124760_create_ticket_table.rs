@@ -26,7 +26,7 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Ticket::CreatedAt).timestamp_with_time_zone().not_null())
                     .col(ColumnDef::new(Ticket::UpdatedAt).timestamp_with_time_zone().not_null())
                     .col(ColumnDef::new(Ticket::Title).string().not_null())
-                    .col(ColumnDef::new(Ticket::Description).text().not_null())
+                    .col(ColumnDef::new(Ticket::Description).string().not_null())
                     .col(
                         ColumnDef::new(Ticket::Status)
                             .enumeration(TicketStatusEnum, TicketStatusVariants::iter())

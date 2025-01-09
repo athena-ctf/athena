@@ -2575,6 +2575,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/player/file/upload": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations["player_file_upload"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/player/file/{id}/download": {
     parameters: {
       query?: never;
@@ -2582,7 +2598,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations["file_download"];
+    get: operations["player_file_download"];
     put?: never;
     post?: never;
     delete?: never;
@@ -3042,6 +3058,7 @@ export interface components {
       /** Format: date-time */
       created_at: string;
       description: string;
+      grouping?: null | components["schemas"]["Grouping"];
       /** Format: uuid */
       id: string;
       kind: components["schemas"]["ChallengeKindEnum"];
@@ -3051,6 +3068,8 @@ export interface components {
       max_attempts?: number | null;
       /** Format: int32 */
       points: number;
+      requirements?: null | components["schemas"]["Requirements"];
+      state: components["schemas"]["StateEnum"];
       tags: string[];
       title: string;
       /** Format: date-time */
@@ -3070,8 +3089,6 @@ export interface components {
       attempts: number;
       challenge: components["schemas"]["ChallengeModel"];
       deployment?: null | components["schemas"]["DeploymentModel"];
-      /** Format: int64 */
-      solves: number;
       state: components["schemas"]["PlayerChallengeState"];
     };
     /** @enum {string} */
@@ -3364,6 +3381,7 @@ export interface components {
     CreateChallengeSchema: {
       author_name: string;
       description: string;
+      grouping?: null | components["schemas"]["Grouping"];
       kind: components["schemas"]["ChallengeKindEnum"];
       /** Format: int32 */
       level: number;
@@ -3371,6 +3389,8 @@ export interface components {
       max_attempts?: number | null;
       /** Format: int32 */
       points: number;
+      requirements?: null | components["schemas"]["Requirements"];
+      state: components["schemas"]["StateEnum"];
       tags: string[];
       title: string;
     };
@@ -3552,6 +3572,8 @@ export interface components {
       files: components["schemas"]["FileModel"][];
       hints: components["schemas"]["HintSummary"][];
       instances?: components["schemas"]["ChallengeInstance"][] | null;
+      /** Format: int64 */
+      solves: number;
     };
     DeviceMapping: {
       cgroup_permissions?: string | null;
@@ -3652,6 +3674,30 @@ export interface components {
     FlagVerificationResult: {
       is_correct: boolean;
     };
+    Grouping: {
+      description: string;
+      kind: components["schemas"]["GroupingKind"];
+      name: string;
+    };
+    GroupingKind:
+      | {
+          data: {
+            description: string;
+            name: string;
+            sequence: string[];
+            skipable: boolean;
+          };
+          /** @enum {string} */
+          type: "linear";
+        }
+      | {
+          data: {
+            description: string;
+            name: string;
+          };
+          /** @enum {string} */
+          type: "simultaneous";
+        };
     Health: {
       /** Format: int64 */
       failing_streak?: number | null;
@@ -3989,6 +4035,8 @@ export interface components {
     InstanceRelations: {
       deployment: components["schemas"]["DeploymentIdSchema"];
     };
+    /** @enum {string} */
+    InvalidAction: "hide" | "disable";
     InviteIdSchema: {
       /** Format: uuid */
       id: string;
@@ -4483,10 +4531,26 @@ export interface components {
       award: components["schemas"]["AwardIdSchema"];
       player: components["schemas"]["PlayerIdSchema"];
     };
+    PlayerChallenge:
+      | {
+          data: {
+            summary: components["schemas"]["ChallengeSummary"];
+          };
+          /** @enum {string} */
+          type: "single";
+        }
+      | {
+          data: {
+            group: components["schemas"]["Grouping"];
+            summaries: components["schemas"]["ChallengeSummary"][];
+          };
+          /** @enum {string} */
+          type: "group";
+        };
     /** @enum {string} */
-    PlayerChallengeState: "solved" | "unsolved" | "challenge_limit_reached";
+    PlayerChallengeState: "solved" | "unsolved" | "challenge_limit_reached" | "disabled";
     PlayerChallenges: {
-      summaries: components["schemas"]["ChallengeSummary"][];
+      challenges: components["schemas"]["PlayerChallenge"][];
     };
     PlayerDetails: {
       profile: components["schemas"]["PlayerProfile"];
@@ -4572,6 +4636,61 @@ export interface components {
       token: string;
       username: string;
     };
+    RequirementKind:
+      | {
+          data: {
+            /** Format: int64 */
+            score: number;
+          };
+          /** @enum {string} */
+          type: "min_score";
+        }
+      | {
+          data: {
+            /** Format: int64 */
+            score: number;
+          };
+          /** @enum {string} */
+          type: "max_score";
+        }
+      | {
+          data: {
+            /** Format: int64 */
+            rank: number;
+          };
+          /** @enum {string} */
+          type: "min_rank";
+        }
+      | {
+          data: {
+            /** Format: date-time */
+            time: string;
+          };
+          /** @enum {string} */
+          type: "after_time";
+        }
+      | {
+          data: {
+            /** Format: date-time */
+            time: string;
+          };
+          /** @enum {string} */
+          type: "before_time";
+        }
+      | {
+          data: {
+            /** Format: date-time */
+            end: string;
+            /** Format: date-time */
+            start: string;
+          };
+          /** @enum {string} */
+          type: "during_time";
+        };
+    Requirements: {
+      invalid_action: components["schemas"]["InvalidAction"];
+      kind: components["schemas"]["RequirementKind"];
+    };
     ResetPasswordSchema: {
       email: string;
       new_password: string;
@@ -4608,6 +4727,8 @@ export interface components {
     StartContainerBody: {
       detach_keys: string;
     };
+    /** @enum {string} */
+    StateEnum: "disabled" | "hidden" | "visible";
     Stats: {
       blkio_stats: components["schemas"]["BlkioStats"];
       cpu_stats: components["schemas"]["CPUStats"];
@@ -17024,7 +17145,57 @@ export interface operations {
       };
     };
   };
-  file_download: {
+  player_file_upload: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          /** Format: binary */
+          file: File;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["JsonResponse"];
+        };
+      };
+    };
+  };
+  player_file_download: {
     parameters: {
       query?: never;
       header?: never;

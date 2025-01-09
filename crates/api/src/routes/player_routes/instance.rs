@@ -7,5 +7,5 @@ use crate::AppState;
 use crate::handlers::instance;
 
 pub fn router() -> Router<Arc<AppState>> {
-    Router::new().route("/instance/restart/:id", get(instance::restart))
+    Router::new().route("/instance/restart/{id}", get(instance::restart))
 }

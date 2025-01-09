@@ -12,13 +12,26 @@ import { Toaster } from "@repo/ui/components/sonner";
 import { ThemeProvider } from "@repo/ui/components/theme-provider";
 import { TooltipProvider } from "@repo/ui/components/tooltip";
 import { Outlet, createRootRoute, useLocation } from "@tanstack/react-router";
-import { Container, Mail, Table2 } from "lucide-react";
+import { Container, IdCard, Mail, Table2 } from "lucide-react";
 
 const sidebarItems: SidebarItem[] = [
   {
     title: "Mail",
     icon: Mail,
-    items: [{ title: "Inbox", url: "/mail/inbox" }],
+    items: [
+      { title: "Inbox", url: "/mail/inbox" },
+      { title: "Trash", url: "/mail/trash" },
+      { title: "Sent", url: "/mail/sent" },
+      { title: "Spam", url: "/mail/spam" },
+    ],
+  },
+  {
+    title: "RBAC",
+    icon: IdCard,
+    items: [
+      { title: "Roles", url: "/rbac/roles" },
+      { title: "Overrides", url: "/rbac/overrides" },
+    ],
   },
   {
     title: "Docker",

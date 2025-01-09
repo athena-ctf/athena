@@ -11,7 +11,7 @@ use crate::errors::Result;
 use crate::schemas::JsonResponse;
 use crate::{ApiResponse, AppState};
 
-#[api_macros::requires_permission(permission = "docker.volume:read")]
+#[api_macros::rbac("docker.volume:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/volume",
@@ -45,7 +45,7 @@ pub async fn list(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.volume:create")]
+#[api_macros::rbac("docker.volume:create")]
 #[utoipa::path(
     post,
     path = "/admin/docker/volume",
@@ -68,7 +68,7 @@ pub async fn create(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.volume:read")]
+#[api_macros::rbac("docker.volume:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/volume/{name}",
@@ -90,7 +90,7 @@ pub async fn inspect(state: State<Arc<AppState>>, Path(name): Path<String>) -> R
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.volume:delete")]
+#[api_macros::rbac("docker.volume:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/volume/{name}",
@@ -121,7 +121,7 @@ pub async fn remove(
     Ok(ApiResponse::no_content())
 }
 
-#[api_macros::requires_permission(permission = "docker.volume:delete")]
+#[api_macros::rbac("docker.volume:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/volume",
@@ -154,5 +154,5 @@ pub async fn prune(
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/volume", get(list).post(create).delete(prune))
-        .route("/volume/:name", get(inspect).delete(remove))
+        .route("/volume/{name}", get(inspect).delete(remove))
 }

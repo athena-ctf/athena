@@ -7,7 +7,7 @@ mod handlers;
 mod jwt;
 mod leaderboard;
 mod middleware;
-mod permission;
+mod rbac;
 mod redis_keys;
 mod schemas;
 mod tasks;
@@ -87,7 +87,7 @@ pub struct AppState {
     pub docker_manager: Arc<docker::Manager>,
     pub token_manager: Arc<token::Manager>,
     pub leaderboard_manager: Arc<leaderboard::Manager>,
-    pub permission_manager: Arc<permission::Manager>,
+    pub rbac_manager: Arc<rbac::Manager>,
     pub fileserver_manager: Arc<fileserver::Manager>,
 
     pub scheduler: JobScheduler,
@@ -185,14 +185,8 @@ pub async fn start(settings: Settings) -> Result<()> {
         settings.token.token_expiry_in_secs,
     ));
 
-    let permission_manager = Arc::new(
-        permission::Manager::new(
-            redis_client.clone(),
-            permission::get_defaults(),
-            routes::get_url_mappings(),
-        )
-        .await?,
-    );
+    let rbac_manager =
+        Arc::new(rbac::Manager::new(redis_client.clone(), rbac::get_defaults(), routes::get_url_mappings()).await?);
 
     let fileserver_manager = Arc::new(fileserver::Manager::new(
         LocalFileSystem::new_with_prefix(&settings.file_storage.local.path)?.with_automatic_cleanup(true),
@@ -218,7 +212,7 @@ pub async fn start(settings: Settings) -> Result<()> {
             settings: settings.clone(),
             token_manager,
             leaderboard_manager,
-            permission_manager,
+            rbac_manager,
             fileserver_manager,
             scheduler,
             redis_client: redis_client.clone(),

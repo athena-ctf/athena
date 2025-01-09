@@ -1,4 +1,3 @@
-use axum::async_trait;
 use axum::extract::FromRequestParts;
 use axum::http::request::Parts;
 use jsonwebtoken::{EncodingKey, Header};
@@ -100,7 +99,6 @@ pub struct AuthAdmin(pub AdminAccessClaims);
 
 pub struct AuthPlayer(pub PlayerAccessClaims);
 
-#[async_trait]
 impl<S> FromRequestParts<S> for AuthAdmin
 where
     S: Send + Sync,
@@ -116,7 +114,6 @@ where
     }
 }
 
-#[async_trait]
 impl<S> FromRequestParts<S> for AuthPlayer
 where
     S: Send + Sync,

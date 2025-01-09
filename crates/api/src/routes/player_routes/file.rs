@@ -11,5 +11,5 @@ pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/file/upload", post(file::player_upload))
         .layer(DefaultBodyLimit::max(crate::utils::to_mb(2)))
-        .route("/file/:id/download", get(file::player_download))
+        .route("/file/{id}/download", get(file::player_download))
 }

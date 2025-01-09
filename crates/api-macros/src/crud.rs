@@ -55,7 +55,7 @@ fn gen_list_fn(entity: &Ident) -> impl ToTokens {
     let entity_model = format_ident!("{entity}Model");
 
     quote! {
-        #[api_macros::requires_permission(permission = #permission)]
+        #[api_macros::rbac(#permission)]
         #[utoipa::path(
             get,
             path = #path,
@@ -83,7 +83,7 @@ fn gen_list_ids_fn(entity: &Ident) -> impl ToTokens {
     let entity_id_schema = format_ident!("{}IdSchema", entity);
 
     quote! {
-        #[api_macros::requires_permission(permission = #permission)]
+        #[api_macros::rbac(#permission)]
         #[utoipa::path(
             get,
             path = #path,
@@ -117,7 +117,7 @@ fn gen_create_fn(entity: &Ident) -> impl ToTokens {
     let request_body = format_ident!("Create{entity}Schema");
 
     quote! {
-        #[api_macros::requires_permission(permission = #permission)]
+        #[api_macros::rbac(#permission)]
         #[utoipa::path(
             post,
             path = #path,
@@ -155,7 +155,7 @@ fn gen_retrieve_fn(entity: &Ident) -> impl ToTokens {
     let entity_model = format_ident!("{entity}Model");
 
     quote! {
-        #[api_macros::requires_permission(permission = #permission)]
+        #[api_macros::rbac(#permission)]
         #[utoipa::path(
             get,
             path = #path,
@@ -194,7 +194,7 @@ fn gen_update_fn(entity: &Ident) -> impl ToTokens {
     let request_body = format_ident!("Create{entity}Schema");
 
     quote! {
-        #[api_macros::requires_permission(permission = #permission)]
+        #[api_macros::rbac(#permission)]
         #[utoipa::path(
             put,
             path = #path,
@@ -231,7 +231,7 @@ fn gen_delete_fn(entity: &Ident) -> impl ToTokens {
     let permission = format!("{entity_snake}:delete");
 
     quote! {
-        #[api_macros::requires_permission(permission = #permission)]
+        #[api_macros::rbac(#permission)]
         #[utoipa::path(
             delete,
             path = #path,
@@ -326,7 +326,7 @@ fn gen_relations_fn(entity: &Ident, single: &[Ident], multiple: &[Ident], option
             #(#multiple_fields)*
         }
 
-        #[api_macros::requires_permission(permission = #permission)]
+        #[api_macros::rbac(#permission)]
         #[utoipa::path(
             get,
             path = #path,
@@ -369,7 +369,7 @@ fn gen_import_fn(entity: &Ident) -> impl ToTokens {
     let permission = format!("{entity_snake}:create");
 
     quote! {
-        #[api_macros::requires_permission(permission = #permission)]
+        #[api_macros::rbac(#permission)]
         #[utoipa::path(
             post,
             path = #path,
@@ -416,7 +416,7 @@ fn gen_export_fn(entity: &Ident) -> impl ToTokens {
     let permission = format!("{entity_snake}:read");
 
     quote! {
-        #[api_macros::requires_permission(permission = #permission)]
+        #[api_macros::rbac(#permission)]
         #[utoipa::path(
             get,
             path = #path,
@@ -471,8 +471,8 @@ pub fn crud_impl(input: TokenStream) -> TokenStream {
     let entity_snake = heck::AsSnakeCase(entity.to_string());
 
     let route_base = format!("/{entity_snake}");
-    let route_id = format!("{route_base}/:id");
-    let route_relations = format!("{route_base}/:id/relations");
+    let route_id = format!("{route_base}/{{id}}");
+    let route_relations = format!("{route_base}/{{id}}/relations");
     let route_import = format!("{route_base}/import");
     let route_export = format!("{route_base}/export");
 

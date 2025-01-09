@@ -63,7 +63,7 @@ pub async fn middleware(
         }
 
         if state
-            .permission_manager
+            .rbac_manager
             .can_do_action(req.method().clone(), path.to_string(), claims.role.clone(), claims.sub)
             .await?
         {

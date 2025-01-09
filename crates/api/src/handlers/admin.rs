@@ -2,7 +2,7 @@ use crate::jwt::AuthAdmin;
 
 api_macros::crud!(Admin, single: [], optional: [], multiple: [Ticket]);
 
-#[api_macros::requires_permission(permission = "admin:get_current")]
+#[api_macros::rbac("admin:get_current")]
 #[utoipa::path(
     get,
     path = "/admin/current",

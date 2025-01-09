@@ -42,7 +42,7 @@ impl MigrationTrait for Migration {
                             .timestamp_with_time_zone()
                             .not_null(),
                     )
-                    .col(ColumnDef::new(Challenge::Title).string().not_null())
+                    .col(ColumnDef::new(Challenge::Title).string().not_null().unique_key())
                     .col(ColumnDef::new(Challenge::Description).string().not_null())
                     .col(ColumnDef::new(Challenge::Points).integer().not_null())
                     .col(ColumnDef::new(Challenge::Level).integer().not_null())

@@ -32,6 +32,12 @@ import { Route as TableChallengeImport } from './routes/table/challenge'
 import { Route as TableBanImport } from './routes/table/ban'
 import { Route as TableAwardImport } from './routes/table/award'
 import { Route as TableAdminImport } from './routes/table/admin'
+import { Route as RbacRolesImport } from './routes/rbac/roles'
+import { Route as RbacOverridesImport } from './routes/rbac/overrides'
+import { Route as MailTrashImport } from './routes/mail/trash'
+import { Route as MailSpamImport } from './routes/mail/spam'
+import { Route as MailSentImport } from './routes/mail/sent'
+import { Route as MailInboxImport } from './routes/mail/inbox'
 import { Route as DockerVolumesImport } from './routes/docker/volumes'
 import { Route as DockerNetworksImport } from './routes/docker/networks'
 import { Route as DockerImagesImport } from './routes/docker/images'
@@ -163,6 +169,42 @@ const TableAdminRoute = TableAdminImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const RbacRolesRoute = RbacRolesImport.update({
+  id: '/rbac/roles',
+  path: '/rbac/roles',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RbacOverridesRoute = RbacOverridesImport.update({
+  id: '/rbac/overrides',
+  path: '/rbac/overrides',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MailTrashRoute = MailTrashImport.update({
+  id: '/mail/trash',
+  path: '/mail/trash',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MailSpamRoute = MailSpamImport.update({
+  id: '/mail/spam',
+  path: '/mail/spam',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MailSentRoute = MailSentImport.update({
+  id: '/mail/sent',
+  path: '/mail/sent',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MailInboxRoute = MailInboxImport.update({
+  id: '/mail/inbox',
+  path: '/mail/inbox',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const DockerVolumesRoute = DockerVolumesImport.update({
   id: '/docker/volumes',
   path: '/docker/volumes',
@@ -224,6 +266,48 @@ declare module '@tanstack/react-router' {
       path: '/docker/volumes'
       fullPath: '/docker/volumes'
       preLoaderRoute: typeof DockerVolumesImport
+      parentRoute: typeof rootRoute
+    }
+    '/mail/inbox': {
+      id: '/mail/inbox'
+      path: '/mail/inbox'
+      fullPath: '/mail/inbox'
+      preLoaderRoute: typeof MailInboxImport
+      parentRoute: typeof rootRoute
+    }
+    '/mail/sent': {
+      id: '/mail/sent'
+      path: '/mail/sent'
+      fullPath: '/mail/sent'
+      preLoaderRoute: typeof MailSentImport
+      parentRoute: typeof rootRoute
+    }
+    '/mail/spam': {
+      id: '/mail/spam'
+      path: '/mail/spam'
+      fullPath: '/mail/spam'
+      preLoaderRoute: typeof MailSpamImport
+      parentRoute: typeof rootRoute
+    }
+    '/mail/trash': {
+      id: '/mail/trash'
+      path: '/mail/trash'
+      fullPath: '/mail/trash'
+      preLoaderRoute: typeof MailTrashImport
+      parentRoute: typeof rootRoute
+    }
+    '/rbac/overrides': {
+      id: '/rbac/overrides'
+      path: '/rbac/overrides'
+      fullPath: '/rbac/overrides'
+      preLoaderRoute: typeof RbacOverridesImport
+      parentRoute: typeof rootRoute
+    }
+    '/rbac/roles': {
+      id: '/rbac/roles'
+      path: '/rbac/roles'
+      fullPath: '/rbac/roles'
+      preLoaderRoute: typeof RbacRolesImport
       parentRoute: typeof rootRoute
     }
     '/table/admin': {
@@ -370,6 +454,12 @@ export interface FileRoutesByFullPath {
   '/docker/images': typeof DockerImagesRoute
   '/docker/networks': typeof DockerNetworksRoute
   '/docker/volumes': typeof DockerVolumesRoute
+  '/mail/inbox': typeof MailInboxRoute
+  '/mail/sent': typeof MailSentRoute
+  '/mail/spam': typeof MailSpamRoute
+  '/mail/trash': typeof MailTrashRoute
+  '/rbac/overrides': typeof RbacOverridesRoute
+  '/rbac/roles': typeof RbacRolesRoute
   '/table/admin': typeof TableAdminRoute
   '/table/award': typeof TableAwardRoute
   '/table/ban': typeof TableBanRoute
@@ -397,6 +487,12 @@ export interface FileRoutesByTo {
   '/docker/images': typeof DockerImagesRoute
   '/docker/networks': typeof DockerNetworksRoute
   '/docker/volumes': typeof DockerVolumesRoute
+  '/mail/inbox': typeof MailInboxRoute
+  '/mail/sent': typeof MailSentRoute
+  '/mail/spam': typeof MailSpamRoute
+  '/mail/trash': typeof MailTrashRoute
+  '/rbac/overrides': typeof RbacOverridesRoute
+  '/rbac/roles': typeof RbacRolesRoute
   '/table/admin': typeof TableAdminRoute
   '/table/award': typeof TableAwardRoute
   '/table/ban': typeof TableBanRoute
@@ -425,6 +521,12 @@ export interface FileRoutesById {
   '/docker/images': typeof DockerImagesRoute
   '/docker/networks': typeof DockerNetworksRoute
   '/docker/volumes': typeof DockerVolumesRoute
+  '/mail/inbox': typeof MailInboxRoute
+  '/mail/sent': typeof MailSentRoute
+  '/mail/spam': typeof MailSpamRoute
+  '/mail/trash': typeof MailTrashRoute
+  '/rbac/overrides': typeof RbacOverridesRoute
+  '/rbac/roles': typeof RbacRolesRoute
   '/table/admin': typeof TableAdminRoute
   '/table/award': typeof TableAwardRoute
   '/table/ban': typeof TableBanRoute
@@ -454,6 +556,12 @@ export interface FileRouteTypes {
     | '/docker/images'
     | '/docker/networks'
     | '/docker/volumes'
+    | '/mail/inbox'
+    | '/mail/sent'
+    | '/mail/spam'
+    | '/mail/trash'
+    | '/rbac/overrides'
+    | '/rbac/roles'
     | '/table/admin'
     | '/table/award'
     | '/table/ban'
@@ -480,6 +588,12 @@ export interface FileRouteTypes {
     | '/docker/images'
     | '/docker/networks'
     | '/docker/volumes'
+    | '/mail/inbox'
+    | '/mail/sent'
+    | '/mail/spam'
+    | '/mail/trash'
+    | '/rbac/overrides'
+    | '/rbac/roles'
     | '/table/admin'
     | '/table/award'
     | '/table/ban'
@@ -506,6 +620,12 @@ export interface FileRouteTypes {
     | '/docker/images'
     | '/docker/networks'
     | '/docker/volumes'
+    | '/mail/inbox'
+    | '/mail/sent'
+    | '/mail/spam'
+    | '/mail/trash'
+    | '/rbac/overrides'
+    | '/rbac/roles'
     | '/table/admin'
     | '/table/award'
     | '/table/ban'
@@ -534,6 +654,12 @@ export interface RootRouteChildren {
   DockerImagesRoute: typeof DockerImagesRoute
   DockerNetworksRoute: typeof DockerNetworksRoute
   DockerVolumesRoute: typeof DockerVolumesRoute
+  MailInboxRoute: typeof MailInboxRoute
+  MailSentRoute: typeof MailSentRoute
+  MailSpamRoute: typeof MailSpamRoute
+  MailTrashRoute: typeof MailTrashRoute
+  RbacOverridesRoute: typeof RbacOverridesRoute
+  RbacRolesRoute: typeof RbacRolesRoute
   TableAdminRoute: typeof TableAdminRoute
   TableAwardRoute: typeof TableAwardRoute
   TableBanRoute: typeof TableBanRoute
@@ -561,6 +687,12 @@ const rootRouteChildren: RootRouteChildren = {
   DockerImagesRoute: DockerImagesRoute,
   DockerNetworksRoute: DockerNetworksRoute,
   DockerVolumesRoute: DockerVolumesRoute,
+  MailInboxRoute: MailInboxRoute,
+  MailSentRoute: MailSentRoute,
+  MailSpamRoute: MailSpamRoute,
+  MailTrashRoute: MailTrashRoute,
+  RbacOverridesRoute: RbacOverridesRoute,
+  RbacRolesRoute: RbacRolesRoute,
   TableAdminRoute: TableAdminRoute,
   TableAwardRoute: TableAwardRoute,
   TableBanRoute: TableBanRoute,
@@ -597,6 +729,12 @@ export const routeTree = rootRoute
         "/docker/images",
         "/docker/networks",
         "/docker/volumes",
+        "/mail/inbox",
+        "/mail/sent",
+        "/mail/spam",
+        "/mail/trash",
+        "/rbac/overrides",
+        "/rbac/roles",
         "/table/admin",
         "/table/award",
         "/table/ban",
@@ -632,6 +770,24 @@ export const routeTree = rootRoute
     },
     "/docker/volumes": {
       "filePath": "docker/volumes.tsx"
+    },
+    "/mail/inbox": {
+      "filePath": "mail/inbox.tsx"
+    },
+    "/mail/sent": {
+      "filePath": "mail/sent.tsx"
+    },
+    "/mail/spam": {
+      "filePath": "mail/spam.tsx"
+    },
+    "/mail/trash": {
+      "filePath": "mail/trash.tsx"
+    },
+    "/rbac/overrides": {
+      "filePath": "rbac/overrides.tsx"
+    },
+    "/rbac/roles": {
+      "filePath": "rbac/roles.tsx"
     },
     "/table/admin": {
       "filePath": "table/admin.tsx"

@@ -18,7 +18,7 @@ use crate::errors::Result;
 use crate::schemas::{FileSchema, JsonResponse};
 use crate::{ApiResponse, AppState};
 
-#[api_macros::requires_permission(permission = "docker.container:read")]
+#[api_macros::rbac("docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container",
@@ -53,7 +53,7 @@ pub async fn list(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:create")]
+#[api_macros::rbac("docker.container:create")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container",
@@ -84,7 +84,7 @@ pub async fn create(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:read")]
+#[api_macros::rbac("docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}",
@@ -116,7 +116,7 @@ pub async fn inspect(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:delete")]
+#[api_macros::rbac("docker.container:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/container/{name}",
@@ -149,7 +149,7 @@ pub async fn remove(
     Ok(ApiResponse::no_content())
 }
 
-#[api_macros::requires_permission(permission = "docker.container:delete")]
+#[api_macros::rbac("docker.container:delete")]
 #[utoipa::path(
     delete,
     path = "/admin/docker/container",
@@ -179,7 +179,7 @@ pub async fn prune(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:update")]
+#[api_macros::rbac("docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/kill",
@@ -212,7 +212,7 @@ pub async fn kill(
     }))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:update")]
+#[api_macros::rbac("docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/stop",
@@ -245,7 +245,7 @@ pub async fn stop(
     }))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:read")]
+#[api_macros::rbac("docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}/changes",
@@ -277,7 +277,7 @@ pub async fn changes(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:update")]
+#[api_macros::rbac("docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/pause",
@@ -300,7 +300,7 @@ pub async fn pause(state: State<Arc<AppState>>, Path(name): Path<String>) -> Res
     }))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:update")]
+#[api_macros::rbac("docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/unpause",
@@ -323,7 +323,7 @@ pub async fn unpause(state: State<Arc<AppState>>, Path(name): Path<String>) -> R
     }))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:update")]
+#[api_macros::rbac("docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/start",
@@ -356,7 +356,7 @@ pub async fn start(
     }))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:update")]
+#[api_macros::rbac("docker.container:update")]
 #[utoipa::path(
     post,
     path = "/admin/docker/container/{name}/restart",
@@ -389,7 +389,7 @@ pub async fn restart(
     }))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:read")]
+#[api_macros::rbac("docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}/export",
@@ -414,7 +414,7 @@ pub async fn export(state: State<Arc<AppState>>, Path(name): Path<String>) -> Re
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:read")]
+#[api_macros::rbac("docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}/top",
@@ -443,7 +443,7 @@ pub async fn top(
     ))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:read")]
+#[api_macros::rbac("docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}/logs",
@@ -480,7 +480,7 @@ pub async fn logs(state: State<Arc<AppState>>, Path(name): Path<String>) -> Resu
     Ok(ApiResponse::json_ok(logs))
 }
 
-#[api_macros::requires_permission(permission = "docker.container:read")]
+#[api_macros::rbac("docker.container:read")]
 #[utoipa::path(
     get,
     path = "/admin/docker/container/{name}/stats",
@@ -517,16 +517,16 @@ pub async fn stats(state: State<Arc<AppState>>, Path(name): Path<String>) -> Res
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/container", get(list).post(create).delete(prune))
-        .route("/container/:name", get(inspect).delete(remove))
-        .route("/container/:name/kill", post(kill))
-        .route("/container/:name/stop", post(stop))
-        .route("/container/:name/changes", get(changes))
-        .route("/container/:name/pause", post(pause))
-        .route("/container/:name/unpause", post(unpause))
-        .route("/container/:name/start", post(start))
-        .route("/container/:name/restart", post(restart))
-        .route("/container/:name/export", get(export))
-        .route("/container/:name/stats", get(stats))
-        .route("/container/:name/logs", get(logs))
-        .route("/container/:name/top", get(top))
+        .route("/container/{name}", get(inspect).delete(remove))
+        .route("/container/{name}/kill", post(kill))
+        .route("/container/{name}/stop", post(stop))
+        .route("/container/{name}/changes", get(changes))
+        .route("/container/{name}/pause", post(pause))
+        .route("/container/{name}/unpause", post(unpause))
+        .route("/container/{name}/start", post(start))
+        .route("/container/{name}/restart", post(restart))
+        .route("/container/{name}/export", get(export))
+        .route("/container/{name}/stats", get(stats))
+        .route("/container/{name}/logs", get(logs))
+        .route("/container/{name}/top", get(top))
 }
