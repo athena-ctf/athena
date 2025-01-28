@@ -1,3 +1,4 @@
+import { FlagTable } from "@/components/tables/flag";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/table/flag")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/table/flag")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/table/flag"!</div>;
+  return <FlagTable />;
 }

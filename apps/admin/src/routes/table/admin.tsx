@@ -1,3 +1,4 @@
+import { AdminTable } from "@/components/tables/admin";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/table/admin")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/table/admin")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/table/admin"!</div>;
+  return <AdminTable />;
 }

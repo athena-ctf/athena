@@ -1,3 +1,4 @@
+import { BanTable } from "@/components/tables/ban";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/table/ban")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/table/ban")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/table/ban"!</div>;
+  return <BanTable />;
 }

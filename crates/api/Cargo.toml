@@ -14,7 +14,7 @@ config = { path = "../config" }
 chrono = { workspace = true }
 entity = { path = "../entity" }
 fastrand = { workspace = true }
-fred = { version = "10.0.3", features = ["partial-tracing", "i-hexpire"] }
+fred = { version = "10.0.4", features = ["partial-tracing", "i-hexpire"] }
 lettre = { version = "0.11.11", default-features = false, features = [
     "tokio1-rustls-tls",
     "smtp-transport",
@@ -29,7 +29,7 @@ ring = "0.17.8"
 sea-orm = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-thiserror = "2.0.10"
+thiserror = "2.0.11"
 tokio = { workspace = true }
 tower-http = { workspace = true }
 tracing = { workspace = true }
@@ -44,7 +44,7 @@ dashmap = { workspace = true }
 tempfile = "3.15.0"
 tokio-util = { version = "0.7.13", features = ["io"] }
 bytes = "1.9.0"
-base62 = "2.1.0"
+base62 = "2.2.1"
 jsonwebtoken = "9.3.0"
 axum-extra = { version = "0.10.0", features = [
     "cookie",
@@ -54,7 +54,7 @@ axum-extra = { version = "0.10.0", features = [
 tokio-cron-scheduler = { version = "0.13.0", features = ["signal"] }
 axum_typed_multipart = "0.15.1"
 object_store = { version = "0.11.2", features = ["aws"] }
-clap = { version = "4.5.24", features = ["derive"] }
+clap = { version = "4.5.27", features = ["derive"] }
 strum = { version = "0.26.3", features = ["derive"] }
 tracing-subscriber.workspace = true
 

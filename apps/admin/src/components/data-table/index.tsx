@@ -28,11 +28,13 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends Record<string, unknown>, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  filters: (Omit<FacetedFilterProps<TData, TValue>, "column"> & { columnName: string })[];
-  search?: string;
+  filters: (Omit<FacetedFilterProps<TData, TValue>, "column"> & {
+    columnName: Extract<keyof TData, string>;
+  })[];
+  search?: Extract<keyof TData, string>;
   actions: ToolbarActionProps[];
 }
 
@@ -45,7 +47,7 @@ declare module "@tanstack/table-core" {
   }
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends Record<string, unknown>, TValue>({
   columns,
   data: _data,
   filters,

@@ -5,5 +5,5 @@ export const Route = createFileRoute("/table/challenge_file")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/table/challenge_file"!</div>;
+  return <ChallengeFileTable />;
 }

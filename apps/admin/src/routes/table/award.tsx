@@ -1,3 +1,4 @@
+import { AwardTable } from "@/components/tables/award";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/table/award")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/table/award")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/table/award"!</div>;
+  return <AwardTable />;
 }

@@ -1,3 +1,4 @@
+import { ContainerTable } from "@/components/tables/container";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/table/container")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/table/container")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/table/container"!</div>;
+  return <ContainerTable />;
 }

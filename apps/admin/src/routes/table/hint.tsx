@@ -1,3 +1,4 @@
+import { HintTable } from "@/components/tables/hint";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/table/hint")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/table/hint")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/table/hint"!</div>;
+  return <HintTable />;
 }

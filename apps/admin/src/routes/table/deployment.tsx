@@ -1,3 +1,4 @@
+import { DeploymentTable } from "@/components/tables/deployment";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/table/deployment")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/table/deployment")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/table/deployment"!</div>;
+  return <DeploymentTable />;
 }
